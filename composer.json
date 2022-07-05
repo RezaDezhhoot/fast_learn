@@ -1,0 +1,85 @@
+{
+    "name": "laravel/laravel",
+    "type": "project",
+    "description": "The Laravel Framework.",
+    "keywords": ["framework", "laravel"],
+    "license": "MIT",
+    "require": {
+        "php": "^8.0.2",
+        "ext-json": "*",
+        "artesaos/seotools": "^0.22.0",
+        "bavix/laravel-wallet": "^8.2",
+        "bensampo/laravel-enum": "^5.2",
+        "cviebrock/eloquent-sluggable": "^9.0",
+        "doctrine/dbal": "^3.3",
+        "dyrynda/laravel-cascade-soft-deletes": "^4.2",
+        "google/recaptcha": "^1.2",
+        "guzzlehttp/guzzle": "^7.2",
+        "laravel/framework": "^9.2",
+        "laravel/sanctum": "^2.14.1",
+        "laravel/telescope": "^4.8",
+        "laravel/tinker": "^2.7",
+        "league/flysystem-aws-s3-v3": "3.0",
+        "league/flysystem-ftp": "3.0",
+        "league/flysystem-sftp-v3": "3.0",
+        "livewire/livewire": "^2.10",
+        "milon/barcode": "^9.0",
+        "morilog/jalali": "3.*",
+        "pion/laravel-chunk-upload": "^1.5",
+        "shetabit/payment": "^4.2",
+        "simplesoftwareio/simple-qrcode": "^4.2",
+        "spatie/laravel-permission": "^5.5",
+        "unisharp/laravel-filemanager": "^2.4"
+    },
+    "require-dev": {
+        "fakerphp/faker": "^1.9.1",
+        "laravel/sail": "^1.0.1",
+        "mockery/mockery": "^1.4.4",
+        "nunomaduro/collision": "^6.1",
+        "phpunit/phpunit": "^9.5.10",
+        "spatie/laravel-ignition": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
+        },
+        "files": [
+            "helpers/custom.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover --ansi",
+            "@php artisan vendor:publish --force --tag=livewire:assets --ansi"
+        ],
+        "post-update-cmd": [
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
+        ],
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-create-project-cmd": [
+            "@php artisan key:generate --ansi"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": []
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

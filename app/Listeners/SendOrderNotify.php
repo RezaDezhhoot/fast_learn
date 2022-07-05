@@ -1,0 +1,64 @@
+<?php
+
+namespace App\Listeners;
+
+use App\Enums\NotificationEnum;
+use App\Enums\OrderEnum;
+use App\Events\OrderEvent;
+use App\Repositories\Interfaces\OrderNoteRepositoryInterface;
+use App\Repositories\Interfaces\SendRepositoryInterface;
+use App\Repositories\Interfaces\SettingRepositoryInterface;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
+
+class SendOrderNotify
+{
+    /**
+     * Create the event listener.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        //
+    }
+
+    /**
+     * Handle the event.
+     *
+     * @param  \App\Events\OrderEvent  $event
+     * @return void
+     */
+    public function handle(OrderEvent $event): void
+    {
+        $SettingRepository = app(SettingRepositoryInterface::class);
+        $SendRepository = app(SendRepositoryInterface::class);
+        $OrderNoteRepository = app(OrderNoteRepositoryInterface::class);
+        $raw_text = match ($event->order->status) {
+            OrderEnum::STATUS_PROCESSING => $SettingRepository->getRow('order_processing'),
+            OrderEnum::STATUS_CANCELLED => $SettingRepository->getRow('order_cancelled'),
+            OrderEnum::STATUS_REFUNDED => $SettingRepository->getRow('order_refunded'),
+            OrderEnum::STATUS_COMPLETED => $SettingRepository->getRow('order_completed'),
+            default => null,
+        };
+        if (!empty($raw_text)){
+            $titles = '';
+            foreach ($event->order->details as $item)
+                $titles .= ','.$item->course->title;
+
+            $text = str_replace(array_keys($SettingRepository::variables()['orders']),
+                [$event->order->tracking_code,$event->order->total_price,trim($titles,','),$event->order->user->name],
+                $raw_text);
+
+            $SendRepository->sendSMS($text,$event->order->user->phone);
+            $SendRepository->sendNOTIFICATION($text,$event->order->user->id,NotificationEnum::ORDER,$event->order->id);
+            $OrderNoteRepository->create([
+                'note' => $text,
+                'is_user_note' => true,
+                'is_read' => false,
+                'order_id' => $event->order->id,
+                'user_id' => null,
+            ]);
+        }
+    }
+}
