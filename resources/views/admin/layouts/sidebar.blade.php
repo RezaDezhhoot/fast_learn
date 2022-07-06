@@ -52,6 +52,11 @@
                 </li>
                 <x-admin.menu-item href="{{route('admin.profile')}}" icon="flaticon2-user" :active="request()->routeIs('admin.profile')" label="پروفایل" />
                 <li class="menu-section">
+                    <h4 class="menu-text">بخش رسانه</h4>
+                    <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                </li>
+                <x-admin.menu-item href="{{route('unisharp.lfm.show')}}" icon="flaticon2-file" :active="request()->routeIs('unisharp.lfm.show')" label="مدیریت رسانه ها" />
+                <li class="menu-section">
                     <h4 class="menu-text">بخش ازمون و گواهینامه</h4>
                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                 </li>

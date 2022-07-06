@@ -23,7 +23,7 @@ class SettingRepository implements SettingRepositoryInterface
             ],
             'tickets' => [
                 '{ticket_subject}' => 'موضوع تیکت',
-                '{ticket_priority}' => 'اولویت تیکت',
+                '{ticket_priority}' => 'الویت تیکت',
                 '{ticket_name}' => 'نام کامل کاربر',
             ],
             'auth' => [
@@ -34,7 +34,7 @@ class SettingRepository implements SettingRepositoryInterface
                 '{exam_name}' => 'نام ازمون',
                 '{exam_score}' => 'نمره دریافت شده',
                 '{exam_min_score}' => 'حداقل نمره',
-                '{exam_max_score}' => 'حاکثر نمره',
+                '{exam_max_score}' => 'حداکثر نمره',
             ]
         ];
     }
