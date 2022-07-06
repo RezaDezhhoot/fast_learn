@@ -61,7 +61,7 @@ class StoreTeacher extends BaseComponent
         ]);
         $model->sub_title  = $this->sub_title;
         $model->body  = $this->body;
-        $model->user_id  = $this->user_id;
+        $model->user_id  = $this->userRepository->findBy([['phone',$this->user]])->id;
         $model = $this->teacherRepository->save($model);
         return $this->emitNotify('اطلاعات با موفقیت ثبت شد');
     }
@@ -71,19 +71,6 @@ class StoreTeacher extends BaseComponent
         $this->authorizing('delete_teachers');
         $this->teacherRepository->destroy($this->teacher->id);
         return redirect()->route('admin.teacher');
-    }
-
-    public function searchUser()
-    {
-        $this->users = $this->userRepository->searchUsers(['name','id'],[['phone','like',"%{$this->user}%"]],
-            [['email','like',"%{$this->user}%"]])->toArray();
-    }
-
-    public function setUser($id , $name)
-    {
-        $this->user_id = $id;
-        $this->user = $name;
-        $this->userRole = $this->userRepository->find($id)->roles()->pluck('name','id')->toArray();
     }
 
     public function render()

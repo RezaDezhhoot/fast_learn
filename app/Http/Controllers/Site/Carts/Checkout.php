@@ -296,7 +296,7 @@ class Checkout extends BaseComponent
         if (Cart::total($this->walletAmount, $this->voucherAmount ,0) == 0) {
             $orderId = $this->store();
             return (gettype($orderId) == 'integer' && $orderId > 0) ?
-                redirect(route('checkout', ['tracking' => $orderId + $this->orderRepository::CHANGE_ID()])) : '';
+                redirect(route('verify', ['tracking' => $orderId + $this->orderRepository::CHANGE_ID()])) : '';
         }
 
         $this->validate([

@@ -23,7 +23,7 @@ class SettingRepository implements SettingRepositoryInterface
             ],
             'tickets' => [
                 '{ticket_subject}' => 'موضوع تیکت',
-                '{ticket_priority}' => 'الویت تیکت',
+                '{ticket_priority}' => 'اولویت تیکت',
                 '{ticket_name}' => 'نام کامل کاربر',
             ],
             'auth' => [

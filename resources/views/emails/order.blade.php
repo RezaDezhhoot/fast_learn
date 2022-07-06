@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<html lang="fa" dir="rtl">
 
 <head>
+    <title>{{ $name }}</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- Use the latest (edge) version of IE rendering engine -->
-    <meta name="x-apple-disable-message-reformatting"> <!-- Disable auto-scale in iOS 10 Mail entirely -->
-    <title>ثبت نام</title>
-    <style>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <style type="text/css">
         html,
         body {
             margin: 0 auto !important;
@@ -50,34 +50,15 @@
         }
 
         *[x-apple-data-detectors],
-            /* iOS */
-        .x-gmail-data-detectors,
+
             /* Gmail */
         .x-gmail-data-detectors *,
-        .aBn {
-            border-bottom: 0 !important;
-            cursor: default !important;
-            color: inherit !important;
-            text-decoration: none !important;
-            font-size: inherit !important;
-            font-family: inherit !important;
-            font-weight: inherit !important;
-            line-height: inherit !important;
-        }
-
-        .a6S {
-            display: none !important;
-            opacity: 0.01 !important;
-        }
 
         img.g-img+div {
             display: none !important;
         }
 
         /* What it does: Prevents underlining the button text in Windows 10 */
-        .button-link {
-            text-decoration: none !important;
-        }
 
         @media only screen and (min-device-width: 375px) and (max-device-width: 413px) {
             .email-container {
@@ -86,16 +67,6 @@
         }
     </style>
     <style>
-        .button-td,
-        .button-a {
-            transition: all 100ms ease-in;
-        }
-
-        .button-td:hover,
-        .button-a:hover {
-            background: #555555 !important;
-            border-color: #555555 !important;
-        }
 
         /* Media Queries */
         @media screen and (max-width: 480px) {
@@ -105,27 +76,6 @@
                 height: auto !important;
                 margin-left: auto !important;
                 margin-right: auto !important;
-            }
-
-            .stack-column,
-            .stack-column-center {
-                display: block !important;
-                width: 100% !important;
-                max-width: 100% !important;
-                direction: ltr !important;
-            }
-
-            /* And center justify these ones. */
-            .stack-column-center {
-                text-align: center !important;
-            }
-
-            .center-on-narrow {
-                text-align: center !important;
-                display: block !important;
-                margin-left: auto !important;
-                margin-right: auto !important;
-                float: none !important;
             }
 
             table.center-on-narrow {
@@ -158,14 +108,14 @@
                     <div>
                         <table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" width="100%" style="max-width:500px; margin: auto;">
                             <tr>
-                                <td height="20" style="font-size:20px; line-height:20px;">&nbsp;</td>
+                                <td height="20" style=" font-size:20px; line-height:20px;">&nbsp;</td>
                             </tr>
                             <tr>
                                 <td align="center" valign="middle">
                                     <table>
                                         <tr>
                                             <td valign="top" style="text-align: center; padding: 60px 0 10px 20px;">
-                                                <h1 style="margin: 0; font-family: 'Montserrat', sans-serif; font-size: 30px; line-height: 36px; color: #ffffff; font-weight: bold;">ثبت نام</h1>
+                                                <h1 style="margin: 0; font-family: 'Montserrat', sans-serif; font-size: 30px; line-height: 36px; color: #ffffff; font-weight: bold;"> سفارش ها</h1>
                                             </td>
                                         </tr>
                                         <tr>

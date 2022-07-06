@@ -51,7 +51,6 @@ class StoreTicket extends BaseComponent
             $this->saveInDataBase($this->ticket);
         elseif($this->mode == self::CREATE_MODE) {
             $this->saveInDataBase($this->ticketRepository->newTicketObject());
-            $this->reset(['subject','user','content','file','priority','status']);
         }
     }
 
@@ -82,10 +81,8 @@ class StoreTicket extends BaseComponent
         $model->priority = $this->priority;
         $model->status = TicketEnum::ADMIN_SENT;
         $this->ticketRepository->save($model);
+        $this->reset(['subject','user','content','file','priority','status']);
         $this->emitNotify('اطلاعات با موفقیت ثبت شد');
-        if ($this->mode == self::CREATE_MODE) {
-            $this->sendRepository->sends([],$this->ticket,$this->subject);
-        }
     }
 
     public function deleteItem()

@@ -10,6 +10,7 @@ use App\Repositories\Interfaces\SendRepositoryInterface;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use PHPUnit\Exception;
 
@@ -36,15 +37,15 @@ class SendRegisterNotify
         {
             $text = str_replace(array_keys($SettingRepository::variables()['auth']),
                 [$event->user->name,$event->user->status_label], $raw_text);
-            $auth_type = $SettingRepository->getRow('auth_type');
+            $send_type =$SettingRepository->getRow('send_type');
 
             try {
-                if ($auth_type == 'email' || empty($auth_type))
+                if ($send_type == 'email' || empty($send_type))
                     Mail::to($event->user->email)->send(new AuthMailer($event->user,$text,UserEnum::REGISTER_EVENT));
-                elseif ($auth_type == 'sms')
+                elseif ($send_type == 'sms')
                     $SendRepository->sendSMS($text,$event->user->phone);
             } catch (Exception $e) {
-                //
+                Log::error($e->getMessage());
             }
 
             $SendRepository->sendNOTIFICATION($text,$event->user->id,NotificationEnum::AUTH,$event->user->id);

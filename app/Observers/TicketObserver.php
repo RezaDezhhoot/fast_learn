@@ -4,9 +4,13 @@ namespace App\Observers;
 
 use App\Enums\NotificationEnum;
 use App\Enums\TicketEnum;
+use App\Mail\TicketMail;
 use App\Models\Ticket;
 use App\Repositories\Interfaces\SendRepositoryInterface;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
+use Exception;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class TicketObserver
 {
@@ -27,9 +31,17 @@ class TicketObserver
         };
         if (!empty($raw_text))
         {
+            $send_type = $SettingRepository->getRow('send_type');
             $text = str_replace(array_keys($SettingRepository::variables()['tickets']),
-                [$ticket->subject,$ticket->priority,$ticket->user->name], $raw_text);
-            $SendRepository->sendSMS($text,$ticket->user->phone);
+                [$ticket->subject,$ticket->priority_label,$ticket->user->name], $raw_text);
+            try {
+                if ($send_type == 'email' || empty($send_type))
+                    Mail::to($ticket->user->email)->send(new TicketMail($text));
+                elseif ($send_type == 'sms')
+                    $SendRepository->sendSMS($text,$ticket->user->phone);
+            } catch (Exception $e) {
+                Log::error($e->getMessage());
+            }
             $SendRepository->sendNOTIFICATION($text,$ticket->user->id,NotificationEnum::TICKET,$ticket->user->id);
         }
     }

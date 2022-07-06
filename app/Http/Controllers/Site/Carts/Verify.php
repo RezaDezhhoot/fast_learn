@@ -21,7 +21,7 @@ class Verify extends BaseComponent
     public $isSuccessful, $message , $order , $gateways = [] ;
     public $gateway  ,$tracking;
     public $address , $status  , $order_id , $token;
-    protected $queryString = ['token'];
+    protected $queryString = ['token','tracking'];
 
     public function __construct($id = null)
     {
@@ -30,6 +30,7 @@ class Verify extends BaseComponent
         $this->orderRepository = app(OrderRepositoryInterface::class);
         $this->orderDetailRepository = app(OrderDetailRepositoryInterface::class);
         $this->paymentReporitory = app(PaymentRepositoryInterface::class);
+        $this->transcriptRepository = app(TranscriptRepositoryInterface::class);
         $this->orderNoteRepository = app(OrderNoteRepositoryInterface::class);
     }
 
@@ -87,43 +88,37 @@ class Verify extends BaseComponent
         $this->isSuccessful = true;
         $this->message = 'پرداخت با موفقیت انجام شد با تشکر از خرید شما';
 
-        $paymentRepository = app(PaymentRepositoryInterface::class);
-        $orderDetailRepository = app(OrderDetailRepositoryInterface::class);
-        $orderNoteRepository = app(OrderNoteRepositoryInterface::class);
-        $transcriptRepository = app(TranscriptRepositoryInterface::class);
-        if (!is_null($payment) && empty($paymentRepository->get([['payment_ref', $payment->getReferenceId()]]) ) ) {
-            $paymentRepository->update([
+        if (!is_null($payment) && empty($this->paymentReporitory->get([['payment_ref', $payment->getReferenceId()]]) ) ) {
+            $this->paymentReporitory->update([
                 'payment_ref' => $payment->getReferenceId(),
                 'status_code' => '100',
                 'status_message' => 'پرداخت با موفقیت انجام شد',
             ],[['payment_token', $this->token]]);
-            $orderNoteRepository->create([
+            $this->orderNoteRepository->create([
                 'note' => 'پرداخت با موفقیت انجام شد. کد پیگیری درگاه: ' . $payment->getReferenceId(),
                 'is_user_note' => 1,
                 'is_read' => 0,
                 'order_id' => $this->order->id,
             ]);
-
-            foreach ($this->order->details as $detail) {
-                $detail->status = OrderEnum::STATUS_COMPLETED;
-                $orderDetailRepository->save($detail);
-                if (!is_null($detail->course->quiz)) {
-                    $quiz = $detail->course->quiz;
-                    for ($i=0;$i<$quiz->enter_count;$i++) {
-                        $transcriptRepository->create([
-                            'user_id' => auth()->id(),
-                            'quiz_id' => $quiz->id,
-                            'course_id' => $detail->course->id,
-                            'result' => QuizEnum::PENDING,
-                            'course_data' => json_encode([
-                                'id' => $detail->course->id,
-                                'title' => $detail->course->title,
-                            ])
-                        ]);
-                    }
+        }
+        foreach ($this->order->details as $detail) {
+            $detail->status = OrderEnum::STATUS_COMPLETED;
+            $this->orderDetailRepository->save($detail);
+            if (!is_null($detail->course->quiz)) {
+                $quiz = $detail->course->quiz;
+                for ($i=0;$i<$quiz->enter_count;$i++) {
+                    $this->transcriptRepository->create([
+                        'user_id' => auth()->id(),
+                        'quiz_id' => $quiz->id,
+                        'course_id' => $detail->course->id,
+                        'result' => QuizEnum::PENDING,
+                        'course_data' => json_encode([
+                            'id' => $detail->course->id,
+                            'title' => $detail->course->title,
+                        ])
+                    ]);
                 }
             }
-
         }
         if ($this->order->wallet_pay > 0)
             auth()->user()->forceWithdraw($this->order->wallet_pay, ['description' => 'بابت سفارش ' . $this->order->tracking_code]);
@@ -133,10 +128,18 @@ class Verify extends BaseComponent
     {
         $orderRepository = app(OrderRepositoryInterface::class);
         $paymentRepository = app(PaymentRepositoryInterface::class);
-        $transaction = $paymentRepository->get([
-            ['payment_gateway', $this->gateway],['payment_token', $this->token],['model_type', 'order']
-        ]);
-        $this->order = $orderRepository->get([['user_id', auth()->id()],['id', $transaction->model_id]]);
+        if (!is_null($this->token)) {
+            $transaction = $paymentRepository->get([
+                ['payment_gateway', $this->gateway],['payment_token', $this->token],['model_type', 'order']
+            ]);
+            $this->order = $orderRepository->get([['user_id', auth()->id()],['id', $transaction->model_id]]);
+        } else {
+            $this->order = $orderRepository->get([
+                ['user_id', auth()->id()],
+                ['total_price' ,0],
+                ['id',(int)$this->tracking - $this->orderRepository::CHANGE_ID() ],
+            ]);
+        }
     }
 
     public function try_again()

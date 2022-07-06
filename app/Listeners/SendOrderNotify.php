@@ -5,11 +5,15 @@ namespace App\Listeners;
 use App\Enums\NotificationEnum;
 use App\Enums\OrderEnum;
 use App\Events\OrderEvent;
+use App\Mail\OrderMail;
 use App\Repositories\Interfaces\OrderNoteRepositoryInterface;
 use App\Repositories\Interfaces\SendRepositoryInterface;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
+use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class SendOrderNotify
 {
@@ -46,11 +50,19 @@ class SendOrderNotify
             foreach ($event->order->details as $item)
                 $titles .= ','.$item->course->title;
 
+            $send_type =$SettingRepository->getRow('send_type');
             $text = str_replace(array_keys($SettingRepository::variables()['orders']),
                 [$event->order->tracking_code,$event->order->total_price,trim($titles,','),$event->order->user->name],
                 $raw_text);
 
-            $SendRepository->sendSMS($text,$event->order->user->phone);
+            try {
+                if ($send_type == 'email' || empty($send_type))
+                    Mail::to($event->order->user->email)->send(new OrderMail($text));
+                elseif ($send_type == 'sms')
+                    $SendRepository->sendSMS($text,$event->order->user->phone);
+            } catch (Exception $e) {
+                Log::error($e->getMessage());
+            }
             $SendRepository->sendNOTIFICATION($text,$event->order->user->id,NotificationEnum::ORDER,$event->order->id);
             $OrderNoteRepository->create([
                 'note' => $text,

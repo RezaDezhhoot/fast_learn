@@ -81,7 +81,7 @@ class Ticket extends BaseComponent
                 'subject' => 'موضوع',
                 'content' => 'متن',
                 'file' => 'فایل',
-                'priority' => 'الویت',
+                'priority' => 'اولویت',
             ]
         );
         $model->subject = $this->subject;

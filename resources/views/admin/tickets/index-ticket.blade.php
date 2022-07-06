@@ -4,7 +4,7 @@
     <div class="card card-custom">
         <div class="card-body">
             <x-admin.forms.dropdown id="status" :data="$data['status']" label="وضعیت" wire:model="status"/>
-            <x-admin.forms.dropdown id="priority" :data="$data['priority']" label="الویت" wire:model="priority"/>
+            <x-admin.forms.dropdown id="priority" :data="$data['priority']" label="اولویت " wire:model="priority"/>
             <x-admin.forms.dropdown id="subject" :data="$data['subject']" value="true" label="موضوع" wire:model="subject"/>
             @include('admin.layouts.advance-table')
             <div class="row">

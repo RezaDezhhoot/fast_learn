@@ -24,7 +24,7 @@
                             </div>
                         </div>
                         <div class="input-box col-lg-6">
-                            <label class="label-text">الویت*</label>
+                            <label class="label-text">اولویت*</label>
                             <div class="form-group">
                                 <select class="form-control form--control" name="priority" wire:model="priority" id="priority">
                                     <option value="">انتخاب کنید</option>

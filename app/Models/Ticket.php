@@ -16,6 +16,7 @@ use Morilog\Jalali\Jalalian;
  * @property mixed status
  * @property mixed $subject
  * @property mixed $user
+ * @property mixed $priority_label
  * @method static findOrFail($id)
  * @method static latest(string $string)
  * @method static where(string $string, $PENDING)
