@@ -28,10 +28,9 @@ class StoreTeacher extends BaseComponent
             $this->teacher = $this->teacherRepository->find($id);
             $this->body = $this->teacher->body;
             $this->user_id = $this->teacher->user_id;
-            $this->user = $this->teacher->user->name;
+            $this->user = $this->teacher->user->phone;
             $this->header = $this->teacher->name;
             $this->sub_title = $this->teacher->sub_title;
-            $this->userRole = $this->teacher->user->roles()->pluck('name','id')->toArray();
         } elseif ($this->mode == self::CREATE_MODE) {
             $this->header = 'مدرس جدید';
         } else abort(404);
@@ -53,11 +52,11 @@ class StoreTeacher extends BaseComponent
         $this->validate([
             'sub_title' => ['required','max:70'],
             'body' => ['required','string','max:12500'],
-            'user_id' => ['required','exists:users,id','unique:teachers,user_id,'.($this->teacher->id ?? 0)],
+            'user' => ['required','exists:users,phone','unique:teachers,user_id,'.($this->teacher->id ?? 0)],
         ],[],[
             'sub_title' => 'عنوان',
             'body' => 'متن',
-            'user_id' => 'مدرس',
+            'user' => 'مدرس',
         ]);
         $model->sub_title  = $this->sub_title;
         $model->body  = $this->body;

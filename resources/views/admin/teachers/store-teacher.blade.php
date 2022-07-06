@@ -10,15 +10,7 @@
             <div class="row">
                 <x-admin.forms.input type="text" id="sub_title" label="عنوان *" wire:model.defer="sub_title"/>
                 <x-admin.forms.full-text-editor id="body" label="متن*" wire:model.defer="body"/>
-                <x-admin.forms.input type="text" wire:input="searchUser" id="user" label="شماره همراه - ادرس ایمیل  *" wire:model="user"/>
-            </div>
-            <x-admin.loader wire:target="searchUser" text="در حال جستجو" />
-            <div class="row">
-                @foreach($users as $item)
-                    <div wire:click="setUser({{$item['id']}},'{{$item['name']}}')" class="col-1 mx-1 border d-flex align-items-center justify-content-center">
-                        <span class="btn btn-link">{{ $item['name'] }}</span>
-                    </div>
-                @endforeach
+                <x-admin.forms.input type="text" id="user" label="شماره همراه *" wire:model.defer="user"/>
             </div>
         </div>
     </div>

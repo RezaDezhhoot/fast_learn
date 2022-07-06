@@ -19,6 +19,28 @@
             <x-admin.forms.full-text-editor id="content" label="متن اصلی*" wire:model.defer="content"/>
             <x-admin.forms.lfm-standalone id="file" label="فایل" :file="$file" type="image" required="true" wire:model="file"/>
             @if($mode == self::UPDATE_MODE)
+                <x-admin.form-section label="کاربر">
+                    <div class="row">
+                        <div class="col-12">
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                <tr>
+                                    <td>نام</td>
+                                    <td>شماره همراه</td>
+                                    <td>وضعیت</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>{{ $ticket->user->name }}</td>
+                                    <td>{{ $ticket->user->phone }}</td>
+                                    <td>{{ $ticket->user->status_label }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </x-admin.form-section>
                 <x-admin.form-section label="تاریخچه گفتگو">
                     @foreach($child as $key =>  $item)
                         <div class="col-lg-12 border px-4 py-3 d-flex align-items-center justify-content-between" style="border: 1px gray solid;padding: 5px;border-radius: 5px;margin: 10px">
