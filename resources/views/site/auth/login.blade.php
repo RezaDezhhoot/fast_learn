@@ -1,4 +1,4 @@
-<section class="contact-area mt-4 position-relative"    >
+<section class="contact-area mt-4 position-relative"  wire:init="checkSession"  >
     <span class="ring-shape ring-shape-1"></span>
     <span class="ring-shape ring-shape-2"></span>
     <span class="ring-shape ring-shape-3"></span>
@@ -57,18 +57,20 @@
                             </div>
                             <!-- end input-box -->
                             <div class="btn-box">
-                                @if(!$sent)
-                                    <p wire:click="sendVerificationCode" class=" my-3 cursor-pointers font-12 vazir">ارسال رمز یکبار مصرف</p>
-                                @else
-                                    <div>
-                                        <p class="px-1 text-success my-3 font-12 vazir"> رمز یکبار مصرف ارسال شد</p>
-                                        <p class="px-1 text-info my-3 font-12 vazir" wire:ignore>
-                                            زمان باقی مانده تا ارسال مجدد:
-                                            <span id="clock"></span>
-                                        </p>
-                                    </div>
+                                @if($auth_type != 'none')
+                                    @if(!$sent)
+                                        <p wire:click="sendVerificationCode" class=" mt-3 cursor-pointers font-12 vazir">ارسال رمز یکبار مصرف</p>
+                                    @else
+                                        <div>
+                                            <p class="px-1 text-success mt-3 font-12 vazir"> رمز یکبار مصرف ارسال شد</p>
+                                            <p class="px-1 text-info mt-3 font-12 vazir" wire:ignore>
+                                                زمان باقی مانده تا ارسال مجدد:
+                                                <span id="clock"></span>
+                                            </p>
+                                        </div>
+                                    @endif
                                 @endif
-                                <button class="btn theme-btn" type="submit">ورود به حساب کاربری <i class="la la-arrow-left icon ml-1"></i></button>
+                                <button class="btn theme-btn mt-3" type="submit">ورود به حساب کاربری <i class="la la-arrow-left icon ml-1"></i></button>
                                 <p class="fs-14 pt-2">حساب کاربری ندارید؟ <a href="{{ route('auth',['action'=>'sign-up']) }}" class="text-color hover-underline">ثبت نام</a></p>
                             </div>
                             <!-- end btn-box -->
@@ -101,7 +103,7 @@
                 .on('finish.countdown', function(event) {
                     $(this).html('اتمام زمان!')
                         .parent().addClass('disabled');
-                @this.call('canSendAgain')
+                        @this.call('canSendAgain')
                 });
         })
 

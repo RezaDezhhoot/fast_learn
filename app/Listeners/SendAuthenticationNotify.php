@@ -45,7 +45,7 @@ class SendAuthenticationNotify
 
             $send_type = $SettingRepository->getRow('send_type');
             try {
-                if ($send_type == 'email' || empty($send_type))
+                if ($send_type == 'email')
                     Mail::to($event->user->email)->send(new AuthMailer($event->user,$text,UserEnum::LOGIN_EVENT));
                 elseif ($send_type == 'sms')
                     $SendRepository->sendSMS($text,$event->user->phone);

@@ -1,5 +1,5 @@
 @props(['data'])
-<section class="blog-area py-5 bg-gray overflow-hidden">
+<section class="blog-area pt-5 bg-gray overflow-hidden">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-9">

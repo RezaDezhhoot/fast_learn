@@ -35,7 +35,7 @@ class TicketObserver
             $text = str_replace(array_keys($SettingRepository::variables()['tickets']),
                 [$ticket->subject,$ticket->priority_label,$ticket->user->name], $raw_text);
             try {
-                if ($send_type == 'email' || empty($send_type))
+                if ($send_type == 'email')
                     Mail::to($ticket->user->email)->send(new TicketMail($text));
                 elseif ($send_type == 'sms')
                     $SendRepository->sendSMS($text,$ticket->user->phone);

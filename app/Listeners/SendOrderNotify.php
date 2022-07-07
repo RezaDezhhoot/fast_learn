@@ -56,7 +56,7 @@ class SendOrderNotify
                 $raw_text);
 
             try {
-                if ($send_type == 'email' || empty($send_type))
+                if ($send_type == 'email')
                     Mail::to($event->order->user->email)->send(new OrderMail($text));
                 elseif ($send_type == 'sms')
                     $SendRepository->sendSMS($text,$event->order->user->phone);

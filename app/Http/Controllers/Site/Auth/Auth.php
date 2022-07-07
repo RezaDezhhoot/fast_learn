@@ -33,6 +33,8 @@ class Auth extends BaseComponent
     public $logo , $authImage , $passwordLabel = 'رمز عبور';
     public bool $sms = false , $sent = false;
 
+    public $auth_type;
+
     public function __construct($id = null)
     {
         parent::__construct($id);
@@ -62,6 +64,7 @@ class Auth extends BaseComponent
         JsonLd::setTitle($this->settingRepository->getRow('title').' '.$title);
         JsonLd::setDescription($this->settingRepository->getRow('seoDescription'));
         JsonLd::addImage(asset($this->settingRepository->getRow('logo')));
+        $this->auth_type = $this->settingRepository->getRow('auth_type') ?? 'none';
     }
 
     public function render()
@@ -89,17 +92,23 @@ class Auth extends BaseComponent
             'password' => 'رمز عبور',
         ]);
         $auth = false;
+        $confirm_user = false;
         $user = $this->userRepository->getUser('phone',"$this->phone");
         $user_otp = $user->otp;
 
-        if ($user->status == UserEnum::CONFIRMED){
+        if ($user->status == UserEnum::CONFIRMED || $this->auth_type == 'none'){
             if (Hash::check($this->password, $user->password) ||
                 (!is_null($user->otp) && Hash::check($this->password, $user_otp) && $this->sms === true))
                 $auth = true;
-        } elseif ($user->status == UserEnum::NOT_CONFIRMED) {
-            if (!is_null($user->otp) && Hash::check($this->password, $user_otp) && $this->sms === true)
+            else {
+                return $this->addError('password','رمزعبور یا شماره وارد شده اشتباه می باشد');
+            }
+        } elseif ($user->status == UserEnum::NOT_CONFIRMED || $user->status == UserEnum::WAIT_TO_CONFIRM) {
+            if (!is_null($user->otp) && Hash::check($this->password, $user_otp) && $this->sms === true) {
                 $auth = true;
-            else return $this->addError('password','کد تایید یا شماره/ایمیل وارد شده اشتباه می باشد');
+                $confirm_user = true;
+            }
+            else return $this->addError('password','کد تایید یا شماره وارد شده اشتباه می باشد');
         } else return false;
 
         if ($auth) {
@@ -108,6 +117,9 @@ class Auth extends BaseComponent
             $this->userRepository->update($user,['otp' => null]);
             RateLimiter::clear($rateKey);
             AuthenticationEvent::dispatch($user);
+
+            if ($confirm_user)
+                $this->userRepository->update($user,['status' => UserEnum::CONFIRMED]);
 
             return Authentication::user()->hasRole('admin') ?
                 redirect()->intended(route('admin.dashboard')) :
@@ -123,56 +135,58 @@ class Auth extends BaseComponent
 
     public function sendVerificationCode(): bool|MessageBag
     {
-        $settingRepository = $this->settingRepository;
-        $sendRepository =  $this->sendRepository;
-        $userRepository =  $this->userRepository;
+        if ($this->auth_type != 'none') {
+            $sendRepository =  $this->sendRepository;
+            $userRepository =  $this->userRepository;
 
-        if ($this->sent && $this->checkTimer())
-            return $this->addError('phone','رمز یکبار مصرف قبلا برای شما ارسال شده است.');
+            if ($this->sent && $this->checkTimer())
+                return $this->addError('phone','رمز یکبار مصرف قبلا برای شما ارسال شده است.');
 
-        if (rateLimiter(value:$this->phone))
-        {
-            $this->resetInputs();
-            return
-                $this->addError('phone', 'زیادی تلاش کردید. لطفا پس از مدتی دوباره تلاش کنید.');
-        }
-
-        $this->validate([
-            'phone' => ['required','string','exists:users,phone'],
-        ],[],[
-            'phone' => 'شماره همراه ',
-        ]);
-
-        $rand = $this->generateCode();
-        $user = $userRepository->getUser('phone',"$this->phone");
-        app(OtpRepositoryInterface::class)->save($user,$rand);
-        $ok = false;
-        $auth_type = $settingRepository->getRow('auth_type');
-        if ($auth_type == 'otp' ){
-            try {
-                $sendRepository->sendCode($rand,$this->phone);
-                $this->passwordLabel = 'رمز ارسال شده را وارد نماید';
-                $ok = true;
-            } catch (Exception $e) {
-                Log::error($e->getMessage());
-                $this->addError('phone','خطا در هنگام ارسال رمز');
+            if (rateLimiter(value:$this->phone))
+            {
+                $this->resetInputs();
+                return
+                    $this->addError('phone', 'زیادی تلاش کردید. لطفا پس از مدتی دوباره تلاش کنید.');
             }
-        } elseif ($auth_type == 'email' || empty($auth_type)) {
-            try {
-                Mail::to($user->email)->send(new AuthMailer($user,$rand,UserEnum::AUTHENTICATE_EVENT));
-                $this->passwordLabel = 'رمز ایمیل شده را وارد نماید';
-                $ok = true;
-            } catch (Exception $e) {
-                Log::error($e->getMessage());
-                $this->addError('phone','خطا در هنگام ارسال رمز');
-            }
-        } else return $this->addError('phone','خطا در هنگام ارسال رمز');
 
-        if ($ok) {
-            Session::put('timer', Carbon::make(now())->addSeconds(90));
-            $this->setTimer();
-            $this->sms = true;
-            $this->sent = true;
+            $this->validate([
+                'phone' => ['required','string','exists:users,phone'],
+            ],[],[
+                'phone' => 'شماره همراه ',
+            ]);
+
+            $rand = $this->generateCode();
+            $user = $userRepository->getUser('phone',"$this->phone");
+            app(OtpRepositoryInterface::class)->save($user,$rand);
+            $ok = false;
+            if ($this->auth_type == 'otp' ){
+                try {
+                    $sendRepository->sendCode($rand,$this->phone);
+                    $this->passwordLabel = 'رمز ارسال شده را وارد نماید';
+                    $ok = true;
+                } catch (Exception $e) {
+                    Log::error($e->getMessage());
+                    $this->addError('phone','خطا در هنگام ارسال رمز');
+                }
+            } elseif ($this->auth_type == 'email') {
+                try {
+                    Mail::to($user->email)->send(new AuthMailer($user,$rand,UserEnum::AUTHENTICATE_EVENT));
+                    $this->passwordLabel = 'رمز ایمیل شده را وارد نماید';
+                    $ok = true;
+                } catch (Exception $e) {
+                    Log::error($e->getMessage());
+                    $this->addError('phone','خطا در هنگام ارسال رمز');
+                }
+            } elseif ($this->auth_type == 'none') {
+                return false;
+            }
+
+            if ($ok) {
+                Session::put('timer', Carbon::make(now())->addSeconds(90));
+                $this->setTimer();
+                $this->sms = true;
+                $this->sent = true;
+            }
         }
         return false;
     }
@@ -221,17 +235,18 @@ class Auth extends BaseComponent
     public function checkTimer(): bool
     {
         $interval = Carbon::make(now())->diff(Carbon::make(Session::get('timer')));
-        return ($interval->format("%r") == "-");
+        return ((int)$interval->format("%r%s") >= 0);
     }
 
     public function setTimer()
     {
-        $this->emit('timer',['data' => Session::get('timer') ? Session::get('timer')->toDateTimeString() : '']);
+//        dd(Session::get('timer')->toDateTimeString());
+        $this->emit('timer',['data' =>  Session::get('timer')->toDateTimeString() ]);
     }
 
     public function checkSession()
     {
-        if (!$this->checkTimer())
+        if ($this->checkTimer())
         {
             $this->sent = true;
             $this->setTimer();

@@ -35,6 +35,28 @@
                 <div class="position-relative">
                     <!--begin:Table-->
                     <div class="container ">
+                        <x-admin.form-section label="کاربر">
+                            <div class="row">
+                                <div class="col-12">
+                                    <table class="table table-striped table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <td>نام</td>
+                                            <td>شماره همراه</td>
+                                            <td>وضعیت</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>{{ $transcript->user->name }}</td>
+                                            <td>{{ $transcript->user->phone }}</td>
+                                            <td>{{ $transcript->user->status_label }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </x-admin.form-section>
                         <div class="row ">
                             <div class="col-12">
                                 <div class="table-responsive">

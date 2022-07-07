@@ -27,10 +27,10 @@
                     @if($storage == 2)
                         <div class="row">
                             <x-admin.forms.input with="6" type="text" id="storage_root" placeholder="root" label="root" wire:model.defer="ftp_root"/>
-                            <x-admin.forms.input with="6" type="text" id="storage_ip" placeholder="ip/domain" label="ip/domain" wire:model.defer="ftp_ip"/>
-                            <x-admin.forms.input with="6" type="text" id="storage_username" placeholder="username" label="username" wire:model.defer="ftp_username"/>
-                            <x-admin.forms.input with="6" type="text" id="storage_password" placeholder="password" label="password" wire:model.defer="ftp_password"/>
-                            <x-admin.forms.input with="12" type="number" id="storage_port" placeholder="port" label="port" wire:model.defer="ftp_port"/>
+                            <x-admin.forms.input with="6" type="text" id="storage_ip" placeholder="دامنه/ای پی" label="دامنه/ای پی" wire:model.defer="ftp_ip"/>
+                            <x-admin.forms.input with="6" type="text" id="storage_username" placeholder="نام کاربری" label="نام کاربری" wire:model.defer="ftp_username"/>
+                            <x-admin.forms.input with="6" type="text" id="storage_password" placeholder="رمزعبور" label="رمزعبور" wire:model.defer="ftp_password"/>
+                            <x-admin.forms.input with="12" type="number" id="storage_port" placeholder="پورت" label="پورت" wire:model.defer="ftp_port"/>
                             <x-admin.forms.checkbox value="1" id="storage_ssl"  label="ssl" wire:model.defer="ftp_ssl" />
                             <x-admin.forms.checkbox value="1" id="ftp_available"  label="فعال سازی" wire:model.defer="ftp_available" />
                         </div>
@@ -56,9 +56,9 @@
                             <x-admin.forms.input with="6" type="text" id="sftp_host" placeholder="host" label="host" wire:model.defer="sftp_host"/>
                             <x-admin.forms.input with="6" type="text" id="sftp_username" placeholder="username" label="username" wire:model.defer="sftp_username"/>
                             <x-admin.forms.input with="6" type="text" id="sftp_password" placeholder="password" label="password" wire:model.defer="sftp_password"/>
-                            <x-admin.forms.input with="6" type="text" id="sftp_privateKey" placeholder="privateKey" label="privateKey" wire:model.defer="sftp_privateKey"/>
-                            <x-admin.forms.input with="6" type="text" id="sftp_hostFingerprint" placeholder="hostFingerprint" label="hostFingerprint" wire:model.defer="sftp_hostFingerprint"/>
-                            <x-admin.forms.input with="6" type="number" id="sftp_maxTries" placeholder="maxTries" label="maxTries" wire:model.defer="sftp_maxTries"/>
+                            <x-admin.forms.input with="6" type="text" id="sftp_privateKey" placeholder="private key" label="private key" wire:model.defer="sftp_privateKey"/>
+                            <x-admin.forms.input with="6" type="text" id="sftp_hostFingerprint" placeholder="host fingerprint" label="host fingerprint" wire:model.defer="sftp_hostFingerprint"/>
+                            <x-admin.forms.input with="6" type="number" id="sftp_maxTries" placeholder="max tries" label="max tries" wire:model.defer="sftp_maxTries"/>
                             <x-admin.forms.input with="6" type="text" id="sftp_passphrase" placeholder="passphrase" label="passphrase" wire:model.defer="sftp_passphrase"/>
                             <x-admin.forms.input with="6" type="number" id="sftp_port" placeholder="port" label="port" wire:model.defer="sftp_port"/>
                             <x-admin.forms.input with="12" type="text" id="sftp_root" placeholder="root" label="root" wire:model.defer="sftp_root"/>
@@ -75,7 +75,7 @@
                     @if(in_array('zarinpal',$gateway))
                         <div class="row">
                             <x-admin.forms.input with="6" type="text" id="merchantId" placeholder="merchantId" label="شناسه درگاه" wire:model.defer="zarin_merchantId"/>
-                            <x-admin.forms.dropdown with="6" id="zarin_mode" :data="['normal'=>'normal','sandbox'=>'sandbox','zaringate'=> 'zaringate']" label="mode" wire:model.defer="zarin_mode"/>
+                            <x-admin.forms.dropdown with="6" id="zarin_mode" :data="['normal'=>'عادی','sandbox'=>'ازمایشی','zaringate'=> 'zaringate']" label="حالت" wire:model.defer="zarin_mode"/>
                             <x-admin.forms.dropdown help="برای درگاه zarinpal واحد تومان می باشد" id="zarin_unit" :data="['1'=> 'تومان','10'=> 'ریال']" label="واحد" wire:model.defer="zarin_unit"/>
                             <x-admin.forms.lfm-standalone id="zarin_logo" label="لوگو درگاه" :file="$zarin_logo" type="image"  wire:model="zarin_logo"/>
                         </div>
@@ -94,7 +94,7 @@
                     @if(in_array('idpay',$gateway))
                         <div class="row">
                             <x-admin.forms.input with="6" type="text" id="idpay_merchantId" placeholder="merchantId" label="شناسه درگاه" wire:model.defer="idpay_merchantId"/>
-                            <x-admin.forms.dropdown with="6" id="idpay_sandbox" :data="['0'=>'false','1'=>'true']" label="درگاه ازمایشی" wire:model.defer="idpay_sandbox"/>
+                            <x-admin.forms.dropdown with="6" id="idpay_sandbox" :data="['0'=>'خیر','1'=>'بعله']" label="درگاه ازمایشی" wire:model.defer="idpay_sandbox"/>
                             <x-admin.forms.lfm-standalone id="idpay_logo" label="لوگو درگاه" :file="$idpay_logo" type="image"  wire:model="idpay_logo"/>
                             <x-admin.forms.dropdown id="idpay_unit" help="برای درگاه ای دی پی واحد ریال می باشد" :data="['10'=>'ریال','1'=>'تومان']" label="واحد" wire:model.defer="idpay_unit"/>
                         </div>
@@ -106,6 +106,7 @@
                     <div class="row">
                         <x-admin.forms.radio help="توجه داشته باشید سرویس OTP باید روی پنل پیامکی شما فعال باشد" name="auth_type" value="otp" id="otp"  label="ارسال اس ام اس (سرویس OTP)" wire:model="auth_type" />
                         <x-admin.forms.radio help="ارسال ایمیل با استفاده از سرویس SMTP انجام می شود" name="auth_type" value="email" id="email"  label="ارسال ایمیل" wire:model="auth_type" />
+                        <x-admin.forms.radio help="عدم ارسال اعلان احراز هویت" name="auth_type" value="none" id="none"  label="غیر فعال" wire:model="auth_type" />
                     </div>
                 </div>
             </x-admin.form-section>
@@ -115,6 +116,8 @@
                     <div class="row">
                         <x-admin.forms.radio name="send_type" value="sms" id="send_otp"  label="ارسال اس ام اس " wire:model.defer="send_type" />
                         <x-admin.forms.radio help="ارسال ایمیل با استفاده از سرویس SMTP انجام می شود" name="send_type" value="email" id="send_email"  label="ارسال ایمیل" wire:model.defer="send_type" />
+                        <x-admin.forms.radio help=" اعلان ها به صورت پیشفرض به وسیله نوتیفیکشن های داخلی ارسال می شوند" name="send_type" value="none" id="send_none"  label="غیر فعال" wire:model="send_type" />
+
                     </div>
                 </div>
             </x-admin.form-section>

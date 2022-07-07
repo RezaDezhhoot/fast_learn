@@ -44,7 +44,7 @@ class SendExamNotify
                 $raw_text);
 
             try {
-                if ($send_type == 'email' || empty($send_type))
+                if ($send_type == 'email')
                     Mail::to($event->transcript->user->email)->send(new ExamMail($text));
                 elseif ($send_type == 'sms')
                     $SendRepository->sendSMS($text,$event->transcript->user->phone);

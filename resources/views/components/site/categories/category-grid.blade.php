@@ -1,5 +1,5 @@
 @props(['data'])
-<section class="category-area py-5">
+<section class="category-area pt-5">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-9">
