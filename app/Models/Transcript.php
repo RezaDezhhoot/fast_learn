@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Enums\QuizEnum;
-use App\Traits\Admin\Searchable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -22,11 +21,9 @@ use Morilog\Jalali\Jalalian;
  */
 class Transcript extends Model
 {
-    use HasFactory , Searchable;
+    use HasFactory;
 
     protected $guarded = ['id'];
-
-    protected array $searchAbleColumns = ['id'];
 
     public function user(): BelongsTo
     {

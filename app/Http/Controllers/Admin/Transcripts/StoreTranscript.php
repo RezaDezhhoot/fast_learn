@@ -9,11 +9,13 @@ use App\Repositories\Interfaces\QuizRepositoryInterface;
 use App\Repositories\Interfaces\TranscriptRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Morilog\Jalali\Jalalian;
 
 class StoreTranscript extends BaseComponent
 {
-    public  $header , $result , $user , $quiz , $score , $course;
+    public  $header , $result , $user , $quiz , $score , $course , $certificate_code , $certificate_date;
     public object $transcript;
 
     public function __construct($id = null)
@@ -34,6 +36,8 @@ class StoreTranscript extends BaseComponent
             $this->result = $this->transcript->result;
             $this->course = $this->transcript->course_id;
             $this->score = $this->transcript->score;
+            $this->certificate_code = $this->transcript->certificate_code;
+            $this->certificate_date = $this->transcript->certificate_date;
         } elseif ($this->mode == self::CREATE_MODE)
             $this->header = 'کارنامه جدید';
         else abort(404);
@@ -44,30 +48,30 @@ class StoreTranscript extends BaseComponent
         $this->data['course'] = $this->courseRepository->getAll()->pluck('title','id');
     }
 
-    public function store
-    (
-        TranscriptRepositoryInterface $transcriptRepository,
-        UserRepositoryInterface $userRepository
-    )
+    public function store()
     {
+        $this->certificate_code = $this->emptyToNull($this->certificate_code);
+        $this->certificate_date = $this->emptyToNull($this->certificate_date);
        if ($this->mode == self::UPDATE_MODE) {
            $this->validate([
                'result' => ['required','in:'.implode(',',array_keys(QuizEnum::getResult()))],
-               'score' => ['nullable','numeric']
-           ],[],[
+               'score' => ['nullable','numeric'],
+               'certificate_date' => ['nullable','date_format:Y/m/d'],
+               'certificate_code' => ['nullable','unique:transcripts,certificate_code,'.($this->transcript->id)]
+           ],['date_format' => 'تاریخ صدرو باید از الگو 0000/00/00 پیروی کند'],[
                'result' => 'نتیجه ازمون',
                'score' => 'نمره',
+               'certificate_date' => 'تاریخ صدور',
+               'certificate_code' => 'شماره گواهینامه'
            ]);
-           if ($this->result <> $this->transcript->result)
-               $this->saveInDataBase();
-
+           $this->saveInDataBase();
        } elseif ($this->mode == self::CREATE_MODE) {
            $this->validate([
                'result' => ['required','in:'.implode(',',array_keys(QuizEnum::getResult()))],
                'user' => ['required','exists:users,phone'],
                'quiz' => ['required','exists:quizzes,id'],
                'course' => ['required','exists:courses,id'],
-               'score' => ['nullable','numeric']
+               'score' => ['nullable','numeric'],
            ],[],[
                'result' => 'نتیجه ازمون',
                'user' => 'شماره همراه کاربر',
@@ -99,18 +103,24 @@ class StoreTranscript extends BaseComponent
         $this->transcript->score = $this->score;
         $quiz_has_certificate = !empty($this->transcript->quiz->certificate);
         $certificate_id = $quiz_has_certificate ? $this->transcript->quiz->certificate->id : null;
+        $this->transcript->certificate_date = $this->certificate_date;
+        $this->transcript->certificate_code = $this->certificate_code;
         try {
             DB::beginTransaction();
             switch ($this->result){
                 case QuizEnum::PASSED:
                     if ($quiz_has_certificate and
-                        !$this->userRepository->has_certificate($this->transcript->user,$certificate_id,$this->transcript->id))
+                        !$this->userRepository->has_certificate($this->transcript->user,$certificate_id,$this->transcript->id)) {
                         $this->userRepository->submit_certificate($this->transcript->user,$certificate_id,$this->transcript->id);
+                    }
                     break;
                 case QuizEnum::REJECTED || QuizEnum::SUSPENDED || QuizEnum::PENDING:
                     if ($quiz_has_certificate and
-                        $this->userRepository->has_certificate($this->transcript->user,$certificate_id,$this->transcript->id))
+                        $this->userRepository->has_certificate($this->transcript->user,$certificate_id,$this->transcript->id)) {
                         $this->userRepository->reclaiming_certificate($this->transcript->user,$certificate_id,$this->transcript->id);
+                        $this->transcript->certificate_date = null;
+                        $this->transcript->certificate_code = null;
+                    }
                     break;
             }
             $this->transcriptRepository->save($this->transcript);

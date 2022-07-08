@@ -27,7 +27,7 @@ class TranscriptRepository implements TranscriptRepositoryInterface
         })->when($search,function ($q) use ($search) {
             return $q->whereHas('user',function ($q) use ($search) {
                 return $q->where('phone',$search);
-            })->orWhere('id',$search);
+            })->orWhere('id',$search)->orWhere('certificate_code',$search);
         })->paginate($per_page);
     }
 

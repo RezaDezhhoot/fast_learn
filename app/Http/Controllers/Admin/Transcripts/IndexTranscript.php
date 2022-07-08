@@ -11,7 +11,7 @@ class IndexTranscript extends BaseComponent
 {
     use WithPagination;
     protected $queryString = ['result'];
-    public ?string $result = null , $placeholder = ' موبایل کاربر یا شماره گواهینامه';
+    public ?string $result = null , $placeholder = ' موبایل کاربر یا شماره گواهینامه یا شماره کارنامه ';
 
     public function __construct($id = null)
     {

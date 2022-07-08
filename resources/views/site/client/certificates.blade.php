@@ -9,6 +9,7 @@
                 <thead>
                 <tr>
                     <td>#</td>
+                    <th>شماره گواهینامه</th>
                     <td>عنوان</td>
                     <td>دوره</td>
                     <td>ازمون</td>
@@ -19,6 +20,7 @@
                 @forelse($certificates as $item)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
+                        <td>{{ $item->transcript->certificate_code }}</td>
                         <td>{{ $item->certificate->name }}</td>
                         <td>{{ $item->transcript->course->title }}</td>
                         <td>{{ $item->transcript->quiz->name }}</td>

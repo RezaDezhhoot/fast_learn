@@ -17,12 +17,12 @@
                     <div class="codes_row">
                         <p>
                             <b>
-                                تاریخ صدور : {{ $certificate->transcript->updated_date ?? '-' }}
+                                تاریخ صدور : {{ $certificate->transcript->certificate_date ?? '-' }}
                             </b>
                         </p>
                         <p>
                             <b>
-                                شماره گواهینامه : {{ $certificate->transcript->id ?? '-' }}
+                                شماره گواهینامه : {{ $certificate->transcript->certificate_code ?? '-' }}
                             </b>
                         </p>
                         <p>

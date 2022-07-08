@@ -17,9 +17,11 @@ use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Facades\TwitterCard;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Livewire\WithPagination;
+use Morilog\Jalali\Jalalian;
 
 class Exam extends BaseComponent
 {
@@ -140,8 +142,11 @@ class Exam extends BaseComponent
                 $this->transcript->result = QuizEnum::PASSED;
                 $certificate_id = !empty($quiz->certificate) ?
                     $quiz->certificate->id : null;
-                if (!is_null($certificate_id))
+                if (!is_null($certificate_id)) {
                     $this->userRepository->submit_certificate($this->transcript->user,$certificate_id,$this->transcript->id);
+                    $this->transcript->certificate_date = Jalalian::now()->format('Y/m/d');
+                    $this->transcript->certificate_code = Auth::id().$this->transcript->id.rand(1234,56789);
+                }
             } else
                 $this->transcript->result = QuizEnum::REJECTED;
 

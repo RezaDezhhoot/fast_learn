@@ -12,6 +12,7 @@
                         <tr>
                             <th>#</th>
                             <th>شماره کارنامه</th>
+                            <th>شماره گواهینامه</th>
                             <th>نام کاربر</th>
                             <th>شماره کاربر</th>
                             <th>دوره</th>
@@ -27,6 +28,7 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->id }}</td>
+                                <td>{{ $item->certificate_code ?? '' }}</td>
                                 <td>{{ $item->user->name }}</td>
                                 <td>{{ $item->user->phone }}</td>
                                 <td>{{ $item->course_data['title'] }}</td>
