@@ -13,8 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('certificates', function (Blueprint $table) {
-            $table->softDeletes();
+        Schema::table('transcripts', function (Blueprint $table) {
+            $table->string('certificate_code')->nullable()->unique();
+            $table->string('certificate_date')->nullable();
         });
     }
 
@@ -25,8 +26,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('certificates', function (Blueprint $table) {
-            $table->dropColumn('deleted_at');
+        Schema::table('transcripts', function (Blueprint $table) {
+            $table->dropColumn('certificate_code');
+            $table->dropColumn('certificate_date');
         });
     }
 };

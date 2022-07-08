@@ -85,7 +85,7 @@
                                     <table class="table table-striped table-bordered">
                                         <tbody>
                                         <tr class="font-size-lg font-weight-bolder h-65px">
-                                            <td >شماره :</td>
+                                            <td>شماره کارنامه :</td>
                                             <td >
                                                 {{ $transcript->id }}
                                             </td>

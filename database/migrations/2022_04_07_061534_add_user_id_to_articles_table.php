@@ -26,7 +26,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('articles', function (Blueprint $table) {
-            $table->foreignId('user_id')->after('body')->constrained('users')->cascadeOnDelete();
+            $table->dropColumn('user_id');
         });
     }
 };
