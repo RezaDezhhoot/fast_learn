@@ -112,7 +112,7 @@ class CourseRepository implements CourseRepositoryInterface
 
     public function getEpisodes(Course $course , $withTrashed = false)
     {
-        return $withTrashed ? $course->episodes()->withTrashed()->get() : $course->episodes;
+        return $course->episodes;
     }
 
     public function count()

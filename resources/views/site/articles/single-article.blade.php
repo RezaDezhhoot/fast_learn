@@ -1,7 +1,7 @@
 <div>
     <x-site.articles.breadcrumbs :data="$page_address" :article="$article" />
 
-    <section class="blog-area pt-100px pb-100px">
+    <section class="blog-area pt-100px pb-20px">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 mb-5">
@@ -25,6 +25,7 @@
                         </div>
                     </div>
                     <!-- end instructor-wrap -->
+                    @auth
                     <div class="course-overview-card pt-4">
                         <h3 class="fs-24 font-weight-semi-bold pb-4">{{ $actionLabel }}</h3>
                         <form method="post" id="commentForm" class="row" wire:submit.prevent="new_comment">
@@ -55,9 +56,15 @@
                             <!-- end btn-box -->
                         </form>
                     </div>
+                    @else
+                        <p class="text-info">
+                            برای ثبت دیدگاه ابتدا ثبت نام کنید
+                        </p>
+                    @endif
                     <div class="course-overview-card pt-4">
                         <h3 class="fs-24 font-weight-semi-bold pb-4">نظرات</h3>
                         <div class="review-wrap">
+                            @if(sizeof($comments) > 0)
                             @for($i=0;$i<$commentCount ;$i++)
                                 @isset($comments[$i])
                                     <div class="media media-card  pb-4 mb-1">
@@ -95,8 +102,12 @@
                                     @endforeach
                                     <hr>
                                 @endif
-
                             @endfor
+                            @else
+                                <p class="alert alert-info">
+                                    هیچ نظری ثبت نشده است
+                                </p>
+                            @endif
                             <!-- end media -->
                         </div>
                         <!-- end review-wrap -->

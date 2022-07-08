@@ -78,12 +78,6 @@ class Course extends Model
         return sprintf('%02d', $hours);
     }
 
-    protected function scours(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => $this->episodes()->whereNotNull('file')->orWhereNotNull('local_video')->count(),
-        );
-    }
 
     public function setImageAttribute($value)
     {

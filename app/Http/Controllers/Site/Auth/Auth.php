@@ -240,8 +240,7 @@ class Auth extends BaseComponent
 
     public function setTimer()
     {
-//        dd(Session::get('timer')->toDateTimeString());
-        $this->emit('timer',['data' =>  Session::get('timer')->toDateTimeString() ]);
+        $this->emit('timer',['data' => Session::get('timer') ? Session::get('timer')->toDateTimeString() : '' ]);
     }
 
     public function checkSession()

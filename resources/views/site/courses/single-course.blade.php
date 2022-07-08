@@ -158,6 +158,7 @@
                             <!-- end instructor-wrap -->
                         </div>
                         <!-- end course-overview-card -->
+                        @auth
                         <div class="course-overview-card pt-4">
                             <h3 class="fs-24 font-weight-semi-bold pb-4">{{ $actionLabel }}</h3>
                             <form method="post" id="commentForm" class="row" wire:submit.prevent="new_comment">
@@ -188,9 +189,15 @@
                                 <!-- end btn-box -->
                             </form>
                         </div>
+                        @else
+                            <p class="text-info">
+                                برای ثبت دیدگاه ابتدا ثبت نام کنید
+                            </p>
+                        @endif
                         <div class="course-overview-card pt-4">
                             <h3 class="fs-24 font-weight-semi-bold pb-4">پرسش و پاسخ</h3>
                             <div class="review-wrap">
+                                @if(sizeof($comments) > 0)
                                 @for($i=0;$i<$commentCount ;$i++)
                                     @isset($comments[$i])
                                         <div class="media media-card  pb-4 mb-1">
@@ -230,6 +237,11 @@
                                     @endif
 
                                 @endfor
+                                @else
+                                    <p class="alert alert-info">
+                                        هیچ پرسش و پاسخی ثبت نشده است
+                                    </p>
+                                @endif
 
                                 <!-- end media -->
                             </div>
@@ -249,11 +261,13 @@
                         <div class="card card-item">
                             <div class="card-body">
                                 <div class="preview-course-feature-content pt-1 mb-">
-                                    <p class="d-flex align-items-center pb-2">
+                                    <div class="">
                                         @if($course->has_reduction && $course->base_price > 0)
-                                            <span class="fs-35 font-weight-semi-bold text-black">{{ number_format($course->price) }} تومان</span>
-                                            <span class="before-price mx-1"> {{ number_format($course->base_price) }} <span>تومان</span> </span>
-                                            <span class="price-discount">{{ $course->reduction_percent }} درصد تخفیف</span>
+                                            <div class="m-0 p-0">
+                                                <p class="before-price mx-1"> {{ number_format($course->base_price) }} </p>
+                                                <span class="fs-35 font-weight-semi-bold text-black">{{ number_format($course->price) }} تومان</span>
+                                            </div>
+                                            <p class="price-discount p-1">{{ $course->reduction_percent }} درصد تخفیف</p>
                                             @if(!empty($course->expire_at))
                                                 <p class="preview-price-discount-text pt-4"><span class="text-color-3">{{ $course->expire_at->diffForHumans() }}</span> با این قیمت!</p>
                                             @endif
@@ -262,7 +276,7 @@
                                         @else
                                             <span class="fs-35 font-weight-semi-bold text-black">{{ number_format($course->price) }} تومان</span>
                                         @endif
-                                    </p>
+                                    </div>
                                     <div class="buy-course-btn-box mt-2">
                                         <button  wire:click="addToCart()" type="button" class="btn theme-btn w-100 mb-2"><i class="la la-shopping-cart fs-18 mr-1"></i> به سبد خرید اضافه کنید</button>
                                     </div>
@@ -270,7 +284,6 @@
                                         <h3 class="card-title fs-18 mt-2 pb-2">این دوره شامل</h3>
                                         <ul class="generic-list-item pb-3">
                                             <li><i class="la la-play-circle-o mr-2 text-color"></i>{{ $course->hours }} ساعت ویدیو اموزشی </li>
-                                            <li><i class="la la-file-text mr-2 text-color"></i>{{ $course->scours }} منبع قابل دانلود</li>
                                             <li><i class="la la-key mr-2 text-color"></i>دسترسی کامل مادام العمر</li>
                                         </ul>
                                     </div>
@@ -292,13 +305,10 @@
                                         <span><i class="la la-circle mr-2 text-color"></i>وضعیت </span> {{ $course->status_label }}
                                     </li>
                                     <li class="d-flex align-items-center justify-content-between">
-                                        <span><i class="la la-file-text-o mr-2 text-color"></i>منابع</span> {{ $course->scours }}
-                                    </li>
-                                    <li class="d-flex align-items-center justify-content-between">
                                         <span><i class="la la-bolt mr-2 text-color"></i>امتحان</span> {{ !is_null($course->quiz) ? 'بعله' : 'خیر' }}
                                     </li>
                                     <li class="d-flex align-items-center justify-content-between">
-                                        <span><i class="la la-eye mr-2 text-color"></i>سرفصل</span> {{ $episodes->count() }}
+                                        <span><i class="la la-eye mr-2 text-color"></i>درس ها</span> {{ $course->episodes->count() }}
                                     </li>
                                     <li class="d-flex align-items-center justify-content-between">
                                         <span><i class="la la-lightbulb mr-2 text-color"></i>سطح دوره</span> {{ $course->level_label }}

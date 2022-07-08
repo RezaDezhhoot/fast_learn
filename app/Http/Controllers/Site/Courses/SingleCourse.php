@@ -66,7 +66,8 @@ class SingleCourse extends BaseComponent
 
     public function render()
     {
-        $this->episodes = collect( $this->courseRepository->getEpisodes($this->course))->sortBy('view');
+        $this->episodes = collect($this->course->episodes)->sortBy('view');
+
         return view('site.courses.single-course')->extends('site.layouts.site.site');
     }
 

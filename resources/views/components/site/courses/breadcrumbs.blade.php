@@ -43,10 +43,6 @@
                 </div>
                 <!-- end d-flex -->
                 <div class="bread-btn-box pt-3">
-                    <button class="btn theme-btn theme-btn-sm theme-btn-transparent lh-28 mr-2 mb-2">
-                        <i class="la la-heart-o mr-1"></i>
-                        <span wire:click="addToWishList({{$course->id}})" class="swapping-btn" data-text-swap="Wishlisted" data-text-original="Wishlist">لیست علاقه مندیها</span>
-                    </button>
                     <button class="btn theme-btn theme-btn-sm theme-btn-transparent lh-28 mr-2 mb-2" data-toggle="modal" data-target="#shareModal"><i class="la la-share mr-1"></i>اشتراک گذاری</button>
                 </div>
             </div>
