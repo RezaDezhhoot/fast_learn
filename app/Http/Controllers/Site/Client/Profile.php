@@ -76,8 +76,11 @@ class Profile extends BaseComponent
         }
         $this->data['province'] = $this->settingRepository::getProvince();
         $gateways = $this->settingRepository->getRow('gateway',[]);
-        foreach ($gateways as $item)
+        foreach ($gateways as $key => $item)
         {
+            if ($key == 0)
+                $this->gateway = $item;
+
             $this->gateways[$item] = [
                 'merchantId' => $this->settingRepository->getRow("{$item}_merchantId"),
                 'title' => $this->settingRepository->getRow("{$item}_title"),

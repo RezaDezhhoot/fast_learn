@@ -62,8 +62,11 @@ class Checkout extends BaseComponent
         ];
 
         $gateways = $this->settingRepository->getRow('gateway',[]);
-        foreach ($gateways as $gateway)
+        foreach ($gateways as $key => $gateway)
         {
+            if ($key == 0)
+                $this->gateway = $gateway;
+
             $this->gateways[$gateway] = [
                 'merchantId' => $this->settingRepository->getRow("{$gateway}_merchantId"),
                 'title' => $this->settingRepository->getRow("{$gateway}_title"),
