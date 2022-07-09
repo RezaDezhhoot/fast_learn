@@ -33,6 +33,8 @@ class Auth extends BaseComponent
     public $logo , $authImage , $passwordLabel = 'رمز عبور';
     public bool $sms = false , $sent = false;
 
+    public $forget_phone;
+
     public $auth_type;
 
     public function __construct($id = null)
@@ -69,14 +71,13 @@ class Auth extends BaseComponent
 
     public function render()
     {
-        return $this->action == self::MODE_LOGIN ?
-            view('site.auth.login')->extends('site.layouts.site.site') :
-            view('site.auth.register')->extends('site.layouts.site.site');
+        if ($this->action == self::MODE_LOGIN) return view('site.auth.login')->extends('site.layouts.site.site');
+        else return view('site.auth.register')->extends('site.layouts.site.site');
     }
 
     public function login()
     {
-        if ($rateKey = rateLimiter(value:$this->phone))
+        if ($rateKey = rateLimiter(value:$this->phone.'_login'))
         {
             $this->resetInputs();
             return
@@ -130,65 +131,86 @@ class Auth extends BaseComponent
 
     private function resetInputs()
     {
-        $this->reset(['phone', 'password']);
+        $this->reset(['phone', 'password','forget_phone']);
     }
 
-    public function sendVerificationCode(): bool|MessageBag
+    public function sendVerificationCode($property = 'phone' , $action = 'login'): bool|MessageBag
     {
-        if ($this->auth_type != 'none') {
-            $sendRepository =  $this->sendRepository;
-            $userRepository =  $this->userRepository;
+        $userRepository =  $this->userRepository;
+        if ($this->sent && $this->checkTimer())
+            return $this->addError($property,'رمز یکبار مصرف قبلا برای شما ارسال شده است.');
 
-            if ($this->sent && $this->checkTimer())
-                return $this->addError('phone','رمز یکبار مصرف قبلا برای شما ارسال شده است.');
+        if (rateLimiter(value:$this->{$property}."_{$action}"))
+        {
+            $this->resetInputs();
+            return
+                $this->addError("$property", 'زیادی تلاش کردید. لطفا پس از مدتی دوباره تلاش کنید.');
+        }
 
-            if (rateLimiter(value:$this->phone))
-            {
-                $this->resetInputs();
-                return
-                    $this->addError('phone', 'زیادی تلاش کردید. لطفا پس از مدتی دوباره تلاش کنید.');
+        $this->validate([
+            "$property" => ['required','string','exists:users,phone'],
+        ],[],[
+            "$property" => 'شماره همراه ',
+        ]);
+
+        $rand = $this->generateCode();
+        $user = $userRepository->getUser('phone',$this->{$property});
+        app(OtpRepositoryInterface::class)->save($user,$rand);
+
+        $this->sendOTP($property,$user,$rand,$action);
+        return false;
+    }
+
+    public function sendOTP($property,$user,$code , $action)
+    {
+        $this->resetErrorBag();
+        $sendRepository =  $this->sendRepository;
+        $ok = false;
+        if ($this->auth_type == 'otp' ){
+            try {
+                $sendRepository->sendCode($code,$this->phone);
+                $this->passwordLabel = 'رمز ارسال شده را وارد نماید';
+                $ok = true;
+            } catch (Exception $e) {
+                Log::error($e->getMessage());
+                $this->addError("$property",'خطا در هنگام ارسال رمز');
             }
-
-            $this->validate([
-                'phone' => ['required','string','exists:users,phone'],
-            ],[],[
-                'phone' => 'شماره همراه ',
-            ]);
-
-            $rand = $this->generateCode();
-            $user = $userRepository->getUser('phone',"$this->phone");
-            app(OtpRepositoryInterface::class)->save($user,$rand);
-            $ok = false;
-            if ($this->auth_type == 'otp' ){
-                try {
-                    $sendRepository->sendCode($rand,$this->phone);
-                    $this->passwordLabel = 'رمز ارسال شده را وارد نماید';
-                    $ok = true;
-                } catch (Exception $e) {
-                    Log::error($e->getMessage());
-                    $this->addError('phone','خطا در هنگام ارسال رمز');
-                }
-            } elseif ($this->auth_type == 'email') {
-                try {
-                    Mail::to($user->email)->send(new AuthMailer($user,$rand,UserEnum::AUTHENTICATE_EVENT));
-                    $this->passwordLabel = 'رمز ایمیل شده را وارد نماید';
-                    $ok = true;
-                } catch (Exception $e) {
-                    Log::error($e->getMessage());
-                    $this->addError('phone','خطا در هنگام ارسال رمز');
-                }
-            } elseif ($this->auth_type == 'none') {
-                return false;
+        } elseif ($this->auth_type == 'email') {
+            try {
+                Mail::to($user->email)->send(new AuthMailer($user,$code,UserEnum::AUTHENTICATE_EVENT));
+                $this->passwordLabel = 'رمز ایمیل شده را وارد نماید';
+                $ok = true;
+            } catch (Exception $e) {
+                Log::error($e->getMessage());
+                $this->addError("$property",'خطا در هنگام ارسال رمز');
             }
-
-            if ($ok) {
-                Session::put('timer', Carbon::make(now())->addSeconds(90));
-                $this->setTimer();
-                $this->sms = true;
-                $this->sent = true;
+        } elseif ($this->auth_type == 'none' && $action == 'login') {
+            return false;
+        } elseif ($this->auth_type == 'none' && $action == 'forget') {
+            $headers =  'MIME-Version: 1.0' . "\r\n";
+            $headers .= 'From:'.$this->settingRepository->getRow('email'). "\r\n";
+            $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+            $message = '<html lang="fa"><body>';
+            $message .= '<h1 style="color:#f40;">Hi Jane!</h1>';
+            $message .= '<p style="color:#080;font-size:18px;">کد تایید شما : '.$code.'</p>';
+            $message .= '</body></html>';
+//            Log::info($code);
+//            $ok = true;
+            try {
+                mail($user->email,'فراموشی رمز',$message,$headers);
+                $ok = true;
+            } catch (Exception $e) {
+                Log::error($e->getMessage());
+                $this->addError("$property",'خطا در هنگام ارسال رمز');
             }
         }
-        return false;
+
+        if ($ok) {
+            Session::put('timer', Carbon::make(now())->addSeconds(90));
+            $this->setTimer();
+            $this->sms = true;
+            $this->sent = true;
+        }
     }
 
     public function signUp()
