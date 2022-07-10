@@ -362,9 +362,11 @@ class StoreCourse extends BaseComponent
                 {
                     $this->emitNotify('فایل با موفقیت حذف شد');
                     $this->e_file = null;
-                    $episode->file = null;
+                    if (!is_null($episode)){
+                        $episode->file = null;
+                        $this->episodeRepository->save($episode);
+                    }
                     $this->reset(['file_path','file_site']);
-                    $this->episodeRepository->save($episode);
                 } else
                     $this->emitNotify('مشکل در حذف فایل','warning');
             }
@@ -379,9 +381,11 @@ class StoreCourse extends BaseComponent
                 {
                     $this->emitNotify('ویدئو با موفقیت حذف شد');
                     $this->e_local_video = null;
-                    $episode->local_video = null;
+                    if (!is_null($episode)){
+                        $episode->local_video = null;
+                        $this->episodeRepository->save($episode);
+                    }
                     $this->reset(['video_path','video_site']);
-                    $this->episodeRepository->save($episode);
                 } else
                     $this->emitNotify('مشکل در حذف فایل','warning');
             }

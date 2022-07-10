@@ -88,7 +88,7 @@
                                     <tr>
                                         <td>عملیات</td>
                                         <td>
-                                            @if($e_file && $e_key <> -1)
+                                            @if(!is_null($e_file) && $e_key <> -1)
                                                 <div>
                                                     <a wire:loading.attr="disabled" target="_blank" href="{{route('storage',[$e_id,'file'])}}" class="btn btn-light-success font-weight-bolder btn-sm">مشاهده فایل</a>
                                                     <button wire:click="deleteMedia('file')" wire:loading.attr="disabled" class="btn btn-outline-danger font-weight-bolder btn-sm">حذف فایل</button>
@@ -127,7 +127,7 @@
                                                 <br>
                                                 @if(!is_null($video))
                                                     <p class="alert alert-success">
-                                                        <small>{{ $video->temporaryUrl() }}</small>
+                                                        <small>ویدئو روی سرور</small>
                                                     </p>
                                                 @endif
 
