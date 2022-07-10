@@ -18,6 +18,7 @@ use Morilog\Jalali\Jalalian;
  * @method static create(array $data)
  * @method static where(array $where)
  * @method static latest(string $string)
+ * @method static count()
  */
 class Transcript extends Model
 {

@@ -13,6 +13,7 @@ use App\Repositories\Interfaces\OrderRepositoryInterface;
 use App\Repositories\Interfaces\PaymentRepositoryInterface;
 use App\Repositories\Interfaces\QuestionRepositoryInterface;
 use App\Repositories\Interfaces\QuizRepositoryInterface;
+use App\Repositories\Interfaces\TranscriptRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
@@ -36,6 +37,7 @@ class IndexDashboard extends BaseComponent
         $this->questionRepository = app(QuestionRepositoryInterface::class);
         $this->quizRepository = app(QuizRepositoryInterface::class);
         $this->certificateRepository = app(CertificateRepositoryInterface::class);
+        $this->transcriptRepository = app(TranscriptRepositoryInterface::class);
     }
 
     public function mount()
@@ -79,7 +81,10 @@ class IndexDashboard extends BaseComponent
             'questions' => $this->questionRepository->count(),
             'quizzes' => $this->quizRepository->count(),
             'certificates' => $this->certificateRepository->count(),
-            'walletCharge' => $this->paymentReporitory->getDashboardData($this->from_date,$this->to_date)
+            'walletCharge' => $this->paymentReporitory->getDashboardData($this->from_date,$this->to_date),
+            'all_users' => $this->userRepository->count(),
+            'all_orders' => $this->orderRepository->count(),
+            'all_transcripts' => $this->transcriptRepository->count(),
         ];
     }
 

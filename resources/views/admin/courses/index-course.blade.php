@@ -16,6 +16,7 @@
                             <th>نام مستعار</th>
                             <th>عنوان</th>
                             <th>وضعیت</th>
+                            <th>بازدید</th>
                             <th>دسته </th>
                             <th>قیمت </th>
                             <th>عملیات</th>
@@ -29,6 +30,7 @@
                                 <td>{{ $item->slug }}</td>
                                 <td>{{ $item->title }}</td>
                                 <td>{{ $item->status_label }}</td>
+                                <td>{{ $item->views }}</td>
                                 <td>{{ $item->category->title ?? null }}</td>
                                 <td>{{ number_format($item->price) }} تومان </td>
                                 <td>
@@ -36,7 +38,7 @@
                                 </td>
                             </tr>
                         @empty
-                            <td class="text-center" colspan="8">
+                            <td class="text-center" colspan="10">
                                 دیتایی جهت نمایش وجود ندارد
                             </td>
                         @endforelse

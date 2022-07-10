@@ -74,4 +74,9 @@ class TranscriptRepository implements TranscriptRepositoryInterface
     {
         $transcript->answers()->whereIn('question_id',$question_id)->delete();
     }
+
+    public function count()
+    {
+        return Transcript::count();
+    }
 }

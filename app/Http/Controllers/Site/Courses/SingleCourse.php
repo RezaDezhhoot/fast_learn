@@ -62,6 +62,7 @@ class SingleCourse extends BaseComponent
         $ids = array_value_recursive('id',$this->categoryRepository->find($this->course->category_id)->toArray());
         $this->related_courses = $this->courseRepository->whereIn('category_id',$ids,3,true,[['id' , '!=' , $this->course->id]]);
         $this->comments = $this->course->comments;
+        $this->courseRepository->increment($this->course,1);
     }
 
     public function render()

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Traits\Admin\Searchable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -40,7 +41,7 @@ class Certificate extends Model
         $this->attributes['border_image'] = str_replace(env('APP_URL'), '', $value);
     }
 
-    public function users()
+    public function users(): HasMany
     {
         return $this->hasMany(UserCertificate::class);
     }

@@ -25,4 +25,5 @@ interface TranscriptRepositoryInterface
 
     public function deleteAnswer(Transcript $transcript,$question_id = []);
 
+    public function count();
 }

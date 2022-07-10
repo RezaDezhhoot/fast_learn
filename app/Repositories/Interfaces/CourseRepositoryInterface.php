@@ -39,4 +39,6 @@ interface CourseRepositoryInterface
     public function getMostSoldCourses($from_date ,$to_date);
 
     public static function observe();
+
+    public function increment(Course $course , int $int);
 }

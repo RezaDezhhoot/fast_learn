@@ -135,4 +135,9 @@ class CourseRepository implements CourseRepositoryInterface
     {
         Course::observe(CourseObserver::class);
     }
+
+    public function increment(Course $course, int $int)
+    {
+        $course->increment('views',$int);
+    }
 }

@@ -35,20 +35,25 @@
     </div>
         <div class="card card-custom">
         <div class="card-body">
-            <div class="row">
-                <div class="col-12 py-2">
-                    <div class="d-flex align-items-center flex-wrap mr-1">
-                        <!--begin::Page Heading-->
-                        <div class="d-flex align-items-baseline flex-wrap mr-5">
-                            <!--begin::Page Title-->
-                            <h4 class="card-label">
-                                <span class="d-block text-dark font-weight-bolder">گزارش کلی</span>
-                            </h4>
-                            <!--end::Page Title-->
-                        </div>
-                        <!--end::Page Heading-->
-                    </div>
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <!--begin::Page Heading-->
+                <div class="d-flex align-items-baseline flex-wrap mr-5">
+                    <!--begin::Page Title-->
+                    <h4 class="card-label">
+                        <span class="d-block text-dark font-weight-bolder">گزارش کلی</span>
+                    </h4>
+                    <!--end::Page Title-->
                 </div>
+                <!--end::Page Heading-->
+            </div>
+            <div class="card-header h-auto-0 p-0 border-0">
+                <div class="card-title mt-3">
+                    <h5 class="card-label">
+                        <span class="d-block text-dark font-weight-bolder"> محتوا</span>
+                    </h5>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-md-2">
                     <!--begin::Stats Widget 25-->
                     <div class="card card-custom bg-light-primary card-stretch gutter-b">
@@ -146,6 +151,66 @@
                                 {{ $box['certificates'] }}عدد
                             </span>
                             <span class="font-weight-bold text-dark font-size-lg">گواهینامه</span>
+                        </div>
+                        <!--end::Body-->
+                    </div>
+                    <!--end::Stats Widget 25-->
+                </div>
+            </div>
+            <div class="card-header h-auto-0 p-0 border-0">
+                <div class="card-title mt-3">
+                    <h5 class="card-label">
+                        <span class="d-block text-dark font-weight-bolder"> کاربر</span>
+                    </h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <!--begin::Stats Widget 25-->
+                    <div class="card card-custom bg-light-success card-stretch gutter-b">
+                        <!--begin::Body-->
+                        <div class="card-body">
+                            <span class="svg-icon svg-icon-success svg-icon-4x">
+                                <i class="text-danger fa fa-user-plus fa-3x"></i>
+                            </span>
+                            <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">
+                                {{ $box['all_users'] }}عدد
+                            </span>
+                            <span class="font-weight-bold text-dark font-size-lg">کاربران</span>
+                        </div>
+                        <!--end::Body-->
+                    </div>
+                    <!--end::Stats Widget 25-->
+                </div>
+                <div class="col-md-4">
+                    <!--begin::Stats Widget 25-->
+                    <div class="card card-custom bg-light-success card-stretch gutter-b">
+                        <!--begin::Body-->
+                        <div class="card-body">
+                            <span class="svg-icon svg-icon-success svg-icon-4x">
+                                <i class="text-danger fab fa-first-order fa-3x"></i>
+                            </span>
+                            <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">
+                                {{ $box['all_orders'] }}عدد
+                            </span>
+                            <span class="font-weight-bold text-dark font-size-lg">سفارش ها</span>
+                        </div>
+                        <!--end::Body-->
+                    </div>
+                    <!--end::Stats Widget 25-->
+                </div>
+                <div class="col-md-4">
+                    <!--begin::Stats Widget 25-->
+                    <div class="card card-custom bg-light-success card-stretch gutter-b">
+                        <!--begin::Body-->
+                        <div class="card-body">
+                            <span class="svg-icon svg-icon-success svg-icon-4x">
+                                <i class="text-danger fas fa-file-alt fa-3x"></i>
+                            </span>
+                            <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">
+                                {{ $box['all_transcripts'] }}عدد
+                            </span>
+                            <span class="font-weight-bold text-dark font-size-lg">کارنامه های ثبت شده</span>
                         </div>
                         <!--end::Body-->
                     </div>
@@ -367,13 +432,11 @@
 @push('scripts')
     <script>
         Livewire.on('runChart', function (data) {
-            console.log(1);
             const element = document.getElementById("kt_charts_widget_4_chart2");
             if (!element) {
                 return;
             }
-            const obj = JSON.parse(data);
-            console.log(obj.payments);
+                const obj = JSON.parse(data);
             const options = {
                 series: [{
                     name: 'پرداختی ها',

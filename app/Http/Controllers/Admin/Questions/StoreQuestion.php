@@ -81,7 +81,9 @@ class StoreQuestion extends BaseComponent
         $check_choice = @array_count_values(array_column($this->choices,'is_true'))[1];
 
         if ($check_choice > 1)
-            return $this->addError('choices.*.is_true','گزینه صحیح نامعتبر');
+            return $this->addError('choices.*.is_true','گزینه صحیح نمی تواند بیشتر از یک مورد باشد');
+        elseif ($check_choice < 1)
+            return $this->addError('choices.*.is_true','انتخاب گزینه صحیح اجباری می باشد');
 
         $model->name = $this->name;
         $model->text = $this->text;
@@ -95,7 +97,7 @@ class StoreQuestion extends BaseComponent
             $choice->title = $item['title'];
             $choice->question_id = $question->id;
             $choice->is_true = $item['is_true'] ?? false;
-            $choice->score = isset($item['is_true']) ? 100 : $item['score'];
+            $choice->score = (isset($item['is_true']) && $item['is_true']) ? 100 : $item['score'];
             $this->choiceRepository->save($choice);
         }
         if ($this->mode == self::CREATE_MODE)
@@ -125,14 +127,14 @@ class StoreQuestion extends BaseComponent
         return redirect()->route('admin.question');
     }
 
-    public function updatedChoices($value,$name)
-    {
-        $this->choices = collect($this->choices)->map(function ($item , $key) use ($name)
-        {
-            $item['is_true'] = explode('.',$name)[0] == $key;
-            return $item;
-        })->toArray();
-    }
+//    public function updatedChoices($value,$name)
+//    {
+//        $this->choices = collect($this->choices)->map(function ($item , $key) use ($name)
+//        {
+//            $item['is_true'] = explode('.',$name)[0] == $key;
+//            return $item;
+//        })->toArray();
+//    }
 
     public function render()
     {
