@@ -10,9 +10,7 @@ class StoreTeacher extends BaseComponent
 {
     public object $teacher;
     public ?string $body = null , $header = null;
-    public $user , $user_id , $sub_title , $userRole;
-
-    public $users = [];
+    public $user , $user_id , $sub_title ;
 
     public function __construct($id = null)
     {
@@ -27,14 +25,9 @@ class StoreTeacher extends BaseComponent
         if ($this->mode == self::UPDATE_MODE) {
             $this->teacher = $this->teacherRepository->find($id);
             $this->body = $this->teacher->body;
-            $this->user_id = $this->teacher->user_id;
-            $this->user = $this->teacher->user->phone;
-            $this->header = $this->teacher->name;
+            $this->header = $this->teacher->user->name;
             $this->sub_title = $this->teacher->sub_title;
-        } elseif ($this->mode == self::CREATE_MODE) {
-            $this->header = 'مدرس جدید';
         } else abort(404);
-        $this->data['users'] = $this->userRepository->getAll()->pluck('phone','id');
     }
 
     public function store()
@@ -52,24 +45,14 @@ class StoreTeacher extends BaseComponent
         $this->validate([
             'sub_title' => ['required','max:70'],
             'body' => ['required','string','max:12500'],
-            'user' => ['required','exists:users,phone','unique:teachers,user_id,'.($this->teacher->id ?? 0)],
         ],[],[
             'sub_title' => 'عنوان',
             'body' => 'متن',
-            'user' => 'مدرس',
         ]);
         $model->sub_title  = $this->sub_title;
         $model->body  = $this->body;
-        $model->user_id  = $this->userRepository->findBy([['phone',$this->user]])->id;
         $model = $this->teacherRepository->save($model);
         return $this->emitNotify('اطلاعات با موفقیت ثبت شد');
-    }
-
-    public function deleteItem()
-    {
-        $this->authorizing('delete_teachers');
-        $this->teacherRepository->destroy($this->teacher->id);
-        return redirect()->route('admin.teacher');
     }
 
     public function render()

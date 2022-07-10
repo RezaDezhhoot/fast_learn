@@ -19,6 +19,8 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Cart\Facades\Cart;
 use Illuminate\Support\Facades\Log;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class SingleCourse extends BaseComponent
 {
@@ -38,9 +40,13 @@ class SingleCourse extends BaseComponent
         $this->disk = getDisk();
     }
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function mount($slug)
     {
-        $this->course = $this->courseRepository->get('slug',$slug);
+        $this->course = $this->courseRepository->get('slug',$slug,true);
         SEOMeta::setTitle($this->course->title);
         SEOMeta::setDescription($this->course->seo_description);
         SEOMeta::addKeyword($this->course->seo_keywords);

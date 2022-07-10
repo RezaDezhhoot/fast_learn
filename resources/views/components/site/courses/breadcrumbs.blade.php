@@ -30,7 +30,9 @@
                     </div>
                 </div>
                 <!-- end d-flex -->
-                <p class="pt-2 pb-1">ایجاد شده توسط <a href="{{ route('teacher',$course->teacher->id) }}" class="text-color hover-underline">{{ $course->teacher->name }}</a></p>
+                @if(!is_null($course->teacher))
+                    <p class="pt-2 pb-1">ایجاد شده توسط <a href="{{ route('teacher',$course->teacher->id) }}" class="text-color hover-underline">{{ $course->teacher->user->name }}</a></p>
+                @endif
                 <div class="d-flex flex-wrap align-items-center">
                     <p class="pr-3 d-flex align-items-center">
                         <svg class="svg-icon-color-gray mr-1" width="16px" viewBox="0 0 24 24">

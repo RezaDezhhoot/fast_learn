@@ -47,4 +47,16 @@ class TeacherRepository implements TeacherRepositoryInterface
     {
         return Teacher::count();
     }
+
+    public function updateOrCreate(array $key, array $value)
+    {
+        Teacher::withTrashed()->updateOrCreate($key,$value);
+    }
+
+    public function delete($user_id)
+    {
+        $teacher = Teacher::where('user_id',$user_id)->first();
+        if (!is_null($teacher))
+            $teacher->delete();
+    }
 }

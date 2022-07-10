@@ -24,7 +24,7 @@ class StoreRole extends BaseComponent
         $this->set_mode($action);
         if ($this->mode == self::UPDATE_MODE)
         {
-            $this->role = $this->roleRepository->whereNotIn('name', ['administrator', 'super_admin', 'admin'],$id);
+            $this->role = $this->roleRepository->whereNotIn('name', ['administrator', 'admin'],$id);
             $this->header = $this->role->name;
             $this->name = $this->role->name;
             $this->permissionSelected = $this->role->permissions()->pluck('name')->toArray();
@@ -66,9 +66,13 @@ class StoreRole extends BaseComponent
     public function deleteItem()
     {
         $this->authorizing('delete_roles');
-        $role = $this->roleRepository->whereNotIn('name', ['administrator', 'super_admin', 'admin'] , $this->role->id);
-        $this->roleRepository->delete($role);
-        return redirect()->route('admin.role');
+        $role = $this->roleRepository->whereNotIn('name', ['administrator', 'super_admin', 'admin','teacher'] , $this->role->id);
+        if (!is_null($role))
+        {
+            $this->roleRepository->delete($role);
+            return redirect()->route('admin.role');
+        } else
+            return $this->emitNotify('امکان خذف برای این نقش وجود ندارد','warning');
     }
 
     public function render()

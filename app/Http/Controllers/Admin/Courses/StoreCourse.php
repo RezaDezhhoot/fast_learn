@@ -80,7 +80,7 @@ class StoreCourse extends BaseComponent
         $this->data['tags'] = $this->tagRepository->getAll()->pluck('name','id');
         $this->data['teacher'] = $this->teacherRepository->getAll()->map(function ($item){
             return [
-                'id' => $item->user->id,
+                'id' => $item->id,
                 'name' => "{$item->user->name} - {$item->user->phone}"
             ];
         })->pluck('name','id');
@@ -249,7 +249,7 @@ class StoreCourse extends BaseComponent
         $this->e_video_storage = $this->emptyToNull($this->e_video_storage);
         $this->validate([
             'e_title' => ['required','string','max:255'],
-            'file' => ['nullable','mimes:png,jpg,pdf,txt,xls,xlsx,doc,docx,pub,pttx,ptt,rar,zip,mp4|max:102400'],
+            'file' => ['nullable','mimes:png,jpg,pdf,txt,xls,xlsx,doc,docx,pub,pptx,pptx,rar,zip,mp4|max:102400'],
             'video' => ['nullable','mimes:mp4,wm'],
             'file_path' => ['nullable','string','max:10000'],
             'video_path' => ['nullable','string','max:10000'],

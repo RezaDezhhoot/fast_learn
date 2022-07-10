@@ -9,6 +9,7 @@ use App\Repositories\Interfaces\NotificationRepositoryInterface;
 use App\Repositories\Interfaces\RoleRepositoryInterface;
 use App\Repositories\Interfaces\SendRepositoryInterface;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
+use App\Repositories\Interfaces\TeacherRepositoryInterface;
 use App\Repositories\Interfaces\UserDetailRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Rules\ValidNationCode;
@@ -29,6 +30,7 @@ class StoreUser extends BaseComponent
         $this->settingRepository = app(SettingRepositoryInterface::class);
         $this->notificationRepository = app(NotificationRepositoryInterface::class);
         $this->userDetailRepository = app(UserDetailRepositoryInterface::class);
+        $this->teacherRepository = app(TeacherRepositoryInterface::class);
     }
 
     public function mount($action , $id = null)
@@ -58,7 +60,7 @@ class StoreUser extends BaseComponent
         else abort(404);
 
         $this->data['status'] = UserEnum::getStatus();
-        $this->data['role'] = $this->roleRepository->whereNotIn('name', ['administrator', 'super_admin']);
+        $this->data['role'] = $this->roleRepository->whereNotIn('name', ['administrator']);
         $this->data['action'] = [
             'deposit' => 'واریز',
             'withdraw' => 'برداشت',
@@ -140,8 +142,15 @@ class StoreUser extends BaseComponent
             'birthday' => $this->birthday,
             'avatar' => $this->avatar,
         ]);
-        if ($this->userRepository->hasRole('super_admin'))
+        if ((auth()->user()->hasRole('super_admin') && !$model->hasRole('administrator')) || auth()->user()->hasRole('administrator'))
+        {
             $this->userRepository->syncRoles($model,$this->userRole);
+            if (in_array('teacher',$this->userRole)) {
+                $this->teacherRepository->updateOrCreate(['user_id'=>$model->id],['deleted_at'=>null]);
+            } else {
+                $this->teacherRepository->delete($model->id);
+            }
+        }
 
         $this->emitNotify('اطلاعات با موفقیت ثبت شد');
     }

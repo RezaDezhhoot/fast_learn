@@ -154,7 +154,7 @@ class BaseSetting extends BaseComponent
                 'ftp_username' => [Rule::requiredIf(fn() => $this->storage == '2' || $this->ftp_available),'string','max:1000'],
                 'ftp_password' => [Rule::requiredIf(fn() => $this->storage == '2' || $this->ftp_available),'string','max:1000'],
                 'ftp_port' => [Rule::requiredIf(fn() => $this->storage == '2' || $this->ftp_available),'max:1000'],
-                'ftp_ssl' => [Rule::requiredIf(fn() => $this->storage == '2' || $this->ftp_available),'boolean'],
+                'ftp_ssl' => ['boolean'],
                 'ftp_available' => ['nullable','boolean'],
 
                 's3_key' => [Rule::requiredIf(fn() => $this->storage == '3' || $this->s3_available),'string','max:1000'],
@@ -163,7 +163,7 @@ class BaseSetting extends BaseComponent
                 's3_bucket' => [Rule::requiredIf(fn() => $this->storage == '3' || $this->s3_available),'string','max:1000'],
                 's3_url' => [Rule::requiredIf(fn() => $this->storage == '3' || $this->s3_available),'string','max:1000'],
                 's3_endpoint' => [Rule::requiredIf(fn() => $this->storage == '3' || $this->s3_available),'string','max:1000'],
-                's3_use_path_style_endpoint' => [Rule::requiredIf(fn() => $this->storage == '3' || $this->s3_available),'boolean'],
+                's3_use_path_style_endpoint' => ['boolean'],
                 's3_available' => ['nullable','boolean'],
 
                 'sftp_root' => [Rule::requiredIf(fn() => $this->storage == '4' || $this->sftp_available),'string','max:1000'],
@@ -175,7 +175,7 @@ class BaseSetting extends BaseComponent
                 'sftp_host' => [Rule::requiredIf(fn() => $this->storage == '4' || $this->sftp_available),'string','max:1000'],
                 'sftp_username' => [Rule::requiredIf(fn() => $this->storage == '4' || $this->sftp_available),'string','max:1000'],
                 'sftp_password' => [Rule::requiredIf(fn() => $this->storage == '4' || $this->sftp_available),'string','max:1000'],
-                'sftp_useAgent' => [Rule::requiredIf(fn() => $this->storage == '4' || $this->sftp_available),'boolean'],
+                'sftp_useAgent' => ['boolean'],
                 'sftp_available' => ['nullable','boolean'],
 
                 'faraz_apiKey' => [Rule::requiredIf(fn() => $this->auth_type == 'otp' || $this->send_type == 'sms'),'string','max:1000'],

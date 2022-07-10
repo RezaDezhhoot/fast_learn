@@ -35,13 +35,7 @@
                 confirmButtonText: 'بله'
             }).then((result) => {
                 if (result.value) {
-                    if (result.isConfirmed) {
-                        Swal.fire(
-                            'موفیت امیز!',
-                            'نقش  مورد نظر با موفقیت حذف شد',
-                        )
-                    }
-                @this.call('deleteItem', id)
+                    @this.call('deleteItem', id)
                 }
             })
         }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Site\Client;
 use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\PaymentRepositoryInterface;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
+use App\Repositories\Interfaces\TeacherRepositoryInterface;
 use App\Repositories\Interfaces\UserDetailRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Rules\ValidNationCode;
@@ -14,6 +15,7 @@ use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Facades\TwitterCard;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\WithFileUploads;
 
@@ -29,6 +31,8 @@ class Profile extends BaseComponent
     public $token ;
     public $isSuccessful, $message;
 
+    public $teacher , $teacher_title , $teacher_content;
+
     protected $queryString = ['tab'];
 
     public function __construct($id = null)
@@ -38,6 +42,7 @@ class Profile extends BaseComponent
         $this->paymentReporitory = app(PaymentRepositoryInterface::class);
         $this->userRepository = app(UserRepositoryInterface::class);
         $this->userDetailRepository = app(UserDetailRepositoryInterface::class);
+        $this->teacherRepository = app(TeacherRepositoryInterface::class);
         $this->disk = getDisk('public');
     }
 
@@ -67,6 +72,12 @@ class Profile extends BaseComponent
         $this->name = $this->user->name;
         $this->email = $this->user->email;
         $this->image = $this->user->image;
+
+        if (Auth::user()->hasRole('teacher') && $this->teacher = Auth::user()->teacher){
+            $this->teacher_title = $this->teacher->sub_title;
+            $this->teacher_content = $this->teacher->body;
+        }
+
         if ($this->userDetails) {
             $this->code_id = $this->user->details->code_id;
             $this->father_name = $this->user->details->father_name;
@@ -187,6 +198,21 @@ class Profile extends BaseComponent
         ]);
 
         $this->emitNotify('اطلاعات با موفقیت ثبت شد');
+    }
+
+    public function storeTeacher()
+    {
+        $this->validate([
+            'teacher_title' => ['required','max:70'],
+            'teacher_content' => ['required','string','max:12500'],
+        ],[],[
+            'teacher_title' => 'عنوان',
+            'teacher_content' => 'متن',
+        ]);
+        $this->teacher->sub_title  = $this->teacher_title;
+        $this->teacher->body = $this->teacher_content;
+        $this->teacherRepository->save($this->teacher);
+        return $this->emitNotify('اطلاعات با موفقیت ثبت شد');
     }
 
     public function uploadFile()

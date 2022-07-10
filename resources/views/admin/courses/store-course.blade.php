@@ -15,7 +15,7 @@
                 <x-admin.forms.dropdown with="6" id="category" :data="$data['category']" label="دسته*" wire:model.defer="category"/>
                 <x-admin.forms.input with="6" type="number" id="const_price" label="قیمت ثابت" wire:model.defer="const_price"/>
                 <x-admin.forms.dropdown with="6" id="quiz" :data="$data['quiz']" label="ازمون" wire:model.defer="quiz"/>
-                <x-admin.forms.input with="6" type="number" id="reduction_value" label="مقدار تخفیف*" wire:model.defer="reduction_value"/>
+                <x-admin.forms.input with="6" type="number" min="0" id="reduction_value" label="مقدار تخفیف*" wire:model.defer="reduction_value"/>
                 <x-admin.forms.dropdown with="6" id="status" :data="$data['status']" label="وضعیت*" wire:model.defer="status"/>
                 <x-admin.forms.dropdown with="6" id="reduction_type" :data="$data['reduction']" label="نوع تخفیف" wire:model.defer="reduction_type"/>
                 <x-admin.forms.date-picker with="6" id="start_at" label="شروع تخفیف" wire:model.defer="start_at"/>
@@ -59,7 +59,7 @@
                                                 <br>
                                                 @if(!is_null($file))
                                                     <p class="alert alert-success">
-                                                        <small>{{ $file->temporaryUrl() }}</small>
+                                                        <small>فایل روی سرور</small>
                                                     </p>
                                                 @endif
                                             </div>

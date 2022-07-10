@@ -19,7 +19,7 @@
                <x-admin.forms.text-area label="google recaptcha site key*" id="site_key" wire:model.defer="site_key" />
                <x-admin.forms.text-area label="google recaptcha secret key*" id="secret_key" wire:model.defer="secret_key" />
            </div>
-            <x-admin.form-section  label="فضای ذخیره سازی پیشفرض">
+            <x-admin.form-section  label="فضا های ذخیره سازی ">
                 <div class="border p-3">
                     <x-admin.forms.radio value="1" id="local_storage" name="storage" label="local driver" wire:model="storage" />
                     <hr>

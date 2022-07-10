@@ -41,7 +41,7 @@ class SingleArticle extends BaseComponent
      */
     public function mount($slug)
     {
-        $this->article = $this->articleRepository->get([['slug',$slug]]);
+        $this->article = $this->articleRepository->get([['slug',$slug]],true);
         SEOMeta::setTitle($this->article->title);
         SEOMeta::setDescription($this->article->seo_description);
         SEOMeta::addKeyword($this->article->seo_keywords);

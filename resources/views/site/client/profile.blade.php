@@ -6,7 +6,7 @@
         <div class="dashboard-heading mb-5">
             <h3 class="fs-22 font-weight-semi-bold"> پروفایل من </h3>
         </div>
-        <ul class="nav nav-tabs generic-tab pb-30px" id="myTab" role="tablist" wire:ignore>
+        <ul class="nav nav-tabs generic-tab pb-30px" id="myTab" role="tablist">
             <li class="nav-item">
                 <a wire:click="$set('tab','profile')" class="nav-link {{ $tab == 'profile' ? 'active' : '' }}"
                    id="edit-profile-tab" data-toggle="tab" href="#edit-profile" role="tab" aria-controls="edit-profile"
@@ -175,6 +175,32 @@
                             </div>
                             <!-- end input-box -->
                         </form>
+                    </div>
+
+                    <div class="setting-body pt-20px" wire:ignore.self>
+                        <h3 class="fs-17 font-weight-semi-bold pb-4">اطلاعات مدرس</h3>
+                        @role('teacher')
+                        <form wire:submit.prevent="storeTeacher()" class="row">
+                            <div class="input-box col-12">
+                                <label class="label-text">عنوان</label>
+                                <div class="form-group">
+                                    <input class="form-control form--control" type="text" name="text"
+                                           wire:model.defer="teacher_title"/>
+                                    <span class="la la-user input-icon"></span>
+                                    @error('teacher_title')
+                                    <small class="text-danger">{{$message}}</small>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="input-box col-12">
+                                <label class="label-text">متن</label>
+                                <x-admin.forms.basic-text-editor with="12" id="content" label="" wire:model.defer="teacher_content"/>
+                            </div>
+                            <div class="input-box col-lg-12 py-2">
+                                <button type="submit" class="btn theme-btn">ذخیره تغییرات</button>
+                            </div>
+                        </form>
+                        @endif
                     </div>
                     <!-- end setting-body -->
                 </div>

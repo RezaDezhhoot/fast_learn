@@ -1,6 +1,6 @@
 <div>
     @section('title','مدرس ')
-    <x-admin.form-control deleteAble="true" deleteContent="حذف مدرس" mode="{{$mode}}" title="مدرس"/>
+    <x-admin.form-control mode="{{$mode}}" title="مدرس"/>
     <div class="card card-custom gutter-b example example-compact">
         <div class="card-header">
             <h3 class="card-title">{{ $header }}</h3>
@@ -10,7 +10,6 @@
             <div class="row">
                 <x-admin.forms.input type="text" id="sub_title" label="عنوان *" wire:model.defer="sub_title"/>
                 <x-admin.forms.full-text-editor id="body" label="متن*" wire:model.defer="body"/>
-                <x-admin.forms.input type="text" id="user" label="شماره همراه *" wire:model.defer="user"/>
             </div>
         </div>
     </div>

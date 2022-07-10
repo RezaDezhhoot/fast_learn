@@ -21,4 +21,8 @@ interface TeacherRepositoryInterface
     public function getAll();
 
     public function count();
+
+    public function updateOrCreate(array $key , array $value);
+
+    public function delete($user_id);
 }

@@ -1,6 +1,6 @@
 <div>
     @section('title','مدرسین ')
-    <x-admin.form-control link="{{ route('admin.store.teacher',['create'] ) }}" title="مدرس ها"/>
+    <x-admin.form-control store="{{false}}" title="مدرس ها"/>
     <div class="card card-custom">
         <div class="card-body">
             @include('admin.layouts.advance-table')
@@ -10,7 +10,9 @@
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>شماره</th>
+                            <th>شماره شناسه</th>
+                            <th>شماره همراه</th>
+                            <th>ایمیل</th>
                             <th>نام</th>
                             <th>عملیات</th>
                         </tr>
@@ -20,6 +22,8 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->id }}</td>
+                                <td>{{ $item->user->phone }}</td>
+                                <td>{{ $item->user->email }}</td>
                                 <td>{{ $item->user->name }}</td>
                                 <td>
                                     <x-admin.edit-btn href="{{ route('admin.store.teacher',['edit', $item->id]) }}" />

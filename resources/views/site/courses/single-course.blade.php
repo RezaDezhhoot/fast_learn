@@ -63,24 +63,25 @@
                                                         @if(!empty($item['local_video']) && (($item['free'] || $course->price == 0) || (auth()->check() && $user->hasCourse($course->id))))
                                                             <li>
                                                                 <a class="d-flex align-items-center justify-content-between" data-toggle="modal" data-target="#previewModal">
-                                                                <span wire:click="set_content('show_local_video','{{$item['id']}}')" class="cursor-pointers showVideo">
-                                                                    <i class="la la-play-circle mr-1"></i>
-                                                                    نمایش ویدئو
-                                                                </span>
-                                                                    <span>{{ $item['time'] }}</span>
-                                                                </a>
-                                                            </li>
-                                                            @if($item['allow_show_local_video'])
-                                                                <li>
-                                                                    <a class="d-flex align-items-center justify-content-between" data-toggle="modal" data-target="#previewModal">
                                                                     <span wire:click="set_content('local_video','{{$item['id']}}')" class="cursor-pointers">
                                                                         <i class="la la-download mr-1"></i>
                                                                        دانلود ویدئو
                                                                     </span>
+                                                                </a>
+                                                            </li>
+                                                            @if($item['allow_show_local_video'] && empty($item['api_bucket']))
+                                                                <li>
+                                                                    <a class="d-flex align-items-center justify-content-between" data-toggle="modal" data-target="#previewModal">
+                                                                <span wire:click="set_content('show_local_video','{{$item['id']}}')" class="cursor-pointers showVideo">
+                                                                    <i class="la la-play-circle mr-1"></i>
+                                                                    نمایش ویدئو
+                                                                </span>
+                                                                        <span>{{ $item['time'] }}</span>
                                                                     </a>
                                                                 </li>
                                                             @endif
-                                                        @elseif(!empty($item['api_bucket'] && (($item['free'] || $course->price == 0) || (auth()->check() && $user->hasCourse($course->id))) ))
+                                                        @endif
+                                                        @if(!empty($item['api_bucket'] && (($item['free'] || $course->price == 0) || (auth()->check() && $user->hasCourse($course->id))) ))
                                                             <li>
                                                                 <a class="d-flex align-items-center justify-content-between" data-toggle="modal" data-target="#previewModal">
                                                                 <span wire:click="set_content('api_bucket','{{$item['id']}}')" class="cursor-pointers showVideo">
@@ -130,33 +131,35 @@
                             <!-- end curriculum-content -->
                         </div>
                         <!-- end course-overview-card -->
-                        <div class="course-overview-card pt-4">
+                        @if(!is_null($course->teacher))
+                            <div class="course-overview-card pt-4">
                             <h3 class="fs-24 font-weight-semi-bold pb-4">در مورد مربی</h3>
                             <div class="instructor-wrap">
                                 <div class="media media-card">
                                     <div class="instructor-img">
-                                        <a href="{{ route('teacher',$course->teacher->id) }}" class="media-img d-block">
-                                            <img class="lazy" src="{{ asset($course->teacher->image) }}" data-src="{{ asset($course->teacher->image) }}" alt="{{ $course->teacher->name }}" />
+                                        <a href="{{ route('teacher',$course->teacher->user->id) }}" class="media-img d-block">
+                                            <img class="lazy" src="{{ asset($course->teacher->user->image) }}" data-src="{{ asset($course->teacher->user->image) }}" alt="{{ $course->teacher->user->name }}" />
                                         </a>
                                         <ul class="generic-list-item pt-3">
-                                            <li><i class="la la-user mr-2 text-color-3"></i> {{ $course->teacher->students_count }} دانش آموز </li>
-                                            <li><i class="la la-comment-o mr-2 text-color-3"></i> {{ number_format($course->teacher->comments_count) }}  نظر</li>
-                                            <li><i class="la la-play-circle-o mr-2 text-color-3"></i> {{ $course->teacher->course_count }} دوره</li>
-                                            <li><a href="{{ route('courses',['teacher'=>$course->teacher->code]) }}">مشاهده تمام دوره ها</a></li>
+                                            <li><i class="la la-user mr-2 text-color-3"></i> {{ $course->teacher->user->students_count }} دانش آموز </li>
+                                            <li><i class="la la-comment-o mr-2 text-color-3"></i> {{ number_format($course->teacher->user->comments_count) }}  نظر</li>
+                                            <li><i class="la la-play-circle-o mr-2 text-color-3"></i> {{ $course->teacher->user->course_count }} دوره</li>
+                                            <li><a href="{{ route('courses',['teacher'=>$course->teacher->user->code]) }}">مشاهده تمام دوره ها</a></li>
                                         </ul>
                                     </div>
                                     <!-- end instructor-img -->
                                     <div class="media-body">
-                                        <h5><a href="{{ route('teacher',$course->teacher->id) }}">{{ $course->teacher->name }}</a></h5>
+                                        <h5><a href="{{ route('teacher',$course->teacher->user->id) }}">{{ $course->teacher->user->name }}</a></h5>
                                         <span class="d-block lh-18 pt-2 pb-3"> شروع فعالیت از  {{ $course->teacher->created_at->diffForHumans() }} </span>
                                         <p class="pb-3">
-                                           {!! $course->teacher->teacher->body !!}
+                                           {!! $course->teacher->body !!}
                                         </p>
                                     </div>
                                 </div>
                             </div>
                             <!-- end instructor-wrap -->
                         </div>
+                        @endif
                         <!-- end course-overview-card -->
                         @auth
                         <div class="course-overview-card pt-4">

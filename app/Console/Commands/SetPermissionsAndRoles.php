@@ -70,7 +70,6 @@ class SetPermissionsAndRoles extends Command
             ['name' => 'delete_reductions', 'guard_name'=> 'web'],
             ['name' => 'show_teachers', 'guard_name'=> 'web'],
             ['name' => 'edit_teachers', 'guard_name'=> 'web'],
-            ['name' => 'delete_teachers', 'guard_name'=> 'web'],
             ['name' => 'show_transcripts', 'guard_name'=> 'web'],
             ['name' => 'edit_transcripts', 'guard_name'=> 'web'],
             ['name' => 'delete_transcripts', 'guard_name'=> 'web'],

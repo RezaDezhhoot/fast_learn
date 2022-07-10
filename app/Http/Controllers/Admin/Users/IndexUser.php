@@ -24,7 +24,7 @@ class IndexUser extends BaseComponent
     public function render()
     {
         $this->data['status'] = UserEnum::getStatus();
-        $this->data['roles'] = $this->roleRepository->whereNotIn('name', ['administrator', 'super_admin'])->pluck('name','name');
+        $this->data['roles'] = $this->roleRepository->whereNotIn('name', ['administrator'])->pluck('name','name');
         $users = $this->userRepository->getAllAdminList($this->status,$this->roles ,$this->search,$this->per_page);
         return view('admin.users.index-user',['users' => $users])->extends('admin.layouts.admin');
     }
