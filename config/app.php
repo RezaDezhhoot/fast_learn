@@ -180,6 +180,7 @@ return [
         Spatie\Permission\PermissionServiceProvider::class,
         App\Providers\RepositoryServiceProvider::class,
         App\Providers\RecaptchaServiceProvider::class,
+        App\Providers\StorageConfigServiceProvider::class,
         App\Providers\RoleStatementServiceProvider::class,
         App\Providers\MailConfigServiceProvider::class,
         Shetabit\Payment\Provider\PaymentServiceProvider::class,

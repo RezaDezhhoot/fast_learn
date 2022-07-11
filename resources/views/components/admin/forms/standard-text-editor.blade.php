@@ -8,10 +8,7 @@
                       x-data="{text: @entangle($attributes->wire('model')) }"
                       x-init="CKEDITOR.replace('{{$id}}', {
                             language: 'fa',
-                            filebrowserImageBrowseUrl: '/filemanager?type=Images',
-                            filebrowserImageUploadUrl: '/filemanager/upload?type=Images&_token=',
-                            filebrowserBrowseUrl: '/filemanager?type=Files',
-                            filebrowserUploadUrl: '/filemanager/upload?type=Files&_token='
+                            filebrowserImageBrowseUrl: '/file-manager/ckeditor'
                         });
                         CKEDITOR.instances.{{$id}}.on('change', function () {
                             $dispatch('input', CKEDITOR.instances.{{$id}}.getData())

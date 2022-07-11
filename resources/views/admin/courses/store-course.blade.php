@@ -35,132 +35,38 @@
                     <x-admin.forms.input type="text" id="e_title" label="عنوان *" wire:model.defer="e_title"/>
 
                     <x-admin.form-section  label="فایل">
-                        <div class="row">
-                            <div class="col-lg-12 table-responsive">
-                                <table class="table table-bordered">
-                                    <tbody class="col-12">
-                                    <tr>
-                                        <td>1- اپلود مستقیم</td>
-                                        <td>
-                                            <div class="form-group col-12 m-0">
-                                                <label class="custom-file-label"  for="file">فایل</label>
-                                                <div x-data="{ isUploading: false, progress: 0 }"
-                                                     x-on:livewire-upload-start="isUploading = true"
-                                                     x-on:livewire-upload-finish="isUploading = false"
-                                                     x-on:livewire-upload-error="isUploading = false"
-                                                     x-on:livewire-upload-progress="progress = $event.detail.progress">
-                                                    <input type="file" id="file" class="custom-file-input" wire:model="file" aria-label="file" />
-
-                                                    <div class="mt-2" x-show="isUploading">
-                                                        در حال اپلود فایل...
-                                                        <progress max="100" x-bind:value="progress"></progress>
-                                                    </div>
-                                                </div>
-                                                <br>
-                                                @if(!is_null($file))
-                                                    <p class="alert alert-success">
-                                                        <small>فایل روی سرور</small>
-                                                    </p>
-                                                @endif
-                                            </div>
-                                            <p class="text text-info">
-                                                {{ !is_null($file_site) ? 'اپلود شده مستقیم' : '' }}
-                                            </p>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>2- مسیر فایل</td>
-                                        <td>
-                                            <x-admin.forms.input help="برای فایل با حجم زیاد پیشنهاد می شود" type="text" id="file_path" label="مسیر" wire:model.defer="file_path"/>
-                                            <p class="text text-info">
-                                                {{ !is_null($file_path) ? 'اپلود شده توسط مسیر' : '' }}
-                                            </p>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            فضای ذخیره سازی
-                                        </td>
-                                        <td>
-                                            <x-admin.forms.dropdown id="e_file_storage" :data="$data['storage']" label="انتخاب" wire:model.defer="e_file_storage"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>عملیات</td>
-                                        <td>
-                                            @if(!is_null($e_file) && $e_key <> -1)
-                                                <div>
-                                                    <a wire:loading.attr="disabled" target="_blank" href="{{route('storage',[$e_id,'file'])}}" class="btn btn-light-success font-weight-bolder btn-sm">مشاهده فایل</a>
-                                                    <button wire:click="deleteMedia('file')" wire:loading.attr="disabled" class="btn btn-outline-danger font-weight-bolder btn-sm">حذف فایل</button>
-                                                </div>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                        <div class="col-lg-12 table-responsive">
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <x-admin.forms.dropdown id="e_file_storage" :data="$data['storage']" label=" فضای ذخیره سازی" wire:model.defer="e_file_storage"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <x-admin.forms.lfm-standalone id="e_file" label="فایل" :file="$e_file" type="image" required="true" wire:model="e_file"/>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </x-admin.form-section>
 
-                    <x-admin.form-section label="ویدیو (مناسب برای دانلود)">
+                    <x-admin.form-section label="ویدیو">
                         <div class="row">
                             <div class="col-lg-12 table-responsive">
                                 <table class="table table-bordered">
                                     <tbody class="col-12">
                                     <tr>
-                                        <td>1- اپلود مستقیم</td>
                                         <td>
-                                            <div class="form-group col-12 m-0">
-                                                <label class="custom-file-label" for="video">ویدیو</label>
-                                                <div x-data="{ isUploading: false, progress: 0 }"
-                                                     x-on:livewire-upload-start="isUploading = true"
-                                                     x-on:livewire-upload-finish="isUploading = false"
-                                                     x-on:livewire-upload-error="isUploading = false"
-                                                     x-on:livewire-upload-progress="progress = $event.detail.progress">
-                                                    <input type="file" class="custom-file-input" id="video" wire:model="video" aria-label="video" />
+                                            <x-admin.forms.dropdown id="e_video_storage" :data="$data['storage']" label=" فضای ذخیره سازی" wire:model.defer="e_video_storage"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <x-admin.forms.lfm-standalone id="e_local_video" label="ویدئو" :file="$e_local_video" type="image" required="true" wire:model="e_local_video"/>
 
-                                                    <div class="mt-2" x-show="isUploading">
-                                                        در حال اپلود ویدیو...
-                                                        <progress max="100" x-bind:value="progress"></progress>
-                                                    </div>
-                                                </div>
-                                                <br>
-                                                @if(!is_null($video))
-                                                    <p class="alert alert-success">
-                                                        <small>ویدئو روی سرور</small>
-                                                    </p>
-                                                @endif
-
-                                            </div>
-                                            <p class="text text-info">
-                                                {{ !is_null($video_site) ? 'اپلود شده مستقیم' : '' }}
-                                            </p>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>2- مسیر ویدیو</td>
-                                        <td>
-                                            <x-admin.forms.input help="برای فایل با حجم زیاد پیشنهاد می شود" type="text" id="video_path" label="مسیر" wire:model.defer="video_path"/>
-                                            <p class="text text-info">
-                                                {{ !is_null($video_path) ? 'اپلود شده توسط مسیر' : '' }}
-                                            </p>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            فضای ذخیره سازی
-                                        </td>
-                                        <td>
-                                            <x-admin.forms.dropdown id="e_video_storage" :data="$data['storage']" label="انتخاب" wire:model.defer="e_video_storage"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>عملیات</td>
-                                        <td>
-                                            @if($e_local_video && $e_key <> -1)
-                                                <a wire:loading.attr="disabled" target="_blank" href="{{route('storage',[$e_id,'video'])}}" class="btn btn-light-success font-weight-bolder btn-sm">مشاهده رسانه</a>
-                                                <button wire:click="deleteMedia('video')" wire:loading.attr="disabled" class="btn btn-outline-danger font-weight-bolder btn-sm">حذف ویدئو</button>
-                                            @endif
                                         </td>
                                     </tr>
                                     <tr>

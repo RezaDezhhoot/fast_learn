@@ -142,6 +142,7 @@ class SingleCourse extends BaseComponent
                 if (!is_null($episode->local_video) and $episode->allow_show_local_video and (($free || $this->course->price == 0) || $user_has_episode)):
                     $this->episode_title = $episode->title;
                     $this->local_video = route('storage',[$episode->id,'video']);
+                    $this->emit('setVideo',['title' => '1','src' => $this->local_video]);
                 endif;
                 break;
             case 'file':

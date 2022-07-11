@@ -1,4 +1,6 @@
 <!-- template js files -->
+@livewireScripts
+
 <script src="{{ asset('site/js/jquery-3.4.1.min.js') }}"></script>
 <script src="{{ asset('site/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('site/js/bootstrap-select.min.js') }}"></script>
@@ -43,6 +45,24 @@
             })
         })
     })
+    Livewire.on('setVideo', data => {
+        const player = new Plyr('#player',{
+            title: data.title,
+        });
+        player.source = {
+            type: 'video',
+            title: data.title,
+            download: false,
+            sources: [
+                {
+                    src: data.src,
+                    type: 'video/mp4',
+                    size: 720,
+                }
+            ]
+        }
+    })
 </script>
-@livewireScripts
+
+
 @stack('scripts')

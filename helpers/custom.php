@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\StorageEnum;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Facades\RateLimiter;
@@ -21,63 +22,20 @@ function getDisk($storage = null): Filesystem
     if (is_null($storage))
         $storage = $SettingRepository->getRow('storage');
     return match ($storage) {
-        storages()['local'] => Storage::disk('private'),
-        storages()['FTP'] => Storage::build([
-            'driver' => 'FTP',
-            'root' => env('FTP_ROOT',$SettingRepository->getRow('ftp_root')),
-            'host' => env('FTP_HOST',$SettingRepository->getRow('ftp_ip')),
-            'username' => env('FTP_USERNAME',$SettingRepository->getRow('ftp_username')),
-            'password' => env('FTP_PASSWORD',$SettingRepository->getRow('ftp_password')),
-            'port' => env('FTP_PORT',(int)$SettingRepository->getRow('ftp_port') ?? 21),
-            'ssl' => $SettingRepository->getRow('ftp_ssl') == 1,
-            'timeout' => 120,
-        ]),
-        storages()['s3'] => Storage::build([
-            'driver' => 's3',
-            'key' => env('AWS_ACCESS_KEY_ID',emptyToNull($SettingRepository->getRow('s3_key'))),
-            'secret' => env('AWS_SECRET_ACCESS_KEY',emptyToNull($SettingRepository->getRow('s3_secret'))),
-            'region' => env('AWS_DEFAULT_REGION',emptyToNull($SettingRepository->getRow('s3_region'))),
-            'bucket' => env('AWS_BUCKET',emptyToNull($SettingRepository->getRow('s3_bucket'))),
-            'url' => env('AWS_URL',emptyToNull($SettingRepository->getRow('s3_url'))),
-            'endpoint' => env('AWS_ENDPOINT',emptyToNull($SettingRepository->getRow('s3_endpoint'))),
-            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', $SettingRepository->getRow('s3_use_path_style_endpoint') == 1),
-            'throw' => false,
-        ]),
-        storages()['SFTP'] => Storage::build([
-            'driver' => 'SFTP',
-            'host' => env('SFTP_HOST',$SettingRepository->getRow('sftp_host')),
-            'username' => env('SFTP_USERNAME',$SettingRepository->getRow('sftp_username')),
-            'password' => env('SFTP_PASSWORD',$SettingRepository->getRow('sftp_password')),
-            'privateKey' => env('SFTP_PRIVATE_KEY',emptyToNull($SettingRepository->getRow('sftp_privateKey'))),
-            'hostFingerprint' => env('SFTP_HOST_FINGERPRINT',emptyToNull($SettingRepository->getRow('sftp_hostFingerprint'))),
-            'maxTries' => (int)$SettingRepository->getRow('sftp_maxTries'),
-            'passphrase' => env('SFTP_PASSPHRASE',emptyToNull($SettingRepository->getRow('sftp_passphrase'))),
-            'port' => env('SFTP_PORT' ,(int)$SettingRepository->getRow('sftp_port')),
-            'root' => env('SFTP_ROOT',$SettingRepository->getRow('sftp_root')),
-            'timeout' => 30,
-            'useAgent' => $SettingRepository->getRow('sftp_useAgent') == 1,
-        ]),
-
+        StorageEnum::PRIVATE => Storage::disk('private'),
+        StorageEnum::FTP =>  Storage::disk('ftp'),
+        StorageEnum::S3 => Storage::disk('s3'),
+        StorageEnum::SFTP => Storage::disk('SFTP'),
         default => Storage::disk('public')
     };
-}
-
-#[ArrayShape(['local' => "string", 'FTP' => "string", 's3' => "string", 'SFTP' => "string"])] function storages(): array
-{
-    return [
-        'local' => '1',
-        'FTP' => '2',
-        's3' => '3',
-        'SFTP' => '4'
-    ];
 }
 
 function getAvailableStorages(): array
 {
     $SettingRepository = app(SettingRepositoryInterface::class);
     $storages = [];
-    foreach (storages() as $key => $item)
-        if ((bool)$SettingRepository->getRow("{$key}_available") || $key == 'local')
+    foreach (StorageEnum::storages() as $key => $item)
+        if ((bool)$SettingRepository->getRow("{$key}_available") || $key == StorageEnum::PRIVATE_LABEL || $key == StorageEnum::PUBLIC_LABEL)
             $storages[$key] = $item;
 
     return $storages;

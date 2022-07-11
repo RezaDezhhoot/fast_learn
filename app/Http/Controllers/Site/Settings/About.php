@@ -11,7 +11,7 @@ use Artesaos\SEOTools\Facades\TwitterCard;
 
 class About extends BaseComponent
 {
-    public $about , $sliders;
+    public $about ;
     public function mount(SettingRepositoryInterface $settingRepository)
     {
         SEOMeta::setTitle($settingRepository->getRow('title').' درباره ما -');
@@ -26,7 +26,6 @@ class About extends BaseComponent
         JsonLd::setDescription($settingRepository->getRow('seoDescription'));
         JsonLd::addImage(asset($settingRepository->getRow('logo')));
         $this->about = $settingRepository->getRow('aboutUs');
-        $this->sliders = explode(',',$settingRepository->getRow('aboutUsImages'));
         $this->page_address = [
             'home' => ['link' => route('home') , 'label' => 'صفحه اصلی'],
             'about' => ['link' => '' , 'label' => 'درباره ما']

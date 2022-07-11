@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Courses;
 use App\Enums\CategoryEnum;
 use App\Enums\CourseEnum;
 use App\Enums\ReductionEnum;
+use App\Enums\StorageEnum;
 use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\Interfaces\CourseRepositoryInterface;
@@ -40,7 +41,7 @@ class StoreCourse extends BaseComponent
         $this->teacherRepository = app(TeacherRepositoryInterface::class);
         $this->settingRepository = app(SettingRepositoryInterface::class);
         $this->episodeRepository = app(EpisodeRepositoryInterface::class);
-        $this->storage = $this->settingRepository->getRow('storage') ?? '1';
+        $this->storage = $this->settingRepository->getRow('storage') ?? StorageEnum::PRIVATE;
         $this->disk = getDisk(storage:$this->storage);
     }
 
@@ -95,8 +96,7 @@ class StoreCourse extends BaseComponent
 
     public function render()
     {
-        return view('admin.courses.store-course')
-            ->extends('admin.layouts.admin');
+        return view('admin.courses.store-course')->extends('admin.layouts.admin');
     }
 
     public function store()
@@ -183,8 +183,6 @@ class StoreCourse extends BaseComponent
             $episode->free = $item['free'];
             $episode->file_storage = $item['file_storage'];
             $episode->video_storage = $item['video_storage'];
-            $episode->file_upload_method = $item['file_upload_method'];
-            $episode->video_upload_method = $item['video_upload_method'];
             $episode->allow_show_local_video = $item['allow_show_local_video'];
             $episode->course_id = $model->id;
             $this->episodeRepository->save($episode);
@@ -224,65 +222,42 @@ class StoreCourse extends BaseComponent
             $this->e_time = $episode['time'];
             $this->e_view = $episode['view'];
             $this->e_free = $episode['free'];
-            $this->e_file_storage =in_array($episode['file_storage'] , array_keys($this->data['storage'])) ? $episode['file_storage'] : $this->storage;
+            $this->e_file_storage = in_array($episode['file_storage'] , array_keys($this->data['storage'])) ? $episode['file_storage'] : $this->storage;
             $this->e_video_storage = in_array($episode['video_storage'] , array_keys($this->data['storage'])) ? $episode['video_storage'] : $this->storage;
-            $this->e_video_upload_method = $episode['video_upload_method'];
-            $this->e_file_upload_method = $episode['file_upload_method'];
             $this->e_allow_show_local_video = $episode['allow_show_local_video'];
-
-            if ($this->e_file_upload_method == CourseEnum::UPLOAD_FILE_THROUGH_PATH)
-                $this->file_path = $this->e_file;
-            elseif ($this->e_file_upload_method == CourseEnum::UPLOAD_FILE_THROUGH_SITE)
-                $this->file_site = $this->e_file;
-
-            if ($this->e_video_upload_method == CourseEnum::UPLOAD_FILE_THROUGH_PATH)
-                $this->video_path = $this->e_local_video;
-            elseif ($this->e_video_upload_method == CourseEnum::UPLOAD_FILE_THROUGH_SITE)
-                $this->video_site = $this->e_local_video;
         }
         $this->emitShowModal('episode');
     }
 
     public function storeEpisode()
     {
-        $this->e_file_storage = $this->emptyToNull($this->e_file_storage);
-        $this->e_video_storage = $this->emptyToNull($this->e_video_storage);
         $this->validate([
             'e_title' => ['required','string','max:255'],
-            'file' => ['nullable','mimes:png,jpg,pdf,txt,xls,xlsx,doc,docx,pub,pptx,pptx,rar,zip,mp4|max:102400'],
-            'video' => ['nullable','mimes:mp4,wm'],
-            'file_path' => ['nullable','string','max:10000'],
-            'video_path' => ['nullable','string','max:10000'],
+            'e_file' => ['nullable','string','max:10000'],
             'e_local_video' => ['nullable','max:255'],
             'e_api_bucket' => ['nullable','max:35000'],
             'e_time' => ['required','date_format:H:i:s','max:255'],
             'e_allow_show_local_video' => ['required','boolean'],
             'e_view' => ['required','integer'],
-
-            'e_file_storage' => [Rule::requiredIf(fn() => !empty($this->file)) ,'in:'.implode(',',array_values(getAvailableStorages())).','.null],
-            'e_video_storage' => [Rule::requiredIf(fn() => !empty($this->video)) ,'in:'.implode(',',array_values(getAvailableStorages())).','.null],
-
+            'e_file_storage' => [Rule::requiredIf(fn() => !empty($this->e_file)) ,'in:'.implode(',',array_values(getAvailableStorages())).','.null],
+            'e_video_storage' => [Rule::requiredIf(fn() => !empty($this->e_local_video)) ,'in:'.implode(',',array_values(getAvailableStorages())).','.null],
             'e_free' => ['boolean'],
         ],[],[
             'e_title' => ' عنوان سرفصل',
-            'file' => 'فایل سرفصل',
             'e_file' => 'فایل سرفصل',
             'e_link' => 'لینک سرفصل',
             'e_local_video' => 'ویدئو سرفصل',
             'video' => 'ویدئو سرفصل',
             'e_api_bucket' => 'api',
             'e_time' => 'زمان سرفصل',
-
             'e_file_storage' => 'فضای ذخیره سازی فایل',
             'e_video_storage' => 'فضای ذخیره سازی ویدئو',
-
             'e_view' => 'نمایش سرفصل',
             'e_allow_show_local_video' => 'اجازه برای نمایش ویدئو',
             'e_free' => 'رایگان',
             'file_path' => 'فایل سرفصل',
             'video_path' => 'ویدئو سرفصل',
         ]);
-        $this->uploader();
         if (sizeof($this->errorBag) == 0) {
             if ($this->e_key == -1) {
                 $this->episodes[] = [
@@ -297,8 +272,6 @@ class StoreCourse extends BaseComponent
                     'free' => $this->e_free,
                     'file_storage' => $this->e_file_storage,
                     'video_storage' => $this->e_video_storage,
-                    'file_upload_method' => $this->e_file_upload_method,
-                    'video_upload_method' => $this->e_video_upload_method,
                     'allow_show_local_video' => $this->e_allow_show_local_video,
                 ];
             } else {
@@ -314,8 +287,6 @@ class StoreCourse extends BaseComponent
                     'free' => $this->e_free,
                     'file_storage' => $this->e_file_storage,
                     'video_storage' => $this->e_video_storage,
-                    'file_upload_method' => $this->e_file_upload_method,
-                    'video_upload_method' => $this->e_video_upload_method,
                     'allow_show_local_video' => $this->e_allow_show_local_video,
                 ];
             }
@@ -328,7 +299,7 @@ class StoreCourse extends BaseComponent
     {
         $this->reset([
             'e_id','e_file_storage','e_api_bucket','e_title','e_file','e_link','e_local_video','e_time','e_view','file_site','video_site',
-            'e_free','file_path','video_path','wasUploadedFile','e_video_upload_method','e_allow_show_local_video' ,'e_file_upload_method' ,
+            'e_free','file_path','video_path','wasUploadedFile','e_allow_show_local_video'  ,
             'e_video_storage','video','file'
         ]);
     }
@@ -349,121 +320,6 @@ class StoreCourse extends BaseComponent
         $this->authorizing('cancel_courses');
         $this->courseRepository->delete($this->course);
         return redirect()->route('admin.course');
-    }
-
-    public function deleteMedia($type)
-    {
-        $episode =  $this->episodeRepository->find($this->e_id);
-        if ($type == 'file')
-        {
-            $disk = getDisk($this->e_file_storage);
-            if (!empty($this->e_file) && $disk->exists($this->e_file) && $this->e_key <> -1) {
-                if ($disk->delete($this->e_file))
-                {
-                    $this->emitNotify('فایل با موفقیت حذف شد');
-                    $this->e_file = null;
-                    if (!is_null($episode)){
-                        $episode->file = null;
-                        $this->episodeRepository->save($episode);
-                    }
-                    $this->reset(['file_path','file_site']);
-                } else
-                    $this->emitNotify('مشکل در حذف فایل','warning');
-            }
-        }
-
-        if ($type == 'video')
-        {
-            $disk = getDisk($this->e_video_storage);
-            if (!empty($this->e_local_video) && $disk->exists($this->e_local_video) && $this->e_key <> -1)
-            {
-                if ( $disk->delete($this->e_local_video))
-                {
-                    $this->emitNotify('ویدئو با موفقیت حذف شد');
-                    $this->e_local_video = null;
-                    if (!is_null($episode)){
-                        $episode->local_video = null;
-                        $this->episodeRepository->save($episode);
-                    }
-                    $this->reset(['video_path','video_site']);
-                } else
-                    $this->emitNotify('مشکل در حذف فایل','warning');
-            }
-        }
-
-    }
-
-    public function uploader()
-    {
-        if (isset($this->file) && !empty($this->file)) {
-            $disk = getDisk($this->e_file_storage);
-            if ($this->e_file = $disk->put('files/'.now()->format('Ymd'),$this->file)) {
-                $this->reset(['file']);
-                $this->wasUploadedFile = true;
-                $this->e_file_upload_method = CourseEnum::UPLOAD_FILE_THROUGH_SITE;
-            } else {
-                $this->addError('file','خطا در هنگام اپلود فایل');
-            }
-        } elseif (isset($this->file_path) && !empty($this->file_path)) {
-            $disk = getDisk($this->e_file_storage);
-            if ($disk->exists($this->file_path)){
-                $this->wasUploadedFile = true;
-                $this->e_file = $this->file_path;
-                $this->e_file_upload_method = CourseEnum::UPLOAD_FILE_THROUGH_PATH;
-            } else {
-                $this->addError('file','فایل مورد نظر یافت نشد');
-            }
-        }
-        // video
-        if ( (isset($this->video) && !empty($this->video)) ) {
-            $disk = getDisk($this->e_video_storage);
-            if ($this->e_local_video = $disk->put('videos/'.now()->format('Ymd'),$this->video)) {
-                $this->reset(['video']);
-                $this->e_video_upload_method = CourseEnum::UPLOAD_FILE_THROUGH_SITE;
-                $this->wasUploadedFile = true;
-            }
-            else {
-                $this->addError('local_video','خطا در هنگام اپلود ویدئو');
-            }
-        } elseif (isset($this->video_path) && !empty($this->video_path)) {
-            $disk = getDisk($this->e_video_storage);
-            if ($disk->exists($this->video_path)) {
-                $this->e_local_video = $this->video_path;
-                $this->e_video_upload_method = CourseEnum::UPLOAD_FILE_THROUGH_PATH;
-                $this->wasUploadedFile = true;
-            }
-            else {
-                $this->addError('local_video','ویدئو مورد نظر یافت نشد');
-            }
-        }
-    }
-
-    public function exitsFile($path , $storage): bool
-    {
-        if (!is_null($this->disk))
-            return $storage->exists($path);
-
-        return false;
-    }
-
-    public function uploadFile()
-    {
-
-    }
-
-    public function uploadVideo()
-    {
-
-    }
-
-    public function updatedFile()
-    {
-        $this->resetErrorBag();
-    }
-
-    public function updatedVideo()
-    {
-        $this->resetErrorBag();
     }
 
 }

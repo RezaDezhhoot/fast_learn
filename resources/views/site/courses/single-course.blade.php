@@ -13,10 +13,15 @@
                                     </div>
                                     <button class="btn btn-link" onclick="back_to_episode('heading{{$episode_id}}')">بازگشت به سرفصل</button>
                                 @elseif(!is_null($local_video))
-                                    <iframe class="iframe-placeholder" src ="{{$local_video}}" style="border: none" width="100%" height="300">
-                                        <p>Your browser does not support iframes.</p>
-                                    </iframe>
-                                    <button class="btn btn-link" onclick="back_to_episode('heading{{$episode_id}}')">بازگشت به سرفصل</button>
+                                    <div class="plyr plyr--full-ui plyr--video plyr--html5 plyr--fullscreen-enabled plyr--paused">
+                                        <video id="player" class="player" playsinline controls data-poster="{{asset($course->image)}}">
+
+                                        </video>
+                                    </div>
+
+                                   <div class="mt-2">
+                                       <button class="btn btn-outline-primary" onclick="back_to_episode('heading{{$episode_id}}')">بازگشت به سرفصل</button>
+                                   </div>
                                 @else
                                     <img src="{{asset($course->image)}}" class="col-12  p-0" alt="{{ $course->title }}">
                                 @endif
@@ -57,31 +62,11 @@
                                                 </button>
                                             </div>
                                             <!-- end card-header -->
+                                            @if((($item['free'] || $course->price == 0) || (auth()->check() && $user->hasCourse($course->id))))
                                             <div id="collapse{{$item->id}}" class="collapse {{  $key == 0 ? 'show' : '' }}" aria-labelledby="heading{{$item->id}}" data-parent="#accordion">
                                                 <div class="card-body">
                                                     <ul class="generic-list-item">
-                                                        @if(!empty($item['local_video']) && (($item['free'] || $course->price == 0) || (auth()->check() && $user->hasCourse($course->id))))
-                                                            <li>
-                                                                <a class="d-flex align-items-center justify-content-between" data-toggle="modal" data-target="#previewModal">
-                                                                    <span wire:click="set_content('local_video','{{$item['id']}}')" class="cursor-pointers">
-                                                                        <i class="la la-download mr-1"></i>
-                                                                       دانلود ویدئو
-                                                                    </span>
-                                                                </a>
-                                                            </li>
-                                                            @if($item['allow_show_local_video'] && empty($item['api_bucket']))
-                                                                <li>
-                                                                    <a class="d-flex align-items-center justify-content-between" data-toggle="modal" data-target="#previewModal">
-                                                                <span wire:click="set_content('show_local_video','{{$item['id']}}')" class="cursor-pointers showVideo">
-                                                                    <i class="la la-play-circle mr-1"></i>
-                                                                    نمایش ویدئو
-                                                                </span>
-                                                                        <span>{{ $item['time'] }}</span>
-                                                                    </a>
-                                                                </li>
-                                                            @endif
-                                                        @endif
-                                                        @if(!empty($item['api_bucket'] && (($item['free'] || $course->price == 0) || (auth()->check() && $user->hasCourse($course->id))) ))
+                                                        @if(!empty($item['api_bucket']))
                                                             <li>
                                                                 <a class="d-flex align-items-center justify-content-between" data-toggle="modal" data-target="#previewModal">
                                                                 <span wire:click="set_content('api_bucket','{{$item['id']}}')" class="cursor-pointers showVideo">
@@ -92,7 +77,29 @@
                                                                 </a>
                                                             </li>
                                                         @endif
-                                                        @if(!empty($item['file']) && (($item['free'] || $course->price == 0) || (auth()->check() && $user->hasCourse($course->id))))
+                                                        @if(!empty($item['local_video']))
+                                                                @if($item['allow_show_local_video'] && empty($item['api_bucket']))
+                                                                    <li>
+                                                                        <a class="d-flex align-items-center justify-content-between" data-toggle="modal" data-target="#previewModal">
+                                                                <span wire:click="set_content('show_local_video','{{$item['id']}}')" class="cursor-pointers showVideo">
+                                                                    <i class="la la-play-circle mr-1"></i>
+                                                                    نمایش ویدئو
+                                                                </span>
+                                                                            <span>{{ $item['time'] }}</span>
+                                                                        </a>
+                                                                    </li>
+                                                                @endif
+                                                            <li>
+                                                                <a class="d-flex align-items-center justify-content-between" data-toggle="modal" data-target="#previewModal">
+                                                                    <span wire:click="set_content('local_video','{{$item['id']}}')" class="cursor-pointers">
+                                                                        <i class="la la-download mr-1"></i>
+                                                                       دانلود ویدئو
+                                                                    </span>
+                                                                </a>
+                                                            </li>
+
+                                                        @endif
+                                                        @if(!empty($item['file']))
                                                                 <li>
                                                                     <a class="d-flex align-items-center justify-content-between" data-toggle="modal" data-target="#previewModal">
                                                                 <span wire:click="set_content('file','{{$item['id']}}')" class="cursor-pointers">
@@ -103,7 +110,7 @@
                                                                     </a>
                                                                 </li>
                                                         @endif
-                                                        @if(!empty($item['link']) && (($item['free'] || $course->price == 0) || (auth()->check() && $user->hasCourse($course->id))) )
+                                                        @if(!empty($item['link']) )
                                                                 <li>
                                                                     <a class="d-flex align-items-center justify-content-between" data-toggle="modal" data-target="#previewModal">
                                                                 <span wire:click="set_content('link','{{$item['id']}}')" class="cursor-pointers">
@@ -121,6 +128,7 @@
                                                 </div>
                                                 <!-- end card-body -->
                                             </div>
+                                            @endif
                                             <!-- end collapse -->
                                         </div>
                                     @endforeach

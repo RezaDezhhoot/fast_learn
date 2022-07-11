@@ -34,9 +34,9 @@ Route::middleware(['auth'])->group(function (){
     Route::get('/checkout',App\Http\Controllers\Site\Carts\Checkout::class)->name('checkout');
     Route::get('/verify/{gateway?}',App\Http\Controllers\Site\Carts\Verify::class)->name('verify');
 });
-Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth','role:admin']], function () {
-    Lfm::routes();
-});
+//Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth','role:admin']], function () {
+//    Lfm::routes();
+//});
 Route::prefix('client')->middleware(['auth'])->group(function (){
     Route::get('/dashboard',App\Http\Controllers\Site\Client\Dashboard::class)->name('user.dashboard');
     Route::get('/courses',App\Http\Controllers\Site\Client\Courses::class)->name('user.courses');

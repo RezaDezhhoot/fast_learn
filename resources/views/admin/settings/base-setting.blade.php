@@ -21,10 +21,10 @@
            </div>
             <x-admin.form-section  label="فضا های ذخیره سازی ">
                 <div class="border p-3">
-                    <x-admin.forms.radio value="1" id="local_storage" name="storage" label="local driver" wire:model="storage" />
+                    <x-admin.forms.radio value="{{ App\Enums\StorageEnum::PRIVATE }}" id="local_storage" name="storage" label="local driver(private)" wire:model="storage" />
                     <hr>
-                    <x-admin.forms.radio value="2" id="ftp_storage" name="storage" label="ftp driver" wire:model="storage" />
-                    @if($storage == 2)
+                    <x-admin.forms.radio value="{{ App\Enums\StorageEnum::FTP }}" id="ftp_storage" name="storage" label="ftp driver" wire:model="storage" />
+                    @if($storage == App\Enums\StorageEnum::FTP)
                         <div class="row">
                             <x-admin.forms.input with="6" type="text" id="storage_root" placeholder="root" label="root" wire:model.defer="ftp_root"/>
                             <x-admin.forms.input with="6" type="text" id="storage_ip" placeholder="دامنه/ای پی" label="دامنه/ای پی" wire:model.defer="ftp_ip"/>
@@ -36,8 +36,8 @@
                         </div>
                     @endif
                     <hr>
-                    <x-admin.forms.radio value="3" id="s3_storage" name="storage" label="Amazon S3 driver" wire:model="storage" />
-                    @if($storage == 3)
+                    <x-admin.forms.radio value="{{ App\Enums\StorageEnum::S3 }}" id="s3_storage" name="storage" label="Amazon S3 driver" wire:model="storage" />
+                    @if($storage == App\Enums\StorageEnum::S3)
                         <div class="row">
                             <x-admin.forms.input with="6" type="text" id="s3_key" placeholder="key" label="key" wire:model.defer="s3_key"/>
                             <x-admin.forms.input with="6" type="text" id="s3_secret" placeholder="secret" label="secret" wire:model.defer="s3_secret"/>
@@ -50,8 +50,8 @@
                         </div>
                     @endif
                     <hr>
-                    <x-admin.forms.radio value="4" id="sftp_storage" name="storage" label="SFTP driver" wire:model="storage" />
-                    @if($storage == 4)
+                    <x-admin.forms.radio value="{{ App\Enums\StorageEnum::SFTP }}" id="sftp_storage" name="storage" label="SFTP driver" wire:model="storage" />
+                    @if($storage == App\Enums\StorageEnum::SFTP)
                         <div class="row">
                             <x-admin.forms.input with="6" type="text" id="sftp_host" placeholder="host" label="host" wire:model.defer="sftp_host"/>
                             <x-admin.forms.input with="6" type="text" id="sftp_username" placeholder="username" label="username" wire:model.defer="sftp_username"/>
