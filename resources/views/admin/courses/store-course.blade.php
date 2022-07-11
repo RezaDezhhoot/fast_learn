@@ -81,7 +81,7 @@
                     </x-admin.form-section>
 
                     <x-admin.forms.input type="url" id="e_link" label="لینک" wire:model.defer="e_link"/>
-                    <x-admin.forms.text-area label="کد اشتراک گذاریapi (مناسب برای نمایش)" wire:model.defer="e_api_bucket" id="e_api_bucket" />
+                    <x-admin.forms.text-area label="کد اشتراک گذاریapi " wire:model.defer="e_api_bucket" id="e_api_bucket" />
                     <x-admin.forms.input type="text" id="e_time" label="زمان *" wire:model.defer="e_time"/>
                     <x-admin.forms.input type="number" id="e_view" label="نمایش *" wire:model.defer="e_view"/>
                     <x-admin.forms.checkbox value="1" id="e_free"  label="رایگان " wire:model.defer="e_free" />
