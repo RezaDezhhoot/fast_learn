@@ -47,8 +47,8 @@ return [
 
     'folder_categories'        => [
         'file'  => [
-            'folder_name'  => 'files',
-            'startup_view' => 'list',
+            'folder_name'  => './',
+            'startup_view' => 'grid',
             'max_size'     => 50000, // size in KB
             'thumb' => true,
             'thumb_width' => 80,
@@ -113,7 +113,7 @@ return [
     // behavior on files with identical name
     // setting it to true cause old file replace with new one
     // setting it to false show `error-file-exist` error and stop upload
-    'over_write_on_duplicate'  => false,
+    'over_write_on_duplicate'  => true,
 
     // Item Columns
     'item_columns' => ['name', 'url', 'time', 'icon', 'is_file', 'is_image', 'thumb_url'],
