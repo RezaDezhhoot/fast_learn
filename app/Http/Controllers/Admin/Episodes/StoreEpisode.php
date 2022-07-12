@@ -28,6 +28,7 @@ class StoreEpisode extends BaseComponent
 
     public function mount($action , $id = null)
     {
+        $this->authorizing('show_episodes');
         $this->set_mode($action);
         $this->data['storage'] = array_flip(getAvailableStorages());
         $this->data['course'] = $this->courseRepository->getAll()->pluck('title','id');
@@ -53,6 +54,7 @@ class StoreEpisode extends BaseComponent
 
     public function store()
     {
+        $this->authorizing('edit_episodes');
         if ($this->mode == self::UPDATE_MODE)
             $this->saveInDataBase($this->episode);
         elseif ($this->mode == self::CREATE_MODE){
@@ -123,6 +125,7 @@ class StoreEpisode extends BaseComponent
 
     public function deleteItem($id)
     {
+        $this->authorizing('delete_episodes');
         $this->episodeRepository->destroy($id);
         return redirect()->route('admin.episode');
     }

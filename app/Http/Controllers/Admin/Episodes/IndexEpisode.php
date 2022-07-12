@@ -28,6 +28,7 @@ class IndexEpisode extends BaseComponent
 
     public function render()
     {
+        $this->authorizing('show_episodes');
         $episodes = $this->episodeRepository->getAllAdmin($this->course,$this->search,$this->per_page);
         return view('admin.episodes.index-episode',['episodes'=>$episodes])
             ->extends('admin.layouts.admin');

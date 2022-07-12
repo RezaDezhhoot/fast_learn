@@ -49,7 +49,8 @@ class Permission extends \Spatie\Permission\Models\Permission
             'quizzes'=>'امتحان ها',
             'organizations'=>'سازمان ها',
             'executives' => 'دستگاه های اجرایی',
-            'events' => 'رویداد ها'
+            'events' => 'رویداد ها',
+            'episodes' => 'درس ها'
         ];
     }
 
