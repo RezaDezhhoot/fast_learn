@@ -1,5 +1,5 @@
-@props(['label'])
-<div class="form-group" {{$attributes}}>
+@props(['label' ,'class'=>'form-group'])
+<div class="{{$class}}" {{$attributes}}>
     <p>
         {!! $label !!}
     </p>

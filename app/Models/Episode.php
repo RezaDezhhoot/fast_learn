@@ -13,6 +13,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property mixed price
  * @method static find($id)
  * @method static findOrFail($id)
+ * @method static findMany(array $ids)
+ * @method static latest(string $string)
  */
 class Episode extends Model
 {
@@ -20,7 +22,7 @@ class Episode extends Model
 
     protected $guarded = ['id'];
 
-    protected array $searchAbleColumns = ['name'];
+    protected array $searchAbleColumns = ['title'];
 
     protected $casts = [
         'file_storage' => 'string',

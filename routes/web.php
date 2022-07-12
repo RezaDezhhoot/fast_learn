@@ -34,9 +34,6 @@ Route::middleware(['auth'])->group(function (){
     Route::get('/checkout',App\Http\Controllers\Site\Carts\Checkout::class)->name('checkout');
     Route::get('/verify/{gateway?}',App\Http\Controllers\Site\Carts\Verify::class)->name('verify');
 });
-//Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth','role:admin']], function () {
-//    Lfm::routes();
-//});
 Route::prefix('client')->middleware(['auth'])->group(function (){
     Route::get('/dashboard',App\Http\Controllers\Site\Client\Dashboard::class)->name('user.dashboard');
     Route::get('/courses',App\Http\Controllers\Site\Client\Courses::class)->name('user.courses');
@@ -64,6 +61,8 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->group(function (){
     Route::get('/comments/{action}/{id?}',App\Http\Controllers\Admin\Comments\StoreComment::class)->name('admin.store.comment');
     Route::get('/courses',App\Http\Controllers\Admin\Courses\IndexCourse::class)->name('admin.course');
     Route::get('/courses/{action}/{id?}',App\Http\Controllers\Admin\Courses\StoreCourse::class)->name('admin.store.course');
+    Route::get('/episodes',App\Http\Controllers\Admin\Episodes\IndexEpisode::class)->name('admin.episode');
+    Route::get('/episodes/{action}/{id?}',App\Http\Controllers\Admin\Episodes\StoreEpisode::class)->name('admin.store.episode');
     Route::get('/events',App\Http\Controllers\Admin\Events\IndexEvent::class)->name('admin.event');
     Route::get('/events/{action}/{id?}',App\Http\Controllers\Admin\Events\StoreEvent::class)->name('admin.store.event');
     Route::get('/notifications',App\Http\Controllers\Admin\Notifications\IndexNotification::class)->name('admin.notification');

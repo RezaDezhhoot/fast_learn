@@ -31,7 +31,7 @@ return [
      * List of disk names that you want to use
      * (from config/filesystems)
      */
-    'diskList'          => ['public','private','ftp','SFTP','s3'],
+    'diskList'          => [],
 
     /**
      * Default disk for left manager

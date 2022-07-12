@@ -62,73 +62,79 @@
                                                 </button>
                                             </div>
                                             <!-- end card-header -->
-                                            @if((($item['free'] || $course->price == 0) || (auth()->check() && $user->hasCourse($course->id))))
+
                                             <div id="collapse{{$item->id}}" class="collapse {{  $key == 0 ? 'show' : '' }}" aria-labelledby="heading{{$item->id}}" data-parent="#accordion">
-                                                <div class="card-body">
-                                                    <ul class="generic-list-item">
-                                                        @if(!empty($item['api_bucket']))
-                                                            <li>
-                                                                <a class="d-flex align-items-center justify-content-between" data-toggle="modal" data-target="#previewModal">
-                                                                <span wire:click="set_content('api_bucket','{{$item['id']}}')" class="cursor-pointers showVideo">
-                                                                    <i class="la la-play-circle mr-1"></i>
-                                                                    نمایش ویدئو
-                                                                </span>
-                                                                    <span>{{ $item['time'] }}</span>
-                                                                </a>
-                                                            </li>
-                                                        @endif
-                                                        @if(!empty($item['local_video']))
-                                                                @if($item['allow_show_local_video'] && empty($item['api_bucket']))
+                                                @if(auth()->check())
+                                                    @if((($item['free'] || $course->price == 0) || ($user->hasCourse($course->id))))
+                                                        <div class="card-body">
+                                                            <ul class="generic-list-item">
+                                                                @if(!empty($item['api_bucket']))
                                                                     <li>
                                                                         <a class="d-flex align-items-center justify-content-between" data-toggle="modal" data-target="#previewModal">
-                                                                <span wire:click="set_content('show_local_video','{{$item['id']}}')" class="cursor-pointers showVideo">
-                                                                    <i class="la la-play-circle mr-1"></i>
-                                                                    نمایش ویدئو
-                                                                </span>
+                                                                        <span wire:click="set_content('api_bucket','{{$item['id']}}')" class="cursor-pointers showVideo">
+                                                                            <i class="la la-play-circle mr-1"></i>
+                                                                            نمایش ویدئو
+                                                                        </span>
                                                                             <span>{{ $item['time'] }}</span>
                                                                         </a>
                                                                     </li>
                                                                 @endif
-                                                            <li>
-                                                                <a class="d-flex align-items-center justify-content-between" data-toggle="modal" data-target="#previewModal">
-                                                                    <span wire:click="set_content('local_video','{{$item['id']}}')" class="cursor-pointers">
-                                                                        <i class="la la-download mr-1"></i>
-                                                                       دانلود ویدئو
-                                                                    </span>
-                                                                </a>
-                                                            </li>
+                                                                @if(!empty($item['local_video']))
+                                                                        @if($item['allow_show_local_video'] && empty($item['api_bucket']))
+                                                                            <li>
+                                                                                <a class="d-flex align-items-center justify-content-between" data-toggle="modal" data-target="#previewModal">
+                                                                        <span wire:click="set_content('show_local_video','{{$item['id']}}')" class="cursor-pointers showVideo">
+                                                                            <i class="la la-play-circle mr-1"></i>
+                                                                            نمایش ویدئو
+                                                                        </span>
+                                                                                    <span>{{ $item['time'] }}</span>
+                                                                                </a>
+                                                                            </li>
+                                                                        @endif
+                                                                    <li>
+                                                                        <a class="d-flex align-items-center justify-content-between" data-toggle="modal" data-target="#previewModal">
+                                                                            <span wire:click="set_content('local_video','{{$item['id']}}')" class="cursor-pointers">
+                                                                                <i class="la la-download mr-1"></i>
+                                                                               دانلود ویدئو
+                                                                            </span>
+                                                                        </a>
+                                                                    </li>
 
-                                                        @endif
-                                                        @if(!empty($item['file']))
-                                                                <li>
-                                                                    <a class="d-flex align-items-center justify-content-between" data-toggle="modal" data-target="#previewModal">
-                                                                <span wire:click="set_content('file','{{$item['id']}}')" class="cursor-pointers">
-                                                                    <i class="la la-file mr-1"></i>
-                                                                   دانلود فایل
-                                                                </span>
+                                                                @endif
+                                                                @if(!empty($item['file']))
+                                                                        <li>
+                                                                            <a class="d-flex align-items-center justify-content-between" data-toggle="modal" data-target="#previewModal">
+                                                                        <span wire:click="set_content('file','{{$item['id']}}')" class="cursor-pointers">
+                                                                            <i class="la la-file mr-1"></i>
+                                                                           دانلود فایل
+                                                                        </span>
 
-                                                                    </a>
-                                                                </li>
-                                                        @endif
-                                                        @if(!empty($item['link']) )
-                                                                <li>
-                                                                    <a class="d-flex align-items-center justify-content-between" data-toggle="modal" data-target="#previewModal">
-                                                                <span wire:click="set_content('link','{{$item['id']}}')" class="cursor-pointers">
-                                                                    <i class="la la-link mr-1"></i>
-                                                                  لینک
-                                                                </span>
+                                                                            </a>
+                                                                        </li>
+                                                                @endif
+                                                                @if(!empty($item['link']) )
+                                                                        <li>
+                                                                            <a class="d-flex align-items-center justify-content-between" data-toggle="modal" data-target="#previewModal">
+                                                                        <span wire:click="set_content('link','{{$item['id']}}')" class="cursor-pointers">
+                                                                            <i class="la la-link mr-1"></i>
+                                                                          لینک
+                                                                        </span>
 
-                                                                    </a>
-                                                                </li>
-                                                        @endif
-                                                            <small class="text-info" wire:loading>
-                                                                در حال دریافت ...
-                                                            </small>
-                                                    </ul>
-                                                </div>
-                                                <!-- end card-body -->
+                                                                            </a>
+                                                                        </li>
+                                                                @endif
+                                                                    <small class="text-info" wire:loading>
+                                                                        در حال دریافت ...
+                                                                    </small>
+                                                            </ul>
+                                                        </div>
+                                                    @else
+                                                        <p class="alert alert-danger">دوره خریداری نشده است</p>
+                                                    @endif
+                                                @else
+                                                    <p class="alert alert-info">برای دسترسی به محتوا ابتدا ثبت نام نمایید.</p>
+                                                @endif
                                             </div>
-                                            @endif
                                             <!-- end collapse -->
                                         </div>
                                     @endforeach

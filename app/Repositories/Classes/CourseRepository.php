@@ -9,6 +9,9 @@ use App\Models\Course;
 use App\Observers\CourseObserver;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\Interfaces\CourseRepositoryInterface;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 class CourseRepository implements CourseRepositoryInterface
 {
@@ -68,9 +71,9 @@ class CourseRepository implements CourseRepositoryInterface
         return $course->delete();
     }
 
-    public function find($id)
+    public function find($id): Model|Collection|Builder|array|null
     {
-        return Course::findOrFail($id);
+        return Course::with('episodes')->findOrFail($id);
     }
 
     public function attachTags(Course $course, array $tags)
@@ -90,12 +93,12 @@ class CourseRepository implements CourseRepositoryInterface
 
     public function getAll()
     {
-        return Course::published()->cursor();
+        return Course::published()->with('episodes')->cursor();
     }
 
     public function get($col, $value , $published = false)
     {
-        return $published ? Course::published()->where($col,$value)->firstOrfail() : Course::where($col,$value)->firstOrfail();
+        return $published ? Course::published()->with(['episodes','comments'])->where($col,$value)->firstOrfail() : Course::where($col,$value)->with(['episodes','comments'])->firstOrfail();
     }
 
     public function whereIn($col, array $value , $take = false , $published = false , $where = [])
@@ -105,7 +108,7 @@ class CourseRepository implements CourseRepositoryInterface
             ($take ? Course::whereIn($col,$value)->where($where)->take($take)->get() : Course::whereIn($col,$value)->where($where)->get()) ;
     }
 
-    public function newComment(Course $course, array $data): \Illuminate\Database\Eloquent\Model
+    public function newComment(Course $course, array $data): Model
     {
         return $course->comments()->create($data);
     }

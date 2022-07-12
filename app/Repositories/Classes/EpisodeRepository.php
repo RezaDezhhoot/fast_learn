@@ -39,4 +39,13 @@ class EpisodeRepository implements EpisodeRepositoryInterface
     {
         return Episode::findMany($ids);
     }
+
+    public function getAllAdmin($course = null, $search = null, $perPage = 10)
+    {
+        return Episode::latest('id')->with('course')->when($course,function ($q) use ($course){
+           return $q->wherehas('course',function ($q) use ($course){
+               return $q->where('id',$course);
+           });
+        })->search($search)->paginate($perPage);
+    }
 }

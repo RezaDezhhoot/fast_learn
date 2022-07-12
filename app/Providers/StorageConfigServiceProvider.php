@@ -83,5 +83,15 @@ class StorageConfigServiceProvider extends ServiceProvider
         ];
 
         config(['filesystems.disks' => $disks]);
+
+
+        $lfm_disks = [];
+        foreach (StorageEnum::storages() as $key => $item)
+        {
+            if ((DB::table('settings')->where('name',"{$key}_available")->first()->value ?? false) || $key == StorageEnum::PRIVATE_LABEL || $key == StorageEnum::PUBLIC_LABEL)
+            $lfm_disks[] = $key;
+        }
+
+        config(['file-manager.diskList' => $lfm_disks]);
     }
 }

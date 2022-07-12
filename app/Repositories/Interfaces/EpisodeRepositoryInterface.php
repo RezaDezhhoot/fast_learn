@@ -19,4 +19,6 @@ interface EpisodeRepositoryInterface
     public function newEpisodeObject();
 
     public function findMany(array $ids);
+
+    public function getAllAdmin($course = null,$search = null,$perPage = 10);
 }

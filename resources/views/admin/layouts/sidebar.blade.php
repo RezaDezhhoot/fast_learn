@@ -89,8 +89,16 @@
                 @can('show_tags')
                     <x-admin.menu-item href="{{route('admin.tag')}}" icon="fas fa-tag" :active="request()->routeIs(['admin.tag','admin.store.tag'])" label="تگ ها" />
                 @endcan
-                @can('show_courses')
-                    <x-admin.menu-item href="{{route('admin.course')}}" icon="fab fa-product-hunt" :active="request()->routeIs(['admin.course','admin.store.course'])" label="دروه ها  " />
+                @can('show_courses' , 'show_episodes')
+                    <x-admin.menu-group icon="fab fa-product-hunt" :active="request()->routeIs(
+                    ['admin.course','admin.store.course','admin.episode','admin.store.episode'])" label="دوره های اموزشی" >
+                        @can('show_courses')
+                            <x-admin.menu-item href="{{route('admin.course')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['admin.course','admin.store.course'])" label="دروه ها  " />
+                        @endcan
+{{--                        @can('show_episodes')--}}
+                            <x-admin.menu-item href="{{route('admin.episode')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['admin.episode','admin.store.episode'])" label="درس ها  " />
+{{--                        @endcan--}}
+                    </x-admin.menu-group>
                 @endcan
                 @can('show_articles')
                     <x-admin.menu-item href="{{route('admin.article')}}" icon="fas fa-text-height"  :active="request()->routeIs(['admin.article','admin.store.article'])" label="مقالات " />
