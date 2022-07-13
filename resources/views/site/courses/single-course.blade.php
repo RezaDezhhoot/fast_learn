@@ -182,7 +182,7 @@
                                     </div>
                                     <!-- end instructor-img -->
                                     <div class="media-body">
-                                        <h5><a href="{{ route('teacher',$course->teacher->user->id) }}">{{ $course->teacher->user->name }}</a></h5>
+                                        <h5><a href="{{ route('teacher',$course->teacher->id) }}">{{ $course->teacher->user->name }}</a></h5>
                                         <span class="d-block lh-18 pt-2 pb-3"> شروع فعالیت از  {{ $course->teacher->created_at->diffForHumans() }} </span>
                                         <p class="pb-3">
                                            {!! $course->teacher->body !!}
@@ -242,7 +242,7 @@
                                             </div>
                                             <div class="media-body">
                                                 <div class="d-flex flex-wrap align-items-center justify-content-between pb-1">
-                                                    <h5>{{ $comments[$i]->user->name }}</h5>
+                                                    <h5>{{ $comments[$i]->user->name }} {{ $comments[$i]->user->id == $course->teacher->id ? " (مدرس) " : '' }}</h5>
                                                 </div>
                                                 <span class="d-block lh-18 py-2">{{ $comments[$i]->created_at->diffForHumans() }}</span>
                                                 <p class="pb-2">
@@ -260,7 +260,7 @@
                                                 </div>
                                                 <div class="media-body">
                                                     <div class="d-flex flex-wrap align-items-center justify-content-between pb-1">
-                                                        <h5>{{ $value->user->name }}</h5>
+                                                        <h5>{{ $value->user->name }} {{ $value->user->id == $course->teacher->id ? " (مدرس)  " : '' }}</h5>
                                                     </div>
                                                     <span class="d-block lh-18 py-2">{{ $value->created_at->diffForHumans() }}</span>
                                                     <p class="pb-2">
