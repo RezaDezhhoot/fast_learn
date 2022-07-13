@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Site\Articles;
 
+use App\Enums\CommentEnum;
 use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\ArticleRepositoryInterface;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
@@ -16,7 +17,7 @@ use Psr\Container\NotFoundExceptionInterface;
 
 class SingleArticle extends BaseComponent
 {
-    public mixed $related_posts , $comments , $recaptcha , $commentCount = 10 ,  $actionComment  , $actionLabel = 'دیدگاه جدید' ;
+    public  $related_posts , $comments , $recaptcha , $commentCount = 10 ,  $actionComment  , $actionLabel = 'دیدگاه جدید' ;
     public ?string $comment = null;
     public object $article;
 
@@ -89,10 +90,12 @@ class SingleArticle extends BaseComponent
             'user_id' => auth()->id(),
             'content' => $this->comment,
             'parent_id'=> $this->actionComment ?? null,
+            'status' => $this->article->user_id == auth()->id() ? CommentEnum::CONFIRMED : CommentEnum::NOT_CONFIRMED
         ];
 
-        $this->articleRepository->newComment($this->article,$data);
-        $this->reset(['comment','actionLabel','actionComment']);
+        $comment = $this->articleRepository->newComment($this->article,$data);
+        $this->emit('resetReCaptcha');
+        $this->reset(['comment','actionLabel','actionComment','recaptcha']);
         return $this->emitNotify('دیدگاه با موفقیت ثبت شد');
     }
 

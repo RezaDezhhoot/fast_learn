@@ -10,7 +10,7 @@ interface CommentRepositoryInterface
 {
     public static function getNew();
 
-    public function getAllAdminList($search , $status , $for , $pagination , $active = true);
+    public function getAllAdminList($search , $status , $for , $pagination , $case = null , $active = true);
 
     public function getByConditionCount($col , $operator , $value , $active = true);
 

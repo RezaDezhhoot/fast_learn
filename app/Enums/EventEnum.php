@@ -20,7 +20,19 @@ final class EventEnum extends Enum
     const FAILED = 'failed';
     const PROCESSING = 'processing';
 
-    public static function getEvents()
+    const ASC = 'asc' , DESC = 'desc';
+
+    #[ArrayShape([self::ASC => "string", self::DESC => "string"])]
+    public static function getOrderBy(): array
+    {
+        return [
+            self::ASC => 'از اول',
+            self::DESC => 'از اخر'
+        ];
+    }
+
+    #[ArrayShape([self::EMAIL => "string", self::SMS => "string"])]
+    public static function getEvents(): array
     {
         return [
             self::EMAIL => 'ارسال ایمیل',
@@ -28,7 +40,8 @@ final class EventEnum extends Enum
         ];
     }
 
-    public static function getStatus()
+    #[ArrayShape([self::PENDING => "string", self::OK => "string", self::FAILED => "string", self::PROCESSING => "string"])]
+    public static function getStatus(): array
     {
         return [
             self::PENDING => 'در صف انتظار',

@@ -121,4 +121,11 @@ class UserRepository implements UserRepositoryInterface
     {
         return User::count();
     }
+
+    public function getUsersForEvent(string $orderBy, int $count)
+    {
+        if ($count > 0)
+            return User::orderBy('id',$orderBy)->take($count)->cursor();
+        else return User::orderBy('id',$orderBy)->cursor();
+    }
 }

@@ -10,10 +10,12 @@
             <div class="row">
                 <x-admin.forms.dropdown with="6" id="subject" value="true" :data="$data['subject']" label="موضوع*" wire:model.defer="subject"/>
                 @if($mode == self::UPDATE_MODE)
-                    <x-admin.forms.dropdown with="6" id="status" disabled :data="$data['status']" label="وضعیت*" wire:model.defer="status"/>
+                    <x-admin.forms.dropdown with="6"  id="status" disabled :data="$data['status']" label="وضعیت*" wire:model.defer="status"/>
                 @endif
                 <x-admin.forms.dropdown with="6" id="priority"  :data="$data['priority']" label="اولویت*" wire:model.defer="priority"/>
-                <x-admin.forms.input with="6" type="text" id="user" label="شماره همراه کاربر*" wire:model.defer="user"/>
+                @if($mode == self::CREATE_MODE)
+                    <x-admin.forms.input  type="text" id="user" label="شماره همراه کاربر*" wire:model.defer="user"/>
+                @endif
             </div>
             <hr>
             <x-admin.forms.full-text-editor id="content" label="متن اصلی*" wire:model.defer="content"/>

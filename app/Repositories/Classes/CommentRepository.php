@@ -18,7 +18,7 @@ class CommentRepository implements CommentRepositoryInterface
         return  Comment::getNew();
     }
 
-    public function getAllAdminList($search, $status, $for, $pagination, $active = true)
+    public function getAllAdminList($search, $status, $for, $pagination , $case = null, $active = true)
     {
         return Comment::confirmed($active)->latest('id')->with(['user'])->when($search,function ($query) use ($search){
             return $query->whereHas('user',function ($query) use ($search){
@@ -27,8 +27,10 @@ class CommentRepository implements CommentRepositoryInterface
             });
         })->when($status,function ($query) use ($status){
             return $query->where('status',$status);
-        })->when($for,function ($query) use ($for){
-            return $query->where('commentable_type',$for);
+        })->when($for,function ($query) use ($for,$case){
+            return $query->where('commentable_type',$for)->when($case,function ($q) use ($case){
+                return $q->where('commentable_id',$case);
+            });
         })->paginate($pagination);
     }
 

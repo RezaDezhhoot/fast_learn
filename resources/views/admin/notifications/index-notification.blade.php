@@ -15,6 +15,8 @@
                             <th>شماره</th>
                             <th>موضوع</th>
                             <th>نام کاربری</th>
+                            <th>شماره همراه کاربر</th>
+                            <th>ایمیل کاربر</th>
                             <th>نوع</th>
                             <th>متن</th>
                             <th>تاریخ</th>
@@ -27,7 +29,9 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->id }}</td>
                                 <td>{{ $item->subjectLabel }}</td>
-                                <td>{{ $item->user->user_name ?? 'عمومی' }}</td>
+                                <td>{{ $item->user->name ?? 'عمومی' }}</td>
+                                <td>{{ $item->user->phone ?? 'عمومی' }}</td>
+                                <td>{{ $item->user->email ?? 'عمومی' }}</td>
                                 <td>{{ $item->type_label }}</td>
                                 <td style="width: 40%;">{!! $item->content !!}</td>
                                 <td>{{ $item->date }}</td>
@@ -36,7 +40,7 @@
                                 </td>
                             </tr>
                         @empty
-                            <td class="text-center" colspan="8">
+                            <td class="text-center" colspan="11">
                                 دیتایی جهت نمایش وجود ندارد
                             </td>
                         @endforelse

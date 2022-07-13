@@ -11,6 +11,7 @@
                 </div>
             </div>
             <x-admin.forms.dropdown id="for" :data="$data['for']" label="نوع" wire:model="for"/>
+            <x-admin.forms.dropdown id="case" :data="$data['case']" label="مورد" wire:model="case"/>
             @include('admin.layouts.advance-table')
             <div class="row">
                 <div class="col-lg-12 table-responsive">
@@ -18,7 +19,10 @@
                         <thead>
                         <tr>
                             <th>#</th>
+                            <th> دیدگاه</th>
                             <th>کاربر</th>
+                            <th>شماره همراه کاربر</th>
+                            <th>ایمیل کاربر</th>
                             <th>وضعیت</th>
                             <th>نوع</th>
                             <th>مورد</th>
@@ -30,7 +34,10 @@
                         @forelse($comments as $item)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
+                                <td>{{ is_null($item->parent_id) ? 'دیدگاه اصلی' : 'ارسال پاسخ' }}</td>
                                 <td>{{ $item->user->name  }}</td>
+                                <td>{{ $item->user->phone  }}</td>
+                                <td>{{ $item->user->email  }}</td>
                                 <td>{{ $item->status_label }}</td>
                                 <td>{{ $item->for_label }}</td>
                                 <td>{{ $item->commentable->title}}</td>
@@ -42,7 +49,7 @@
                                 </td>
                             </tr>
                         @empty
-                            <td class="text-center" colspan="8">
+                            <td class="text-center" colspan="10">
                                 دیتایی جهت نمایش وجود ندارد
                             </td>
                         @endforelse

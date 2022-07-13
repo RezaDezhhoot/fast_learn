@@ -35,4 +35,6 @@ interface ArticleRepositoryInterface
     public function newComment(Article $article , array $data);
 
     public function count();
+
+    public function getAll();
 }

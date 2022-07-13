@@ -42,12 +42,12 @@
                                                 <table class="header-row" width="378" cellspacing="0" cellpadding="0" border="0" style="table-layout: fixed;">
                                                     <tbody>
                                                     <tr>
-                                                        <td class="header-row-td" width="378" style="font-family: Arial, sans-serif; font-weight: normal; line-height: 19px; color: #478fca; margin: 0px; font-size: 18px; padding-bottom: 10px; padding-top: 15px;" valign="top" align="left">{{$subject}}</td>
+                                                        <td class="header-row-td" width="378" style="text-align: right;font-family: Arial, sans-serif; font-weight: normal; line-height: 19px; color: #478fca; margin: 0px; font-size: 18px; padding-bottom: 10px; padding-top: 15px;" valign="top" align="left">{{$subject}}</td>
                                                     </tr>
                                                     </tbody>
                                                 </table>
-                                                <div style="font-family: Arial, sans-serif; line-height: 20px; color: #444444; font-size: 13px;">
-                                                    <b style="color: #777777;">{{$text}}</b>
+                                                <div style="font-family: Arial, sans-serif; line-height: 20px; color: #444444; font-size: 13px;text-align: right;">
+                                                    <b style="color: #777777;text-align: right;">{{$text}}</b>
                                                 </div>
                                             </td>
                                         </tr>

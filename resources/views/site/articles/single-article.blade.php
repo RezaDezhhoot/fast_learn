@@ -127,7 +127,7 @@
                                 <div class="divider"><span></span></div>
                                 <form wire:submit.prevent="search">
                                     <div class="form-group mb-0">
-                                        <input wire:model.defer="q" class="form-control form--control pl-3" type="search" name="q" placeholder="جستجوی دوره" />
+                                        <input wire:model.defer="q" class="form-control form--control pl-3" type="search" name="q" placeholder="جستجوی مقاله" />
                                         <span wire:click="search" class="la la-search search-icon"></span>
                                     </div>
                                 </form>

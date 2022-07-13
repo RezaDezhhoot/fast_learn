@@ -7,6 +7,28 @@
         </div>
         <x-admin.forms.validation-errors/>
         <div class="card-body">
+            <x-admin.form-section label="کاربر">
+                <div class="row">
+                    <div class="col-12">
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                            <tr>
+                                <td>نام</td>
+                                <td>شماره همراه</td>
+                                <td>وضعیت</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>{{ $comment->user->name }}</td>
+                                <td>{{ $comment->user->phone }}</td>
+                                <td>{{ $comment->user->status_label }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </x-admin.form-section>
             <div class="row">
                 <x-admin.forms.input with="6" type="text" disabled id="case" label="مورد" wire:model.defer="case"/>
                 <x-admin.forms.dropdown with="6" id="status" :data="$data['status']" label="وضعیت*" wire:model.defer="status"/>
@@ -27,8 +49,7 @@
                                 </small>
                                 <hr>
                                 <p>
-                                    " {!! $item->content !!} "
-
+                                     {!! $item->content !!}
                                 </p>
                             </div>
                         @endforeach

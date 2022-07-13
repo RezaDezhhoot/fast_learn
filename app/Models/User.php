@@ -35,6 +35,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @method cursor()
  * @method static select(array $columns)
  * @method static count()
+ * @method static orderBy(string $string, string $orderBy)
  */
 class User extends Authenticatable implements Wallet, Confirmable
 {

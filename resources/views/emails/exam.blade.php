@@ -115,7 +115,7 @@
                                     <table>
                                         <tr>
                                             <td valign="top" style="text-align: center; padding: 60px 0 10px 20px;">
-                                                <h1 style="margin: 0; font-family: 'Montserrat', sans-serif; font-size: 30px; line-height: 36px; color: #ffffff; font-weight: bold;">نتیجه ازمون</h1>
+                                                <h1 style="text-align: right;margin: 0; font-family: 'Montserrat', sans-serif; font-size: 30px; line-height: 36px; color: #ffffff; font-weight: bold;">نتیجه ازمون</h1>
                                             </td>
                                         </tr>
                                         <tr>

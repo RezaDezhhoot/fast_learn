@@ -163,9 +163,12 @@ class SingleCourse extends BaseComponent
             'parent_id'=> $this->actionComment ?? null,
             'status' => $this->course->teacher->user->id == Auth::id() ? CommentEnum::CONFIRMED : CommentEnum::NOT_CONFIRMED
         ];
+        $this->emit('resetReCaptcha');
         $this->courseRepository->newComment($this->course,$data);
-        $this->reset(['comment','actionLabel','actionComment']);
-        return $this->emitNotify(' دیدگاه با موفقیت ثبت شد پس از تایید نمایش داده خواهد شد');
+        $this->reset(['comment','actionLabel','actionComment','recaptcha']);
+        if ($this->course->teacher->user->id == Auth::id())
+            return $this->emitNotify(' دیدگاه با موفقیت ثبت شد');
+        else return $this->emitNotify(' دیدگاه با موفقیت ثبت شد پس از تایید نمایش داده خواهد شد');
     }
 
     public function moreComment()
@@ -243,6 +246,7 @@ class SingleCourse extends BaseComponent
                         'episode_title' => $this->episode->title,
                         'storage' => $this->episode->homework_storage
                     ]);
+                    $this->emit('resetReCaptcha');
                     $this->emitNotify('تمرین شما با موفقیت ارسال شد');
                 } else $this->emitNotify('امکان بارگذاری مجدد تمرین موجود نمی باشد','warning');
             } else $this->emitNotify('شما هنوز این دوره را شروع نکرده اید','warning');

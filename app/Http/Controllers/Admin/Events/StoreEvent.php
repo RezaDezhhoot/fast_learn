@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 class StoreEvent extends BaseComponent
 {
     public  $header;
-    public  $title , $body , $event;
+    public  $title , $body , $event , $orderBy , $count;
 
     public function __construct($id = null)
     {
@@ -30,6 +30,7 @@ class StoreEvent extends BaseComponent
             return abort(404);
 
         $this->data['event'] = EventEnum::getEvents();
+        $this->data['orderBy'] = EventEnum::getOrderBy();
         $this->header = 'رویداد جدید';
     }
 
@@ -40,26 +41,32 @@ class StoreEvent extends BaseComponent
             'title' => ['required','string','max:120'],
             'body' => ['required','string','max:200000'],
             'event' => ['required','string','in:'.implode(',',array_keys(EventEnum::getEvents()))],
+            'count' => ['required','integer','min:0'],
+            'orderBy' => ['required','in:'.implode(',',array_keys(EventEnum::getOrderBy()))]
         ],[],[
             'title' => 'عنوان',
             'body' => 'متن اصلی',
-            'event' => 'عملیات رویداد'
+            'event' => 'عملیات رویداد',
+            'count' => 'تعداد کاربر',
+            'orderBy' => 'مرتب سازی'
         ]);
         $event = $this->eventRepository->create([
             'title' => $this->title,
             'body' => $this->body,
             'event' => $this->event,
             'status' => EventEnum::PENDING,
-            'user_id' => Auth::id()
+            'user_id' => Auth::id() ,
+            'count' => ['required','integer','min:0'],
+            'orderBy' => ['required','in:'.implode(',',array_keys(EventEnum::getOrderBy()))]
         ]);
 
 
-        $users = $this->userRepository->getAll();
+        $users = $this->userRepository->getUsersForEvent($this->orderBy , $this->count);
         foreach ($users as $item)
             ProcessEvent::dispatch($event,$item)->delay(now()->addSeconds(7));
 
 
-        $this->reset(['title','body','event']);
+        $this->reset(['title','body','event','orderBy','count']);
         $this->emitNotify('رویداد با موفقیت ذخیره شد');
 
     }
