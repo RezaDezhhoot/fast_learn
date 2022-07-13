@@ -13,17 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        if (
-            Schema::hasColumn('episodes', 'file_upload_method') &&
-            Schema::hasColumn('episodes', 'video_upload_method')
-        )
-        {
+        if (!Schema::hasColumn('episodes', 'homework_storage')) {
             Schema::table('episodes', function (Blueprint $table) {
-                $table->dropColumn('file_upload_method');
-                $table->dropColumn('video_upload_method');
+                $table->integer('homework_storage')->default(0);
             });
         }
-
     }
 
     /**
@@ -33,8 +27,11 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('episodes', function (Blueprint $table) {
-            //
-        });
+        if (Schema::hasColumn('episodes', 'homework_storage')) {
+            Schema::table('episodes', function (Blueprint $table) {
+                $table->dropColumn('homework_storage');
+            });
+        }
+
     }
 };

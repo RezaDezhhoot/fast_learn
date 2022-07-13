@@ -19,7 +19,7 @@ class BaseComponent extends Component
         $episodeRepository , $userRepository , $articleRepository , $certificateRepository , $commentRepository , $orderRepository,
         $orderDetailRepository , $paymentReporitory , $questionRepository , $eventRepository , $notificationRepository , $transcriptRepository ,
         $choiceRepository , $reductionRepository , $reductionMetaRepository , $roleRepository , $permissionRepository , $ticketRepository ,
-        $sendRepository , $userDetailRepository , $orderNoteRepository;
+        $sendRepository , $userDetailRepository , $orderNoteRepository , $homeworkRepository;
 
     public  $mode = '' , $search = '';
 

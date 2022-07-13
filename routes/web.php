@@ -47,6 +47,7 @@ Route::prefix('client')->middleware(['auth'])->group(function (){
     Route::get('/certificates',App\Http\Controllers\Site\Client\Certificates::class)->name('user.certificates');
     Route::get('/certificates/{id}',App\Http\Controllers\Site\Client\Certificate::class)->name('user.certificate');
     Route::get('/exam/{token}',App\Http\Controllers\Site\Client\Exam::class)->name('user.exam');
+    Route::get('/homeworks',App\Http\Controllers\Site\Client\Homeworks::class)->name('user.homeworks');
 });
 Route::prefix('admin')->middleware(['auth','role:admin'])->group(function (){
     Route::get('/dashboard',App\Http\Controllers\Admin\Dashboard\IndexDashboard::class)->name('admin.dashboard');

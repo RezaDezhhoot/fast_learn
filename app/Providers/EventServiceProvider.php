@@ -10,6 +10,7 @@ use App\Listeners\SendAuthenticationNotify;
 use App\Listeners\SendExamNotify;
 use App\Listeners\SendOrderNotify;
 use App\Listeners\SendRegisterNotify;
+use App\Repositories\Classes\HomeworkRepository;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\Interfaces\CourseRepositoryInterface;
 use App\Repositories\Interfaces\TicketRepositoryInterface;
@@ -58,6 +59,7 @@ class EventServiceProvider extends ServiceProvider
         app(TicketRepositoryInterface::class)::observe();
         app(CategoryRepositoryInterface::class)::observe();
         app(CourseRepositoryInterface::class)::observe();
+        app(HomeworkRepository::class)::observe();
     }
 
     /**

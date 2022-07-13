@@ -21,7 +21,7 @@ class EpisodeRepository implements EpisodeRepositoryInterface
 
     public function findOrFail($id)
     {
-        return Episode::findOrFail($id);
+        return Episode::with('homeworks')->findOrFail($id);
     }
 
     public function save(Episode $episode)

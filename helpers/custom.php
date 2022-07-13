@@ -41,11 +41,11 @@ function getAvailableStorages(): array
     return $storages;
 }
 
-function rateLimiter($value , int $decalSeconds = 3 * 60 * 60): bool|string
+function rateLimiter($value , int $decalSeconds = 3 * 60 * 60 ,int $max_tries = 6): bool|string
 {
     $rateKey = 'verify-attempt:' . $value . '|' . request()->ip();
     if (RateLimiter::tooManyAttempts($rateKey, app(SettingRepositoryInterface::class)
-            ->getRow('dos_count') ?? 6)) {
+            ->getRow('dos_count') ?? $max_tries)) {
         return $rateKey;
     }
     RateLimiter::hit($rateKey, $decalSeconds);

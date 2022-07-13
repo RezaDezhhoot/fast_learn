@@ -15,6 +15,8 @@
                             <th>عنوان دوره</th>
                             <th>تاریخ انتشار</th>
                             <th>اخرین اپدیت</th>
+                            <th>فضای ذخیره سازی فایل</th>
+                            <th>فضای ذخیره سازی ویدئو</th>
                             <th>امکان ارسال تمرین</th>
                             <th>تعداد تمرین</th>
                             <th>وضعیت</th>
@@ -33,15 +35,17 @@
                                 </td>
                                 <td>{{ $item->created_at->diffForHumans() }}</td>
                                 <td>{{ $item->updated_at->diffForHumans() }}</td>
-                                <td>دارد</td>
-                                <td>{{ 1 }}</td>
+                                <td>{{ $item->file_storage_label }}</td>
+                                <td>{{ $item->video_storage_label }}</td>
+                                <td>{{ $item->can_homework ? 'دارد' : 'ندارد' }}</td>
+                                <td>{{ $item->homeworks_count }}</td>
                                 <td>{{ $item->free ? 'رایگان' : 'نقدی' }}</td>
                                 <td>
                                     <x-admin.edit-btn href="{{ route('admin.store.episode',['edit', $item->id]) }}" />
                                 </td>
                             </tr>
                         @empty
-                            <td class="text-center" colspan="10">
+                            <td class="text-center" colspan="11">
                                 دیتایی جهت نمایش وجود ندارد
                             </td>
                         @endforelse

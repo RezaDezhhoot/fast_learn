@@ -50,6 +50,7 @@
                                                     <i class="la la-plus"></i>
                                                     <i class="la la-minus"></i>
                                                     {{ $item['title'] }}
+
                                                     @if($item['free'] || $course->price == 0)
                                                         <small class="text-success">رایگان <i class="la la-lock-open"> </i></small>
                                                     @elseif(auth()->check() && $user->hasCourse($course->id))
@@ -67,6 +68,7 @@
                                                 @if(auth()->check())
                                                     @if((($item['free'] || $course->price == 0) || ($user->hasCourse($course->id))))
                                                         <div class="card-body">
+
                                                             <ul class="generic-list-item">
                                                                 @if(!empty($item['api_bucket']))
                                                                     <li>
@@ -118,6 +120,17 @@
                                                                         <span wire:click="set_content('link','{{$item['id']}}')" class="cursor-pointers">
                                                                             <i class="la la-link mr-1"></i>
                                                                           لینک
+                                                                        </span>
+
+                                                                            </a>
+                                                                        </li>
+                                                                @endif
+                                                                @if($item->can_homework)
+                                                                        <li data-toggle="modal" data-target="#homeworkModal">
+                                                                            <a class="d-flex align-items-center justify-content-between" data-toggle="modal" data-target="#previewModal">
+                                                                        <span wire:click="homework('{{$item['id']}}')" class="cursor-pointers">
+                                                                            <i class="la la-file-import mr-1"></i>
+                                                                          ارسال تمرین
                                                                         </span>
 
                                                                             </a>
@@ -282,7 +295,11 @@
                                         @if($course->has_reduction && $course->base_price > 0)
                                             <div class="m-0 p-0">
                                                 <p class="before-price mx-1"> {{ number_format($course->base_price) }} </p>
+                                                @if($course->price > 0)
                                                 <span class="fs-35 font-weight-semi-bold text-black">{{ number_format($course->price) }} تومان</span>
+                                                @else
+                                                    <span class="fs-35 font-weight-semi-bold text-black">رایگان</span>
+                                                @endif
                                             </div>
                                             <p class="price-discount p-1">{{ $course->reduction_percent }} درصد تخفیف</p>
                                             @if(!empty($course->expire_at))
@@ -382,6 +399,102 @@
         <!-- end container -->
     </section>
 
+    <div wire:ignore.self class="modal fade modal-container" id="homeworkModal" tabindex="-1" role="dialog" aria-labelledby="homeworkModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header border-bottom-gray d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <h5 class="modal-title fs-19 font-weight-semi-bold" id="shareModalTitle">ارسال تمرین</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="نزدیک">
+                            <span aria-hidden="true" class="la la-times"></span>
+                        </button>
+                    </div>
+                    <div>
+                        @if(!is_null($homework) && empty($homework->result))
+                                <button class="btn btn-sm btn-outline-danger" onclick="delete_homework()"><i class="la la-trash"></i> حذف این تمرین</button>
+                        @endif
+                    </div>
+                </div>
+                <div class="modal-body">
+                    @if($show_homework_form)
+                    <form wire:submit.prevent="submit_homework()">
+                        <div class="row">
+                            @auth
+                                <div class="input-box col-12">
+                                    <div class="form-group">
+                                        <div x-data="{ isUploading: false, progress: 0 }"
+                                             x-on:livewire-upload-start="isUploading = true"
+                                             x-on:livewire-upload-finish="isUploading = false"
+                                             x-on:livewire-upload-error="isUploading = false"
+                                             x-on:livewire-upload-progress="progress = $event.detail.progress" class="custom-file my-4">
+                                            <input {{ !is_null($homework) ? 'disabled' : '' }} type="file" class="custom-file-input" wire:model="homework_file" id="homework_file">
+                                            <label class="custom-file-label"  for="homework_file">انتخاب فایل</label>
+                                            <div class="mt-2" x-show="isUploading">
+                                                در حال اپلود فایل...
+                                                <progress max="100" x-bind:value="progress"></progress>
+                                            </div>
+                                            <small class="text-info">حداقل حجم مجاز : 2 مگابایت</small>
+                                            <small class="text-info">jpg,jpeg,png,pdf,zip,rar</small>
+                                            @if(!is_null($homework) && !is_null($homework->file))
+                                                <small class="alert d-block p-1 alert-success">فایل ارسال شده است</small>
+                                            @endif
+                                            @error('homework_file')
+                                                <small class="text-danger">{{$message}}</small>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="input-box col-lg-12">
+                                    <label class="label-text">توضیحات</label>
+                                    <div class="form-group">
+                                        <textarea {{ !is_null($homework) ? 'disabled' : '' }} wire:model.defer="homework_description" class="form-control form--control pl-3" name="homework_description" placeholder="توضیحات" rows="5"></textarea>
+                                    </div>
+                                    @error('homework_description')
+                                    <span class="invalid-feedback d-block">{{$message}}</span>
+                                    @enderror
+                                </div>
+                                    <div class="input-box col-lg-12 text-right overflow-hidden mb-3 {{ !is_null($homework) ? 'd-none' : '' }}">
+                                        <div class="g-recaptcha d-inline-block" data-sitekey="{{ config('services.recaptcha.site_key') }}"
+                                             data-callback="homeworkReCaptchaCallback" wire:ignore></div>
+                                        @error('homework_recaptcha')<span class="invalid-feedback d-block">{{ $message }}</span>@enderror
+                                    </div>
+                                <div class="btn-box col-lg-12 {{ !is_null($homework) ? 'd-none' : '' }}">
+                                    <button {{ !is_null($homework) ? 'disabled' : '' }} class="btn theme-btn" type="submit">ارسال تمرین</button>
+                                </div>
+                                @if(!is_null($homework) && !is_null($homework->result))
+                                    <div class="col-12">
+                                        <h6>نتیجه :</h6>
+                                        <small>
+                                            @for($i=1; $i<=5; $i++)
+                                                @if($i <= $homework->score)
+                                                    <span class="la la-star"></span>
+                                                @else
+                                                    <span class="la la-star-o"></span>
+                                                @endif
+                                            @endfor
+                                        </small>
+                                        <p class="mr-1">
+                                            {!! $homework->result !!}
+                                        </p>
+                                    </div>
+                                @endif
+                            @else
+                                <p class="text-info">
+                                    برای ارسال تمرین ابتدا ثبت نام کنید
+                                </p>
+                            @endif
+                        </div>
+                    </form>
+                    @else
+                        <p class="alert alert-danger">شما به این بخش دسترسی ندارید.</p>
+                    @endif
+                </div>
+                <div class="modal-footer justify-content-center border-top-gray">
+
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modal fade modal-container" id="shareModal" tabindex="-1" role="dialog" aria-labelledby="shareModalTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -429,6 +542,26 @@
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
     <script>
+        function delete_homework() {
+            Swal.fire({
+                title: 'حذف تمرین!',
+                text: 'آیا از حذف این تمرین اطمینان دارید؟',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'خیر',
+                confirmButtonText: 'بله'
+            }).then((result) => {
+                if (result.value) {
+                    @this.call('delete_homework')
+                }
+            })
+        }
+        function homeworkReCaptchaCallback(response) {
+            @this.set('homework_recaptcha', response);
+        }
+
         function reCaptchaCallback(response) {
             @this.set('recaptcha', response);
         }

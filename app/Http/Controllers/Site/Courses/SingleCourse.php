@@ -7,6 +7,7 @@ use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\Interfaces\CourseRepositoryInterface;
 use App\Repositories\Interfaces\EpisodeRepositoryInterface;
+use App\Repositories\Interfaces\HomeworkRepositoryInterface;
 use App\Repositories\Interfaces\OrderDetailRepositoryInterface;
 use App\Repositories\Interfaces\OrderRepositoryInterface;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
@@ -16,17 +17,24 @@ use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Facades\TwitterCard;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Cart\Facades\Cart;
 use Illuminate\Support\Facades\Log;
+use Livewire\WithFileUploads;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
 class SingleCourse extends BaseComponent
 {
+    use WithFileUploads;
     public  $course;
     public  $related_courses , $comments , $recaptcha , $episodes , $user , $commentCount = 10 , $actionComment = 'new' , $actionLabel = 'دیدگاه جدید';
     public ?string $api_bucket = null , $local_video , $comment = null , $episode_title = null , $episode_id;
+
+    public $homework , $file_path , $homework_file , $homework_description , $homework_recaptcha;
+
+    public $episode , $show_homework_form = false;
 
     public function __construct($id = null)
     {
@@ -37,6 +45,7 @@ class SingleCourse extends BaseComponent
         $this->episodeRepository = app(EpisodeRepositoryInterface::class);
         $this->orderRepository = app(OrderRepositoryInterface::class);
         $this->orderDetailRepository = app(OrderDetailRepositoryInterface::class);
+        $this->homeworkRepository = app(HomeworkRepositoryInterface::class);
         $this->disk = getDisk();
     }
 
@@ -69,6 +78,7 @@ class SingleCourse extends BaseComponent
         $this->related_courses = $this->courseRepository->whereIn('category_id',$ids,3,true,[['id' , '!=' , $this->course->id]]);
         $this->comments = $this->course->comments;
         $this->courseRepository->increment($this->course,1);
+        $this->show_homework_form = $this->user->hasCourse($this->course->id);
     }
 
     public function render()
@@ -92,54 +102,25 @@ class SingleCourse extends BaseComponent
 
         $episode = $this->episodeRepository->find($id);
         $this->episode_id = $episode->id;
-        $free = $episode->price == 0;
         $user_has_episode = $this->user->hasCourse($this->course->id);
         if ($this->course->price == 0 && !$user_has_episode){
-            $order = [
-                'user_id' => auth()->id(),
-                'user_ip' => request()->ip(),
-                'price'=> 0,
-                'total_price' => 0,
-                'reduction_code' =>  null,
-                'reductions_value' => 0,
-                'wallet_pay'=>0,
-                'discount' => 0,
-                'transactionId' => null,
-            ];
-            try {
-                DB::beginTransaction();
-                $order = $this->orderRepository->create($order);
-                $this->orderDetailRepository->create([
-                    'course_id' => $this->course->id,
-                    'product_data' => json_encode(['id' => $this->course->id, 'title' => $this->course->title]),
-                    'price' => (0),
-                    'total_price' => 0,
-                    'status' => OrderEnum::STATUS_COMPLETED,
-                    'quantity' => 1,
-                    'order_id' => $order->id,
-                ]);
-                DB::commit();
-            } catch (Exception $e) {
-                DB::rollBack();
-                Log::error($e->getMessage());
-                $this->emitNotify('خطا در هنگام ثبت دوره','warning');
-            }
+            $this->setOrder();
         }
         switch ($type){
             case 'api_bucket':
-                if (!is_null($episode->api_bucket) and (($free || $this->course->price == 0) || $user_has_episode)):
+                if (!is_null($episode->api_bucket) and (($this->course->price == 0) || $user_has_episode)):
                     $this->episode_title = $episode->title;
                     return $this->api_bucket = $episode->api_bucket;
                     endif;
                 break;
             case 'local_video':
-                if ( ($free || $this->course->price == 0) || $user_has_episode) {
+                if ( ( $this->course->price == 0) || $user_has_episode) {
                     if ($disk = getDisk($episode->video_storage))
                         return $disk->download($episode->local_video);
                 }
                 break;
             case 'show_local_video':
-                if (!is_null($episode->local_video) and $episode->allow_show_local_video and (($free || $this->course->price == 0) || $user_has_episode)):
+                if (!is_null($episode->local_video) and $episode->allow_show_local_video and (($this->course->price == 0) || $user_has_episode)):
                     $this->episode_title = $episode->title;
                     $this->local_video = route('storage',[$episode->id,'video']);
                     $this->emit('setVideo',['title' => '1','src' => $this->local_video]);
@@ -147,11 +128,11 @@ class SingleCourse extends BaseComponent
                 break;
             case 'file':
                 if ($disk = getDisk($episode->file_storage))
-                    if ($disk->exists($episode->file) and (($free || $this->course->price == 0) || $user_has_episode))
+                    if ($disk->exists($episode->file) and (( $this->course->price == 0) || $user_has_episode))
                         return $disk->download($episode->file);
                 break;
             case 'link':
-                if (!is_null($episode->link) and (($free || $this->course->price == 0) || $user_has_episode))
+                if (!is_null($episode->link) and ((  $this->course->price == 0) || $user_has_episode))
                     return redirect()->away($episode->link);
                 break;
         }
@@ -187,5 +168,133 @@ class SingleCourse extends BaseComponent
     public function moreComment()
     {
         $this->commentCount = $this->commentCount + 10;
+    }
+
+    public function homework($id)
+    {
+        if (Auth::check()) {
+            if ($rateKey = rateLimiter(value:Auth::id().'_homework_'.$this->course->id,max_tries: 25))
+            {
+                $this->show_homework_form = false;
+                return $this->emitNotify('زیادی تلاش کردید. لطفا پس از مدتی دوباره تلاش کنید.','warning');
+            }
+            $user_has_episode = $this->user->hasCourse($this->course->id);
+            if ($this->course->price == 0 && !$user_has_episode)
+                $user_has_episode = $this->setOrder();
+
+            if ($user_has_episode) {
+                $this->episode = $this->episodeRepository->find($id);
+                if (!is_null($this->episode) && $this->episode->can_homework){
+                    $this->homework = $this->homeworkRepository->get([
+                        ['user_id',auth()->id()],
+                        ['episode_id',$this->episode->id]
+                    ]);
+                }
+                if (!is_null($this->homework)) {
+                    $this->file_path = $this->homework->file;
+                    $this->homework_description = $this->homework->description;
+                }
+            } else $this->emitNotify('شما هنوز این دوره را شروع نکرده اید','warning');
+        }
+    }
+
+    public function delete_homework()
+    {
+        if (Auth::check()) {
+            if (!is_null($this->episode) && !is_null($this->homework) && empty($this->homework->result)) {
+                $this->homeworkRepository->destroy($this->homework->id);
+                $this->reset(['homework','homework_file','homework_description','file_path']);
+                $this->emitNotify('تمرین با موفقیت حذف شد');
+            }
+        }
+
+    }
+
+    public function submit_homework()
+    {
+        if (Auth::check()) {
+            if ($rateKey = rateLimiter(value:Auth::id().'_homework_submit_'.$this->course->id,max_tries: 5))
+            {
+                $this->show_homework_form = false;
+                return $this->emitNotify('زیادی تلاش کردید. لطفا پس از مدتی دوباره تلاش کنید.','warning');
+            }
+            $user_has_episode = $this->user->hasCourse($this->course->id);
+            if ($user_has_episode) {
+                if (!is_null($this->episode) && is_null($this->homework)) {
+                    $this->validate([
+                        'homework_file' => ['required','file','mimes:jpg,jpeg,png,PNG,JPG,JPEG,rar,zip','max:2048'],
+                        'homework_description' => ['nullable','string','max:240'],
+                        'homework_recaptcha' => ['required', new ReCaptchaRule],
+                    ],[],[
+                        'homework_file' => 'فایل تمرین',
+                        'homework_description' => 'توضیحات تمرین',
+                        'homework_recaptcha' => 'فیلد امنیتی'
+                    ]);
+                    $this->uploader();
+                    $this->homework = $this->homeworkRepository->updateOrCreate([
+                        'episode_id' => $this->episode->id,
+                        'user_id' => auth()->id()
+                    ],[
+                        'file' => $this->file_path,
+                        'description' => $this->homework_description,
+                        'episode_title' => $this->episode->title,
+                        'storage' => $this->episode->homework_storage
+                    ]);
+                    $this->emitNotify('تمرین شما با موفقیت ارسال شد');
+                } else $this->emitNotify('امکان بارگذاری مجدد تمرین موجود نمی باشد','warning');
+            } else $this->emitNotify('شما هنوز این دوره را شروع نکرده اید','warning');
+        }
+
+    }
+
+    private function uploader()
+    {
+        $disk = getDisk($this->episode->homework_storage);
+        if (!empty($this->homework_file)) {
+            $this->file_path = $disk->put('homeworks',$this->homework_file);
+            $this->reset(['homework_file']);
+        }
+    }
+
+    public function updatedHomeworkFile()
+    {
+        $this->resetErrorBag();
+    }
+
+    private function setOrder(): bool
+    {
+        $order = [
+            'user_id' => auth()->id(),
+            'user_ip' => request()->ip(),
+            'price'=> $this->course->base_price,
+            'total_price' => 0,
+            'reduction_code' =>  null,
+            'reductions_value' => $this->course->reduction_amount,
+            'wallet_pay'=>0,
+            'discount' => 0,
+            'transactionId' => null,
+        ];
+        try {
+            DB::beginTransaction();
+            $order = $this->orderRepository->create($order);
+            $this->orderDetailRepository->create([
+                'course_id' => $this->course->id,
+                'product_data' => json_encode(['id' => $this->course->id, 'title' => $this->course->title]),
+                'price' => $this->course->base_price,
+                'total_price' => 0,
+                'status' => OrderEnum::STATUS_COMPLETED,
+                'reduction_amount' => $this->course->reduction_amount,
+                'wallet_amount' => 0,
+                'quantity' => 1,
+                'order_id' => $order->id,
+            ]);
+            DB::commit();
+            return true;
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error($e->getMessage());
+            $this->emitNotify('خطا در هنگام ثبت دوره','warning');
+            return false;
+        }
     }
 }

@@ -27,4 +27,16 @@ final class StorageEnum extends Enum
             self::SFTP_LABEL => self::SFTP,
         ];
     }
+
+    #[ArrayShape([self::PUBLIC => "string", self::PRIVATE => "string", self::FTP => "string", self::S3 => "string", self::SFTP => "string"])]
+    public static function getStorages(): array
+    {
+        return [
+            self::PUBLIC => self::PUBLIC_LABEL,
+            self::PRIVATE => self::PRIVATE_LABEL,
+            self::FTP => self::FTP_LABEL,
+            self::S3 => self::S3_LABEL,
+            self::SFTP => self::SFTP_LABEL,
+        ];
+    }
 }

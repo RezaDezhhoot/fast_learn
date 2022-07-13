@@ -13,17 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        if (
-            Schema::hasColumn('episodes', 'file_upload_method') &&
-            Schema::hasColumn('episodes', 'video_upload_method')
-        )
-        {
-            Schema::table('episodes', function (Blueprint $table) {
-                $table->dropColumn('file_upload_method');
-                $table->dropColumn('video_upload_method');
-            });
-        }
-
+        Schema::table('episodes', function (Blueprint $table) {
+            $table->string('description');
+            $table->tinyInteger('can_homework');
+        });
     }
 
     /**
@@ -34,7 +27,8 @@ return new class extends Migration
     public function down()
     {
         Schema::table('episodes', function (Blueprint $table) {
-            //
+            $table->dropColumn('description');
+            $table->dropColumn('can_homework');
         });
     }
 };
