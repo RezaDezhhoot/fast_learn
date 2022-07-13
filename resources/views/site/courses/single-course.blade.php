@@ -11,7 +11,9 @@
                                     <div class="col-12 p-0">
                                         {!! $api_bucket !!}
                                     </div>
-                                    <button class="btn btn-link" onclick="back_to_episode('heading{{$episode_id}}')">بازگشت به سرفصل</button>
+                                    <div class="mt-2">
+                                        <button class="btn btn-outline-primary" onclick="back_to_episode('heading{{$episode_id}}')">بازگشت به درس</button>
+                                    </div>
                                 @elseif(!is_null($local_video))
                                     <div class="plyr plyr--full-ui plyr--video plyr--html5 plyr--fullscreen-enabled plyr--paused">
                                         <video id="player" class="player" playsinline controls data-poster="{{asset($course->image)}}">
@@ -20,7 +22,7 @@
                                     </div>
 
                                    <div class="mt-2">
-                                       <button class="btn btn-outline-primary" onclick="back_to_episode('heading{{$episode_id}}')">بازگشت به سرفصل</button>
+                                       <button class="btn btn-outline-primary" onclick="back_to_episode('heading{{$episode_id}}')">بازگشت به درس</button>
                                    </div>
                                 @else
                                     <img src="{{asset($course->image)}}" class="col-12  p-0" alt="{{ $course->title }}">
@@ -67,8 +69,12 @@
                                             <div id="collapse{{$item->id}}" class="collapse {{  $key == 0 ? 'show' : '' }}" aria-labelledby="heading{{$item->id}}" data-parent="#accordion">
                                                 @if(auth()->check())
                                                     @if((($item['free'] || $course->price == 0) || ($user->hasCourse($course->id))))
-                                                        <div class="card-body">
-
+                                                        @if(!empty($item->description))
+                                                            <p class="px-2">
+                                                                <small class="text-black">{{ $item->description }}</small>
+                                                            </p>
+                                                        @endif
+                                                        <div class="card-body pt-2">
                                                             <ul class="generic-list-item">
                                                                 @if(!empty($item['api_bucket']))
                                                                     <li>
@@ -142,10 +148,10 @@
                                                             </ul>
                                                         </div>
                                                     @else
-                                                        <p class="alert alert-danger">دوره خریداری نشده است</p>
+                                                        <p class="alert alert-danger">دوره خریداری نشده است.</p>
                                                     @endif
                                                 @else
-                                                    <p class="alert alert-info">برای دسترسی به محتوا ابتدا ثبت نام نمایید.</p>
+                                                    <p class="alert alert-info">دوره خریداری نشده است.</p>
                                                 @endif
                                             </div>
                                             <!-- end collapse -->

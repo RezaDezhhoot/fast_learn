@@ -80,7 +80,7 @@ class StoreEpisode extends BaseComponent
         $this->video_storage = $this->emptyToNull($this->video_storage);
         $this->validate([
             'title' => ['required','string','max:255'],
-            'description' => ['nullable','string','max:255'],
+            'description' => ['nullable','string','max:70'],
             'file' => ['nullable','string','max:10000'],
             'local_video' => ['nullable','max:255'],
             'api_bucket' => ['nullable','max:35000'],

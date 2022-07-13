@@ -63,7 +63,7 @@ class BaseComponent extends Component
 
     public function emptyToNull($value)
     {
-        if (empty($value))
+        if (empty($value) && $value != 0)
             return null;
 
         return $value;

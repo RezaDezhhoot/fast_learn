@@ -78,7 +78,8 @@ class SingleCourse extends BaseComponent
         $this->related_courses = $this->courseRepository->whereIn('category_id',$ids,3,true,[['id' , '!=' , $this->course->id]]);
         $this->comments = $this->course->comments;
         $this->courseRepository->increment($this->course,1);
-        $this->show_homework_form = $this->user->hasCourse($this->course->id);
+        if (Auth::check())
+            $this->show_homework_form = $this->user->hasCourse($this->course->id);
     }
 
     public function render()
