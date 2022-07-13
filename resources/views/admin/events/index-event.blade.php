@@ -6,8 +6,10 @@
             <x-admin.forms.dropdown id="status" :data="$data['status']" label="وضعیت" wire:model="status"/>
             @include('admin.layouts.advance-table')
             <div class="col-12 py-4">
-                <button wire:loading.attr="disabled" wire:click="retry_jobs" class="btn btn-outline-info"> اماده سازی مجدد رویداد های ناموفق</button>
                 <button wire:loading.attr="disabled" wire:click="work" class="btn btn-outline-success">شروع پردازش </button>
+                <button wire:loading.attr="disabled" wire:click="retry_jobs" class="btn btn-outline-info"> اماده سازی مجدد رویداد های ناموفق</button>
+                <button wire:loading.attr="disabled" onclick="deleteGroup('jobs')" class="btn btn-outline-danger">پاک سازی رویداد های اماده </button>
+                <button wire:loading.attr="disabled" onclick="deleteGroup('failed_jobs')" class="btn btn-outline-danger">پاک سازی رویداد های ناموفق </button>
                 <div class="pt-1">
                     <x-admin.loader wire:target="work" text="در حال پردازش" />
                 </div>
@@ -29,6 +31,7 @@
                             <th>نویسنده</th>
                             <th>نتیجه</th>
                             <th>خطا ها</th>
+                            <th>عملیات </th>
                         </tr>
                         </thead>
                         <tbody>
@@ -46,9 +49,12 @@
                                         <button wire:click="downloadsError({{$item->id}})" class="btn btn-sm btn-link">دانلود گزارش خطا</button>
                                     @endif
                                 </td>
+                                <td>
+                                    <x-admin.delete-btn onclick="deleteItem({{$item->id}})" />
+                                </td>
                             </tr>
                         @empty
-                            <td class="text-center" colspan="8">
+                            <td class="text-center" colspan="11">
                                 دیتایی جهت نمایش وجود ندارد
                             </td>
                         @endforelse
@@ -81,6 +87,22 @@
                         )
                     }
                 @this.call('delete', id)
+                }
+            })
+        }
+        function deleteGroup(status) {
+            Swal.fire({
+                title: 'پاک سازی رویداد ها!',
+                text: 'آیا از پاک سازی رویداد ها اطمینان دارید؟',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'خیر',
+                confirmButtonText: 'بله'
+            }).then((result) => {
+                if (result.value) {
+                @this.call('deleteGroup', status)
                 }
             })
         }

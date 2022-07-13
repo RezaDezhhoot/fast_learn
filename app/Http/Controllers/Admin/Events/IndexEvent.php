@@ -62,4 +62,24 @@ class IndexEvent extends BaseComponent
         return response()->download(storage_path("app/public/event_errors/$filename"), "events_error_{$now}.txt")
             ->deleteFileAfterSend(true);
     }
+
+    public function delete($id)
+    {
+        $this->authorizing('delete_events');
+        $this->eventRepository->destroy($id);
+        $this->emitNotify('رویداد با موفقیت حذف شد');
+    }
+
+    public function deleteGroup($status)
+    {
+        $this->authorizing('delete_events');
+        if ($status == 'jobs') {
+            DB::table('jobs')->delete();
+            $this->emitNotify('رویداد های اماده با موفقیت پاک سازی شد');
+        } elseif ($status == 'failed_jobs')
+        {
+            DB::table('failed_jobs')->delete();
+            $this->emitNotify('رویداد های ناموفق با موفقیت پاک سازی شد');
+        }
+    }
 }

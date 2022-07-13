@@ -46,9 +46,9 @@ class SendRepository implements SendRepositoryInterface
                 'query' => $query,
             ]);
             $data =  json_decode($result->getBody(), true);
-            if ($data['code'] != 0){
-                Log::info($data['message']);
-                throw new Exception($data['message']);
+            if ($data[0] != 0){
+                Log::info($data[1]);
+                throw new Exception($data[1]);
             }
         } catch (GuzzleException $e) {
             return "ERROR";
