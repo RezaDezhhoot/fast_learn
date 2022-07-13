@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Site\Courses;
 
+use App\Enums\CommentEnum;
 use App\Enums\OrderEnum;
 use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
@@ -29,7 +30,7 @@ class SingleCourse extends BaseComponent
 {
     use WithFileUploads;
     public  $course;
-    public  $related_courses , $comments , $recaptcha , $episodes , $user , $commentCount = 10 , $actionComment = 'new' , $actionLabel = 'دیدگاه جدید';
+    public  $related_courses , $comments , $recaptcha , $episodes , $user , $commentCount = 10 , $actionComment  , $actionLabel = 'دیدگاه جدید';
     public ?string $api_bucket = null , $local_video , $comment = null , $episode_title = null , $episode_id;
 
     public $homework , $file_path , $homework_file , $homework_description , $homework_recaptcha;
@@ -160,6 +161,7 @@ class SingleCourse extends BaseComponent
             'user_id' => auth()->id(),
             'content' => $this->comment,
             'parent_id'=> $this->actionComment ?? null,
+            'status' => $this->course->teacher->user->id == Auth::id() ? CommentEnum::CONFIRMED : CommentEnum::NOT_CONFIRMED
         ];
         $this->courseRepository->newComment($this->course,$data);
         $this->reset(['comment','actionLabel','actionComment']);

@@ -16,7 +16,7 @@ use Psr\Container\NotFoundExceptionInterface;
 
 class SingleArticle extends BaseComponent
 {
-    public mixed $related_posts , $comments , $recaptcha , $commentCount = 10 ,  $actionComment = 'new' , $actionLabel = 'دیدگاه جدید' ;
+    public mixed $related_posts , $comments , $recaptcha , $commentCount = 10 ,  $actionComment  , $actionLabel = 'دیدگاه جدید' ;
     public ?string $comment = null;
     public object $article;
 
