@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('order_details', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('course_id')->nullable()->constrained('courses')->cascadeOnDelete();
+            $table->bigInteger('course_id')->nullable();
             $table->longText('product_data');
             $table->unsignedBigInteger('price');
             $table->decimal('reduction_amount',40);

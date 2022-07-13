@@ -1,6 +1,6 @@
 <div>
     @section('title',' سفارش  ')
-    <x-admin.form-control mode="{{$mode}}" title="سفارش"/>
+    <x-admin.form-control  deleteAble="true" deleteContent="حذف سفارش" mode="{{$mode}}" title="سفارش"/>
     <div class="card card-custom gutter-b example example-compact">
         <x-admin.forms.validation-errors/>
         <div class="card-body">
@@ -200,6 +200,23 @@
                         )
                     }
                 @this.call('deleteDetail', id)
+                }
+            })
+        }
+
+        function deleteItem(id) {
+            Swal.fire({
+                title: 'حذف سفارش!',
+                text: 'آیا از حذف این سفارش اطمینان دارید؟',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'خیر',
+                confirmButtonText: 'بله'
+            }).then((result) => {
+                if (result.value) {
+                @this.call('delete', id)
                 }
             })
         }

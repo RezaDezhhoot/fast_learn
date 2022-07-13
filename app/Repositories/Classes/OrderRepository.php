@@ -56,4 +56,9 @@ class OrderRepository implements OrderRepositoryInterface
     {
         return Order::with('details.course')->where($where)->firstOrFail();
     }
+
+    public function destroy($id)
+    {
+        Order::destroy($id);
+    }
 }

@@ -48,7 +48,7 @@
                         <div class="col-lg-12 border px-4 py-3 d-flex align-items-center justify-content-between" style="border: 1px gray solid;padding: 5px;border-radius: 5px;margin: 10px">
                             <div>
                                 <h5 class="text-info">
-                                    {{ $item->sender->name }} :
+                                    {{ $item->sender->name }}  ({{ $item->sender_type == \App\Enums\TicketEnum::ADMIN ? 'مدیریت' : 'کاربر' }}):
                                 </h5>
                                 <p>
                                     {!! $item->content !!}

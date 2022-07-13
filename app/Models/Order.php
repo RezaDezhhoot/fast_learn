@@ -7,13 +7,16 @@ use App\Traits\Admin\Searchable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Dyrynda\Database\Support\CascadeSoftDeletes;
 use Morilog\Jalali\Jalalian;
 
 /**
  * @property mixed id
  * @property mixed created_at
  * @property mixed details
+ * @property mixed $status
  * @method static findOrFail($id)
  * @method static where(array $where)
  * @method static create(array $data)
@@ -22,7 +25,9 @@ use Morilog\Jalali\Jalalian;
 class Order extends Model
 {
     const CHANGE_ID = 897879;
-    use HasFactory , Searchable , SoftDeletes;
+    use HasFactory , Searchable , SoftDeletes , CascadeSoftDeletes;
+
+    protected array $cascadeDeletes = ['details'];
 
     protected $guarded = [];
     protected array $searchAbleColumns = ['id'];
@@ -32,12 +37,12 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function details(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function details(): HasMany
     {
-        return $this->hasMany(OrderDetail::class)->withTrashed();
+        return $this->hasMany(OrderDetail::class);
     }
 
-    public function notes(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function notes(): HasMany
     {
         return $this->hasMany(OrderNote::class)->orderBy('id','desc');
     }

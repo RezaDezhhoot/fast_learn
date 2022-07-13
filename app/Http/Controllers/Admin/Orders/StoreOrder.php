@@ -61,7 +61,16 @@ class StoreOrder extends BaseComponent
         $this->authorizing('delete_orders');
         $id = $this->order->details[$key]->id;
         $this->orderDetailRepository->destroy($id);
+        $this->emitNotify(' با موفقیت حذف شد');
         unset($this->order->details[$key]);
+    }
+
+    public function delete()
+    {
+        $this->authorizing('delete_orders');
+        $this->orderRepository->destroy($this->order->id);
+        $this->emitNotify('سفارش با موفقیت حذف شد');
+        return redirect()->route('admin.order');
     }
 
     public function render()

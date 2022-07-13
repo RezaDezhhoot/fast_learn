@@ -99,6 +99,7 @@ class StoreCourse extends BaseComponent
 
     public function saveInDataBase($model)
     {
+        $this->quiz = $this->emptyToNull($this->quiz);
         $this->validate([
             'title' => ['required','string','max:255'],
             'sub_title' => ['required','string','max:255'],

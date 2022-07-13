@@ -20,4 +20,6 @@ interface OrderRepositoryInterface
 
     public function get(array $where);
 
+    public function destroy($id);
+
 }

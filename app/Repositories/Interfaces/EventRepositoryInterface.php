@@ -20,4 +20,6 @@ interface EventRepositoryInterface
     public function create($data);
 
     public function update(Event $event,$data): bool;
+
+    public static function observe();
 }

@@ -63,7 +63,7 @@ class StoreEvent extends BaseComponent
 
         $users = $this->userRepository->getUsersForEvent($this->orderBy , $this->count);
         foreach ($users as $item)
-            ProcessEvent::dispatch($event,$item)->delay(now()->addSeconds(7));
+            ProcessEvent::dispatch($event,$item)->delay(now()->addSeconds(7))->onQueue($event->id);
 
 
         $this->reset(['title','body','event','orderBy','count']);

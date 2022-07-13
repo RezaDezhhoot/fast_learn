@@ -36,8 +36,8 @@ class CourseObserver
      */
     public function deleted(Course $course)
     {
-        $course->details()->update(['course_id'=>null]);
-        $course->transcripts()->update(['course_id'=>null]);
+        $course->details()->update(['course_id' => null]);
+        $course->transcripts()->update(['course_id'=> null ]);
     }
 
     /**

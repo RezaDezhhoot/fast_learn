@@ -50,7 +50,8 @@ class IndexEvent extends BaseComponent
     public function work()
     {
         $this->authorizing('edit_events');
-        Artisan::call('queue:work --stop-when-empty');
+        Artisan::call('cache:clear');
+        Artisan::call("queue:work --queue=all --stop-when-empty");
     }
 
     public function downloadsError($id): BinaryFileResponse
@@ -82,4 +83,31 @@ class IndexEvent extends BaseComponent
             $this->emitNotify('رویداد های ناموفق با موفقیت پاک سازی شد');
         }
     }
+
+    public function workSingle($id)
+    {
+        $this->authorizing('edit_events');
+        Artisan::call('cache:clear');
+        Artisan::call("queue:work --queue=$id --stop-when-empty");
+    }
+
+    public function deleteSingle($id,$table)
+    {
+        $this->authorizing('delete_events');
+        if ($table == 'job') {
+            DB::table('jobs')->where('queue',$id)->delete();
+            $this->emitNotify('رویداد های اماده با موفقیت پاک سازی شد');
+        } elseif ($table == 'failed_job') {
+            DB::table('failed_jobs')->where('queue',$id)->delete();
+            $this->emitNotify('رویداد های ناموفق با موفقیت پاک سازی شد');
+        }
+    }
+
+    public function retrySingle($id)
+    {
+        $this->authorizing('edit_events');
+        Artisan::call("queue:retry --queue=$id");
+        $this->emitNotify('رویداد ها اماده اجرا');
+    }
 }
+

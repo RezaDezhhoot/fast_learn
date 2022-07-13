@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Classes;
 
+use App\Observers\EventObserver;
 use App\Repositories\Interfaces\EventRepositoryInterface;
 use App\Models\Event;
 
@@ -44,5 +45,10 @@ class EventRepository implements EventRepositoryInterface
     {
         $event->save();
         return $event;
+    }
+
+    public static function observe()
+    {
+        Event::observe(EventObserver::class);
     }
 }
