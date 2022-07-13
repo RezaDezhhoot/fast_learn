@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Events;
 
 use App\Enums\EventEnum;
+use App\Enums\StorageEnum;
 use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\EventRepositoryInterface;
 use Illuminate\Support\Facades\Artisan;
@@ -54,7 +55,7 @@ class IndexEvent extends BaseComponent
 
     public function downloadsError($id): BinaryFileResponse
     {
-        $disk = getDisk('1');
+        $disk = getDisk(StorageEnum::PUBLIC);
         $now = now()->format('Y_m_d');
         $filename = "events_error_{$id}_{$now}.txt";
         $disk->put("event_errors/$filename",$this->eventRepository->find($id)->errors);

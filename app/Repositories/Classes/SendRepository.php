@@ -7,8 +7,10 @@ use App\Enums\NotificationEnum;
 use App\Repositories\Interfaces\NotificationRepositoryInterface;
 use App\Repositories\Interfaces\SendRepositoryInterface;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
+use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Support\Facades\Log;
 
 class SendRepository implements SendRepositoryInterface
 {
@@ -31,6 +33,9 @@ class SendRepository implements SendRepositoryInterface
         $this->pattern_var = $this->SettingRepository->getRow('faraz_var');
     }
 
+    /**
+     * @throws Exception
+     */
     public function sendSMS($message, $number)
     {
         try {
@@ -40,7 +45,11 @@ class SendRepository implements SendRepositoryInterface
             $result = $client->get('http://ippanel.com/class/sms/webservice/send_url.php', [
                 'query' => $query,
             ]);
-            return json_decode($result->getBody(), true);
+            $data =  json_decode($result->getBody(), true);
+            if ($data['code'] != 0){
+                Log::info($data['message']);
+                throw new Exception($data['message']);
+            }
         } catch (GuzzleException $e) {
             return "ERROR";
         }
@@ -58,19 +67,30 @@ class SendRepository implements SendRepositoryInterface
         ]);
     }
 
+    /**
+     * @throws Exception
+     */
     public function sendCode($code, $phone)
     {
-        $client = new Client();
-        $query = ['apikey' => $this->apiKey,
-            'pid' => $this->pattern,
-            'fnum' => $this->lineNumber,
-            'tnum' => $phone,
-            'p1' => $this->pattern_var,
-            'v1' => $code];
-        $result = $client->get('http://ippanel.com:8080/',
-            [
-                'query' => $query,
-            ]);
-        return json_decode($result->getBody(), true);
+        try {
+            $client = new Client();
+            $query = ['apikey' => $this->apiKey,
+                'pid' => $this->pattern,
+                'fnum' => $this->lineNumber,
+                'tnum' => $phone,
+                'p1' => $this->pattern_var,
+                'v1' => $code];
+            $result = $client->get('http://ippanel.com:8080/',
+                [
+                    'query' => $query,
+                ]);
+            $data =  json_decode($result->getBody(), true);
+            if ($data['code'] != 0) {
+                Log::info($data['message']);
+                throw new Exception($data['message']);
+            }
+        } catch (GuzzleException $e) {
+            return "ERROR";
+        }
     }
 }
