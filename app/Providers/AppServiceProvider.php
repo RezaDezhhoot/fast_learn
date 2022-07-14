@@ -26,6 +26,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         $logo = DB::table('settings')->where('name','logo')->first();
+        $site_name = DB::table('settings')->where('name','title')->first();
         View::share('logo',$logo->value ?? '');
+        View::share('site_title',$site_name->value ?? '');
     }
 }
