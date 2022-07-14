@@ -55,15 +55,19 @@
                                 </small>
                                 @enderror
                             </div>
+                            <div class="input-box mt-4">
+                                <div class="g-recaptcha d-inline-block" data-sitekey="{{ config('services.recaptcha.site_key') }}"
+                                     data-callback="reCaptchaCallback" wire:ignore></div>
+                                @error('recaptcha')<span class="invalid-feedback d-block">{{ $message }}</span>@enderror
+                            </div>
                             <!-- end input-box -->
                             <div class="btn-box">
                                 @if($auth_type != 'none')
                                     @if(!$sent)
-                                        <p wire:click="sendVerificationCode" class=" mt-3 cursor-pointers font-12 vazir">ارسال رمز یکبار مصرف</p>
+                                        <p wire:click="sendVerificationCode" class=" mt-2 cursor-pointers font-12 vazir">ارسال رمز یکبار مصرف</p>
                                     @else
                                         <div>
-                                            <p class="px-1 text-success mt-3 font-12 vazir"> رمز یکبار مصرف ارسال شد</p>
-                                            <p class="px-1 text-info mt-3 font-12 vazir" wire:ignore>
+                                            <p class="px-1 text-info mt-2 font-12 vazir" wire:ignore>
                                                 زمان باقی مانده تا ارسال مجدد:
                                                 <span id="clock"></span>
                                             </p>
@@ -107,5 +111,23 @@
                 });
         })
 
+    </script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+    <script>
+        function reCaptchaCallback(response) {
+        @this.set('recaptcha', response);
+        }
+
+        function back_to_episode(id)
+        {
+            $('html, body').animate({
+                scrollTop: $(`#episode${id}`).offset().top
+            }, 1000);
+        }
+
+        Livewire.on('resetReCaptcha', () => {
+            grecaptcha.reset();
+        });
     </script>
 @endpush

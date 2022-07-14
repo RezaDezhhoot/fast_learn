@@ -1,4 +1,4 @@
-<section class="contact-area mt-4 position-relative">
+    <section class="contact-area mt-4 position-relative">
     <span class="ring-shape ring-shape-1"></span>
     <span class="ring-shape ring-shape-2"></span>
     <span class="ring-shape ring-shape-3"></span>
@@ -17,7 +17,7 @@
                         <div class="section-block"></div>
                         <form wire:submit.prevent="signUp()" class="pt-4">
                             <div class="input-box">
-                                <label class="label-text">نام کامل</label>
+                                <label class="label-text">نام کامل*</label>
                                 <div class="form-group">
                                     <input  wire:model.defer="name" class="form-control form--control" type="text" name="name" placeholder="نام کامل" />
                                     <span class="la la-user input-icon"></span>
@@ -30,7 +30,7 @@
                             </div>
                             <!-- end input-box -->
                             <div class="input-box">
-                                <label class="label-text">آدرس ایمیل</label>
+                                <label class="label-text">آدرس ایمیل*</label>
                                 <div class="form-group">
                                     <input  wire:model.defer="email"  class="form-control form--control" type="email" name="email" placeholder="آدرس ایمیل" />
                                     <span class="la la-envelope input-icon"></span>
@@ -42,7 +42,7 @@
                                 </div>
                             </div>
                             <div class="input-box">
-                                <label class="label-text">شماره همراه </label>
+                                <label class="label-text">شماره همراه* </label>
                                 <div class="form-group">
                                     <input  wire:model.defer="phone"  class="form-control form--control" type="text" name="phone" placeholder="شماره همراه" />
                                     <span class="la la-phone input-icon"></span>
@@ -55,7 +55,7 @@
                             </div>
                             <!-- end input-box -->
                             <div class="input-box">
-                                <label class="label-text">کلمه عبور</label>
+                                <label class="label-text">کلمه عبور*</label>
                                 <div class="input-group">
                                     <span class="la la-lock input-icon"></span>
                                     <input wire:model.defer="password" class="form-control form--control password-field" type="password" name="password" placeholder="کلمه عبور" />
@@ -76,11 +76,19 @@
                                         </button>
                                     </div>
                                 </div>
+                                <small class="text-info">
+                                    حداقل 8 کارکتر شامل حروف و اعداد
+                                </small>
                                 @error('password')
-                                <small class="text-danger">
+                                <small class="text-danger d-block">
                                     {{$message }}
                                 </small>
                                 @enderror
+                            </div>
+                            <div class="input-box mt-4">
+                                <div class="g-recaptcha d-inline-block" data-sitekey="{{ config('services.recaptcha.site_key') }}"
+                                     data-callback="reCaptchaCallback" wire:ignore></div>
+                                @error('recaptcha')<span class="invalid-feedback d-block">{{ $message }}</span>@enderror
                             </div>
                             <!-- end input-box -->
                             <div class="btn-box mt-4">
@@ -100,3 +108,23 @@
     </div>
     <!-- end container -->
 </section>
+    @push('scripts')
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+        <script>
+            function reCaptchaCallback(response) {
+            @this.set('recaptcha', response);
+            }
+
+            function back_to_episode(id)
+            {
+                $('html, body').animate({
+                    scrollTop: $(`#episode${id}`).offset().top
+                }, 1000);
+            }
+
+            Livewire.on('resetReCaptcha', () => {
+                grecaptcha.reset();
+            });
+        </script>
+    @endpush

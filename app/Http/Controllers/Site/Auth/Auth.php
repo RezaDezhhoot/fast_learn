@@ -9,6 +9,7 @@ use App\Repositories\Interfaces\OtpRepositoryInterface;
 use App\Repositories\Interfaces\SendRepositoryInterface;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
+use App\Rules\ReCaptchaRule;
 use Artesaos\SEOTools\Facades\JsonLd;
 use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\SEOMeta;
@@ -33,6 +34,7 @@ class Auth extends BaseComponent
     public $logo , $authImage , $passwordLabel = 'رمز عبور';
     public bool $sms = false , $sent = false;
 
+    public $recaptcha;
     public $forget_phone;
 
     public $auth_type;
@@ -87,10 +89,12 @@ class Auth extends BaseComponent
         $this->resetErrorBag();
         $this->validate([
             'phone' => ['required','string','exists:users,phone'],
-            'password' => ['required']
+            'password' => ['required','max:240','string'],
+            'recaptcha' => ['required', new ReCaptchaRule],
         ],[],[
             'phone' => 'شماره',
             'password' => 'رمز عبور',
+            'recaptcha' => 'فیلد امنیتی'
         ]);
         $auth = false;
         $confirm_user = false;
@@ -203,12 +207,14 @@ class Auth extends BaseComponent
             'name' => ['required','string','max:250'],
             'email' => ['required','string','email','unique:users,email','max:250'],
             'phone' => ['required','string','size:11','unique:users,phone'],
-            'password' => ['required','min:'.($this->settingRepository->getRow('password_length') ?? 5),'regex:/^.*(?=.*[a-zA-Z])(?=.*[0-9]).*$/'],
+            'password' => ['required','min:'.($this->settingRepository->getRow('password_length') ?? 8),'regex:/^.*(?=.*[a-zA-Z])(?=.*[0-9]).*$/'],
+            'recaptcha' => ['required', new ReCaptchaRule],
         ],[],[
             'name' => 'نام کامل',
             'email' => 'ایمیل',
             'phone' => 'شماره همراه',
             'password' => 'رمز عبور',
+            'recaptcha' => 'فیلد امنیتی'
         ]);
         $user = $this->userRepository->create([
             'name' => $this->name,
@@ -240,7 +246,7 @@ class Auth extends BaseComponent
     public function checkTimer(): bool
     {
         $interval = Carbon::make(now())->diff(Carbon::make(Session::get('timer')));
-        return ((int)$interval->format("%r%s") >= 0);
+        return ((int)$interval->format("%r%s") > 0);
     }
 
     public function setTimer()
