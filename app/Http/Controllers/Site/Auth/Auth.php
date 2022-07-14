@@ -77,7 +77,7 @@ class Auth extends BaseComponent
 
     public function login()
     {
-        if ($rateKey = rateLimiter(value:$this->phone.'_login'))
+        if ($rateKey = rateLimiter(value:$this->phone.'_login',max_tries: 8))
         {
             $this->resetInputs();
             return
@@ -184,25 +184,8 @@ class Auth extends BaseComponent
                 Log::error($e->getMessage());
                 $this->addError("$property",'خطا در هنگام ارسال رمز');
             }
-        } elseif ($this->auth_type == 'none' && $action == 'login') {
+        } else {
             return false;
-        } elseif ($this->auth_type == 'none' && $action == 'forget') {
-            $headers =  'MIME-Version: 1.0' . "\r\n";
-            $headers .= 'From:'.$this->settingRepository->getRow('email'). "\r\n";
-            $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-            $message = '<html lang="fa"><body>';
-            $message .= '<h1 style="color:#f40;">Hi Jane!</h1>';
-            $message .= '<p style="color:#080;font-size:18px;">کد تایید شما : '.$code.'</p>';
-            $message .= '</body></html>';
-//            Log::info($code);
-//            $ok = true;
-            try {
-                mail($user->email,'فراموشی رمز',$message,$headers);
-                $ok = true;
-            } catch (Exception $e) {
-                Log::error($e->getMessage());
-                $this->addError("$property",'خطا در هنگام ارسال رمز');
-            }
         }
 
         if ($ok) {
@@ -239,9 +222,9 @@ class Auth extends BaseComponent
         if (!empty($registerGift) && is_numeric($registerGift) &&  $registerGift> 0)
             $user->deposit($this->settingRepository->getRow('registerGift'), ['description' => 'هدیه ثبت نام', 'from_admin'=> true]);
 
-        $this->action = self::MODE_LOGIN;
         $this->sendVerificationCode();
         RegisterEvent::dispatch($user);
+        redirect()->route('auth');
     }
 
     public function generateCode(): int

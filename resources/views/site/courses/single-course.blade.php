@@ -318,7 +318,7 @@
                                         @endif
                                     </div>
                                     <div class="buy-course-btn-box mt-2">
-                                        <button  wire:click="addToCart()" type="button" class="btn theme-btn w-100 mb-2"><i class="la la-shopping-cart fs-18 mr-1"></i> به سبد خرید اضافه کنید</button>
+                                        <button  wire:click="addToCart()" type="button" class="btn theme-btn w-100 mb-2"><i class="la la-shopping-cart fs-18 mr-1"></i>  {{ $course->price == 0 ? 'ثبت نام در این دوره' : 'به سبد خرید اضافه کنید' }}</button>
                                     </div>
                                     <div class="preview-course-incentives">
                                         <h3 class="card-title fs-18 mt-2 pb-2">این دوره شامل</h3>

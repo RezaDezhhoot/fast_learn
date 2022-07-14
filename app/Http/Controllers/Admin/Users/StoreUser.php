@@ -15,6 +15,7 @@ use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Rules\ValidNationCode;
 use Bavix\Wallet\Exceptions\BalanceIsEmpty;
 use Bavix\Wallet\Exceptions\InsufficientFunds;
+use Carbon\Carbon;
 
 class StoreUser extends BaseComponent
 {
@@ -78,7 +79,7 @@ class StoreUser extends BaseComponent
         else {
             $this->saveInDataBase($this->userRepository->newUserObject());
             $this->reset([
-                'name','phone','status','email','image','organization','executive',
+                'name','phone','status','email','image',
                 'province','city','code_id','father_name','birthday','avatar','password',
             ]);
         }
@@ -86,6 +87,16 @@ class StoreUser extends BaseComponent
 
     public function saveInDataBase($model)
     {
+        $this->birthday = $this->emptyToNull($this->birthday);
+        if (!is_null($this->birthday)) {
+            if (
+                preg_match("/^[0-9]{4}-([1-9]|1[0-2])-([1-9]|[1-2][0-9]|3[0-1])$/",$this->birthday) ||
+                preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/",$this->birthday)
+            )
+                $this->birthday = Carbon::make($this->birthday)->format('Y-m-d');
+            else return $this->addError('birthday','تاریخ تولد با الگوی Y-m-d مطابقت ندارد.');
+        }
+
         $fields = [
             'name' => ['required', 'string','max:65'],
             'phone' => ['required', 'size:11' , 'unique:users,phone,'. ($this->user->id ?? 0)],

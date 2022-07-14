@@ -33,7 +33,7 @@
                                     <span class="la la-lock input-icon"></span>
                                     <input class="form-control form--control password-field" wire:model.defer="password"  type="password"    placeholder="{{ !$sent ? 'رمز عبور' : 'کد تایید' }} خود را وارد کنید" />
                                     <div class="input-group-append" wire:ignore>
-                                        <button class="btn theme-btn theme-btn-transparent toggle-password" type="button">
+                                        <button class="btn theme-btn theme-btn-transparent toggle-password" type="button" wire:ignore>
                                             <svg class="eye-on" xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24" width="22px" fill="#7f8897">
                                                 <path d="M0 0h24v24H0V0z" fill="none"></path>
                                                 <path

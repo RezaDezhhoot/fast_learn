@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="icon" sizes="16x16" href="{{asset($logo)}}" />
 
     <title>{{ config('app.name', 'File Manager') }}</title>
 

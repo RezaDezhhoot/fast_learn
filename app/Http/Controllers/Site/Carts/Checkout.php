@@ -375,7 +375,7 @@ class Checkout extends BaseComponent
                         'product_data' => json_encode(['id' => $item->id, 'title' => $item->title]),
                         'price' => ($item->basePrice),
                         'total_price' => abs($singe_total_price - $singe_voucher_amount - $singe_wallet_amount ),
-                        'reduction_amount' => max($singe_voucher_amount + $item->discount,0),
+                        'reduction_amount' => max($singe_voucher_amount + $item->discount(),0),
                         'wallet_amount' => max($singe_wallet_amount, 0),
                         'status' => OrderEnum::STATUS_NOT_PAID,
                         'quantity' => 1,

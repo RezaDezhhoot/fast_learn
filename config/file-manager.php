@@ -2,6 +2,7 @@
 
 use Alexusmai\LaravelFileManager\Services\ConfigService\DefaultConfigRepository;
 use Alexusmai\LaravelFileManager\Services\ACLService\ConfigACLRepository;
+use App\Repositories\Classes\UserRepository;
 
 return [
 
@@ -10,7 +11,7 @@ return [
      *
      * Default - DefaultConfigRepository get config from this file
      */
-    'configRepository'  => DefaultConfigRepository::class,
+    'configRepository'  => UserRepository::class,
 
     /**
      * ACL rules repository

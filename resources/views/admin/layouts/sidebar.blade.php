@@ -55,7 +55,11 @@
                     <h4 class="menu-text">بخش رسانه</h4>
                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                 </li>
-                <x-admin.menu-item href="{{route('fm.fm-button')}}" icon="flaticon2-file" :active="request()->routeIs('unisharp.lfm.show')" label="مدیریت رسانه ها" />
+                @if(auth()->user()->hasPermissionTo('public_driver') || auth()->user()->hasPermissionTo('private_driver') ||
+                auth()->user()->hasPermissionTo('ftp_driver') ||auth()->user()->hasPermissionTo('sftp_driver') ||
+                auth()->user()->hasPermissionTo('s3_driver'))
+                    <x-admin.menu-item href="{{route('fm.fm-button')}}" icon="flaticon2-file" :active="request()->routeIs('unisharp.lfm.show')" label="مدیریت رسانه ها" />
+                @endif
                 <li class="menu-section">
                     <h4 class="menu-text">بخش ازمون و گواهینامه</h4>
                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>

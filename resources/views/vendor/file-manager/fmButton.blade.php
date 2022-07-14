@@ -6,6 +6,7 @@
     <title>مدیریت فایل</title>
     <!-- CSRF Token -->
     <meta name="csrf-token" content="NRjAtSsM32NRlH7YXwlFbbJMfDRSXLa1eNUP4bQ8">
+    <link rel="icon" sizes="16x16" href="{{asset($logo)}}" />
 
     <!-- Styles -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
