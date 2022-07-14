@@ -127,7 +127,7 @@ class Checkout extends BaseComponent
         if (!empty($voucher->expires_at))
         {
             $interval = Carbon::make(now())->diff($voucher->expires_at);
-            if ((int)$interval->format("%r%a") < 0)
+            if ((int)$interval->format("%r%h") < 0)
             {
                 $this->addError('voucher', 'کد وارد شده  منقضی شده است');
                 $this->calculatePrice();
@@ -139,7 +139,7 @@ class Checkout extends BaseComponent
         if (!empty($voucher->starts_at))
         {
             $interval = Carbon::make(now())->diff($voucher->starts_at);
-            if ((int)$interval->format("%r%a") > 0)
+            if ((int)$interval->format("%r%h") > 0)
             {
                 $this->addError('voucher', 'کد وارد شده معتبر نیست');
                 $this->calculatePrice();

@@ -29,7 +29,6 @@ class HomeSetting extends BaseComponent
             'articles' => 'اخبار و مقالات',
             'courses' => 'دوره ها',
             'categories' => 'دسته بندی ها',
-            'banners' => 'بنر تبلیغاتی',
         ];
         $this->data['width'] = [
             '1' => '8.33%',
@@ -86,73 +85,39 @@ class HomeSetting extends BaseComponent
     public function storeContent()
     {
         $this->authorizing('edit_settings_fag');
-        if ($this->category != 'banners')
-        {
-            $fields = [
-                'title' => ['required', 'string'],
-                'view' => ['required', 'integer'],
-                'moreLink' => ['nullable', 'url'],
-                'category' => ['required','string' ,'in:'.implode(',',array_keys($this->data['category']))],
-                'width' => ['required', 'numeric','in:'.implode(',',array_keys($this->data['width']))],
-                'type' => ['required','in:slider,grid'],
-                'contentCase.*'=> ['required','numeric','exists:'.$this->category.',id'],
-            ];
-            $messages = [
-                'title' => 'عنوان',
-                'view' => 'شماره نمایش',
-                'width' => 'عرض',
-                'category' => 'نوع محتوا',
-                'type' => 'نوع نمایش',
-                'widthCase' => 'عرض هر باکس',
-                'moreLink' => 'لینک صفحه نمایش همه',
-                'contentCase.*' => 'موارد'
-            ];
-            if ($this->type <> 'slider'){
-                $fields['widthCase'] = ['required', 'numeric','in:'.implode(',',array_keys($this->data['width']))];
-            }
-            $this->validate($fields,[], $messages);
-            $content = [
-                'title' => $this->title,
-                'view' => $this->view,
-                'width' => $this->width,
-                'category' => $this->category,
-                'type' => $this->type,
-                'widthCase' => $this->widthCase,
-                'moreLink' => $this->moreLink,
-                'contentCase' => $this->contentCase
-            ];
-        } else {
-            $fields = [
-                'title' => ['required', 'string'],
-                'view' => ['required', 'integer'],
-                'bannerContent' => ['required','string','max:1000'],
-                'category' => ['required','string' ,'in:banners'],
-                'width' => ['required', 'numeric','in:'.implode(',',array_keys($this->data['width']))],
-                'bannerImage' => ['required', 'string'],
-                'bannerLink' => ['nullable','url'],
-            ];
-            $messages = [
-                'title' => 'عنوان',
-                'view' => 'شماره نمایش',
-                'width' => 'عرض',
-                'category' => 'نوع محتوا',
-                'bannerImage' => 'تسویر',
-                'bannerLink' => 'لینک مورد نظر',
-                'bannerContent' => 'متن'
-            ];
-
-            $this->validate($fields,[], $messages);
-            $content = [
-                'title' => $this->title,
-                'view' => $this->view,
-                'width' => $this->width,
-                'type' => 'grid',
-                'category' => $this->category,
-                'bannerImage' => $this->bannerImage,
-                'bannerLink' => $this->bannerLink,
-                'bannerContent' => $this->bannerContent,
-            ];
+        $fields = [
+            'title' => ['required', 'string'],
+            'view' => ['required', 'integer'],
+            'moreLink' => ['nullable', 'url'],
+            'category' => ['required','string' ,'in:'.implode(',',array_keys($this->data['category']))],
+            'width' => ['required', 'numeric','in:'.implode(',',array_keys($this->data['width']))],
+            'type' => ['required','in:slider,grid'],
+            'contentCase.*'=> ['required','numeric','exists:'.$this->category.',id'],
+        ];
+        $messages = [
+            'title' => 'عنوان',
+            'view' => 'شماره نمایش',
+            'width' => 'عرض',
+            'category' => 'نوع محتوا',
+            'type' => 'نوع نمایش',
+            'widthCase' => 'عرض هر باکس',
+            'moreLink' => 'لینک صفحه نمایش همه',
+            'contentCase.*' => 'موارد'
+        ];
+        if ($this->type <> 'slider'){
+            $fields['widthCase'] = ['required', 'numeric','in:'.implode(',',array_keys($this->data['width']))];
         }
+        $this->validate($fields,[], $messages);
+        $content = [
+            'title' => $this->title,
+            'view' => $this->view,
+            'width' => $this->width,
+            'category' => $this->category,
+            'type' => $this->type,
+            'widthCase' => $this->widthCase,
+            'moreLink' => $this->moreLink,
+            'contentCase' => $this->contentCase
+        ];
         $array = $this->content->toArray();
         if ($this->mode == 'new'){
             $array[] = $content;

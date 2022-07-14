@@ -39,11 +39,37 @@
                                 </div>
 
                             </div>
+                            <div class="btn-box border-top border-top-gray pt-3">
+                                <div class="card-body">
+                                    <h3 class="card-title fs-22 pb-3">روش پرداخت را انتخاب کنید</h3>
+                                    <div class="divider"><span></span></div>
+                                    <div class="payment-option-wrap">
+                                        <div class="row">
+                                            @foreach($gateways as $key => $item)
+                                                <div class="col-12 col-md-4">
+                                                    <div class="p-2">
+                                                        <img  src="{{ asset($item['logo']) }}" alt="">
+                                                        <input id="{{$key}}" name="gateway" type="radio" wire:model.defer="gateway" value="{{$key}}" />
+                                                        <label for="{{$key}}">
+                                                            {{$item['title']}}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                    @error('gateway')
+                                    <p class="text-danger">
+                                        {{ $message }}
+                                    </p>
+                                    @enderror
+                                </div>
+                                <!-- end card-body -->
+                            </div>
                         </div>
                         <!-- end card-body -->
                     </div>
                 </div>
-                <!-- end col-lg-7 -->
                 <div class="col-lg-5">
                     <div class="card card-item">
                         <div class="card-body">
@@ -77,6 +103,12 @@
                                     @enderror
                                 </form>
                             </div>
+                            <div class="pt-4">
+                                <button wire:click="payment" class="btn theme-btn w-100">ادامه دهید <i class="la la-arrow-left icon ml-1"></i></button>
+                                <p wire:loading class="text-secondary text-right">
+                                    در حال پردازش ...
+                                </p>
+                            </div>
                         </div>
                         <!-- end card-body -->
                     </div>
@@ -84,42 +116,6 @@
 
                     <!-- end card -->
                 </div>
-                <div class="col-lg-7">
-                    <div class="card card-item">
-                        <div class="card-body">
-                            <h3 class="card-title fs-22 pb-3">روش پرداخت را انتخاب کنید</h3>
-                            <div class="divider"><span></span></div>
-                            <div class="payment-option-wrap">
-                                <div class="row">
-                                    @foreach($gateways as $key => $item)
-                                        <div class="col-12 col-md-4">
-                                            <div class="p-2">
-                                                <img  src="{{ asset($item['logo']) }}" alt="">
-                                                <input id="{{$key}}" name="gateway" type="radio" wire:model.defer="gateway" value="{{$key}}" />
-                                                <label for="{{$key}}">
-                                                    {{$item['title']}}
-                                                </label>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                            @error('gateway')
-                            <p class="text-danger">
-                                {{ $message }}
-                            </p>
-                            @enderror
-                        </div>
-                        <div>
-                            <button wire:click="payment" class="btn theme-btn w-100">ادامه دهید <i class="la la-arrow-left icon ml-1"></i></button>
-                            <p wire:loading class="text-secondary text-right">
-                                در حال پردازش ...
-                            </p>
-                        </div>
-                        <!-- end card-body -->
-                    </div>
-                </div>
-                <!-- end col-lg-5 -->
             </div>
             <!-- end row -->
         </div>

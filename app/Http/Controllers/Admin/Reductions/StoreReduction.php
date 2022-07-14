@@ -68,14 +68,16 @@ class StoreReduction extends BaseComponent
 
     public function saveInDatabase($voucher)
     {
+        $this->starts_at = $this->emptyToNull($this->starts_at);
+        $this->expires_at = $this->emptyToNull($this->expires_at);
         $this->validate(
             [
                 'code' => ['required', 'string', 'max:250', 'unique:reductions,code,' . ($this->reduction->id ?? 0)],
                 'description' => ['nullable', 'string', 'max:250'],
                 'type' => ['required', 'string', 'max:250','in:'.implode(',',array_keys(ReductionEnum::getType()))],
                 'amount' => ['required', 'integer', 'min:0'],
-                'starts_at' => ['nullable', 'string', 'max:65500'],
-                'expires_at' => ['nullable', 'string', 'max:250'],
+                'starts_at' => ['nullable', 'date'],
+                'expires_at' => ['nullable', 'date'],
                 'minimum_amount' => ['nullable', 'integer', 'min:0'],
                 'maximum_amount' => ['nullable', 'integer', 'min:0'],
                 'product_ids' => ['nullable', 'string', 'max:250'],

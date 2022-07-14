@@ -58,24 +58,19 @@
                 <x-admin.forms.input type="number" id="view" label="شماره نمایش*" wire:model.defer="view"/>
                 <x-admin.forms.dropdown id="category" :data="$data['category']" label="نوع محتوا*" wire:model="category"/>
                 <x-admin.forms.dropdown id="width" :data="$data['width']" label="عرض محتوا*" wire:model="width"/>
-                @if($category <> 'banners')
-                    <x-admin.forms.dropdown id="type" :data="$data['type']" label="نوع نمایش*" wire:model="type"/>
-                    @if($type <> 'slider')
-                        <x-admin.forms.dropdown id="widthCase" :data="$data['width']" label="عرض هر باکس*" wire:model.defer="widthCase"/>
-                    @endif
-                    <x-admin.forms.input type="url" id="moreLink" label="لینک صفحه نمایش همه" wire:model.defer.defer="moreLink"/>
-                    <x-admin.button class="btn btn-light-primary font-weight-bolder btn-sm" content="افزودن مورد" wire:click="addContentCase('new')" />
-                    @foreach($contentCase as $key => $value)
-                        <div style="display: flex;align-items: center">
-                            <x-admin.forms.input with="11" type="text" id="contentCase{{$key}}" label="شماره شناسه*" wire:model.defer="contentCase.{{$key}}"/>
-                            <x-admin.button class="danger" style="margin-top: 28px;" content="حذف " wire:click="unSetCase({{ $key }})" />
-                        </div>
-                    @endforeach
-                @elseif($category == 'banners')
-                    <x-admin.forms.full-text-editor id="bannerContent" label="متن*" wire:model.defer="bannerContent"/>
-                    <x-admin.forms.lfm-standalone id="bannerImage" label="تصویر پسزمینه*" :file="$bannerImage" type="image" required="true" wire:model="bannerImage"/>
-                    <x-admin.forms.input type="url" id="bannerLink" label="لینک مورد نظر" wire:model.defer.defer="bannerLink"/>
+                <x-admin.forms.dropdown id="type" :data="$data['type']" label="نوع نمایش*" wire:model="type"/>
+                @if($type <> 'slider')
+                    <x-admin.forms.dropdown id="widthCase" :data="$data['width']" label="عرض هر باکس*" wire:model.defer="widthCase"/>
                 @endif
+                <x-admin.forms.input type="url" id="moreLink" label="لینک صفحه نمایش همه" wire:model.defer.defer="moreLink"/>
+                <x-admin.button class="btn btn-light-primary font-weight-bolder btn-sm" content="افزودن مورد" wire:click="addContentCase('new')" />
+                @foreach($contentCase as $key => $value)
+                    <div style="display: flex;align-items: center">
+                        <x-admin.forms.input with="11" type="text" id="contentCase{{$key}}" label="شماره شناسه*" wire:model.defer="contentCase.{{$key}}"/>
+                        <x-admin.button class="danger" style="margin-top: 28px;" content="حذف " wire:click="unSetCase({{ $key }})" />
+                    </div>
+                @endforeach
+
             </x-admin.modal-page>
         </div>
     </div>
