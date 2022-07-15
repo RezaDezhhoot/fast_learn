@@ -33,7 +33,6 @@ class OrderMail extends Mailable
         $SettingRepository = app(SettingRepositoryInterface::class);
         $data = [
             'text' => $this->text,
-            'logo'=> url($SettingRepository->getRow('logo')),
             'name' => $SettingRepository->getRow('name')
         ];
         $email = $this->from($SettingRepository->getRow('email_username'),$data['name']);

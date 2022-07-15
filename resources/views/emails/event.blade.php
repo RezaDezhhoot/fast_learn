@@ -42,7 +42,10 @@
                                                 <table class="header-row" width="378" cellspacing="0" cellpadding="0" border="0" style="table-layout: fixed;">
                                                     <tbody>
                                                     <tr>
-                                                        <td class="header-row-td" width="378" style="text-align: right;font-family: Arial, sans-serif; font-weight: normal; line-height: 19px; color: #478fca; margin: 0px; font-size: 18px; padding-bottom: 10px; padding-top: 15px;" valign="top" align="left">{{$subject}}</td>
+                                                        <td class="header-row-td" width="378" style="text-align: right;font-family: Arial, sans-serif; font-weight: normal; line-height: 19px; color: #478fca; margin: 0px; font-size: 18px; padding-bottom: 10px; padding-top: 15px;" valign="top" align="left">
+                                                            <h4>{{$subject}}</h4>
+                                                            <img src="{{asset($logo)}}" alt="">
+                                                        </td>
                                                     </tr>
                                                     </tbody>
                                                 </table>

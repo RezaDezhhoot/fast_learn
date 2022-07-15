@@ -144,7 +144,7 @@ class Auth extends BaseComponent
         if ($this->sent && $this->checkTimer())
             return $this->addError($property,'رمز یکبار مصرف قبلا برای شما ارسال شده است.');
 
-        if (rateLimiter(value:$this->{$property}."_{$action}"))
+        if (rateLimiter(value:$this->{$property}."_{$action}",max_tries: 12))
         {
             $this->resetInputs();
             return
@@ -153,11 +153,14 @@ class Auth extends BaseComponent
 
         $this->validate([
             "$property" => ['required','string','exists:users,phone'],
+            'recaptcha' => ['required', new ReCaptchaRule],
         ],[],[
             "$property" => 'شماره همراه ',
+            'recaptcha' => 'فیلد امنیتی'
         ]);
 
         $rand = $this->generateCode();
+        $this->emit('resetReCaptcha');
         $user = $userRepository->getUser('phone',$this->{$property});
         app(OtpRepositoryInterface::class)->save($user,$rand);
 

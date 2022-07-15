@@ -37,7 +37,6 @@ class AuthenticationMail extends Mailable
         $data = [
             'text' => $this->text,
             'user'=> $this->user,
-            'logo'=> url($SettingRepository->getRow('logo')),
             'name' => $SettingRepository->getRow('name')
         ];
         $email = $this->from($SettingRepository->getRow('email_username'),$data['name']);

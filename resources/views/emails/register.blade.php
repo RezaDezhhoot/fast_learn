@@ -166,6 +166,7 @@
                                         <tr>
                                             <td valign="top" style="text-align: center; padding: 60px 0 10px 20px;">
                                                 <h1 style="margin: 0; font-family: 'Montserrat', sans-serif; font-size: 30px; line-height: 36px; color: #ffffff; font-weight: bold;">ثبت نام</h1>
+                                                <img src="{{asset($logo)}}" alt="">
                                             </td>
                                         </tr>
                                         <tr>
