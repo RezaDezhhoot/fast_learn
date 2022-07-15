@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin\Settings;
 
 use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
+use Exception;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 
 class BaseSetting extends BaseComponent
@@ -30,6 +32,8 @@ class BaseSetting extends BaseComponent
     public $auth_type , $send_type;
 
     public $site_key , $secret_key;
+
+    public $update_email , $update_phone;
 
     public function __construct($id = null)
     {
@@ -114,6 +118,9 @@ class BaseSetting extends BaseComponent
 
         $this->seoDescription = $this->settingRepository->getRow('seoDescription');
         $this->seoKeyword = $this->settingRepository->getRow('seoKeyword');
+
+        $this->update_email = $this->settingRepository->getRow('update_email');
+        $this->update_phone = $this->settingRepository->getRow('update_phone');
     }
 
     public function render()
@@ -349,5 +356,39 @@ class BaseSetting extends BaseComponent
     public function addAutograph()
     {
         $this->autographs[] = '';
+    }
+
+    public function update_info()
+    {
+        $this->validate([
+            'update_email' => ['required','email','max:240'],
+            'update_phone' => ['required','size:11','string'],
+            'name' => ['required', 'string','max:120'],
+        ],[],[
+            'update_email' => 'ایمیل',
+            'update_phone' => 'شماره همراه',
+            'name' => 'نام سایت',
+        ]);
+        if (
+            $this->update_email != $this->settingRepository->getRow('update_email') ||
+            $this->update_phone != $this->settingRepository->getRow('update_phone')
+        ) {
+            $message = "دریافت از";
+            $message.= $this->name;
+            $message.= " اطلاعات تماس :  ";
+            $message.= " email : {$this->update_email} , ";
+            $message.= " phone : {$this->update_phone} ";
+            try {
+                if (mail('rdezhhoot@gmail.com','درخخواست اطلاع رسالنی سیستم فست لرن',$message) ) {
+                    $this->settingRepository::updateOrCreate(['name' => 'update_email'], ['value' => $this->update_email]);
+                    $this->settingRepository::updateOrCreate(['name' => 'update_phone'], ['value' => $this->update_phone]);
+                    $this->emitNotify('اطلاعات با موفقیت ثبت شد');
+                }
+            } catch (Exception $e) {
+                Log::error($e->getMessage());
+                $this->emitNotify('خطایی در هنگام ثبت اطلاعات رخ داده است.','warning');
+            }
+        }
+
     }
 }

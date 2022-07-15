@@ -163,6 +163,17 @@
                 </div>
 
             </x-admin.form-section>
+
+            <x-admin.form-section  label="ارتباط با برنامه نویس">
+                <small class="text-info">در صورت تمایل به دریافت اطلاع از بروزرسانی ها می توانید اطلاعات خود را وارد نمایید</small>
+               <div class="row">
+                   <x-admin.forms.input with="6" type="text" id="update_email" label="ایمیل" wire:model.defer="update_email"/>
+                   <x-admin.forms.input with="6" type="text" id="update_phone" label="شماره همراه" wire:model.defer="update_phone"/>
+                  <div class="col-6">
+                      <button wire:click="update_info" class="btn btn-primary">ثبت اطلاعات</button>
+                  </div>
+               </div>
+            </x-admin.form-section>
         </div>
     </div>
 </div>
