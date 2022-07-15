@@ -25,6 +25,7 @@ use App\Repositories\Classes\ReductionRepository;
 use App\Repositories\Classes\RoleRepository;
 use App\Repositories\Classes\SendRepository;
 use App\Repositories\Classes\SettingRepository;
+use App\Repositories\Classes\TagRepository;
 use App\Repositories\Classes\TeacherRepository;
 use App\Repositories\Classes\TicketRepository;
 use App\Repositories\Classes\TranscriptRepository;
@@ -119,10 +120,6 @@ class RepositoryServiceProvider extends ServiceProvider
             HomeworkRepository::class,
         );
 
-        $this->app->bind(
-            HomeworkRepositoryInterface::class,
-            HomeworkRepository::class,
-        );
 
         $this->app->bind(
             NotificationRepositoryInterface::class,
@@ -144,10 +141,6 @@ class RepositoryServiceProvider extends ServiceProvider
             OrderNoteRepository::class,
         );
 
-        $this->app->bind(
-            OrderNoteRepositoryInterface::class,
-            OrderNoteRepository::class,
-        );
 
         $this->app->bind(
             OtpRepositoryInterface::class,
@@ -201,7 +194,7 @@ class RepositoryServiceProvider extends ServiceProvider
 
         $this->app->bind(
             TagRepositoryInterface::class,
-            TagRepositoryInterface::class,
+            TagRepository::class,
         );
 
         $this->app->bind(

@@ -1,4 +1,4 @@
-<div xmlns:wire="http://www.w3.org/1999/xhtml">
+<div>
     @section('title','ازمون ')
     <x-admin.form-control deleteAble="true" deleteContent="حذف ازمون" mode="{{$mode}}" title="ازمون"/>
     <div class="card card-custom gutter-b example example-compact">
@@ -97,9 +97,9 @@
 </div>
 @push('scripts')
     <script>
-        function deleteItem(id) {
+        function deleteItem() {
             Swal.fire({
-                title: 'حذف سوال!',
+                title: 'حذف ازمون!',
                 text: 'آیا از حذف این ازمون اطمینان دارید؟',
                 icon: 'warning',
                 showCancelButton: true,
@@ -112,12 +112,13 @@
                     if (result.isConfirmed) {
                         Swal.fire(
                             'موفیت امیز!',
-                            'سوال ازمون نظر با موفقیت حذف شد',
+                            'ازمون مورد نظر با موفقیت حذف شد',
                         )
                     }
                 @this.call('deleteItem', id)
                 }
             })
         }
+    </script>
 @endpush
 

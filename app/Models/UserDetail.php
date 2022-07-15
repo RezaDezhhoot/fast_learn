@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @method static updateOrCreate(array $key, array $value)
@@ -14,7 +15,7 @@ class UserDetail extends Model
 
     protected $guarded =['id'];
 
-    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -29,7 +30,7 @@ class UserDetail extends Model
         return (!empty($this->province) && !empty($this->city)) ? Setting::getCity()[$this->province][$this->city] : '';
     }
 
-    public function organ(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function organ(): BelongsTo
     {
         return $this->belongsTo(Organization::class,'organization');
     }
