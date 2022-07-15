@@ -79,7 +79,7 @@ class Auth extends BaseComponent
 
     public function login()
     {
-        if ($rateKey = rateLimiter(value:$this->phone.'_login',max_tries: 8))
+        if ($rateKey = rateLimiter(value:$this->phone.'_login',max_tries: 45))
         {
             $this->resetInputs();
             return
@@ -90,7 +90,7 @@ class Auth extends BaseComponent
         $this->validate([
             'phone' => ['required','string','exists:users,phone'],
             'password' => ['required','max:240','string'],
-            'recaptcha' => ['required', new ReCaptchaRule],
+//            'recaptcha' => ['required', new ReCaptchaRule],
         ],[],[
             'phone' => 'شماره',
             'password' => 'رمز عبور',
@@ -144,7 +144,7 @@ class Auth extends BaseComponent
         if ($this->sent && $this->checkTimer())
             return $this->addError($property,'رمز یکبار مصرف قبلا برای شما ارسال شده است.');
 
-        if (rateLimiter(value:$this->{$property}."_{$action}",max_tries: 12))
+        if (rateLimiter(value:$this->{$property}."_{$action}_code",max_tries: 45))
         {
             $this->resetInputs();
             return
