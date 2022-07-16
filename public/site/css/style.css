@@ -1,4 +1,4 @@
- /* Persian Font */
+     /* Persian Font */
 
  @font-face {
      font-family: IRANSans;
@@ -297,7 +297,7 @@
      line-height: 28px;
      font-family: IRANSans, sans-serif;
      color: #7f8897;
-     position: relative;
+     position: unset;
      -moz-osx-font-smoothing: grayscale;
      -webkit-font-smoothing: antialiased;
      font-weight: 500;

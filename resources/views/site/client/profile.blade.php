@@ -120,7 +120,7 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="input-box col-lg-6">
+                            <div class="input-box col-lg-6  position-relative" id="date-pickers">
                                 <label class="label-text">تاریخ تولد</label>
                                 <div class="form-group">
                                     <input id="birthday" class="form-control form--control" wire:model.defer="birthday"
