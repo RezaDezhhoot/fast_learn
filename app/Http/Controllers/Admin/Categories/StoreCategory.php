@@ -91,4 +91,12 @@ class StoreCategory extends BaseComponent
         }
         return view('admin.categories.store-category')->extends('admin.layouts.admin');
     }
+
+    public function deleteItem()
+    {
+        $this->authorizing('delete_categories');
+        $category = $this->categoryRepository->find($this->category->id);
+        $category->delete($category);
+        return redirect()->route('admin.category');
+    }
 }
