@@ -13,11 +13,11 @@ class UserRepository implements UserRepositoryInterface , ConfigRepository
     public function getDiskList(): array
     {
         $storages = [];
-        $storages[] = Auth::user()->hasPermissionTo('public_driver') ? 'public' : null;
-        $storages[] = Auth::user()->hasPermissionTo('private_driver') ? 'private' : null;
-        $storages[] = Auth::user()->hasPermissionTo('ftp_driver') ? 'ftp' : null;
-        $storages[] = Auth::user()->hasPermissionTo('sftp_driver') ? 'SFTP' : null;
-        $storages[] = Auth::user()->hasPermissionTo('s3_driver') ? 's3' : null;
+//        $storages[] = Auth::user()->hasPermissionTo('public_driver') ? 'public' : null;
+//        $storages[] = Auth::user()->hasPermissionTo('private_driver') ? 'private' : null;
+//        $storages[] = Auth::user()->hasPermissionTo('ftp_driver') ? 'ftp' : null;
+//        $storages[] = Auth::user()->hasPermissionTo('sftp_driver') ? 'SFTP' : null;
+//        $storages[] = Auth::user()->hasPermissionTo('s3_driver') ? 's3' : null;
         return $storages;
     }
 

@@ -134,8 +134,8 @@ class Ticket extends BaseComponent
 
     public function upload(): string
     {
-        if (isset($this->file) && !empty($this->file))
-            return 'storage/'.$this->disk->put('tickets',$this->file);
+//        if (isset($this->file) && !empty($this->file))
+//            return 'storage/'.$this->disk->put('tickets',$this->file);
 
         return '';
     }

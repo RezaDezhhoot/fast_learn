@@ -174,14 +174,14 @@ class Profile extends BaseComponent
 
         $this->validate($fields,[],$messages);
         $this->uploadFile();
-        if (!is_null($this->file)) {
-            $oldFile = str_replace('storage','',$this->user->image);
-            if (!is_null($this->user->image) && $this->disk->exists($oldFile))
-                $this->disk->delete($oldFile);
-
-            $this->user->image = 'storage/'.$this->disk->put('profiles',$this->file);
-            unset($this->file);
-        }
+//        if (!is_null($this->file)) {
+//            $oldFile = str_replace('storage','',$this->user->image);
+//            if (!is_null($this->user->image) && $this->disk->exists($oldFile))
+//                $this->disk->delete($oldFile);
+//
+//            $this->user->image = 'storage/'.$this->disk->put('profiles',$this->file);
+//            unset($this->file);
+//        }
 
         $this->user->name = $this->name;
         $this->user->email = $this->email;

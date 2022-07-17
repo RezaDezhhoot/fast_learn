@@ -258,7 +258,7 @@ class SingleCourse extends BaseComponent
     {
         $disk = getDisk($this->episode->homework_storage);
         if (!empty($this->homework_file)) {
-            $this->file_path = $disk->put('homeworks',$this->homework_file);
+//            $this->file_path = $disk->put('homeworks',$this->homework_file);
             $this->reset(['homework_file']);
         }
     }
