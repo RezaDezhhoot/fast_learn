@@ -67,7 +67,7 @@ class Auth extends BaseComponent
         TwitterCard::setDescription($this->settingRepository->getRow('seoDescription'));
         JsonLd::setTitle($this->settingRepository->getRow('title').' '.$title);
         JsonLd::setDescription($this->settingRepository->getRow('seoDescription'));
-        JsonLd::addImage(asset($this->settingRepository->getRow('logo')));
+//        JsonLd::addImage(asset($this->settingRepository->getRow('logo')));
         $this->auth_type = $this->settingRepository->getRow('auth_type') ?? 'none';
     }
 
