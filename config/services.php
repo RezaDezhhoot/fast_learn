@@ -32,7 +32,7 @@ return [
     ],
 
     'recaptcha' => [
-        'site_key' => 'xxxx',
-        'secret_key' => 'xxxx',
+        'site_key' => '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI',
+        'secret_key' => '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe',
     ],
 ];

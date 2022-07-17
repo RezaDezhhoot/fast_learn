@@ -79,7 +79,7 @@ class Auth extends BaseComponent
 
     public function login()
     {
-        if ($rateKey = rateLimiter(value:$this->phone.'_login',max_tries: 45))
+        if ($rateKey = rateLimiter(value:$this->phone.'_login',max_tries: 5))
         {
             $this->resetInputs();
             return

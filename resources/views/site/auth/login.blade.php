@@ -55,11 +55,11 @@
                                 </small>
                                 @enderror
                             </div>
-                            <div class="input-box mt-4">
-                                <div class="g-recaptcha d-inline-block" data-sitekey="{{ config('services.recaptcha.site_key') }}"
-                                     data-callback="reCaptchaCallback" wire:ignore></div>
-                                @error('recaptcha')<span class="invalid-feedback d-block">{{ $message }}</span>@enderror
-                            </div>
+{{--                            <div class="input-box mt-4">--}}
+{{--                                <div class="g-recaptcha d-inline-block" data-sitekey="{{ config('services.recaptcha.site_key') }}"--}}
+{{--                                     data-callback="reCaptchaCallback" wire:ignore></div>--}}
+{{--                                @error('recaptcha')<span class="invalid-feedback d-block">{{ $message }}</span>@enderror--}}
+{{--                            </div>--}}
                             <!-- end input-box -->
                             <div class="btn-box">
                                 @if($auth_type != 'none')
