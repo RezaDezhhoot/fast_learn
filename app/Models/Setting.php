@@ -74,21 +74,62 @@ class Setting extends Model
         return [
             'Alborz' => [
                 'Karaj' => 'کرج',
-                'Hashtgerd' => 'هشتگرد',
                 'Nazar Abad' => 'نظرآباد',
                 'Mohammad Shahr' => 'محمدشهر',
+                'Chehar Bagh' => 'چهارباغ',
+                'Asara' => 'آسارا',
+                'Talghan' => 'طالقان',
+                'shahr jadid hashtgerd' => 'شهرجدیدهشتگرد',
+                'Mohammadshahr' => 'محمدشهر',
+                'Meshkin Dasht' => 'مشکین دشت',
+                'Nazarabad' => 'نظرآباد',
+                'Hashtgerd' => 'هشتگرد',
+                'Mahdasht'=> 'ماهدشت',
+                'eshtehard' => 'اشتهارد',
+                'koohsar' => 'کوهسار',
+                'garm dare' => 'گرمدره',
+                'Tankman' => 'تنکمان',
+                'Golsar' => 'گلسار',
+                'Kamalshahr' => 'کمالشهر',
+                'Ferdis' => 'فردیس'
             ],
             'Ardabil' => [
                 'Ardabil' => 'اردبیل',
                 'Pars Abad' => 'پارس‌آباد',
                 'Meshgin Shahr' => 'مشگین‌شهر',
                 'KhalKhal' => 'خلخال',
+                'Fakhrabad' => 'فخراباد',
+                'chlorine' => 'کلور',
+                'Nir' => 'نیر',
+                'Islam Abad' => 'اسلام اباد',
+                'taze kand angoot' => 'تازه کند انگوت',
+                'Jafarabad' => 'جعفرآباد',
+                'Namin' => 'نمین',
+                'eslandooz' => 'اصلاندوز',
+                'Muradlo'=> 'مرادلو',
+                'khalkhal' => 'خلخال',
+                'kuraim' => 'کوراییم',
+                'Hir' => 'هیر',
+                'Givi'=> 'گیوی',
+                'garmi' => 'گرمی',
+                'Lahrud' => 'لاهرود',
+                'Hashtjin' => 'هشتجین',
+                'Anbaran' => 'عنبران',
+                'taza kand' => 'تازه کند',
+                'Qasabe' => 'قصابه',
+                'Razi' => 'رضی',
+                'Sareen' => 'سرعین',
+                'bile savar' => 'بیله سوار',
+                'abi biglo' => 'آبی بیگلو'
             ],
             'Azerbaijan East' => [
                 'Tabriz' => 'تبریز',
                 'Maraghe' => 'مراغه',
                 'Marand' => 'مرند',
                 'Myane' => 'میانه',
+                'Kashkasrai' => 'کشکسرای',
+                'Sahand' => 'سهند',
+                ''
             ],
             'Azerbaijan, West' => [
                 'Orumie' => 'ارومیه',
@@ -123,6 +164,9 @@ class Setting extends Model
             'Golestan' => [
                 'Gorgan' => 'گرگان',
                 'Gonbad Kavoos' => 'گنبد کاووس',
+                'Ali Abad' => 'علی اباد',
+                'Kalale' => 'کلاله',
+                'Azad Shahr' => 'آزادشهر'
             ],
             'Hamadan' => [
                 'Hamadan' => 'همدان',
@@ -132,10 +176,16 @@ class Setting extends Model
             'Hormozgān' => [
                 'Bandarabas' => 'بندرعباس',
                 'Minab' => 'میناب',
+                'Hormuz' => 'هرمز',
+                'Kish' => 'کیش',
+                'Qeshm' => 'قشم',
+                'Bandar Lengeh' => 'بندرلنگه'
             ],
             'Ilam' => [
                 'Ilam' => 'ایلام',
                 'Ivan' => 'ایوان',
+                'Mehran' => 'مهران',
+                'Shabab' => 'شباب'
             ],
             'Isfahan' => [
                 'Isfahan' => 'اصفهان',
@@ -151,6 +201,7 @@ class Setting extends Model
             'Kermanshah' => [
                 'Kermanshah' => 'کرمانشاه',
                 'Islam Abad' => 'اسلام‌آباد',
+                'Robat' => 'رباط',
             ],
             'Khorasan North' => [
                 'Bojnourd' => 'بجنورد',
@@ -162,6 +213,8 @@ class Setting extends Model
                 'Mashhad' => 'مشهد',
                 'Sbzevar' => 'سبزوار',
                 'Neyshaboor' => 'نیشابور',
+                'Kashmir' => 'کاشمر',
+                'Torbat' => 'تربت حیدریه'
             ],
             'Khorasan South' => [
                 'Birjand' => 'بیرجند',
@@ -206,6 +259,9 @@ class Setting extends Model
             ],
             'Qom' => [
                 'Qom' => 'قم',
+                'kahak' => 'کهک',
+                'jafarie' => 'جعفریه',
+                'dastjerd' => 'دستجرد'
             ],
             'Semnan' => [
                 'Semnan' => 'سمنان',
@@ -226,10 +282,15 @@ class Setting extends Model
             ],
             'Yazd' => [
                 'Yazd' => 'یزد',
-                'Ardakan'=> 'اردکان'
+                'Ardakan'=> 'اردکان',
+                'Ahmedabad' => 'احمدآباد',
+                'Mehrdasht' => 'مهردشت'
             ],
             'Zanjan' => [
                 'Zanjan' => 'زنجان',
+                'Zarin Abad' => 'زرین آباد',
+                'Sehrvard' => 'سهرورد',
+                'noor bahar' => 'نوربهار'
             ],
         ];
     }
