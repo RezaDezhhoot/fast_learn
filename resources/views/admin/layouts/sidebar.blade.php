@@ -99,9 +99,9 @@
                         @can('show_courses')
                             <x-admin.menu-item href="{{route('admin.course')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['admin.course','admin.store.course'])" label="دروه ها  " />
                         @endcan
-{{--                        @can('show_episodes')--}}
+                        @can('show_episodes')
                             <x-admin.menu-item href="{{route('admin.episode')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['admin.episode','admin.store.episode'])" label="درس ها  " />
-{{--                        @endcan--}}
+                        @endcan
                     </x-admin.menu-group>
                 @endcan
                 @can('show_articles')

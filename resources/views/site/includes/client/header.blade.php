@@ -1,7 +1,7 @@
 <header class="header-menu-area">
     <div class="header-menu-content dashboard-menu-content pr-30px pl-30px bg-white shadow-sm">
         <div class="container-fluid">
-            <div class="main-menu-content">
+            <div class="main-menu-content p-0">
                 <div class="row align-items-center">
                     <div class="col-lg-12">
                         <div class="logo-box logo--box">
