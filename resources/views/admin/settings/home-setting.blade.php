@@ -21,7 +21,6 @@
                         <td>نوع محتوا</td>
                         <td>نوع نمایش</td>
                         <td>شماره نمایش</td>
-                        <th>عرض محتوا</th>
                         <td>عملیات</td>
                     </tr>
                     </thead>
@@ -32,7 +31,6 @@
                             <td>{{ $data['category'][$value['category']] ?? '' }}</td>
                             <td>{{ $data['type'][$value['type']] ?? '' }}</td>
                             <td>{{ $value['view'] }}</td>
-                            <td>{{ $data['width'][$value['width']] ?? '' }}</td>
                             <td>
                                 <button type="button"  wire:click="addContent('{{$key}}')" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2">
                                     <span class="svg-icon svg-icon-md">
@@ -57,7 +55,6 @@
                 <x-admin.forms.input type="text" id="title" label="عنوان*" wire:model.defer="title"/>
                 <x-admin.forms.input type="number" id="view" label="شماره نمایش*" wire:model.defer="view"/>
                 <x-admin.forms.dropdown id="category" :data="$data['category']" label="نوع محتوا*" wire:model="category"/>
-                <x-admin.forms.dropdown id="width" :data="$data['width']" label="عرض محتوا*" wire:model="width"/>
                 <x-admin.forms.dropdown id="type" :data="$data['type']" label="نوع نمایش*" wire:model="type"/>
                 @if($type <> 'slider')
                     <x-admin.forms.dropdown id="widthCase" :data="$data['width']" label="عرض هر باکس*" wire:model.defer="widthCase"/>

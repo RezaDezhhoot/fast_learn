@@ -52,7 +52,7 @@ class HomeSetting extends BaseComponent
 
     public function addContent($title)
     {
-        $this->authorizing('edit_settings_fag');
+        $this->authorizing('edit_settings_home');
         if ($title <> 'new')
         {
             $this->titleContent = $this->content[$title]['title'];
@@ -62,7 +62,6 @@ class HomeSetting extends BaseComponent
             $this->category = $this->content[$title]['category'];
             $this->type = $this->content[$title]['type'] ?? '';
             $this->width = $this->content[$title]['width'];
-            $this->widthCase = $this->content[$title]['widthCase'] ?? '';
 
             $this->contentCase = $this->content[$title]['contentCase'] ?? [];
             $this->bannerImage = $this->content[$title]['bannerImage'] ?? '';
@@ -78,7 +77,7 @@ class HomeSetting extends BaseComponent
 
     public function addContentCase()
     {
-        $this->authorizing('edit_settings_fag');
+        $this->authorizing('edit_settings_home');
         $this->contentCase[] = '';
     }
 
@@ -90,14 +89,12 @@ class HomeSetting extends BaseComponent
             'view' => ['required', 'integer'],
             'moreLink' => ['nullable', 'url'],
             'category' => ['required','string' ,'in:'.implode(',',array_keys($this->data['category']))],
-            'width' => ['required', 'numeric','in:'.implode(',',array_keys($this->data['width']))],
             'type' => ['required','in:slider,grid'],
             'contentCase.*'=> ['required','numeric','exists:'.$this->category.',id'],
         ];
         $messages = [
             'title' => 'عنوان',
             'view' => 'شماره نمایش',
-            'width' => 'عرض',
             'category' => 'نوع محتوا',
             'type' => 'نوع نمایش',
             'widthCase' => 'عرض هر باکس',
@@ -111,7 +108,7 @@ class HomeSetting extends BaseComponent
         $content = [
             'title' => $this->title,
             'view' => $this->view,
-            'width' => $this->width,
+            'width' => '12',
             'category' => $this->category,
             'type' => $this->type,
             'widthCase' => $this->widthCase,
@@ -136,13 +133,13 @@ class HomeSetting extends BaseComponent
 
     public function unSetCase($key)
     {
-        $this->authorizing('edit_settings_fag');
+        $this->authorizing('edit_settings_home');
         unset($this->contentCase[$key]);
     }
 
     public function unSetContent($key)
     {
-        $this->authorizing('edit_settings_fag');
+        $this->authorizing('edit_settings_home');
         unset($this->content[$key]);
     }
 
@@ -153,7 +150,7 @@ class HomeSetting extends BaseComponent
 
     public function store()
     {
-        $this->authorizing('edit_settings_fag');
+        $this->authorizing('edit_settings_home');
         $this->resetErrorBag();
         $this->settingRepository::updateOrCreate(['name' => 'homeContent'], ['value' => json_encode($this->content)]);
         $this->settingRepository::updateOrCreate(['name' => 'slider'], ['value' => $this->slider ]);
