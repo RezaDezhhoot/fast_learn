@@ -151,7 +151,7 @@
                                                         <p class="alert alert-danger">دوره خریداری نشده است.</p>
                                                     @endif
                                                 @else
-                                                    <p class="alert alert-info">دوره خریداری نشده است.</p>
+                                                    <p class="alert alert-info">دسترسی به این بخش نیاز به ثبت نام دارد.</p>
                                                 @endif
                                             </div>
                                             <!-- end collapse -->
