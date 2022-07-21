@@ -59,7 +59,7 @@
                                         </div>
                                     @else
                                         <li>
-                                            <a href="{{ route('auth') }}" class="btn theme-btn theme-btn-sm text-white"><i class="la la-user-plus mr-1"></i> ثبت نام/ورود</a>
+                                            <a href="{{ route('auth') }}" class="btn theme-btn theme-btn-sm text-white p-2"> ثبت نام/ورود</a>
                                         </li>
                                     @endif
                                 </ul>

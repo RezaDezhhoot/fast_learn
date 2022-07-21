@@ -50,7 +50,7 @@ class SendRepository implements SendRepositoryInterface
                 Log::info($data[1]);
                 throw new Exception($data[1]);
             }
-        } catch (GuzzleException $e) {
+        } catch (GuzzleException|Exception  $e) {
             return "ERROR";
         }
     }
@@ -89,7 +89,7 @@ class SendRepository implements SendRepositoryInterface
                 Log::info($data['message']);
                 throw new Exception($data['message']);
             }
-        } catch (GuzzleException $e) {
+        } catch (GuzzleException|Exception  $e) {
             return "ERROR";
         }
     }
