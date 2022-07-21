@@ -8,8 +8,6 @@ use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\Interfaces\ArticleRepositoryInterface;
 use App\Repositories\Interfaces\TagRepositoryInterface;
-use Illuminate\Http\RedirectResponse;
-use Livewire\Event;
 
 class StoreArticle extends BaseComponent
 {

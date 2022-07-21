@@ -50,7 +50,9 @@ class Permission extends \Spatie\Permission\Models\Permission
             'organizations'=>'سازمان ها',
             'executives' => 'دستگاه های اجرایی',
             'events' => 'رویداد ها',
-            'episodes' => 'درس ها'
+            'episodes' => 'درس ها',
+            'contacts' => 'ارتباط با ما',
+            'logs' => 'لاگ ها',
         ];
     }
 

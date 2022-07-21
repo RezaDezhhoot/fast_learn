@@ -29,4 +29,6 @@ interface PaymentRepositoryInterface
     public function pay($amount , $gateway , array $config , string $callbackUrl  , callable $callbackFunction);
 
     public function verify($amount,$gateway,array $config , $transactionId , callable $callbackFunction);
+
+    public function getModelNamespace(): string;
 }

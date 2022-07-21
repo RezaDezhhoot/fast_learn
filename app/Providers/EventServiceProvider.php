@@ -3,9 +3,11 @@
 namespace App\Providers;
 
 use App\Events\AuthenticationEvent;
+use App\Events\ContactUsEvent;
 use App\Events\ExamEvent;
 use App\Events\OrderEvent;
 use App\Events\RegisterEvent;
+use App\Listeners\ContactUsListener;
 use App\Listeners\SendAuthenticationNotify;
 use App\Listeners\SendExamNotify;
 use App\Listeners\SendOrderNotify;
@@ -40,6 +42,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        # Event-Listeners
         Event::listen(
             AuthenticationEvent::class,
             [SendAuthenticationNotify::class, 'handle']
@@ -57,6 +60,12 @@ class EventServiceProvider extends ServiceProvider
             [SendOrderNotify::class, 'handle']
         );
 
+        Event::listen(
+            ContactUsEvent::class,
+            [ContactUsListener::class, 'handle']
+        );
+
+        # Observers
         app(TicketRepositoryInterface::class)::observe();
         app(CategoryRepositoryInterface::class)::observe();
         app(CourseRepositoryInterface::class)::observe();

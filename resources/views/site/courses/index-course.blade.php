@@ -71,16 +71,22 @@
                 </div>
                 <!-- end col-lg-4 -->
                 <div class="col-lg-9">
-                    <div class="row">
-                        @foreach($courses as $item)
-                            <div class="col-lg-4 responsive-column-half">
-                                <x-site.courses.course-box :item="$item" />
-                            </div>
-                        @endforeach
-                    </div>
-                    <!-- end row -->
-                    {{$courses->links('site.includes.paginate')}}
-
+                    @if(sizeof($courses) > 0)
+                        <div class="row">
+                            @foreach($courses as $item)
+                                <div class="col-lg-4 responsive-column-half">
+                                    <x-site.courses.course-box show_details="{{false}}" :item="$item" />
+                                </div>
+                            @endforeach
+                        </div>
+                        <!-- end row -->
+                        {{$courses->links('site.includes.paginate')}}
+                    @else
+                        <div class="text-center">
+                            <img class="mx-auto no-date d-block mt-5" src="{{ asset('site/svg/no-data.svg') }}" alt="">
+                            <h5 class="mt-3">ما هیچ دوره ای برای شما پیدا نکردیم!</h5>
+                        </div>
+                    @endif
                 </div>
                 <!-- end col-lg-8 -->
             </div>

@@ -10,6 +10,7 @@
                     <table  class="table table-striped table-bordered" id="kt_datatable">
                         <thead>
                         <tr>
+                            <th>#</th>
                             <th>کد پیگیری سبد</th>
                             <th>جزئیات</th>
                             <th>وضعیت</th>
@@ -22,6 +23,7 @@
                         <tbody>
                         @forelse($orders as $item)
                             <tr>
+                                <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->tracking_code }}</td>
                                 <td>
                                     @foreach($item->details as $order)
@@ -36,14 +38,16 @@
                                 </td>
                                 <td>{{ $item->status_label }}</td>
                                 <td>{{ number_format($item->price) }} تومان</td>
-                                <td>{{ $item->user->name }}</td>
+                                <td>
+                                    <a title="مشاهده لاگ این کاربر" href="{{route('admin.log',['user'=>$item->user->id])}}">{{ $item->user->name }}</a>
+                                </td>
                                 <td>{{ $item->date }}</td>
                                 <td>
                                     <x-admin.edit-btn href="{{ route('admin.store.order',['edit', $item->id]) }}" />
                                 </td>
                             </tr>
                         @empty
-                            <td class="text-center" colspan="7">
+                            <td class="text-center" colspan="9">
                                 دیتایی جهت نمایش وجود ندارد
                             </td>
                         @endforelse

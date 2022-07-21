@@ -35,6 +35,13 @@
             </x-admin.form-section>
             @if($mode == self::UPDATE_MODE)
                 <hr>
+                <x-admin.form-section label="مشاهده لاگ های این کاربر" >
+                    <p>
+                        <a class="btn btn-outline-success" href="{{route('admin.log',['user'=>$user->id])}}">مشاهده</a>
+                    </p>
+                </x-admin.form-section>
+
+                <hr>
                 <x-admin.form-section label="کیف پول" >
                     <div class="form-group" style="padding: 5px">
                         <div class="form-control" >

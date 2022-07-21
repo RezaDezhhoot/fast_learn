@@ -14,7 +14,7 @@ class Fag extends BaseComponent
     public $fag;
     public function mount(SettingRepositoryInterface $settingRepository)
     {
-        SEOMeta::setTitle($settingRepository->getRow('title').' سوالات متداول -');
+        SEOMeta::setTitle($settingRepository->getRow('title').'- سوالات متداول ');
         SEOMeta::setDescription($settingRepository->getRow('seoDescription'));
         SEOMeta::addKeyword($settingRepository->getRow('seoKeyword',[]));
         OpenGraph::setUrl(url()->current());

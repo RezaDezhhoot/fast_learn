@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Site\Carts;
 
 use App\Enums\OrderEnum;
+use App\Enums\PaymentEnum;
 use App\Enums\ReductionEnum;
 use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
@@ -346,7 +347,7 @@ class Checkout extends BaseComponent
                         'amount' => Cart::total($this->walletAmount, $voucherAmount,0),
                         'payment_gateway' => $gateway,
                         'payment_token' => $transactionId,
-                        'model_type' => 'order',
+                        'model_type' => PaymentEnum::order(),
                         'model_id' => $orderRepository->id,
                         'call_back_url' => '',
                     ]);

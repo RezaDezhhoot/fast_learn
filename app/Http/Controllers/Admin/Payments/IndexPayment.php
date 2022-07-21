@@ -13,7 +13,7 @@ class IndexPayment extends BaseComponent
     protected $queryString = ['status'];
 
     public ?string $status = null , $ip = null , $user = null;
-    public string $placeholder = '  کد پیگیری یا شماره رسید';
+    public string $placeholder = '  کد پیگیری یا شماره شناسه';
 
     public function __construct($id = null)
     {

@@ -57,7 +57,7 @@ class CourseRepository implements CourseRepositoryInterface
             });
         })->when($teacher , function ($q) use ($teacher){
             return $q->where('teacher_id',base64_decode($teacher));
-        })->hasCategory()->paginate(12);
+        })->hasCategory()->paginate(9);
     }
 
     public function save(Course $course): Course

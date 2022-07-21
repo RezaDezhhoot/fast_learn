@@ -7,11 +7,11 @@ use App\Repositories\Interfaces\SettingRepositoryInterface;
 
 class Head extends BaseComponent
 {
-    public $logo;
 
-    public function mount(SettingRepositoryInterface $settingRepository)
+
+    public function mount()
     {
-        $this->logo = $settingRepository->getRow('logo');
+
     }
 
     public function render()

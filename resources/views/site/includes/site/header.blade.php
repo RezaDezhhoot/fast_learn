@@ -1,6 +1,6 @@
 <header class="header-menu-area custom-box-shadow">
     <div class="header-menu-content bg-white">
-        <div class="container-fluid">
+        <div class="container">
             <div class="main-menu-content p-0">
                 <div class="row align-items-center">
                     <div class="col-lg-2">

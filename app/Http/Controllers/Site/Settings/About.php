@@ -14,7 +14,7 @@ class About extends BaseComponent
     public $about ;
     public function mount(SettingRepositoryInterface $settingRepository)
     {
-        SEOMeta::setTitle($settingRepository->getRow('title').' درباره ما -');
+        SEOMeta::setTitle($settingRepository->getRow('title').' - درباره ما  ');
         SEOMeta::setDescription($settingRepository->getRow('seoDescription'));
         SEOMeta::addKeyword($settingRepository->getRow('seoKeyword',[]));
         OpenGraph::setUrl(url()->current());

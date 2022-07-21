@@ -126,7 +126,7 @@
                         @if($mode == self::UPDATE_MODE)
                             <div class="row">
                                 <x-admin.forms.input with="6" type="text" id="certificate_code" label="کد گواهینامه" wire:model.defer="certificate_code"/>
-                                <x-admin.forms.input with="6" type="text" id="certificate_date" label="تاریخ صدور" wire:model.defer="certificate_date"/>
+                                <x-admin.forms.jdate-picker sign="/" with="6" with="6" id="certificate_date" label="تاریخ صدور" wire:model.defer="certificate_date"/>
                             </div>
                         @endif
                     </div>

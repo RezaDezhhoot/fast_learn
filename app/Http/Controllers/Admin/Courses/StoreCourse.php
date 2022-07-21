@@ -52,8 +52,8 @@ class StoreCourse extends BaseComponent
             $this->status = $this->course->status;
             $this->reduction_type = $this->course->reduction_type;
             $this->reduction_value = $this->course->reduction_value;
-            $this->start_at = $this->course->start_at;
-            $this->expire_at = $this->course->expire_at;
+            $this->start_at = $this->dateConverter($this->course->start_at);
+            $this->expire_at = $this->dateConverter($this->course->expire_at);
             $this->tags = $this->course->tags->pluck('id','id')->toArray();
             $this->seo_keywords = $this->course->seo_keywords;
             $this->seo_description = $this->course->seo_description;
@@ -88,8 +88,11 @@ class StoreCourse extends BaseComponent
     public function store()
     {
         $this->authorizing('edit_courses');
-        if ($this->mode == self::UPDATE_MODE)
+        if ($this->mode == self::UPDATE_MODE){
             $this->saveInDataBase($this->course);
+            $this->start_at = $this->dateConverter($this->start_at) ;
+            $this->expire_at = $this->dateConverter($this->expire_at) ;
+        }
         elseif ($this->mode == self::CREATE_MODE){
             $this->saveInDataBase($this->courseRepository->newCourseObject());
             $this->reset(['slug','sub_title','title','short_body','long_body','image','category','quiz','teacher',
@@ -100,6 +103,8 @@ class StoreCourse extends BaseComponent
     public function saveInDataBase($model)
     {
         $this->quiz = $this->emptyToNull($this->quiz);
+        $this->start_at = $this->dateConverter($this->start_at,'m') ;
+        $this->expire_at = $this->dateConverter($this->expire_at,'m') ;
         $this->validate([
             'title' => ['required','string','max:255'],
             'sub_title' => ['required','string','max:255'],
@@ -150,8 +155,8 @@ class StoreCourse extends BaseComponent
         $model->reduction_type = $this->reduction_type;
         $model->reduction_value = $this->reduction_value;
         $model->level = $this->level;
-        $model->start_at = $this->start_at ?? null;
-        $model->expire_at = $this->expire_at ?? null;
+        $model->start_at = $this->start_at;
+        $model->expire_at = $this->expire_at;
         $model->seo_keywords = $this->seo_keywords;
         $model->seo_description = $this->seo_description;
         $model = $this->courseRepository->save($model);

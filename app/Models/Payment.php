@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use App\Enums\PaymentEnum;
-use App\Traits\Admin\Searchable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Morilog\Jalali\Jalalian;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * @property mixed created_at
@@ -20,11 +21,9 @@ use Morilog\Jalali\Jalalian;
  */
 class Payment extends Model
 {
-    use HasFactory , Searchable;
+    use HasFactory  , LogsActivity;
 
     protected $guarded = ['id'];
-
-    protected array $searchAbleColumns = ['payment_token'];
 
     public function user(): BelongsTo
     {
@@ -44,5 +43,15 @@ class Payment extends Model
     public function orders(): belongsTo
     {
         return $this->belongsTo(Order::class,'model_id')->where('model_type','order');
+    }
+
+    public function model(): MorphTo
+    {
+        return $this->morphTo();
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return (new LogOptions())->logAll();
     }
 }

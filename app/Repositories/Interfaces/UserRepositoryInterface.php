@@ -49,4 +49,6 @@ interface UserRepositoryInterface
     public function count();
 
     public function getUsersForEvent(string $orderBy , int $count);
+
+    public function getModelNamespace(): string;
 }

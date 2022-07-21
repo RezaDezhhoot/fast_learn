@@ -130,6 +130,11 @@ class SetPermissionsAndRoles extends Command
             ['name' => 'ftp_driver', 'guard_name'=> 'web'],
             ['name' => 'sftp_driver', 'guard_name'=> 'web'],
             ['name' => 's3_driver', 'guard_name'=> 'web'],
+
+            ['name' => 'show_contacts', 'guard_name'=> 'web'],
+            ['name' => 'edit_contacts', 'guard_name'=> 'web'],
+            ['name' => 'delete_contacts', 'guard_name'=> 'web'],
+            ['name' => 'show_logs', 'guard_name'=> 'web'],
         ];
         $user = [
             'name'=> 'admin',

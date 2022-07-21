@@ -44,7 +44,7 @@ class OrderDetail extends Model
 
     public function getTrackingCodeAttribute(): string
     {
-        return 'KV-D-'.($this->id + Order::CHANGE_ID);
+        return 'FL-D-'.($this->id + Order::CHANGE_ID);
     }
 
     public function getProductDataAttribute($value)

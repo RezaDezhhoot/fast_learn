@@ -13,6 +13,7 @@
                                 <td>نام</td>
                                 <td>شماره همراه</td>
                                 <td>وضعیت</td>
+                                <th>مشاهده لاگ ها</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -20,6 +21,9 @@
                                 <td>{{ $order->user->name }}</td>
                                 <td>{{ $order->user->phone }}</td>
                                 <td>{{ $order->user->status_label }}</td>
+                                <td>
+                                    <a title="مشاهده لاگ این کاربر" href="{{route('admin.log',['user'=>$order->user->id])}}">مشاهده</a>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
@@ -32,12 +36,18 @@
                         <table class="table table-striped table-bordered">
                             <thead>
                             <tr>
-                                <td>کد پیگیری سبد:</td>
+                                <th>کد پیگیری سبد:</th>
+                                <th>شماره شناسه پرداخت:</th>
+                                <th>درگاه پرداخت:</th>
+                                <th>کد پیگیری درگاه:</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
                                 <td>{{$order->tracking_code}}</td>
+                                <td>{{$order->payment->id}}</td>
+                                <td>{{$order->payment->payment_gateway}}</td>
+                                <td>{{$order->payment->payment_ref}}</td>
                             </tr>
                             </tbody>
                         </table>

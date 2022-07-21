@@ -19,11 +19,11 @@
                 <!--begin::Actions-->
                 <p>از تاریخ</p>
                 <div class="d-flex align-center justify-content-between">
-                    <x-admin.forms.date-picker id="date" label=""   wire:model.defer="from_date"/>
+                    <x-admin.forms.jdate-picker id="date" label=""   wire:model.defer="from_date_view"/>
                 </div>
                 <p>تا تاریخ</p>
                 <div>
-                    <x-admin.forms.date-picker id="date2" label=""  wire:model.defer="to_date"/>
+                    <x-admin.forms.jdate-picker id="date2" label=""  wire:model.defer="to_date_viwe"/>
                 </div>
                 <div>
                     <button wire:loading.attr="disabled" class="btn btn-light-primary font-weight-bolder btn-sm" wire:click.prevent="confirmFilter">اعمال فیلتر</button>

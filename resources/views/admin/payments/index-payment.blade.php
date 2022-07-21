@@ -13,6 +13,7 @@
                         <thead>
                         <tr>
                             <th>#</th>
+                            <th>شماره شناسه</th>
                             <th>پرداخت کننده</th>
                             <th>ای پی</th>
                             <th>وضعیت</th>
@@ -29,13 +30,14 @@
                         @forelse($payments as $item)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $item->user->name }}</td>
+                                <td>{{ $item->id }}</td>
+                                <td><a title="مشاده لاگ های این کاربر" href="{{route('admin.log',['user'=>$item->user->id])}}">{{ $item->user->name }}</a></td>
                                 <td>{{ $item->user->ip }}</td>
                                 <td>{{ $item->status_code }}</td>
                                 <td>{{ $item->payment_ref ? 'تایید شده' : 'تایید نشده' }}</td>
                                 <td>{{ number_format($item->price) }}</td>
                                 <td>{{ $item->payment_gateway }}</td>
-                                <td>{{ $item->payment_token }}</td>
+                                <td>{{ $item->payment_ref }}</td>
                                 <td>{{ $item->status_message }}</td>
                                 <td>{{ $item->date }}</td>
                                 <td>
@@ -43,7 +45,7 @@
                                 </td>
                             </tr>
                         @empty
-                            <td class="text-center" colspan="11">
+                            <td class="text-center" colspan="12">
                                 دیتایی جهت نمایش وجود ندارد
                             </td>
                         @endforelse

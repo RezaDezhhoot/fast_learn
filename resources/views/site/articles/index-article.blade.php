@@ -56,15 +56,22 @@
                 </div>
                 <!-- end col-lg-4 -->
                 <div class="col-lg-9">
-                    <div class="row">
-                        @foreach($articles as $item)
-                            <div class="col-lg-4 responsive-column-half">
-                                <x-site.articles.article-box :item="$item"/>
-                            </div>
-                        @endforeach
-                    </div>
-                    <!-- end row -->
-                    {{$articles->links('site.includes.paginate')}}
+                    @if(sizeof($articles))
+                        <div class="row">
+                            @foreach($articles as $item)
+                                <div class="col-lg-4 responsive-column-half">
+                                    <x-site.articles.article-box :item="$item"/>
+                                </div>
+                            @endforeach
+                        </div>
+                        <!-- end row -->
+                        {{$articles->links('site.includes.paginate')}}
+                    @else
+                        <div class="text-center">
+                            <img class="mx-auto no-date d-block mt-5" src="{{ asset('site/svg/No-data-cuate.svg') }}" alt="">
+                            <h5 class="mt-3">ما هیچ مقاله ای برای شما پیدا نکردیم!</h5>
+                        </div>
+                    @endif
 
                 </div>
                 <!-- end col-lg-8 -->

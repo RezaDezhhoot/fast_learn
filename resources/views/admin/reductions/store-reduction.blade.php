@@ -11,8 +11,8 @@
                 <x-admin.forms.input with="6" id="code" type="text" label="کد*"  wire:model.defer="code"/>
                 <x-admin.forms.dropdown with="6" id="type" label="نوع*" :data="$data['type']"  wire:model.defer="type"/>
                 <x-admin.forms.input with="6" id="amount" type="number" label="مقدار*"  wire:model.defer="amount"/>
-                <x-admin.forms.date-picker with="6" id="starts_at" label="تاریخ شروع" wire:model.defer="starts_at"/>
-                <x-admin.forms.date-picker with="6" id="expires_at" label="تاریخ پایان" wire:model.defer="expires_at"/>
+                <x-admin.forms.jdate-picker with="6" id="starts_at" label="تاریخ شروع" wire:model.defer="starts_at"/>
+                <x-admin.forms.jdate-picker with="6" id="expires_at" label="تاریخ پایان" wire:model.defer="expires_at"/>
                 <x-admin.forms.input with="6" id="minimum_amount" type="number" label="حداقل میزان خرید" wire:model.defer="minimum_amount"/>
                 <x-admin.forms.input with="6" id="maximum_amount" type="number" label="حداکثر میزان خرید" wire:model.defer="maximum_amount"/>
                 <x-admin.forms.input with="6" id="value_limit" type="number" label="حداکثر مقدار تخفیف" wire:model.defer="value_limit"/>

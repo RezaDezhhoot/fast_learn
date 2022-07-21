@@ -56,7 +56,7 @@ class StoreTranscript extends BaseComponent
            $this->validate([
                'result' => ['required','in:'.implode(',',array_keys(QuizEnum::getResult()))],
                'score' => ['nullable','numeric'],
-               'certificate_date' => ['nullable','date_format:Y/m/d'],
+               'certificate_date' => ['nullable'],
                'certificate_code' => ['nullable','unique:transcripts,certificate_code,'.($this->transcript->id)]
            ],['date_format' => 'تاریخ صدرو باید از الگو 0000/00/00 پیروی کند'],[
                'result' => 'نتیجه ازمون',

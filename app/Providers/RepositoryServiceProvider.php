@@ -7,10 +7,12 @@ use App\Repositories\Classes\CategoryRepository;
 use App\Repositories\Classes\CertificateRepository;
 use App\Repositories\Classes\ChoiceRepository;
 use App\Repositories\Classes\CommentRepository;
+use App\Repositories\Classes\ContactUsRepository;
 use App\Repositories\Classes\CourseRepository;
 use App\Repositories\Classes\EpisodeRepository;
 use App\Repositories\Classes\EventRepository;
 use App\Repositories\Classes\HomeworkRepository;
+use App\Repositories\Classes\LogRepository;
 use App\Repositories\Classes\NotificationRepository;
 use App\Repositories\Classes\OrderDetailRepository;
 use App\Repositories\Classes\OrderNoteRepository;
@@ -37,10 +39,12 @@ use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\Interfaces\CertificateRepositoryInterface;
 use App\Repositories\Interfaces\ChoiceRepositoryInterface;
 use App\Repositories\Interfaces\CommentRepositoryInterface;
+use App\Repositories\Interfaces\ContactUsRepositoryInterface;
 use App\Repositories\Interfaces\CourseRepositoryInterface;
 use App\Repositories\Interfaces\EpisodeRepositoryInterface;
 use App\Repositories\Interfaces\EventRepositoryInterface;
 use App\Repositories\Interfaces\HomeworkRepositoryInterface;
+use App\Repositories\Interfaces\LogRepositoryInterface;
 use App\Repositories\Interfaces\NotificationRepositoryInterface;
 use App\Repositories\Interfaces\OrderDetailRepositoryInterface;
 use App\Repositories\Interfaces\OrderNoteRepositoryInterface;
@@ -226,23 +230,16 @@ class RepositoryServiceProvider extends ServiceProvider
             WalletRepositoryInterface::class,
             WalletRepository::class,
         );
-    }
 
-    private function get_classes($path, $namespace): array
-    {
-        $out = [];
-        $iterator = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator(
-                $path
-            ), RecursiveIteratorIterator::SELF_FIRST
+        $this->app->bind(
+            ContactUsRepositoryInterface::class,
+            ContactUsRepository::class,
         );
-        foreach ($iterator as $item) {
-            if ($item->isReadable() && $item->isFile() && mb_strtolower($item->getExtension()) === 'php'){
-                $out[str_replace('Interface','',mb_substr($item->getRealPath(), mb_strlen($path), -4))] =  $namespace .
-                    str_replace("/", "\\", mb_substr($item->getRealPath(), mb_strlen($path), -4));
-            }
-        }
-        return $out;
+
+        $this->app->bind(
+            LogRepositoryInterface::class,
+            LogRepository::class,
+        );
     }
 
     /**

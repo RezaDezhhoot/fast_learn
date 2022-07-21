@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Site\Client;
 
+use App\Enums\PaymentEnum;
 use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\PaymentRepositoryInterface;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
@@ -247,7 +248,7 @@ class Profile extends BaseComponent
                     'amount' => $this->price,
                     'payment_gateway' => $gateway,
                     'payment_token' => $transactionId,
-                    'model_type' => 'user',
+                    'model_type' => PaymentEnum::user(),
                     'model_id' => auth()->id(),
                     'call_back_url' => '',
                 ]);

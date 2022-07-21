@@ -126,8 +126,8 @@ class Verify extends BaseComponent
 
     private function getOrder()
     {
-        $orderRepository = app(OrderRepositoryInterface::class);
-        $paymentRepository = app(PaymentRepositoryInterface::class);
+        $orderRepository = $this->orderRepository;
+        $paymentRepository = $this->paymentReporitory;
         if (!is_null($this->token)) {
             $transaction = $paymentRepository->get([
                 ['payment_gateway', $this->gateway],['payment_token', $this->token],['model_type', 'order']
@@ -159,7 +159,7 @@ class Verify extends BaseComponent
     private function store($gateway = null,$transactionId = null)
     {
         if (!is_null($gateway)) {
-            app(PaymentRepositoryInterface::class)->update([
+            $this->paymentReporitory->update([
                 'payment_token' => $transactionId,
             ],[['payment_token', $this->token]]);
         }

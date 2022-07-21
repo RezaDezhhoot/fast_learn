@@ -112,7 +112,14 @@
                 </div>
                 <!-- end row -->
                 <div class="row pt-30px">
-                    <div class="col-lg-6 col-12">
+                    <div class=" col-12">
+                        <div class="map-container" wire:ignore>
+                            <iframe src="https://www.google.com/maps/embed?pb={{ $google }}"
+                                    frameborder="0" width="100%" height="400px"></iframe>
+                        </div>
+                        <!-- end map-container -->
+                    </div>
+                    <div class="my-4 col-lg-5 mt-5">
                         <div class="contact-content pb-5">
                             <div class="section-heading">
                                 {!! $contact !!}
@@ -142,13 +149,68 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="col-lg-6 col-12">
-                        <div class="map-container">
-                            <iframe src="https://www.google.com/maps/embed?pb={{ $google }}"
-                                    frameborder="0" width="100%" height="400px"></iframe>
+                    <div class="my-4 col-lg-7 mt-5">
+                        <div class="card card-item">
+                            <div class="card-body">
+                                <form wire:submit.prevent="contact" class="contact-form">
+                                    <div class="input-box">
+                                        <label class="label-text">اسم کامل شما</label>
+                                        <div class="form-group">
+                                            <input wire:model.defer="full_name" id="name" class="form-control form--control" type="text" name="name" placeholder="اسم شما" />
+                                            <span class="la la-user input-icon"></span>
+                                        </div>
+                                        @error('full_name')
+                                            <small class="text-danger">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                    <!-- end input-box -->
+                                    <div class="input-box">
+                                        <label class="label-text">آدرس ایمیل</label>
+                                        <div class="form-group">
+                                            <input id="email" wire:model.defer="email" class="form-control form--control" type="email" name="email" placeholder="آدرس ایمیل" />
+                                            <span class="la la-envelope input-icon"></span>
+                                        </div>
+                                        @error('email')
+                                            <small class="text-danger">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                    <div class="input-box">
+                                        <label class="label-text">شماره همراه</label>
+                                        <div class="form-group">
+                                            <input id="email" wire:model.defer="phone" class="form-control form--control" type="text" name="phone" placeholder="شماره همراه" />
+                                            <span class="la la-phone input-icon"></span>
+                                        </div>
+                                        @error('phone')
+                                            <small class="text-danger">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                    <div class="input-box">
+                                        <div class="g-recaptcha d-inline-block" data-sitekey="{{ config('services.recaptcha.site_key') }}"
+                                             data-callback="reCaptchaCallback" wire:ignore></div>
+                                        @error('recaptcha')<span class="invalid-feedback d-block">{{ $message }}</span>@enderror
+                                    </div>
+                                    <!-- end input-box -->
+                                    <div class="input-box">
+                                        <label class="label-text">پیام</label>
+                                        <div class="form-group">
+                                            <textarea wire:model.defer="body" id="message" class="form-control form--control pl-4" name="message" rows="5" placeholder="پیام"></textarea>
+                                        </div>
+                                        @error('body')
+                                            <small class="text-danger">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                    <!-- end input-box -->
+                                    <div class="btn-box">
+                                        <button  class="btn theme-btn" type="submit">ارسال پیام</button>
+                                    </div>
+                                    <!-- end btn-box -->
+                                </form>
+                            </div>
+                            <!-- end card-body -->
                         </div>
-                        <!-- end map-container -->
+                        <!-- end card -->
                     </div>
+
                     <!-- end col-lg-12 -->
                 </div>
                 <!-- end row -->
@@ -156,3 +218,17 @@
             <!-- end container -->
         </section>
 </div>
+    @push('scripts')
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+
+        <script>
+            function reCaptchaCallback(response) {
+                @this.set('recaptcha', response);
+            }
+
+            Livewire.on('resetReCaptcha', () => {
+                grecaptcha.reset();
+            });
+        </script>
+    @endpush

@@ -61,4 +61,9 @@ class OrderRepository implements OrderRepositoryInterface
     {
         Order::destroy($id);
     }
+
+    public function getNameSpace(): string
+    {
+        return Order::class;
+    }
 }

@@ -8,9 +8,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Dyrynda\Database\Support\CascadeSoftDeletes;
 use Morilog\Jalali\Jalalian;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * @property mixed id
@@ -25,7 +29,7 @@ use Morilog\Jalali\Jalalian;
 class Order extends Model
 {
     const CHANGE_ID = 897879;
-    use HasFactory , Searchable , SoftDeletes , CascadeSoftDeletes;
+    use HasFactory , Searchable , SoftDeletes , CascadeSoftDeletes , LogsActivity;
 
     protected array $cascadeDeletes = ['details'];
 
@@ -49,7 +53,7 @@ class Order extends Model
 
     public function getTrackingCodeAttribute(): string
     {
-        return 'KV-'.($this->id + self::CHANGE_ID);
+        return 'FL-'.($this->id + self::CHANGE_ID);
     }
 
     public function getDateAttribute(): string
@@ -74,5 +78,15 @@ class Order extends Model
     public function getStatusLabelAttribute(): string
     {
         return OrderEnum::getStatus()[$this->status];
+    }
+
+    public function payment(): MorphOne
+    {
+        return $this->morphOne(Payment::class,'model');
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return (new LogOptions())->logAll();
     }
 }

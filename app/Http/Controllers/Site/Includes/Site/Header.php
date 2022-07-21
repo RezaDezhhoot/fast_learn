@@ -11,7 +11,7 @@ use App\Repositories\Interfaces\SettingRepositoryInterface;
 
 class Header extends BaseComponent
 {
-    public $logo , $categories = [] , $cartContent = [] , $q;
+    public  $categories = [] , $cartContent = [] , $q;
 
     protected $queryString = ['q'];
 
@@ -21,7 +21,6 @@ class Header extends BaseComponent
         CategoryRepositoryInterface $categoryRepository
     )
     {
-        $this->logo = $settingRepository->getRow('logo');
         $categories = $categoryRepository->getAll(CategoryEnum::COURSE,[['parent_id',null]]);
         $this->cartContent = Carts::content();
 

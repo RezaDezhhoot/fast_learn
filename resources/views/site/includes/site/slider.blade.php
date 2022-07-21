@@ -1,9 +1,9 @@
 <div>
 <section class="hero-area position-relative hero-area-3">
-    <div class="hero-slider-item hero-bg-5" style="background-image: url({{asset($sliderImage)}})">
+    <div class="hero-slider-item hero-bg-5" style="background-image: url({{asset($sliderImage)}});background-size: cover;background-position: center">
         <div class="container">
             <div class="row">
-                <div class="col-lg-7">
+                <div class="col-lg-8 mx-auto text-center">
                     <div class="hero-content">
                         <div class="section-heading pb-4">
                             {!! $slider !!}
@@ -14,8 +14,7 @@
                             @endif
                         </div>
                         <!-- end section-heading -->
-                        <form wire:submit.prevent="search" method="get" class="w-75 pt-2">
-                            <label class="label-text bg-white rounded py-1 px-2 fs-14 font-weight-medium lh-20">چه چیز را میخواهی یاد بگیری؟</label>
+                        <form wire:submit.prevent="search" method="get" class="w-75 pt-2 mx-auto">
                             <div class="form-group mb-0">
                                 <input wire:model.defer="q" class="form-control form--control pl-3" type="text" name="search" placeholder="جستجوی دوره ها با کلمات کلیدی" />
                                 <span wire:click="search" class="la la-search search-icon"></span>

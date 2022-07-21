@@ -18,8 +18,8 @@
                 <x-admin.forms.input with="6" type="number" min="0" id="reduction_value" label="مقدار تخفیف*" wire:model.defer="reduction_value"/>
                 <x-admin.forms.dropdown with="6" id="status" :data="$data['status']" label="وضعیت*" wire:model.defer="status"/>
                 <x-admin.forms.dropdown with="6" id="reduction_type" :data="$data['reduction']" label="نوع تخفیف" wire:model.defer="reduction_type"/>
-                <x-admin.forms.date-picker with="6" id="start_at" label="شروع تخفیف" wire:model.defer="start_at"/>
-                <x-admin.forms.date-picker with="6" id="expire_at" label="پایان تخفیف" wire:model.defer="expire_at"/>
+                <x-admin.forms.jdate-picker with="6" id="start_at" label="شروع تخفیف" wire:model.defer="start_at"/>
+                <x-admin.forms.jdate-picker with="6" id="expire_at" label="پایان تخفیف" wire:model.defer="expire_at"/>
             </div>
             <hr>
             <x-admin.forms.select2 id="teacher" :data="$data['teacher']" label="مدرس*" wire:model.defer="teacher"/>

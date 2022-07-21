@@ -121,11 +121,14 @@
                     <x-admin.menu-item  href="{{route('admin.notification')}}" icon="flaticon2-notification" :active="request()->routeIs(['admin.notification','admin.store.notification'])" label="اعلان ها" />
                 @endcan
                 @can('show_comments')
-                    <x-admin.menu-item  href="{{route('admin.comment')}}" icon="fa fa-comment-alt" :active="request()->routeIs(['admin.comment','admin.store.comment'])" label="کامنت ها ({{$comments}})" />
+                    <x-admin.menu-item  href="{{route('admin.comment')}}" icon="fa fa-comment-alt" :active="request()->routeIs(['admin.comment','admin.store.comment'])" label="کامنت ها ({{$comments}})"  />
+                @endcan
+                @can('show_contacts')
+                    <x-admin.menu-item  href="{{route('admin.contact')}}" icon="flaticon-email" :active="request()->routeIs(['admin.contact','admin.store.contact'])" label=" ارتباط با ما ({{$contacts}})" />
                 @endcan
                 <li class="menu-section">
                     <h4 class="menu-text">بخش مالی</h4>
-                    <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                    <i class="menu-icon ki ki-bold-more-hor icon-md "></i>
                 </li>
                 @can('show_orders')
                     <x-admin.menu-item href="{{route('admin.order')}}" icon="flaticon2-box"  :active="request()->routeIs(['admin.order','admin.store.order'])" label="سفارش ها" />
@@ -150,6 +153,12 @@
                 @can('show_reductions')
                     <x-admin.menu-item href="{{route('admin.reduction')}}" icon="fas fa-percent" :active="request()->routeIs(['admin.reduction','admin.store.reduction'])" label="کد های تخفیف ها " />
                 @endcan
+                @can('show_logs')
+                    <x-admin.menu-item href="{{route('admin.log')}}" icon="flaticon2-list-1" :active="request()->routeIs(['admin.log'])" label=" لاگ های کاربر" />
+                @endif
+                @role('administrator')
+                    <x-admin.menu-item href="{{route('telescope')}}" icon="flaticon-search" :active="request()->routeIs(['telescope'])" label=" گزارش های فنی سیستم" />
+                @endif
                 @can('show_settings')
                     <x-admin.menu-group icon="flaticon2-settings" :active="request()->routeIs(
                     ['admin.setting.base','admin.setting.home','admin.setting.aboutUs','admin.setting.contactUs'

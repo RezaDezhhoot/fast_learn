@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Traits\Admin\Searchable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
  * @method static findOrFail($id)
@@ -18,12 +19,12 @@ class Tag extends Model
 
     protected array $searchAbleColumns = ['name'];
 
-    public function courses()
+    public function courses(): MorphToMany
     {
         return $this->morphedByMany(Course::class, 'taggable');
     }
 
-    public function articles()
+    public function articles(): MorphToMany
     {
         return $this->morphedByMany(Article::class, 'taggable');
     }

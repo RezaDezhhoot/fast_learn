@@ -17,6 +17,7 @@
                                 <th>شماره همراه</th>
                                 <th>موجودی کیف پول(تومان)</th>
                                 <th>وضعیت</th>
+                                <th>مشاهده لاگ های این کاربر</th>
                                 <th>عملیات</th>
                             </tr>
                             </thead>
@@ -28,6 +29,9 @@
                                     <td>{{ $item->phone }}</td>
                                     <td>{{ number_format( $item->balance)  }} تومان</td>
                                     <td>{{ $item->status_label }}</td>
+                                    <td>
+                                        <a href="{{route('admin.log',['user'=>$item->id])}}">مشاهده</a>
+                                    </td>
                                     <td>
                                         <x-admin.edit-btn href="{{ route('admin.store.user',['edit', $item->id]) }}" />
                                         <x-admin.ok-btn wire:click="confirm({{$item->id}})" />

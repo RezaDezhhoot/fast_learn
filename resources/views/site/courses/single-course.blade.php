@@ -32,7 +32,7 @@
                         </div>
                     </div>
 
-                    <div class="course-details-content-wrap pt-90px">
+                    <div class="course-details-content-wrap mt-5">
                         {!! $course->long_body !!}
                         <div class="course-overview-card">
                             <div class="curriculum-header d-flex align-items-center justify-content-between pb-4">

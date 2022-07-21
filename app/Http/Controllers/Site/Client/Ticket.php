@@ -6,6 +6,7 @@ use App\Enums\TicketEnum;
 use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
 use App\Repositories\Interfaces\TicketRepositoryInterface;
+use App\Rules\ReCaptchaRule;
 use Artesaos\SEOTools\Facades\JsonLd;
 use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\SEOMeta;
@@ -16,7 +17,7 @@ class Ticket extends BaseComponent
 {
     use WithFileUploads;
     public mixed $user;
-    public  $ticket;
+    public  $ticket , $recaptcha;
     public $subject , $header , $user_id , $content , $file , $priority , $status , $child = [] , $user_name , $answer , $answerFile , $ticketFile;
 
     public function __construct($id = null)
@@ -64,7 +65,7 @@ class Ticket extends BaseComponent
             $this->newAnswer();
         elseif($this->mode == self::CREATE_MODE) {
             $id = $this->saveInDataBase($this->ticketRepository->newTicketObject());
-            $this->reset(['subject','content','file','priority']);
+            $this->reset(['subject','content','file','priority','recaptcha']);
             return redirect()->route('user.ticket',['edit',$id]);
         }
     }
@@ -77,11 +78,13 @@ class Ticket extends BaseComponent
                 'content' => ['required','string','max:95000'],
                 'file' => ['nullable','mimes:jpg,jpeg,png,rar,zip','max:2048'],
                 'priority' => ['required','in:'.implode(',',array_keys(TicketEnum::getPriority()))],
+                'recaptcha' => ['required', new ReCaptchaRule],
             ] , [] , [
                 'subject' => 'موضوع',
                 'content' => 'متن',
                 'file' => 'فایل',
                 'priority' => 'اولویت',
+                'recaptcha' => 'کلید امنیتی'
             ]
         );
         $model->subject = $this->subject;
@@ -94,6 +97,7 @@ class Ticket extends BaseComponent
         $model->status  = TicketEnum::PENDING;
         $model->priority = $this->priority;
         $model = $this->ticketRepository->save($model);
+        $this->emit('resetReCaptcha');
         $this->emitNotify('اطلاعات با موفقیت ثبت شد');
         return $model->id;
     }
@@ -103,10 +107,12 @@ class Ticket extends BaseComponent
         $this->validate(
             [
                 'answer' => ['required', 'string','max:6500'],
-                'file' => ['nullable','file','mimes:jpg,jpeg,png','max:2048']
+                'file' => ['nullable','file','mimes:jpg,jpeg,png','max:2048'],
+                'recaptcha' => ['required', new ReCaptchaRule],
             ] , [] , [
                 'answer' => 'پاسخ',
-                'file' => 'فایل'
+                'file' => 'فایل',
+                'recaptcha' => 'کلید امنیتی'
             ]
         );
         $new = $this->ticketRepository->newTicketObject();
@@ -122,9 +128,10 @@ class Ticket extends BaseComponent
         $this->ticket->status = TicketEnum::USER_ANSWERED;
         $this->ticketRepository->save($this->ticket);
         $this->ticketRepository->save($new);
+        $this->emit('resetReCaptcha');
         $this->child->push($new);
         $this->emitNotify('اطلاعات با موفقیت ثبت شد');
-        $this->reset(['file','answer']);
+        $this->reset(['file','answer','recaptcha']);
     }
 
     public function uploadFile()

@@ -65,6 +65,11 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="input-box col-lg-12">
+                            <div class="g-recaptcha d-inline-block" data-sitekey="{{ config('services.recaptcha.site_key') }}"
+                                 data-callback="reCaptchaCallback" wire:ignore></div>
+                            @error('recaptcha')<span class="invalid-feedback d-block">{{ $message }}</span>@enderror
+                        </div>
                 @else
                         <div class="input-box col-lg-6">
                             <label class="label-text">موضوع*</label>
@@ -187,6 +192,11 @@
                                         <small class="text-danger">{{$message}}</small>
                                     @enderror
                                 </div>
+                                <div class="input-box mt-4">
+                                    <div class="g-recaptcha d-inline-block" data-sitekey="{{ config('services.recaptcha.site_key') }}"
+                                         data-callback="reCaptchaCallback" wire:ignore></div>
+                                    @error('recaptcha')<span class="invalid-feedback d-block">{{ $message }}</span>@enderror
+                                </div>
                             </x-admin.form-section>
                         </div>
                 @endif
@@ -198,3 +208,16 @@
         </div>
     </div>
 </div>
+@push('scripts')
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+    <script>
+        function reCaptchaCallback(response) {
+        @this.set('recaptcha', response);
+        }
+
+        Livewire.on('resetReCaptcha', () => {
+            grecaptcha.reset();
+        });
+    </script>
+@endpush

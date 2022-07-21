@@ -161,12 +161,14 @@ class SingleCourse extends BaseComponent
             'user_id' => auth()->id(),
             'content' => $this->comment,
             'parent_id'=> $this->actionComment ?? null,
-            'status' => $this->course->teacher->user->id == Auth::id() ? CommentEnum::CONFIRMED : CommentEnum::NOT_CONFIRMED
+            'status' => !is_null($this->course->teacher) ?
+                ($this->course->teacher->user->id == Auth::id() ? CommentEnum::CONFIRMED : CommentEnum::NOT_CONFIRMED) :
+                CommentEnum::NOT_CONFIRMED
         ];
         $this->emit('resetReCaptcha');
         $this->courseRepository->newComment($this->course,$data);
         $this->reset(['comment','actionLabel','actionComment','recaptcha']);
-        if ($this->course->teacher->user->id == Auth::id())
+        if (!is_null($this->course->teacher) && $this->course->teacher->user->id == Auth::id())
             return $this->emitNotify(' دیدگاه با موفقیت ثبت شد');
         else return $this->emitNotify(' دیدگاه با موفقیت ثبت شد پس از تایید نمایش داده خواهد شد');
     }

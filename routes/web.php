@@ -3,7 +3,6 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use UniSharp\LaravelFilemanager\Lfm;
 
 /*
 |--------------------------------------------------------------------------
@@ -90,6 +89,8 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->group(function (){
     Route::get('/transcripts/{action}/{id?}',App\Http\Controllers\Admin\Transcripts\StoreTranscript::class)->name('admin.store.transcript');
     Route::get('/users',App\Http\Controllers\Admin\Users\IndexUser::class)->name('admin.user');
     Route::get('/users/{action}/{id?}',App\Http\Controllers\Admin\Users\StoreUser::class)->name('admin.store.user');
+    Route::get('/contact-us',App\Http\Controllers\Admin\Contacts\IndexContactUs::class)->name('admin.contact');
+    Route::get('/contact-us/{action?}/{id?}',App\Http\Controllers\Admin\Contacts\StoreContactUs::class)->name('admin.store.contact');
     Route::get('/settings/base', App\Http\Controllers\Admin\Settings\BaseSetting::class)->name('admin.setting.base');
     Route::get('/settings/home', App\Http\Controllers\Admin\Settings\HomeSetting::class)->name('admin.setting.home');
     Route::get('/settings/sms', App\Http\Controllers\Admin\Settings\SmsSetting::class)->name('admin.setting.sms');
@@ -97,6 +98,8 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->group(function (){
     Route::get('/settings/contact-us', App\Http\Controllers\Admin\Settings\ContactSetting::class)->name('admin.setting.contactUs');
     Route::get('/settings/fag', App\Http\Controllers\Admin\Settings\FagSetting::class)->name('admin.setting.fag');
     Route::get('/settings/fag/{action}/{id?}', App\Http\Controllers\Admin\Settings\StoreFag::class)->name('admin.setting.fag.create');
+    Route::get('/logs', App\Http\Controllers\Admin\Logs\IndexLog::class)->name('admin.log');
+
 });
 
 Route::middleware('guest')->get('auth',App\Http\Controllers\Site\Auth\Auth::class)->name('auth');

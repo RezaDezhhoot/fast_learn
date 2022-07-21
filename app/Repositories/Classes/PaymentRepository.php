@@ -44,7 +44,9 @@ class PaymentRepository implements PaymentRepositoryInterface
             });
         })->when($status,function ($query) use ($status){
             return $query->where('status_code',$status);
-        })->search($search)->paginate($pagination);
+        })->when($search,function ($q) use ($search){
+            return $q->where('id',$search)->orWhere('payment_ref',$search);
+        })->paginate($pagination);
     }
     /**
      * @param $id
@@ -106,7 +108,6 @@ class PaymentRepository implements PaymentRepositoryInterface
             return redirect($payment->action);
         } catch (PurchaseFailedException|Exception $exception){
             Log::error($exception->getMessage());
-            // return $exception->getMessage();
             return 'خطا در عملیات پرداخت.';
         }
     }
@@ -121,7 +122,8 @@ class PaymentRepository implements PaymentRepositoryInterface
                 $callbackFunction($this->payment,$amount/($config['unit']) );
             }
         } catch (InvalidPaymentException $exception) {
-            Log::error($exception->getMessage());            if (empty($this->get([['payment_token', $transactionId]])->payment_ref))
+            Log::error($exception->getMessage());
+            if (empty($this->get([['payment_token', $transactionId]])->payment_ref))
             {
                 $this->update([
                     'status_code' => $exception->getCode(),
@@ -131,5 +133,10 @@ class PaymentRepository implements PaymentRepositoryInterface
             }
         }
         return true;
+    }
+
+    public function getModelNamespace(): string
+    {
+        return Payment::class;
     }
 }

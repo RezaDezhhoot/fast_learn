@@ -22,6 +22,8 @@ class IndexDashboard extends BaseComponent
 {
     public $from_date , $to_date , $box , $course;
 
+    public $to_date_viwe , $from_date_view;
+
     protected $queryString = ['to_date','from_date','course'];
 
     public function __construct($id = null)
@@ -42,21 +44,29 @@ class IndexDashboard extends BaseComponent
 
     public function mount()
     {
-        if (!isset($this->to_date))
-            $this->to_date = Carbon::now()->format('Y-m-d');
+        if (!isset($this->to_date)){
+            $this->to_date =  Carbon::now()->format('Y-m-d');
+        }
+        $this->to_date_viwe = $this->dateConverter($this->to_date);
 
-        if (!isset($this->from_date))
+        if (!isset($this->from_date)){
             $this->from_date = Carbon::now()->subDays(5)->format('Y-m-d');
+        }
+        $this->from_date_view = $this->dateConverter($this->from_date);
+
+
         $this->getData();
         $this->data['courses'] = $this->courseRepository->getAll()->pluck('title','id');
     }
 
     public function confirmFilter()
     {
+       $from_date = $this->dateConverter($this->from_date_view,'m');
+       $to_date = $this->dateConverter($this->to_date_viwe ,'m');
         redirect()->route('admin.dashboard',
             [
-                'from_date'=>$this->from_date,
-                'to_date'=>$this->to_date ,
+                'from_date'=> $from_date,
+                'to_date'=> $to_date,
                 'course' => $this->course
             ]
         );

@@ -34,8 +34,8 @@ class StoreReduction extends BaseComponent
             $this->description = $this->reduction->description;
             $this->type = $this->reduction->type;
             $this->amount = $this->reduction->amount;
-            $this->starts_at = $this->reduction->starts_at;
-            $this->expires_at = $this->reduction->expires_at;
+            $this->starts_at =  $this->dateConverter($this->reduction->starts_at);
+            $this->expires_at = $this->dateConverter($this->reduction->expires_at);
             $this->minimum_amount = $meta->where('name', 'minimum_amount')->first()->value ?? '';
             $this->maximum_amount = $meta->where('name', 'maximum_amount')->first()->value ?? '';
             $this->product_ids = $meta->where('name', 'product_ids')->first()->value ?? '';
@@ -56,8 +56,11 @@ class StoreReduction extends BaseComponent
     public function store()
     {
         $this->authorizing('edit_reductions');
-        if ($this->mode == self::UPDATE_MODE)
+        if ($this->mode == self::UPDATE_MODE) {
             $this->saveInDatabase( $this->reduction);
+            $this->starts_at = $this->dateConverter($this->starts_at) ;
+            $this->expires_at = $this->dateConverter($this->expires_at) ;
+        }
         elseif ($this->mode == self::CREATE_MODE) {
             $this->saveInDatabase($this->reductionRepository->newReductionObject());
             $this->reset(['code','description','type','amount','starts_at','expires_at','minimum_amount','maximum_amount'
@@ -70,6 +73,10 @@ class StoreReduction extends BaseComponent
     {
         $this->starts_at = $this->emptyToNull($this->starts_at);
         $this->expires_at = $this->emptyToNull($this->expires_at);
+
+        $this->starts_at = $this->dateConverter($this->starts_at,'m') ;
+        $this->expires_at = $this->dateConverter($this->expires_at,'m') ;
+
         $this->validate(
             [
                 'code' => ['required', 'string', 'max:250', 'unique:reductions,code,' . ($this->reduction->id ?? 0)],

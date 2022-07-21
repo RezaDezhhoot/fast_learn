@@ -351,4 +351,9 @@ class UserRepository implements UserRepositoryInterface , ConfigRepository
     {
         return config('file-manager.slugifyNames', false);
     }
+
+    public function getModelNamespace(): string
+    {
+        return User::class;
+    }
 }

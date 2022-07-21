@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
@@ -19,7 +20,9 @@ use Laravel\Sanctum\HasApiTokens;
 use Bavix\Wallet\Traits\HasWallet;
 use Bavix\Wallet\Interfaces\Wallet;
 use Bavix\Wallet\Traits\CanConfirm;
+use Spatie\Activitylog\LogOptions;
 use Spatie\Permission\Traits\HasRoles;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * @property mixed status
@@ -39,9 +42,12 @@ use Spatie\Permission\Traits\HasRoles;
  */
 class User extends Authenticatable implements Wallet, Confirmable
 {
-    use HasApiTokens, HasFactory, Notifiable , HasWallet , CanConfirm , HasRoles , Searchable;
+    use HasApiTokens, HasFactory, Notifiable , HasWallet , CanConfirm , HasRoles , Searchable ;
+
+    use LogsActivity;
 
     protected array $searchAbleColumns = ['email','phone'];
+
 
     protected $table = 'users';
     /**
@@ -190,5 +196,20 @@ class User extends Authenticatable implements Wallet, Confirmable
         return Attribute::make(
             get: fn () => !is_null($this->teacher)
         );
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return (new LogOptions())->logAll();
+    }
+
+    public function causer_logs(): MorphMany
+    {
+        return $this->morphMany(Activity::class,'causer');
+    }
+
+    public function subject_logs(): MorphMany
+    {
+        return $this->morphMany(Activity::class,'subject');
     }
 }
