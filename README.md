@@ -4,14 +4,14 @@ A system for online studying
 
 ## Get start
 
-After receiving the project, execute the following command to get dependencies
-````bash
-composer install
-````
-
-In the next step run
+After receiving the project, run
 ````bash
 cp .env.example .env 
+````
+
+In the next step execute the following command to get dependencies
+````bash
+composer install
 ````
 Now run
 ````bash
