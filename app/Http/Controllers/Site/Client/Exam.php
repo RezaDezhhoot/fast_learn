@@ -19,6 +19,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Livewire\WithPagination;
 use Morilog\Jalali\Jalalian;
@@ -156,7 +157,12 @@ class Exam extends BaseComponent
             DB::rollBack();
             $this->emitNotify('خطا در هنگام ثبت ازمون','warning');
         }
-        ExamEvent::dispatch($this->transcript);
+        try {
+            ExamEvent::dispatch($this->transcript);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+        }
+
         redirect()->route('user.quiz',$this->transcript->id);
     }
 

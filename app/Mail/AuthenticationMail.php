@@ -8,6 +8,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class AuthenticationMail extends Mailable
 {
@@ -31,7 +32,7 @@ class AuthenticationMail extends Mailable
      *
      * @return $this
      */
-    public function build(): static
+    public function build(): bool|static
     {
         $SettingRepository = app(SettingRepositoryInterface::class);
         $data = [
@@ -41,15 +42,21 @@ class AuthenticationMail extends Mailable
         ];
         $email = $this->from($SettingRepository->getRow('email_username'),$data['name']);
 
-        return match ($this->event) {
-            UserEnum::LOGIN_EVENT => $email->subject('ورود به ناحیه کاربری')
-                ->view('emails.login', $data),
+        try {
+            return match ($this->event) {
+                UserEnum::LOGIN_EVENT => $email->subject('ورود به ناحیه کاربری')
+                    ->view('emails.login', $data),
 
-            UserEnum::AUTHENTICATE_EVENT => $email->subject('احراز هویت')
-                ->view('emails.authentication',$data),
+                UserEnum::AUTHENTICATE_EVENT => $email->subject('احراز هویت')
+                    ->view('emails.authentication',$data),
 
-            UserEnum::REGISTER_EVENT => $email->subject('ثبت نام')
-                ->view('emails.register',$data)
-        };
+                UserEnum::REGISTER_EVENT => $email->subject('ثبت نام')
+                    ->view('emails.register',$data)
+            };
+        } catch (\Exception $e)
+        {
+            Log::error($e->getMessage());
+            return false;
+        }
     }
 }

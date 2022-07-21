@@ -7,6 +7,7 @@ use App\Events\OrderEvent;
 use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\OrderDetailRepositoryInterface;
 use App\Repositories\Interfaces\OrderRepositoryInterface;
+use Illuminate\Support\Facades\Log;
 
 class StoreOrder extends BaseComponent
 {
@@ -46,7 +47,11 @@ class StoreOrder extends BaseComponent
             if ($status != $detail->status)
             {
                 if (!$event){
-                    OrderEvent::dispatch($this->order);
+                    try {
+                        OrderEvent::dispatch($this->order);
+                    } catch (\Exception $e) {
+                        Log::error($e->getMessage());
+                    }
                     $event = true;
                 }
                 $detail->status = $status;

@@ -121,7 +121,11 @@ class Auth extends BaseComponent
             request()->session()->regenerate();
             $this->userRepository->update($user,['otp' => null]);
             RateLimiter::clear($rateKey);
-            AuthenticationEvent::dispatch($user);
+            try {
+                AuthenticationEvent::dispatch($user);
+            } catch (\Exception $e) {
+                Log::error($e->getMessage());
+            }
 
             if ($confirm_user)
                 $this->userRepository->update($user,['status' => UserEnum::CONFIRMED]);
@@ -153,14 +157,11 @@ class Auth extends BaseComponent
 
         $this->validate([
             "$property" => ['required','string','exists:users,phone'],
-            'recaptcha' => ['required', new ReCaptchaRule],
         ],[],[
             "$property" => 'شماره همراه ',
-            'recaptcha' => 'فیلد امنیتی'
         ]);
 
         $rand = $this->generateCode();
-        $this->emit('resetReCaptcha');
         $user = $userRepository->getUser('phone',$this->{$property});
         app(OtpRepositoryInterface::class)->save($user,$rand);
 
@@ -187,7 +188,7 @@ class Auth extends BaseComponent
                 Mail::to($user->email)->send(new AuthMailer($user,$code,UserEnum::AUTHENTICATE_EVENT));
                 $this->passwordLabel = 'رمز ایمیل شده را وارد نماید';
                 $ok = true;
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 Log::error($e->getMessage());
                 $this->addError("$property",'خطا در هنگام ارسال رمز');
             }
@@ -232,7 +233,12 @@ class Auth extends BaseComponent
             $user->deposit($this->settingRepository->getRow('registerGift'), ['description' => 'هدیه ثبت نام', 'from_admin'=> true]);
 
         $this->sendVerificationCode();
-        RegisterEvent::dispatch($user);
+
+        try {
+            RegisterEvent::dispatch($user);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+        }
         redirect()->route('auth');
     }
 

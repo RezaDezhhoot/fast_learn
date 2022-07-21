@@ -15,6 +15,7 @@ use App\Repositories\Interfaces\SettingRepositoryInterface;
 use App\Repositories\Interfaces\TranscriptRepositoryInterface;
 use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\SEOMeta;
+use Illuminate\Support\Facades\Log;
 
 class Verify extends BaseComponent
 {
@@ -79,7 +80,11 @@ class Verify extends BaseComponent
                 $this->message = 'پرداخت با موفقیت انجام شد ';
             }
         }
-        OrderEvent::dispatch($this->order);
+        try {
+            OrderEvent::dispatch($this->order);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+        }
         Cart::destroy();
     }
 

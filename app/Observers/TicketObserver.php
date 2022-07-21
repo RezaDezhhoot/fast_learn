@@ -8,7 +8,6 @@ use App\Mail\TicketMail;
 use App\Models\Ticket;
 use App\Repositories\Interfaces\SendRepositoryInterface;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
-use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
@@ -39,7 +38,7 @@ class TicketObserver
                     Mail::to($ticket->user->email)->send(new TicketMail($text));
                 elseif ($send_type == 'sms')
                     $SendRepository->sendSMS($text,$ticket->user->phone);
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 Log::error($e->getMessage());
             }
             $SendRepository->sendNOTIFICATION($text,$ticket->user->id,NotificationEnum::TICKET,$ticket->user->id);
