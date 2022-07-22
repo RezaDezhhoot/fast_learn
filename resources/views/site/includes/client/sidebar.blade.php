@@ -4,7 +4,7 @@
     </div>
     <!-- end off-canvas-menu-close -->
     <div class="logo-box px-4">
-        <a href="{{ route('home') }}" class="logo "><img src="{{ asset($logo) }}" alt="لوگو" /></a>
+        <a href="{{ route('home') }}" class="logo "><img class="logo-size" src="{{ asset($logo) }}" alt="لوگو" /></a>
     </div>
     <ul class="generic-list-item off-canvas-menu-list off--canvas-menu-list pt-35px">
         <x-site.client.sidebar-link title="داشبورد" link="{{ route('user.dashboard') }}" icon="la la-dashboard pr-2" :active="request()->routeIs('user.dashboard')" />
