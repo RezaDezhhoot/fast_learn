@@ -7,7 +7,7 @@
 <div id="kt_header_mobile" class="header-mobile align-items-center header-mobile-fixed">
     <!--begin::Logo-->
     <a href="{{ route('home') }}">
-        <img alt="Logo"  class="w-50" src="{{asset($logo)}}" />
+        <img alt="Logo" style="max-width: 9rem;margin-top: 6px;"  class="w-50" src="{{asset($logo)}}" />
     </a>
     <!--end::Logo-->
     <!--begin::Toolbar-->

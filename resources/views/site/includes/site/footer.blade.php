@@ -75,7 +75,7 @@
                 <div class="col-lg-6">
                     <div class="d-flex flex-wrap align-items-center">
                         <a href="{{ route('home') }}" class="pr-4">
-                            <img src="{{ asset($logo) }}" alt="لوگوی پاورقی" class="footer__logo" />
+                            <img class="logo-footer" src="{{ asset($logo) }}" alt="لوگوی پاورقی" class="footer__logo" />
                         </a>
                         <p class="copy-desc">{{$copyRight}}</p>
                     </div>
