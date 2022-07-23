@@ -18,7 +18,8 @@ class StoreEpisode extends BaseComponent
 
     public  $header , $storage , $episode;
     public $title , $link , $time = '00:00:00' , $view = 0, $free = 0 , $api_bucket , $file_storage , $file ,$local_video ,
-        $video_storage , $allow_show_local_video = 0 , $course_id , $description , $can_homework = false , $homework_storage;
+        $video_storage , $allow_show_local_video = 0 , $course_id , $description , $can_homework = false , $homework_storage , 
+        $show_api_video = false , $downloadable_local_video = false;
 
     public $homework , $h_file , $h_description , $h_result , $h_storage , $h_score;
 
@@ -57,6 +58,8 @@ class StoreEpisode extends BaseComponent
             $this->file_storage = in_array($this->episode->file_storage , array_keys($this->data['storage'])) ? $this->episode->file_storage : $this->storage;
             $this->video_storage = in_array($this->episode->video_storage , array_keys($this->data['storage'])) ? $this->episode->video_storage : $this->storage;
             $this->allow_show_local_video = $this->episode->allow_show_local_video;
+            $this->show_api_video = $this->episode->show_api_video;
+            $this->downloadable_local_video = $this->episode->downloadable_local_video;
         } elseif ($this->mode == self::CREATE_MODE) {
             $this->header = 'درس جدید';
         } else abort(404);
@@ -93,6 +96,8 @@ class StoreEpisode extends BaseComponent
             'homework_storage' => [Rule::requiredIf(fn() => $this->can_homework ==true) ,'in:'.implode(',',array_values(getAvailableStorages())).','.null],
             'free' => ['boolean'],
             'can_homework' => ['boolean'],
+            'downloadable_local_video' => [Rule::requiredIf(fn() => !empty($this->downloadable_local_video)) ,'boolean'],
+            'show_api_video' => [Rule::requiredIf(fn() => !empty($this->api_bucket)) ,'boolean'],
         ],[],[
             'title' => ' عنوان درس',
             'description' => 'توضیحات',
@@ -109,6 +114,8 @@ class StoreEpisode extends BaseComponent
             'course_id' => 'دوره اموزشی',
             'free' => 'رایگان',
             'can_homework' => 'فیلد تمرین',
+            'downloadable_local_video' => 'امکان دانلود ویدئو',
+            'show_api_video' => 'نمایش ویدئو ',
         ]);
 
         $episode->title = $this->title;
@@ -126,6 +133,8 @@ class StoreEpisode extends BaseComponent
         $episode->allow_show_local_video = $this->allow_show_local_video;
         $episode->description = $this->description;
         $episode->can_homework = $this->can_homework;
+        $episode->show_api_video = $this->show_api_video;
+        $episode->downloadable_local_video = $this->downloadable_local_video;
         $this->episodeRepository->save($episode);
         return $this->emitNotify('اطلاعات با موفقیت ثبت شد');
     }
@@ -144,7 +153,7 @@ class StoreEpisode extends BaseComponent
         $this->reset([
             'file_storage','api_bucket','title','file','link','local_video','time','view',
             'free','allow_show_local_video' , 'homework_storage' ,
-            'video_storage' , 'course_id' ,'description' ,'can_homework'
+            'video_storage' , 'course_id' ,'description' ,'can_homework','downloadable_local_video','show_api_video'
         ]);
     }
 

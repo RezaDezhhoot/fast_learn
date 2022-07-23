@@ -27,8 +27,13 @@ return new class extends Migration
     public function down()
     {
         Schema::table('transcripts', function (Blueprint $table) {
-            $table->dropColumn('certificate_code');
-            $table->dropColumn('certificate_date');
+            if (
+                Schema::hasColumn('transcripts', 'certificate_code') &&
+                Schema::hasColumn('transcripts', 'certificate_date')
+            ) {
+                $table->dropColumn('certificate_code');
+                $table->dropColumn('certificate_date');
+            }
         });
     }
 };

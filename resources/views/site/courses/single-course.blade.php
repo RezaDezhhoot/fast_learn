@@ -99,7 +99,7 @@
                                                 @endif
                                                 <hr>
                                                 <ul class="generic-list-item">
-                                                    @if(!empty($item['api_bucket']))
+                                                    @if(!empty($item['api_bucket']) && $item['show_api_video'] )
                                                     <li>
                                                         <a class="d-flex align-items-center justify-content-between"
                                                             data-toggle="modal" data-target="#previewModal">
@@ -128,17 +128,21 @@
                                                         </a>
                                                     </li>
                                                     @endif
-                                                    <li>
-                                                        <a class="d-flex align-items-center justify-content-between"
-                                                            data-toggle="modal" data-target="#previewModal">
-                                                            <span
-                                                                wire:click="set_content('local_video','{{$item['id']}}')"
-                                                                class="cursor-pointers">
-                                                                <i class="la la-download mr-1"></i>
-                                                                دانلود ویدئو
-                                                            </span>
-                                                        </a>
-                                                    </li>
+                                                    
+                                                    @if ($item['downloadable_local_video'])
+                                                        <li>
+                                                            <a class="d-flex align-items-center justify-content-between"
+                                                                data-toggle="modal" data-target="#previewModal">
+                                                                <span
+                                                                    wire:click="set_content('local_video','{{$item['id']}}')"
+                                                                    class="cursor-pointers">
+                                                                    <i class="la la-download mr-1"></i>
+                                                                    دانلود ویدئو
+                                                                </span>
+                                                            </a>
+                                                        </li>
+
+                                                    @endif
 
                                                     @endif
                                                     @if(!empty($item['file']))

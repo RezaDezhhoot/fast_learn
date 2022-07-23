@@ -110,19 +110,19 @@ class SingleCourse extends BaseComponent
         }
         switch ($type){
             case 'api_bucket':
-                if (!is_null($episode->api_bucket) and (($this->course->price == 0) || $user_has_episode)):
+                if (!is_null($episode->api_bucket) and $episode->show_api_video and (($this->course->price == 0) || $user_has_episode)):
                     $this->episode_title = $episode->title;
                     return $this->api_bucket = $episode->api_bucket;
                     endif;
                 break;
             case 'local_video':
-                if ( ( $this->course->price == 0) || $user_has_episode) {
+                if ( ( $this->course->price == 0 || $user_has_episode) and $episode->downloadable_local_video ) {
                     if ($disk = getDisk($episode->video_storage))
                         return $disk->download($episode->local_video);
                 }
                 break;
             case 'show_local_video':
-                if (!is_null($episode->local_video) and $episode->allow_show_local_video and (($this->course->price == 0) || $user_has_episode)):
+                if (!is_null($episode->local_video) and $episode->allow_show_local_video and ($this->course->price == 0 || $user_has_episode)):
                     $this->episode_title = $episode->title;
                     $this->local_video = route('storage',[$episode->id,'video']);
                     $this->emit('setVideo',['title' => '1','src' => $this->local_video]);
