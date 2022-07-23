@@ -10270,3 +10270,15 @@
      .logo-footer {
          max-width: 3rem;
      }
+     
+     .episode_counter {
+         background-color: #c8f8ff;
+         padding: 10px;
+         text-align: center;
+         height: 30px;
+         width: 30px;
+         display: inline-flex;
+         align-items: center;
+         justify-content: center;
+         border-radius: 50%;
+     }

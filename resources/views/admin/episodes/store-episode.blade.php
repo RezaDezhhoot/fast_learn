@@ -51,50 +51,52 @@
                         </tbody>
                     </table>
                 </x-admin.form-section>
-                <x-admin.form-section class="col-12" label="تمرین ها">
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>نام کاربر</th>
-                                    <th>شماره کاربر</th>
-                                    <th>ایمیل کاربر</th>
-                                    <th>عنوان درس</th>
-                                    <th>فضای ذخیره سازی</th>
-                                    <th>امتیاز</th>
-                                    <th>بررسی استاد</th>
-                                    <th>تاریخ</th>
-                                    <th>عملیات</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            @forelse($homeworks as $item)
-                                <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $item->user->name }}</td>
-                                    <td>{{ $item->user->phone }}</td>
-                                    <td>{{ $item->user->email }}</td>
-                                    <td>{{ $item->episode_title }}</td>
-                                    <td>{{ $item->storage_label }}</td>
-                                    <td>{{ $item->score }}</td>
-                                    <td>{{ !is_null($item->result) ? 'بله' : 'خیر' }}</td>
-                                    <td>{{ $item->created_at->diffForHumans() }}</td>
-                                    <td>
-                                        <x-admin.edit-btn wire:click="openHomework('{{$item->id}}')" />
-                                        <x-admin.delete-btn onclick="deleteHomeworks({{$item->id}})" />
+                @if(!is_null($episode))
+                    <x-admin.form-section class="col-12" label="تمرین ها">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>نام کاربر</th>
+                                        <th>شماره کاربر</th>
+                                        <th>ایمیل کاربر</th>
+                                        <th>عنوان درس</th>
+                                        <th>فضای ذخیره سازی</th>
+                                        <th>امتیاز</th>
+                                        <th>بررسی استاد</th>
+                                        <th>تاریخ</th>
+                                        <th>عملیات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                @forelse($homeworks as $item)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $item->user->name }}</td>
+                                        <td>{{ $item->user->phone }}</td>
+                                        <td>{{ $item->user->email }}</td>
+                                        <td>{{ $item->episode_title }}</td>
+                                        <td>{{ $item->storage_label }}</td>
+                                        <td>{{ $item->score }}</td>
+                                        <td>{{ !is_null($item->result) ? 'بله' : 'خیر' }}</td>
+                                        <td>{{ $item->created_at->diffForHumans() }}</td>
+                                        <td>
+                                            <x-admin.edit-btn wire:click="openHomework('{{$item->id}}')" />
+                                            <x-admin.delete-btn onclick="deleteHomeworks({{$item->id}})" />
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <td class="text-center" colspan="11">
+                                        دیتایی جهت نمایش وجود ندارد
                                     </td>
-                                </tr>
-                            @empty
-                                <td class="text-center" colspan="11">
-                                    دیتایی جهت نمایش وجود ندارد
-                                </td>
-                            @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                    {{$homeworks->links('admin.layouts.paginate')}}
-                </x-admin.form-section>
+                                @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                        {{$homeworks->links('admin.layouts.paginate')}}
+                    </x-admin.form-section>
+                @endif
             </div>
         </div>
     </div>

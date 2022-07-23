@@ -18,7 +18,7 @@ class StoreEpisode extends BaseComponent
 
     public  $header , $storage , $episode;
     public $title , $link , $time = '00:00:00' , $view = 0, $free = 0 , $api_bucket , $file_storage , $file ,$local_video ,
-        $video_storage , $allow_show_local_video = 0 , $course_id , $description , $can_homework , $homework_storage;
+        $video_storage , $allow_show_local_video = 0 , $course_id , $description , $can_homework = false , $homework_storage;
 
     public $homework , $h_file , $h_description , $h_result , $h_storage , $h_score;
 
@@ -80,7 +80,7 @@ class StoreEpisode extends BaseComponent
         $this->video_storage = $this->emptyToNull($this->video_storage);
         $this->validate([
             'title' => ['required','string','max:255'],
-            'description' => ['nullable','string','max:70'],
+            'description' => ['required','string','max:70'],
             'file' => ['nullable','string','max:10000'],
             'local_video' => ['nullable','max:255'],
             'api_bucket' => ['nullable','max:35000'],
@@ -132,7 +132,9 @@ class StoreEpisode extends BaseComponent
 
     public function render()
     {
-        $homeworks = $this->homeworkRepository->getAllAdmin([['episode_id',$this->episode->id]],$this->per_page);
+        $homeworks = [];
+        if(!is_null($this->episode) && $this->mode == self::UPDATE_MODE)
+            $homeworks = $this->homeworkRepository->getAllAdmin([['episode_id',$this->episode->id]],$this->per_page);
         return view('admin.episodes.store-episode',['homeworks'=>$homeworks])
             ->extends('admin.layouts.admin');
     }
@@ -146,10 +148,10 @@ class StoreEpisode extends BaseComponent
         ]);
     }
 
-    public function deleteItem($id)
+    public function deleteItem()
     {
         $this->authorizing('delete_episodes');
-        $this->episodeRepository->destroy($id);
+        $this->episodeRepository->destroy($this->episode->id);
         return redirect()->route('admin.episode');
     }
 
