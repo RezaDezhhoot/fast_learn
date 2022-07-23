@@ -294,7 +294,7 @@
                             <div class="review-wrap">
                                 @if(sizeof($comments) > 0)
                                 @for($i=0;$i<$commentCount ;$i++) @isset($comments[$i]) <div
-                                    class="media media-card  pb-4 mb-1">
+                                    class="media media-card shadow-sm p-3 mb-4 bg-white rounded pb-4 mb-1">
                                     <div class="media-img mr-4 rounded-full">
                                         <img class="rounded-full lazy" src="{{ asset($comments[$i]->user->image) }}"
                                             data-src="{{ asset($comments[$i]->user->image) }}"
@@ -317,7 +317,7 @@
                                     </div>
                             </div>
                             @foreach($comments[$i]->childrenRecursive as $value)
-                            <div class="media media-card pb-4  p-4 mb-4 review-reply">
+                            <div class="media media-card pb-4 shadow-sm p-3 mb-5 bg-white rounded p-3 mb-4 review-reply">
                                 <div class="media-img mr-4 rounded-full">
                                     <img class="rounded-full lazy" src="{{ asset($value->user->image) }}"
                                         data-src="{{ asset($value->user->image) }}" alt="{{ $value->user->name }}" />
@@ -334,7 +334,9 @@
                                 </div>
                             </div>
                             @endforeach
-                            <hr>
+                            @if ($i != count($comments) - 1)
+                                <hr>
+                            @endif
                             @endif
 
                             @endfor
