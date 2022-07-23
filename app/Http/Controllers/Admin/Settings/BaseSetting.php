@@ -7,7 +7,7 @@ use App\Repositories\Interfaces\SettingRepositoryInterface;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
-
+use App\Enums\StorageEnum;
 class BaseSetting extends BaseComponent
 {
     public $header , $name , $logo , $status , $title  , $copyRight  ,$storage ;
@@ -82,34 +82,35 @@ class BaseSetting extends BaseComponent
         $this->copyRight = $this->settingRepository->getRow('copyRight');
         $this->storage = $this->settingRepository->getRow('storage') ?? 1;
 
-        $this->sftp_root = $this->settingRepository->getRow('sftp_root');
-        $this->sftp_privateKey = $this->settingRepository->getRow('sftp_privateKey');
-        $this->sftp_hostFingerprint = $this->settingRepository->getRow('sftp_hostFingerprint');
-        $this->sftp_maxTries = $this->settingRepository->getRow('sftp_maxTries');
-        $this->sftp_port = $this->settingRepository->getRow('sftp_port') ?? 22;
-        $this->sftp_passphrase = $this->settingRepository->getRow('sftp_passphrase');
-        $this->sftp_host = $this->settingRepository->getRow('sftp_host');
-        $this->sftp_username = $this->settingRepository->getRow('sftp_username');
-        $this->sftp_password = $this->settingRepository->getRow('sftp_password');
-        $this->sftp_useAgent = $this->settingRepository->getRow('sftp_useAgent') ?? false;
-        $this->sftp_available = $this->settingRepository->getRow('sftp_available') ?? false;
 
-        $this->ftp_ip = $this->settingRepository->getRow('ftp_ip');
-        $this->ftp_root = $this->settingRepository->getRow('ftp_root');
-        $this->ftp_username = $this->settingRepository->getRow('ftp_username');
-        $this->ftp_password = $this->settingRepository->getRow('ftp_password');
-        $this->ftp_port = $this->settingRepository->getRow('ftp_port') ?? 21;
-        $this->ftp_ssl = $this->settingRepository->getRow('ftp_ssl');
-        $this->ftp_available = $this->settingRepository->getRow('ftp_available') ?? false;
+        $this->sftp_root = $this->settingRepository->getRow(StorageEnum::SFTP_LABEL."_root");
+        $this->sftp_privateKey = $this->settingRepository->getRow(StorageEnum::SFTP_LABEL."_privateKey");
+        $this->sftp_hostFingerprint = $this->settingRepository->getRow(StorageEnum::SFTP_LABEL."_hostFingerprint");
+        $this->sftp_maxTries = $this->settingRepository->getRow(StorageEnum::SFTP_LABEL."_maxTries");
+        $this->sftp_port = $this->settingRepository->getRow(StorageEnum::SFTP_LABEL."_port") ?? 22;
+        $this->sftp_passphrase = $this->settingRepository->getRow(StorageEnum::SFTP_LABEL."_passphrase");
+        $this->sftp_host = $this->settingRepository->getRow(StorageEnum::SFTP_LABEL."_host");
+        $this->sftp_username = $this->settingRepository->getRow(StorageEnum::SFTP_LABEL."_username");
+        $this->sftp_password = $this->settingRepository->getRow(StorageEnum::SFTP_LABEL."_password");
+        $this->sftp_useAgent = $this->settingRepository->getRow(StorageEnum::SFTP_LABEL."_useAgent") ?? false;
+        $this->sftp_available = $this->settingRepository->getRow(StorageEnum::SFTP_LABEL."_available") ?? false;
 
-        $this->s3_key = $this->settingRepository->getRow('s3_key');
-        $this->s3_secret = $this->settingRepository->getRow('s3_secret');
-        $this->s3_region = $this->settingRepository->getRow('s3_region');
-        $this->s3_bucket = $this->settingRepository->getRow('s3_bucket');
-        $this->s3_url = $this->settingRepository->getRow('s3_url');
-        $this->s3_endpoint = $this->settingRepository->getRow('s3_endpoint');
-        $this->s3_use_path_style_endpoint = $this->settingRepository->getRow('s3_use_path_style_endpoint');
-        $this->s3_available = $this->settingRepository->getRow('s3_available') ?? false;
+        $this->ftp_ip = $this->settingRepository->getRow(StorageEnum::FTP_LABEL."_ip");
+        $this->ftp_root = $this->settingRepository->getRow(StorageEnum::FTP_LABEL."_root");
+        $this->ftp_username = $this->settingRepository->getRow(StorageEnum::FTP_LABEL."_username");
+        $this->ftp_password = $this->settingRepository->getRow(StorageEnum::FTP_LABEL."_password");
+        $this->ftp_port = $this->settingRepository->getRow(StorageEnum::FTP_LABEL."_port") ?? 21;
+        $this->ftp_ssl = $this->settingRepository->getRow(StorageEnum::FTP_LABEL."_ssl");
+        $this->ftp_available = $this->settingRepository->getRow(StorageEnum::FTP_LABEL."_available") ?? false;
+
+        $this->s3_key = $this->settingRepository->getRow(StorageEnum::S3_LABEL."_key");
+        $this->s3_secret = $this->settingRepository->getRow(StorageEnum::S3_LABEL."_secret");
+        $this->s3_region = $this->settingRepository->getRow(StorageEnum::S3_LABEL."_region");
+        $this->s3_bucket = $this->settingRepository->getRow(StorageEnum::S3_LABEL."_bucket");
+        $this->s3_url = $this->settingRepository->getRow(StorageEnum::S3_LABEL."_url");
+        $this->s3_endpoint = $this->settingRepository->getRow(StorageEnum::S3_LABEL."_endpoint");
+        $this->s3_use_path_style_endpoint = $this->settingRepository->getRow(StorageEnum::S3_LABEL."_use_path_style_endpoint");
+        $this->s3_available = $this->settingRepository->getRow(StorageEnum::S3_LABEL."_available") ?? false;
 
         $this->logo = $this->settingRepository->getRow('logo');
         $this->title = $this->settingRepository->getRow('title');
@@ -336,6 +337,7 @@ class BaseSetting extends BaseComponent
         $this->settingRepository::updateOrCreate(['name' => 'seoKeyword'], ['value' => $this->seoKeyword]);
         $this->settingRepository::updateOrCreate(['name' => 'registerGift'], ['value' => $this->registerGift]);
         $this->settingRepository::updateOrCreate(['name' => 'storage'], ['value' => $this->storage]);
+
         $this->settingRepository::updateOrCreate(['name' => 'ftp_root'], ['value' => trim($this->ftp_root)]);
         $this->settingRepository::updateOrCreate(['name' => 'ftp_ip'], ['value' => trim($this->ftp_ip)]);
         $this->settingRepository::updateOrCreate(['name' => 'ftp_username'], ['value' => trim($this->ftp_username)]);

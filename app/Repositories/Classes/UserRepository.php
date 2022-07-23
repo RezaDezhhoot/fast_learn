@@ -7,17 +7,18 @@ use App\Models\User;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use Alexusmai\LaravelFileManager\Services\ConfigService\ConfigRepository;
 use Illuminate\Support\Facades\Auth;
+use App\Enums\StorageEnum;
 
 class UserRepository implements UserRepositoryInterface , ConfigRepository
 {
     public function getDiskList(): array
     {
         $storages = [];
-        $storages[] = Auth::user()->hasPermissionTo('public_driver') ? 'public' : null;
-        $storages[] = Auth::user()->hasPermissionTo('private_driver') ? 'private' : null;
-        $storages[] = Auth::user()->hasPermissionTo('ftp_driver') ? 'ftp' : null;
-        $storages[] = Auth::user()->hasPermissionTo('sftp_driver') ? 'SFTP' : null;
-        $storages[] = Auth::user()->hasPermissionTo('s3_driver') ? 's3' : null;
+        $storages[] = Auth::user()->hasPermissionTo('public_driver') ? StorageEnum::PUBLIC_LABEL : null;
+        $storages[] = Auth::user()->hasPermissionTo('private_driver') ? StorageEnum::PRIVATE_LABEL : null;
+        $storages[] = Auth::user()->hasPermissionTo('ftp_driver') ? StorageEnum::FTP_LABEL : null;
+        $storages[] = Auth::user()->hasPermissionTo('sftp_driver') ? StorageEnum::SFTP_LABEL : null;
+        $storages[] = Auth::user()->hasPermissionTo('s3_driver') ? StorageEnum::S3_LABEL : null;
         return $storages;
     }
 

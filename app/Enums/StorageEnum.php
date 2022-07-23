@@ -12,10 +12,19 @@ use JetBrains\PhpStorm\ArrayShape;
  */
 final class StorageEnum extends Enum
 {
+    // default sotrages
     const PUBLIC = '0' , PRIVATE = '1' , FTP = '2' , S3 = '3' , SFTP = '4';
+    const PUBLIC_LABEL = 'public' , PRIVATE_LABEL = 'private' , FTP_LABEL = 'ftp' , S3_LABEL = 's3' , SFTP_LABEL = 'sftp';
 
-    const PUBLIC_LABEL = 'public' , PRIVATE_LABEL = 'private' , FTP_LABEL = 'ftp' , S3_LABEL = 's3' , SFTP_LABEL = 'SFTP';
+    /*
+    * custome storages
+    *
+    * CONST CUSTOM_STORAGE = '5';
+    * CONST CUSTOM_STORAGE_LABEL = 'custom_storage';
+    *
+    */
 
+    
     #[ArrayShape([self::PUBLIC_LABEL => "string", self::PRIVATE_LABEL => "string", self::FTP_LABEL => "string", self::S3_LABEL => "string", self::SFTP_LABEL => "string"])]
     public static function storages(): array
     {
