@@ -44,6 +44,14 @@ class IndexDashboard extends BaseComponent
 
     public function mount()
     {
+        if (
+            !preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/",$this->to_date) ||
+            !preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/",$this->from_date)
+            ) 
+        {
+            $this->reset(['to_date','from_date']);
+        }
+        
         if (!isset($this->to_date)){
             $this->to_date =  Carbon::now()->format('Y-m-d');
         }
@@ -53,6 +61,8 @@ class IndexDashboard extends BaseComponent
             $this->from_date = Carbon::now()->subDays(5)->format('Y-m-d');
         }
         $this->from_date_view = $this->dateConverter($this->from_date);
+
+        
 
 
         $this->getData();

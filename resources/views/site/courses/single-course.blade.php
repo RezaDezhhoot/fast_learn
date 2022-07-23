@@ -522,7 +522,7 @@
                         <div class="input-group">
                             <input type="text" class="form-control form--control copy-input pl-3" value="{{ route('codes',$course->short_code) }}" />
                             <div class="input-group-append">
-                                <button class="btn theme-btn theme-btn-sm copy-btn shadow-none"><i class="la la-copy mr-1"></i> کپی 🀄</button>
+                                <button class="btn theme-btn theme-btn-sm copy-btn shadow-none"><i class="la la-copy mr-1"></i> کپی</button>
                             </div>
                         </div>
                     </div>

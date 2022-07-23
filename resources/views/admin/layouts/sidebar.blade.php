@@ -51,6 +51,7 @@
                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                 </li>
                 <x-admin.menu-item href="{{route('admin.profile')}}" icon="flaticon2-user" :active="request()->routeIs('admin.profile')" label="پروفایل" />
+                <x-admin.menu-item href="{{route('user.dashboard')}}" icon="flaticon2-user" :active="request()->routeIs('user.dashboard')" label="پنل کاربری" />
                 <li class="menu-section">
                     <h4 class="menu-text">بخش رسانه</h4>
                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>

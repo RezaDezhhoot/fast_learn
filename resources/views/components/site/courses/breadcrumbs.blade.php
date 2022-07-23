@@ -13,26 +13,10 @@
                     <p class="section__desc pt-2 lh-30">{{ $course->sub_title }}</p>
                 </div>
                 <!-- end section-heading -->
-                <div class="d-flex flex-wrap align-items-center pt-3">
+                <div class="d-flex flex-wrap align-items-center pt-3 pb-2">
                     <h6 class="ribbon ribbon-lg mr-2 bg-3 text-white">{{ $course->category->title }}</h6>
-                    <div class="rating-wrap d-flex flex-wrap align-items-center">
-                        <div class="review-stars">
-                            <span class="rating-number">({{$course->score}})</span>
-                            @for($i=1; $i<=5;$i++)
-                                @if($i <=$course->score)
-                                    <span class="la la-star"></span>
-                                @else
-                                    <span class="la la-star-o"></span>
-                               @endif
-                            @endfor
-                        </div>
-                        <span class="student-total pl-2">{{ $course->sold_count }} دانش آموز </span>
-                    </div>
                 </div>
-                <!-- end d-flex -->
-                @if(!is_null($course->teacher))
-                    <p class="pt-2 pb-1">ایجاد شده توسط <a href="{{ route('teacher',$course->teacher->id) }}" class="text-color hover-underline">{{ $course->teacher->user->name }}</a></p>
-                @endif
+
                 <div class="d-flex flex-wrap align-items-center">
                     <p class="pr-3 d-flex align-items-center">
                         <svg class="svg-icon-color-gray mr-1" width="16px" viewBox="0 0 24 24">

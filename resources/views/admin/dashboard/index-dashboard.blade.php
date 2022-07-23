@@ -17,11 +17,11 @@
             <!--begin::Toolbar-->
             <div class="d-flex align-items-center justify-content-between">
                 <!--begin::Actions-->
-                <p>از تاریخ</p>
+                <p class="m-0">از تاریخ</p>
                 <div class="d-flex align-center justify-content-between">
                     <x-admin.forms.jdate-picker id="date" label=""   wire:model.defer="from_date_view"/>
                 </div>
-                <p>تا تاریخ</p>
+                <p class="m-0">تا تاریخ</p>
                 <div>
                     <x-admin.forms.jdate-picker id="date2" label=""  wire:model.defer="to_date_viwe"/>
                 </div>
