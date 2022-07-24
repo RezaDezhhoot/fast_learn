@@ -40,7 +40,8 @@ class IndexLog extends BaseComponent
         $disk = getDisk(StorageEnum::PUBLIC);
         $now = now()->format('Y_m_d');
         $filename = "logs_{$id}_{$now}.txt";
-        $disk->put("logs_folder/$filename",$this->logRepository->find($id)->properties);
+        $log = $this->logRepository->find($id);
+        $disk->put("logs_folder/$filename",'properties:'.$log->properties."\nsubject details:".$log->subject);
         return response()->download(storage_path("app/public/logs_folder/$filename"), "logs_{$now}.txt")
             ->deleteFileAfterSend(true);
     }
