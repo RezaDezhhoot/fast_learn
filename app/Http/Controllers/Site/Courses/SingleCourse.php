@@ -23,12 +23,13 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Cart\Facades\Cart;
 use Illuminate\Support\Facades\Log;
 use Livewire\WithFileUploads;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
 class SingleCourse extends BaseComponent
 {
-    use WithFileUploads;
+    use WithFileUploads , AuthorizesRequests;
     public  $course;
     public  $related_courses , $comments , $recaptcha , $episodes , $user , $commentCount = 10 , $actionComment  , $actionLabel = 'دیدگاه جدید';
     public ?string $api_bucket = null , $local_video , $comment = null , $episode_title = null , $episode_id;
@@ -92,8 +93,11 @@ class SingleCourse extends BaseComponent
 
     public function addToCart()
     {
-        Cart::add($this->course);
-        return redirect()->route('cart');
+        if ($this->course->price > 0) {
+            Cart::add($this->course);
+            return redirect()->route('cart');
+        }
+       
     }
 
     public function set_content($type,$id)
@@ -106,7 +110,7 @@ class SingleCourse extends BaseComponent
         $this->episode_id = $episode->id;
         $user_has_episode = $this->user->hasCourse($this->course->id);
         if ($this->course->price == 0 && !$user_has_episode){
-            $this->setOrder();
+            $this->getFreeOrder();
         }
         switch ($type){
             case 'api_bucket':
@@ -188,7 +192,7 @@ class SingleCourse extends BaseComponent
             }
             $user_has_episode = $this->user->hasCourse($this->course->id);
             if ($this->course->price == 0 && !$user_has_episode)
-                $user_has_episode = $this->setOrder();
+                $user_has_episode = $this->getFreeOrder();
 
             if ($user_has_episode) {
                 $this->episode = $this->episodeRepository->find($id);
@@ -270,6 +274,16 @@ class SingleCourse extends BaseComponent
         $this->resetErrorBag();
     }
 
+    public function getFreeOrder() {
+        if (Auth::check()) {
+            if ($this->course->price == 0 && !$this->user->hasCourse($this->course->id)) {
+                $this->setOrder();
+            }
+        } else {
+            return redirect()->route('auth');
+        }   
+    }
+
     private function setOrder(): bool
     {
         $order = [
@@ -298,6 +312,8 @@ class SingleCourse extends BaseComponent
                 'order_id' => $order->id,
             ]);
             DB::commit();
+            $this->show_homework_form = true;
+            $this->emitNotify('دوره با موفقیت برای شما ثبت شد');
             return true;
         } catch (Exception $e) {
             DB::rollBack();

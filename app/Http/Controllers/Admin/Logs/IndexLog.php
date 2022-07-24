@@ -41,7 +41,7 @@ class IndexLog extends BaseComponent
         $now = now()->format('Y_m_d');
         $filename = "logs_{$id}_{$now}.txt";
         $log = $this->logRepository->find($id);
-        $disk->put("logs_folder/$filename",'properties:'.$log->properties."\nsubject details:".$log->subject);
+        $disk->put("logs_folder/$filename",'properties:'.$log->properties."\nsubject details:".$log->subject."\ncauser deatals:".$log->causer);
         return response()->download(storage_path("app/public/logs_folder/$filename"), "logs_{$now}.txt")
             ->deleteFileAfterSend(true);
     }

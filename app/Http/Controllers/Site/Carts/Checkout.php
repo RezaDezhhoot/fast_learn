@@ -77,6 +77,10 @@ class Checkout extends BaseComponent
                 'unit' => (int)$this->settingRepository->getRow("{$gateway}_unit") ?? 1,
             ];
         }
+
+        if (sizeof(Cart::content()) <= 0) {
+            return redirect()->route('home');
+        }
     }
 
     public function render()
@@ -350,6 +354,7 @@ class Checkout extends BaseComponent
                         'model_type' => PaymentEnum::order(),
                         'model_id' => $orderRepository->id,
                         'call_back_url' => '',
+                        'ip' => request()->ip()
                     ]);
                 }
                 $original_cart_total_price = Cart::total(0, 0 , 0);

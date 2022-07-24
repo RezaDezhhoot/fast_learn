@@ -16,7 +16,7 @@
                                 <th>عملیات</th>
                                 <th>موضوع کاربر</th>
                                
-                                <th>جزئیات بیشتر</th>
+                                <th>جزئیات دقیق</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -32,6 +32,7 @@
                                                 $item->causer->name }}</a></li>
                                         <li>ادرس ایمیل : {{ $item->causer->email }}</li>
                                         <li>شماره همراه : {{ $item->causer->phone }}</li>
+                                        <li>ای پی : {{ $item->causer->ip }}</li>
                                     </ul>
                                     @endif
 

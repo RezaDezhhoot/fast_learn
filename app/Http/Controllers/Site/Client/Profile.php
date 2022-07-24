@@ -251,6 +251,7 @@ class Profile extends BaseComponent
                     'model_type' => PaymentEnum::user(),
                     'model_id' => auth()->id(),
                     'call_back_url' => '',
+                    'ip' => request()->ip()
                 ]);
             } catch (Exception $e) {
                 $this->addError('gateway','خطا در هنگام پرداخت');

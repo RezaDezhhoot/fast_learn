@@ -13,6 +13,7 @@
                                 <td>نام</td>
                                 <td>شماره همراه</td>
                                 <td>وضعیت</td>
+                                <td>ای پی کاربر</td>
                                 <th>مشاهده لاگ ها</th>
                             </tr>
                             </thead>
@@ -21,6 +22,7 @@
                                 <td>{{ $order->user->name }}</td>
                                 <td>{{ $order->user->phone }}</td>
                                 <td>{{ $order->user->status_label }}</td>
+                                <td>{{ $order->user->ip }}</td>
                                 <td>
                                     <a title="مشاهده لاگ این کاربر" href="{{route('admin.log',['user'=>$order->user->id])}}">مشاهده</a>
                                 </td>
@@ -40,14 +42,16 @@
                                 <th>شماره شناسه پرداخت:</th>
                                 <th>درگاه پرداخت:</th>
                                 <th>کد پیگیری درگاه:</th>
+                                <th>ای پی پرداخت کننده</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
                                 <td>{{$order->tracking_code}}</td>
-                                <td>{{$order->payment->id}}</td>
-                                <td>{{$order->payment->payment_gateway}}</td>
-                                <td>{{$order->payment->payment_ref}}</td>
+                                <td>{{$order->payment->id ?? ''}}</td>
+                                <td>{{$order->payment->payment_gateway ?? ''}}</td>
+                                <td>{{$order->payment->payment_ref ?? ''}}</td>
+                                <td>{{$order->payment->ip ?? ''}}</td>
                             </tr>
                             </tbody>
                         </table>
@@ -161,6 +165,7 @@
                                             <thead>
                                             <tr>
                                                 <td>تعداد</td>
+                                                <td>وضعیت</td>
                                                 <td>وضعیت</td>
                                                 <td>تاریخ</td>
                                                 <td>مشاهده</td>

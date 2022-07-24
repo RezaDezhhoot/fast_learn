@@ -43,7 +43,9 @@
                                     <li>
                                         <p class="shop-cart-btn d-flex align-items-center">
                                             <i class="la la-shopping-cart fs-22"></i>
-                                            <span class="dot-status bg-1"></span>
+                                            @if(sizeof($cartContent) > 0)
+                                                <span class="dot-status bg-1"></span>
+                                            @endif
                                         </p>
                                         <x-site.header-cart :cartContent="$cartContent" />
                                     </li>

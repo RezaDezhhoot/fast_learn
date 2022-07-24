@@ -60,7 +60,8 @@
                                             <button
                                                 class="btn btn-link d-flex align-items-center justify-content-between"
                                                 data-toggle="collapse" data-target="#collapse{{$item->id}}"
-                                                aria-expanded="{{  $key == 0 ? 'true' : 'false' }}" aria-controls="collapse{{$item->id}}">
+                                                aria-expanded="{{  $key == 0 ? 'true' : 'false' }}"
+                                                aria-controls="collapse{{$item->id}}">
                                                 <i class="la la-plus"></i>
                                                 <i class="la la-minus"></i>
                                                 <p>
@@ -112,9 +113,9 @@
                                                             <span>{{ $item['time'] }}</span>
                                                         </a>
                                                     </li>
-                                                    @endif
-                                                    @if(!empty($item['local_video']))
-                                                    @if($item['allow_show_local_video'] && empty($item['api_bucket']))
+
+                                                    @elseif(!empty($item['local_video']))
+                                                    @if($item['allow_show_local_video'])
                                                     <li>
                                                         <a class="d-flex align-items-center justify-content-between"
                                                             data-toggle="modal" data-target="#previewModal">
@@ -128,19 +129,19 @@
                                                         </a>
                                                     </li>
                                                     @endif
-                                                    
+
                                                     @if ($item['downloadable_local_video'])
-                                                        <li>
-                                                            <a class="d-flex align-items-center justify-content-between"
-                                                                data-toggle="modal" data-target="#previewModal">
-                                                                <span
-                                                                    wire:click="set_content('local_video','{{$item['id']}}')"
-                                                                    class="cursor-pointers">
-                                                                    <i class="la la-download mr-1"></i>
-                                                                    دانلود ویدئو
-                                                                </span>
-                                                            </a>
-                                                        </li>
+                                                    <li>
+                                                        <a class="d-flex align-items-center justify-content-between"
+                                                            data-toggle="modal" data-target="#previewModal">
+                                                            <span
+                                                                wire:click="set_content('local_video','{{$item['id']}}')"
+                                                                class="cursor-pointers">
+                                                                <i class="la la-download mr-1"></i>
+                                                                دانلود ویدئو
+                                                            </span>
+                                                        </a>
+                                                    </li>
 
                                                     @endif
 
@@ -317,7 +318,8 @@
                                     </div>
                             </div>
                             @foreach($comments[$i]->childrenRecursive as $value)
-                            <div class="media media-card pb-4 shadow-sm p-3 mb-5 bg-white rounded p-3 mb-4 review-reply">
+                            <div
+                                class="media media-card pb-4 shadow-sm p-3 mb-5 bg-white rounded p-3 mb-4 review-reply">
                                 <div class="media-img mr-4 rounded-full">
                                     <img class="rounded-full lazy" src="{{ asset($value->user->image) }}"
                                         data-src="{{ asset($value->user->image) }}" alt="{{ $value->user->name }}" />
@@ -335,7 +337,7 @@
                             </div>
                             @endforeach
                             @if ($i != count($comments) - 1)
-                                <hr>
+                            <hr>
                             @endif
                             @endif
 
@@ -388,10 +390,21 @@
                                         number_format($course->price) }} تومان</span>
                                     @endif
                                 </div>
-                                <div class="buy-course-btn-box mt-2">
+                                <div class="buy-course-btn-box mt-4">
+                                    @if ($course->price == 0)
+                                    @if (auth()->check() && $user->hasCourse($course->id))
+                                    <button disabled type="button" class="btn btn-outline-success w-100 mb-2">شما در این دوره ثبت نام کرده اید</button>
+                                    @else
+                                    <button wire:click="getFreeOrder()" type="button" class="btn theme-btn w-100 mb-2"><i
+                                        class="la la-shopping-cart fs-18 mr-1"></i> ثبت
+                                    نام در این دوره</button>
+                                    @endif
+                                    
+                                    @else
                                     <button wire:click="addToCart()" type="button" class="btn theme-btn w-100 mb-2"><i
-                                            class="la la-shopping-cart fs-18 mr-1"></i> {{ $course->price == 0 ? 'ثبت
-                                        نام در این دوره' : 'به سبد خرید اضافه کنید' }}</button>
+                                            class="la la-shopping-cart fs-18 mr-1"></i> به سبد خرید اضافه کنید</button>
+                                    @endif
+                                    
                                 </div>
                                 <div class="preview-course-incentives">
                                     <h3 class="card-title fs-18 mt-2 pb-2">این دوره شامل</h3>
