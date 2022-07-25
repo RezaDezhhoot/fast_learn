@@ -22,11 +22,11 @@ function getDisk($storage = null): Filesystem
     if (is_null($storage))
         $storage = $SettingRepository->getRow('storage');
     return match ($storage) {
-        StorageEnum::PRIVATE => Storage::disk('private'),
-        StorageEnum::FTP =>  Storage::disk('ftp'),
-        StorageEnum::S3 => Storage::disk('s3'),
-        StorageEnum::SFTP => Storage::disk('SFTP'),
-        default => Storage::disk('public')
+        StorageEnum::PRIVATE => Storage::disk(StorageEnum::PRIVATE_LABEL),
+        StorageEnum::FTP =>  Storage::disk(StorageEnum::FTP_LABEL),
+        StorageEnum::S3 => Storage::disk(StorageEnum::S3_LABEL),
+        StorageEnum::SFTP => Storage::disk(StorageEnum::SFTP_LABEL),
+        default => Storage::disk(StorageEnum::PUBLIC_LABEL)
     };
 }
 
