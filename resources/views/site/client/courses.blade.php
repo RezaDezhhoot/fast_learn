@@ -9,8 +9,10 @@
                 <div class="card card-item card-item-list-layout mb-2">
                 <!-- end card-image -->
                 <div class="card-body d-flex align-items-center">
+                    <p class="card-text px-2">کد سفارش : <a>{{ $item->tracking_code }}</a></p>
                     <h5 class="card-title"><a href="{{ route('course',['slug'=>$item->course->slug]) }}">{{ $item->course->title }}</a></h5>
-                    <p class="card-text px-2"><a>{{ $item->course->title }}</a></p>
+                   
+                    <p class="card-text px-2"><a>{{ $item->course->type_label }}</a></p>
                     <!-- end rating-wrap -->
                     <div class="d-flex justify-content-between align-items-center px-4">
                         <div class="card-action-wrap pl-3">

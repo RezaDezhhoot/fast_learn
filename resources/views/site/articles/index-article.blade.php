@@ -4,7 +4,8 @@
         <div class="container">
             <div class="filter-bar mb-4">
                 <div class="filter-bar-inner d-flex flex-wrap align-items-center justify-content-between">
-                    <p class="fs-14">ما <span class="text-black">{{ $articles->count() }}</span> مقاله برای شما پیدا کردیم</p>
+                    <p class="fs-14">ما <span class="text-black">{{ $articles->count() }}</span> مقاله برای شما پیدا
+                        کردیم</p>
                     <div class="d-flex flex-wrap align-items-center">
                     </div>
                 </div>
@@ -12,7 +13,7 @@
             </div>
             <!-- end filter-bar -->
             <div class="row">
-                <div class="col-lg-3"  wire:ignore>
+                <div class="col-lg-3" wire:ignore>
                     <div class="sidebar mb-5">
                         <div class="card card-item">
                             <div class="card-body">
@@ -20,7 +21,8 @@
                                 <div class="divider"><span></span></div>
                                 <form wire:submit.prevent="search">
                                     <div class="form-group mb-0">
-                                        <input wire:model.defer="q" class="form-control form--control pl-3" type="search" name="q" placeholder="جستجوی مقاله" />
+                                        <input wire:model.defer="q" class="form-control form--control pl-3"
+                                            type="search" name="q" placeholder="جستجوی مقاله" />
                                         <span wire:click="search" class="la la-search search-icon"></span>
                                     </div>
                                 </form>
@@ -31,22 +33,31 @@
                                 <h3 class="card-title fs-18 pb-2">دسته بندی ها</h3>
                                 <div class="divider"><span></span></div>
                                 <div class="custom-control custom-checkbox mb-1 fs-15">
-                                    <input type="radio" name="category" class="custom-control-input" wire:model="category" value="" id="all_categories" required="" />
-                                    <label class="custom-control-label custom--control-label text-black" for="all_categories"> همه دسته بندی ها  </label>
+                                    <input type="radio" name="category" class="custom-control-input"
+                                        wire:model="category" value="" id="all_categories" required="" />
+                                    <label class="custom-control-label custom--control-label text-black"
+                                        for="all_categories"> همه دسته بندی ها </label>
                                 </div>
-                                @foreach($categories as  $item)
+                                @foreach($categories as $item)
+                                <div class="custom-control custom-checkbox mb-1 fs-15">
+                                    <input type="radio" name="category" wire:model="category"
+                                        value="{{ $item['slug'] }}" class="custom-control-input"
+                                        id="{{ $item['slug'] }}" required="" />
+                                    <label class="custom-control-label custom--control-label text-black"
+                                        for="{{ $item['slug'] }}"> {{ $item['title'] }} </label>
+                                    @if(!empty($item['sub_categories']))
+                                    @foreach($item['sub_categories'] as $key => $value)
                                     <div class="custom-control custom-checkbox mb-1 fs-15">
-                                        <input type="radio" name="category" wire:model="category" value="{{ $item['slug'] }}" class="custom-control-input" id="{{ $item['slug'] }}" required="" />
-                                        <label class="custom-control-label custom--control-label text-black" for="{{ $item['slug'] }}"> {{ $item['title'] }}  </label>
-                                        @if(!empty($item['sub_categories']))
-                                            @foreach($item['sub_categories'] as $key => $value)
-                                                <div class="custom-control custom-checkbox mb-1 fs-15">
-                                                    <input type="radio" name="category" wire:model="category" value="{{ $value }}" class="custom-control-input" id="{{ $value }}" required="" />
-                                                    <label class="custom-control-label custom--control-label text-black" for="{{ $value }}"> <span class="text-gray">{{$item['sub_categories_title'][$key]}}</span>  </label>
-                                                </div>
-                                            @endforeach
-                                        @endif
+                                        <input type="radio" name="category" wire:model="category" value="{{ $value }}"
+                                            class="custom-control-input" id="{{ $value }}" required="" />
+                                        <label class="custom-control-label custom--control-label text-black"
+                                            for="{{ $value }}"> <span
+                                                class="text-gray">{{$item['sub_categories_title'][$key]}}</span>
+                                        </label>
                                     </div>
+                                    @endforeach
+                                    @endif
+                                </div>
                                 @endforeach
                             </div>
                         </div>
@@ -57,22 +68,23 @@
                 <!-- end col-lg-4 -->
                 <div class="col-lg-9">
                     @if(sizeof($articles))
-                        <div class="row">
-                            @foreach($articles as $item)
-                                <div class="col-lg-4 responsive-column-half">
-                                    <x-site.articles.article-box :item="$item"/>
-                                </div>
-                            @endforeach
+                    <div class="row">
+                        @foreach($articles as $item)
+                        <div class="col-lg-4 responsive-column-half">
+                            <x-site.articles.article-box :item="$item" />
                         </div>
-                        <!-- end row -->
-                        {{$articles->links('site.includes.paginate')}}
-                    @else
-                        <div class="text-center">
-                            <img class="mx-auto no-date d-block mt-5" src="{{ asset('site/svg/No-data-cuate.svg') }}" alt="">
-                            <h5 class="mt-3">ما هیچ مقاله ای برای شما پیدا نکردیم!</h5>
-                        </div>
-                    @endif
+                        @endforeach
+                    </div>
+                    <!-- end row -->
 
+                    @else
+                    <div class="text-center mb-3">
+                        <img class="mx-auto no-date d-block mt-5" src="{{ asset('site/svg/No-data-cuate.svg') }}"
+                            alt="">
+                        <h5 class="mt-3">ما هیچ مقاله ای برای شما پیدا نکردیم!</h5>
+                    </div>
+                    @endif
+                    {{$articles->links('site.includes.paginate')}}
                 </div>
                 <!-- end col-lg-8 -->
             </div>

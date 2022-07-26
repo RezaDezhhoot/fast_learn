@@ -8,9 +8,9 @@ use App\Models\Course;
 
 interface CourseRepositoryInterface
 {
-    public function getAllAdmin($search , $status , $category , $per_page);
+    public function getAllAdmin($search , $status , $category , $per_page , $type);
 
-    public function getAllSite($search = null , $orderBy = null , $type = null , $category = null , $teacher = null);
+    public function getAllSite($search = null , $orderBy = null , $type = null , $category = null , $teacher = null , $property = null);
 
     public function save(Course $course);
 

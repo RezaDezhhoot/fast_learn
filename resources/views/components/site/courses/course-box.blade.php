@@ -8,8 +8,9 @@
             <div class="course-badge-labels">
                 <div class="course-badge">{{ $item->status_label }}</div>
                 @if($item['has_reduction'] && $item['base_price'] > 0)
-                <div class="course-badge blue">٪{{ $item->reduction_percent }}-</div>
+                    <div class="course-badge blue">٪{{ $item->reduction_percent }}-</div>
                 @endif
+                <div class="course-badge green">{{ $item->type_label }}</div>
             </div>
         </div>
         <!-- end card-image -->

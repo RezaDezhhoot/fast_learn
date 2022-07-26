@@ -3,27 +3,35 @@
     <div class="form-group col-12">
         <label for="{{$id}}">{{$label}}</label>
         @if(!$disable)
-            <div class="input-group">
-                <input type="text" {{ $attributes->wire('model') }} id="{{$id}}" {!! $attributes->merge(['class'=> 'form-control']) !!} name="image"
-                       aria-label="Image" aria-describedby="button-image"
-                       x-data
-                       x-init="$('#{{$id}}').on('change', function () {alert(2); $dispatch('input', $(this).val()) })"
-                >
-                <div class="input-group-append">
-                    <button {{$disable ? 'disabled' : ''}} class="btn btn-outline-secondary" type="button" id="button-{{$id}}">انتخاب</button>
-                </div>
+        <div class="input-group">
+            <input type="text" {{ $attributes->wire('model') }} id="{{$id}}" {!! $attributes->merge(['class'=>
+            'form-control']) !!} name="image"
+            aria-label="Image" aria-describedby="button-image"
+            x-data
+            x-init="$('#{{$id}}').on('change', function () {alert(2); $dispatch('input', $(this).val()) })"
+            >
+            <div class="input-group-append">
+                <button {{$disable ? 'disabled' : '' }} class="btn btn-outline-secondary" type="button"
+                    id="button-{{$id}}">انتخاب</button>
             </div>
+        </div>
         @endif
     </div>
     @if(gettype($file) == 'string')
-        <div class="form-group col-12">
-            @foreach(explode(',', $file) as $key => $item)
-                <img src="{{asset($item)}}" alt="{{$id}}" width="120px" height="100px" class="mr-1 mb-1 imglist" style="border-radius: 5px"/>
-            @endforeach
-        </div>
+    <div class="form-group col-12">
+        @foreach(explode(',', $file) as $key => $item)
+        <img src="{{asset($item)}}" alt="{{$id}}" width="120px" height="100px" class="mr-1 mb-1 imglist"
+            style="border-radius: 5px" />
+        @endforeach
+    </div>
     @endif
-    <script>
-        var id , input , input_id;
+
+
+</div>
+
+@push('scripts')
+<script>
+    var id , input , input_id;
         document.addEventListener("DOMContentLoaded", function() {
 
             document.getElementById('button-{{$id}}').addEventListener('click', (event) => {
@@ -42,6 +50,5 @@
             input.value = $url;
             @this.set(input_id, $url);
         }
-    </script>
-</div>
-
+</script>
+@endpush

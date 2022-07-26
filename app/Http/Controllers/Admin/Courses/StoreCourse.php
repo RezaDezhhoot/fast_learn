@@ -19,7 +19,7 @@ class StoreCourse extends BaseComponent
     use WithFileUploads;
     public  $header , $slug , $title , $short_body , $long_body , $image  , $category ,  $quiz , $seo_keywords , $seo_description,
     $teacher , $level , $const_price , $status ,$reduction_type ,$reduction_value = 0 , $start_at , $expire_at  , $tags = [];
-    public  $course , $sub_title , $storage;
+    public  $course , $sub_title , $storage , $type;
 
     public function __construct($id = null)
     {
@@ -59,6 +59,7 @@ class StoreCourse extends BaseComponent
             $this->seo_description = $this->course->seo_description;
             $this->const_price = $this->course->const_price;
             $this->level = $this->course->level;
+            $this->type = $this->course->type;
         } elseif ($this->mode == self::CREATE_MODE) {
             $this->header = 'دوره جدید';
         } else abort(404);
@@ -76,6 +77,7 @@ class StoreCourse extends BaseComponent
 
         $this->data['reduction'] = ReductionEnum::getType();
         $this->data['status'] = CourseEnum::getStatus();
+        $this->data['type'] = CourseEnum::getTypes();
         $this->data['quiz'] = $this->quizRepository->getAll()->pluck('name','id');
 
     }
@@ -96,7 +98,7 @@ class StoreCourse extends BaseComponent
         elseif ($this->mode == self::CREATE_MODE){
             $this->saveInDataBase($this->courseRepository->newCourseObject());
             $this->reset(['slug','sub_title','title','short_body','long_body','image','category','quiz','teacher',
-                'status','level','reduction_type','const_price','reduction_value','start_at','expire_at','tags','seo_keywords','seo_description']);
+                'status','level','type','reduction_type','const_price','reduction_value','start_at','expire_at','tags','seo_keywords','seo_description']);
         }
     }
 
@@ -122,7 +124,8 @@ class StoreCourse extends BaseComponent
             'reduction_value' => ['required','numeric','between:0,9999999999999999999.99999999999'],
             'start_at' => ['nullable','date'],
             'expire_at' => ['nullable','date'],
-            'level' => ['required','in:'.implode(',',array_keys(CourseEnum::getLevels()))]
+            'level' => ['required','in:'.implode(',',array_keys(CourseEnum::getLevels()))],
+            'type' => ['required','in:'.implode(',',array_keys(CourseEnum::getTypes()))]
         ],[],[
             'title' => 'عنوان',
             'sub_title' => 'عنوان فرعی',
@@ -140,7 +143,8 @@ class StoreCourse extends BaseComponent
             'reduction_value' => 'مقدار تخفیف',
             'start_at' => 'شروع تخفیف',
             'expire_at' => 'پایان تخفیف',
-            'level' => 'سطح دوره'
+            'level' => 'سطح دوره',
+            'type' => 'نوع دوره',
         ]);
         $model->title = $this->title;
         $model->sub_title = $this->sub_title;
@@ -155,6 +159,7 @@ class StoreCourse extends BaseComponent
         $model->reduction_type = $this->reduction_type;
         $model->reduction_value = $this->reduction_value;
         $model->level = $this->level;
+        $model->type = $this->type;
         $model->start_at = $this->start_at;
         $model->expire_at = $this->expire_at;
         $model->seo_keywords = $this->seo_keywords;

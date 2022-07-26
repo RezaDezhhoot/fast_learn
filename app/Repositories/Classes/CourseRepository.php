@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CourseRepository implements CourseRepositoryInterface
 {
-    public function getAllAdmin($search , $status, $category, $per_page)
+    public function getAllAdmin($search , $status, $category, $per_page, $type)
     {
         return Course::latest('id')->when($category,function ($q) use ($category){
             return $q->wherehas('category',function ($q) use ($category) {
@@ -23,10 +23,12 @@ class CourseRepository implements CourseRepositoryInterface
             });
         })->when($status,function ($q) use ($status){
             return $q->where('status', $status);
+        })->when($type,function ($q) use ($type){
+            return $q->where('type', $type);
         })->search($search)->paginate($per_page);
     }
 
-    public function getAllSite($search = null, $orderBy = null, $type = null, $category = null , $teacher = null)
+    public function getAllSite($search = null, $orderBy = null, $type = null, $category = null , $teacher = null, $property = null)
     {
         return Course::published()->when($type, function($q) use ($type) {
             return match ($type) {
@@ -57,6 +59,8 @@ class CourseRepository implements CourseRepositoryInterface
             });
         })->when($teacher , function ($q) use ($teacher){
             return $q->where('teacher_id',base64_decode($teacher));
+        })->when($property , function ($q) use ($property){
+            return $q->where('type',$property);
         })->hasCategory()->paginate(9);
     }
 

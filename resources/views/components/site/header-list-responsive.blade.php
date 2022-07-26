@@ -1,5 +1,9 @@
 <div>
-    <h2 class="off-canvas-menu-heading pt-20px">عمومی</h2>
+    <div class="logo-box  px-4">
+        <a href="{{ route('home') }}" class="logo mx-auto"><img class="logo-size" src="{{ asset($logo) }}" alt="لوگو" /></a>
+    </div>
+    <hr>
+    
     <ul class="generic-list-item off-canvas-menu-list pt-2 pb-2 border-bottom border-bottom-gray">
         <li>
             <a href="{{ route('home') }}">صفحه اصلی</a>

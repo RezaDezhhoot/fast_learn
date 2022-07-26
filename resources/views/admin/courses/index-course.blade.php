@@ -5,6 +5,7 @@
         <div class="card-body">
             <x-admin.forms.dropdown id="status" :data="$data['status']" label="وضعیت" wire:model="status"/>
             <x-admin.forms.dropdown id="category" :data="$data['category']" label="دسته بندی" wire:model="category"/>
+            <x-admin.forms.dropdown id="type" :data="$data['type']" label="نوع دوره" wire:model="type"/>
             @include('admin.layouts.advance-table')
             <div class="row">
                 <div class="col-lg-12 table-responsive">
@@ -16,6 +17,7 @@
                             <th>نام مستعار</th>
                             <th>عنوان</th>
                             <th>وضعیت</th>
+                            <th>نوع دوره</th>
                             <th>بازدید</th>
                             <th>دسته </th>
                             <th>قیمت </th>
@@ -30,6 +32,7 @@
                                 <td>{{ $item->slug }}</td>
                                 <td>{{ $item->title }}</td>
                                 <td>{{ $item->status_label }}</td>
+                                <td>{{ $item->type_label }}</td>
                                 <td>{{ $item->views }}</td>
                                 <td>{{ $item->category->title ?? null }}</td>
                                 <td>{{ number_format($item->price) }} تومان </td>
@@ -38,7 +41,7 @@
                                 </td>
                             </tr>
                         @empty
-                            <td class="text-center" colspan="10">
+                            <td class="text-center" colspan="11">
                                 دیتایی جهت نمایش وجود ندارد
                             </td>
                         @endforelse

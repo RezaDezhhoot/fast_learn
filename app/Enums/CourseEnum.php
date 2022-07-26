@@ -18,10 +18,9 @@ final class CourseEnum extends Enum
     const HOLDING = 'holding';
     const FINISHED = 'finished';
 
-    const UPLOAD_FILE_THROUGH_PATH = 'upload_file_through_path';
-    const UPLOAD_FILE_THROUGH_SITE = 'upload_file_through_site';
-
     const PROFESSIONAL = 'professional' , MEDIUM = 'medium' , BEGINNER = 'beginner' , ALL_LEVEL = 'all_level';
+
+    const OFFLINE = 'offline' , IN_PERSON = 'in_person' , ONLINE = 'online';
 
     #[ArrayShape([self::BEGINNER => "string", self::MEDIUM => "string", self::PROFESSIONAL => "string", self::ALL_LEVEL => "string"])]
     public static function getLevels(): array
@@ -42,6 +41,16 @@ final class CourseEnum extends Enum
             self::COMING_SOON => 'به زودی',
             self::HOLDING => 'در حال برگذاری',
             self::FINISHED => 'اتمام یافته',
+        ];
+    }
+    
+    #[ArrayShape([self::OFFLINE => "string", self::IN_PERSON => "string", self::ONLINE => "string"])]
+    public static function getTypes(): array
+    {
+        return [
+            self::OFFLINE => 'دوره افلاین',
+            self::IN_PERSON => 'دوره حضوری',
+            self::ONLINE => 'دوره انلاین',
         ];
     }
 }

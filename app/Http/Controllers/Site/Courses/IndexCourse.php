@@ -17,8 +17,8 @@ use Livewire\WithPagination;
 class IndexCourse extends BaseComponent
 {
     use WithPagination;
-    protected $queryString = ['q','category','type','orderBy','teacher'];
-    public ?string $q = null , $category = null  , $orderBy = null , $type = null , $teacher =null;
+    protected $queryString = ['q','category','type','orderBy','teacher','property'];
+    public ?string $q = null , $category = null  , $orderBy = null , $type = null , $property = null , $teacher =null;
     public array $categories = [] , $types = [] , $orders = [] ;
 
     public function mount(
@@ -41,11 +41,11 @@ class IndexCourse extends BaseComponent
         foreach ($categories as $item){
             $item->sub_categories = array_value_recursive('slug',$item->childrenRecursive->toArray());
             $item->sub_categories_title = array_value_recursive('title',$item->childrenRecursive->toArray());
-
         }
 
         $this->categories = $categories->toArray();
         $this->types = ['free' => 'رایگان' , 'cash' => 'نقدی'];
+        $this->data['types'] = CourseEnum::getTypes();
         $this->orders = [
             'latest' => 'جدید ترین' ,
             'oldest' => 'قدیمی ترین' ,
@@ -62,7 +62,7 @@ class IndexCourse extends BaseComponent
 
     public function render(CourseRepositoryInterface $courseRepository)
     {
-        $courses = $courseRepository->getAllSite($this->q ,$this->orderBy ,$this->type ,$this->category, $this->teacher);
+        $courses = $courseRepository->getAllSite($this->q ,$this->orderBy ,$this->type ,$this->category, $this->teacher,$this->property);
         return view('site.courses.index-course',['courses' => $courses])->extends('site.layouts.site.site');
     }
 }

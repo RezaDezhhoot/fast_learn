@@ -62,6 +62,14 @@ class Course extends Model
         ];
     }
 
+    protected function typeLabel(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => in_array($this->type,array_keys(CourseEnum::getTypes())) ? 
+                CourseEnum::getTypes()[$this->type] : ''
+        );
+    }
+
     public function getTimeAttribute(): string
     {
         $medias = $this->episodes()->sum(DB::raw("TIME_TO_SEC(time)"));

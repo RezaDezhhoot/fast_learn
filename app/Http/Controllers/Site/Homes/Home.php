@@ -16,7 +16,7 @@ use Artesaos\SEOTools\Facades\TwitterCard;
 
 class Home extends BaseComponent
 {
-    public $content = [] , $starter = [];
+    public $content = [] , $starter = [] , $box = [];
     public function mount
     (
         SettingRepositoryInterface $settingRepository ,
@@ -38,6 +38,7 @@ class Home extends BaseComponent
         JsonLd::setDescription($settingRepository->getRow('seoDescription'));
         JsonLd::addImage(asset($settingRepository->getRow('logo')));
         $content = $settingRepository->getRow('homeContent',[]);
+        $this->box = $settingRepository->getRow('homeBox',[]);
         $send = [];
         $i = 0;
         foreach ($content as  $value)
@@ -53,6 +54,7 @@ class Home extends BaseComponent
             $i++;
         }
         $this->content = array_values(collect($send)->sortBy('view')->toArray());
+
         $this->starter = [
             'users' => $userRepository->count(),
             'teachers' => $teacherRepository->count(),
