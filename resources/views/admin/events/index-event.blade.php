@@ -143,6 +143,5 @@
         Livewire.on('relaod_page', data => {
             location.reload();
         })
-    })
     </script>
 @endpush
