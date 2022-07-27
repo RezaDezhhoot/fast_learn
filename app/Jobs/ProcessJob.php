@@ -38,9 +38,10 @@ class ProcessJob implements ShouldQueue
      */
     public function handle()
     {
-        $users = $this->userRepository->getUsersForEvent($this->orderBy , $this->count);
+        $users = $this->userRepository->getUsersForEvent($this->orderBy , $this->count)->toArray();
+        # $users = array_chunk($users,40);
         foreach ($users as $item) {
-            ProcessEvent::dispatch($this->event,$item)->delay(now()->addSeconds(7))->onQueue($this->event->id);
+            ProcessEvent::dispatch($this->event,$item)->onQueue($this->event->id);
         }
     }
 }

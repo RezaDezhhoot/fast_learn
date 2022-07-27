@@ -137,9 +137,12 @@ class UserRepository implements UserRepositoryInterface , ConfigRepository
 
     public function getUsersForEvent(string $orderBy, int $count)
     {
-        if ($count > 0)
-            return User::orderBy('id',$orderBy)->take($count)->cursor();
-        else return User::orderBy('id',$orderBy)->cursor();
+        if ($count > 0) {
+            return User::select('email','phone')->orderBy('id',$orderBy)->take($count)->cursor();
+        }
+        else {
+            return User::select('email','phone')->orderBy('id',$orderBy)->cursor();
+        }
     }
 
     /**

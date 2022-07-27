@@ -31,10 +31,9 @@ class SetJobsCommand extends Command
      * @return int
      */
 
-    public function __construct(UserRepositoryInterface $userRepository , EventRepositoryInterface $eventRepository)
+    public function __construct(EventRepositoryInterface $eventRepository)
     {
         parent::__construct();
-        $this->userRepository = $userRepository;
         $this->eventRepository = $eventRepository;
     } 
 

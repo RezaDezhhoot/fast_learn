@@ -31,8 +31,11 @@ class IndexEvent extends BaseComponent
 
     public function start()
     {
-        if (!app()->environment('local')) 
-            Artisan::call("queue:work --queue=start --stop-when-empty");
+        // if (!app()->environment('local')) 
+        // {
+            if (DB::table('jobs')->where('queue','start')->exists())
+                Artisan::call("queue:work --queue=start --stop-when-empty");
+        // }
     }
     
 
