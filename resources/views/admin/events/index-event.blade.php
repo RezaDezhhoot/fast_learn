@@ -1,7 +1,7 @@
-<div>
+<div wire:poll.9s>
     @section('title','رویداد ها')
     <x-admin.form-control link="{{ route('admin.store.event',['create'] ) }}"  title="رویداد ها"/>
-    <div class="card card-custom" wire:init='start' wire:poll.3s>
+    <div class="card card-custom" wire:init='start' >
         <div class="card-body">
             <x-admin.forms.dropdown id="status" :data="$data['status']" label="وضعیت" wire:model="status"/>
             @include('admin.layouts.advance-table')

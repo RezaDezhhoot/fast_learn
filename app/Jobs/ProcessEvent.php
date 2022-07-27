@@ -21,9 +21,12 @@ class ProcessEvent implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-
     private SendRepositoryInterface $sendRepository;
     private EventRepositoryInterface $eventRepository;
+
+    public $timeout = 6;  
+
+    public $failOnTimeout = true;
 
     protected $event , $user;
     /**
@@ -50,9 +53,9 @@ class ProcessEvent implements ShouldQueue
         $this->start();
 
         if ($this->event->event == EventEnum::EMAIL)
-            Mail::to($this->user->email)->send(new EventMail($this->event->title,$this->event->body));
+            Mail::to($this->user['email'])->send(new EventMail($this->event->title,$this->event->body));
         elseif ($this->event->event == EventEnum::SMS)
-            $this->sendRepository->sendSMS($this->event->body,$this->user->phone);
+            $this->sendRepository->sendSMS($this->event->body,$this->user['phone']);
 
         $this->stop();
     }
