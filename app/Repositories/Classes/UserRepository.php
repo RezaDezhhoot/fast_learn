@@ -8,7 +8,7 @@ use App\Repositories\Interfaces\UserRepositoryInterface;
 use Alexusmai\LaravelFileManager\Services\ConfigService\ConfigRepository;
 use Illuminate\Support\Facades\Auth;
 use App\Enums\StorageEnum;
-
+use App\Enums\EventEnum;
 class UserRepository implements UserRepositoryInterface , ConfigRepository
 {
     public function getDiskList(): array
@@ -137,11 +137,17 @@ class UserRepository implements UserRepositoryInterface , ConfigRepository
 
     public function getUsersForEvent(string $orderBy, int $count)
     {
-        if ($count > 0) {
-            return User::select('email','phone')->orderBy('id',$orderBy)->take($count)->cursor();
+        $priod = EventEnum::getPriods()[$count];
+
+        if ($priod != EventEnum::ALL) {
+            $counts = ceil(User::count()/$priod[0]);
+            $skip = $counts * $priod[1];
+            return User::select('email','phone')->skip($skip)->take($counts)
+            ->orderBy('id',$orderBy)->cursor();
         }
         else {
-            return User::select('email','phone')->orderBy('id',$orderBy)->cursor();
+            return User::select('email','phone')
+            ->orderBy('id',$orderBy)->cursor();
         }
     }
 

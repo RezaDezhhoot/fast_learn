@@ -3,15 +3,16 @@
     <x-admin.form-control link="{{ route('admin.store.event',['create'] ) }}"  title="رویداد ها"/>
     <div class="card card-custom" wire:init='start' >
         <div class="card-body">
+            <div class="pt-1">
+                <x-admin.loader wire:target="start" text="در حال اماده سازی رویداد ها" />
+            </div>
             <x-admin.forms.dropdown id="status" :data="$data['status']" label="وضعیت" wire:model="status"/>
             @include('admin.layouts.advance-table')
             <div class="col-12 py-4">
                 <button wire:loading.attr="disabled" wire:click="retry_jobs" class="btn btn-outline-info"> اماده سازی مجدد رویداد های ناموفق همه رویداد ها</button>
                 <button wire:loading.attr="disabled" onclick="deleteGroup('jobs')" class="btn btn-outline-danger">پاک سازی رویداد های اماده همه رویداد ها</button>
                 <button wire:loading.attr="disabled" onclick="deleteGroup('failed_jobs')" class="btn btn-outline-danger">پاک سازی رویداد های ناموفق رویداد همه ها</button>
-                <div class="pt-1">
-                    <x-admin.loader wire:target="work" text="در حال پردازش" />
-                </div>
+                
             </div>
             <div class="col-12 py-2">
                 <span class="text-primary">رویداد های اماده : {{ $jobs }}</span>
@@ -26,7 +27,9 @@
                             <th>#</th>
                             <th>عنوان</th>
                             <th>وضعیت</th>
+                            <th>تعداد کاربر</th>
                             <th>نوع رویداد</th>
+                            <th>مرتب سازی</th>
                             <th>نویسنده</th>
                             <th>نتیجه</th>
                             <th>خطا ها</th>
@@ -39,7 +42,9 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->title }}</td>
                                 <td>{{ $item->status_label }}</td>
+                                <td>{{ $item->users_count }}</td>
                                 <td>{{ $item->event_label }}</td>
+                                <td>{{ $item->order_label }}</td>
                                 <td>{{ $item->user->name }}</td>
                                 <td>{{ $item->result }}</td>
                                 <td class="text-left">
@@ -71,7 +76,7 @@
                                 </div>
                             </td>
                         @empty
-                            <td class="text-center" colspan="11">
+                            <td class="text-center" colspan="13">
                                 دیتایی جهت نمایش وجود ندارد
                             </td>
                         @endforelse

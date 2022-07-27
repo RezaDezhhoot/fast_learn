@@ -1,0 +1,389 @@
+[33mcommit f7f661df3486f4b9e93970a5facabc927eccc979[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Wed Jul 27 08:11:38 2022 +0430
+
+    edit event process lvl4
+
+[33mcommit e4944cd7d3ba6f8f66b8fdda9937ee2eba312b48[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Wed Jul 27 07:42:41 2022 +0430
+
+    edit event process lvl3
+
+[33mcommit e16ddc0277100898feeed252500af31d9e93a49e[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Wed Jul 27 06:49:56 2022 +0430
+
+    edit event process lvl2
+
+[33mcommit 6a8a4ae536c304711eaeb84f09f60b6dfe1aa061[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Wed Jul 27 06:24:48 2022 +0430
+
+    edit event process
+
+[33mcommit 292007aa0c2592ddffc4462c7bde34afeb9d87e7[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Wed Jul 27 04:04:43 2022 +0430
+
+    add course types and add info box to home page
+
+[33mcommit 680fd20f21364b82c377ac066c3d265b3c8a6027[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Mon Jul 25 23:32:53 2022 +0430
+
+    debug storage helper function
+
+[33mcommit 9fb7b4163946d58a8a7e825eab6b0b67de6b698d[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Sun Jul 24 19:31:21 2022 +0430
+
+    debug courses and add ip to payments table
+
+[33mcommit 8838a5fc8c247fd43ced94032f1760f1c1398231[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Sun Jul 24 18:11:02 2022 +0430
+
+    degub logs
+
+[33mcommit 3478075818dd50fbf612f4c27bc77f4bab4ef6f8[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Sun Jul 24 00:40:07 2022 +0430
+
+    modify footer and add box shadow for comments
+
+[33mcommit ded09cb2d09a79a6a84a010eb8dc3d6249b45322[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Sun Jul 24 00:22:27 2022 +0430
+
+    add show_api_video and downloadable_local_video to episodes table
+
+[33mcommit 6dac174a5b64f882a8e6b048764f21f24e997a19[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Sat Jul 23 23:40:34 2022 +0430
+
+    debug episodes
+
+[33mcommit 6c2b81b200427a01ca6b16d6f8a7df6676d511d4[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Sat Jul 23 16:55:36 2022 +0430
+
+    mofify theme lvl 3
+
+[33mcommit b73ac7030e37203dd694ea082559c8f4d4941959[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Sat Jul 23 16:48:28 2022 +0430
+
+    mofify theme lvl 2
+
+[33mcommit a951f15e199c43f2b0fa591afddab7f2b94fb18c[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Sat Jul 23 15:43:00 2022 +0430
+
+    debug storages
+
+[33mcommit bf874ce8e9f51d283b4c22dd7325eb72c0dfda28[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Fri Jul 22 05:52:03 2022 +0430
+
+    edit user panel logo
+
+[33mcommit 8e954a35dbd190b294be338300e683a1c146e068[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Fri Jul 22 05:08:54 2022 +0430
+
+    edit logo size
+
+[33mcommit bd1f692f1c104e6ee47e1a9d0c00ca3ff1be303c[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Fri Jul 22 04:52:31 2022 +0430
+
+    edit logo size
+
+[33mcommit 4b91a000e5f994f7f66531519e150a0765259a80[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Thu Jul 21 20:23:30 2022 +0430
+
+    debug mail error handling
+
+[33mcommit 143893e49273e0a512663a73ef557e9c3390467d[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Thu Jul 21 19:12:11 2022 +0430
+
+    update read me file
+
+[33mcommit c0d7628202fae87559797c1cbcf0028964a64e49[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Thu Jul 21 18:46:46 2022 +0430
+
+    debug send repository
+
+[33mcommit 87210f783214f6a7c2910f80eeaadb7cbb0d3542[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Thu Jul 21 17:19:18 2022 +0430
+
+     add alert for courses without episode
+
+[33mcommit d58de90855a4f776463661ff68ca62da528c3f1f[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Thu Jul 21 17:16:16 2022 +0430
+
+     add user logs , add telescope link , add contact us form , modify theme
+
+[33mcommit 4f29bdd097772e07edf02fa37fc2b1bac225398d[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Wed Jul 20 13:40:20 2022 +0430
+
+    modify episodes alerts
+
+[33mcommit 6036f4bd9bab84c2ef673feae223611462c951e7[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Tue Jul 19 17:05:12 2022 +0430
+
+    debug home settings and delete element custom width
+
+[33mcommit 5697703f5294cec616392eccc167d31315ee6bf9[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Mon Jul 18 18:44:36 2022 +0430
+
+    modify theme
+
+[33mcommit d931f2a604c470581440e5dae2772148a8eb73c0[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Mon Jul 18 01:48:08 2022 +0430
+
+    add some city
+
+[33mcommit e05dce5f77915b2af4b32350f4eab19061c8ee07[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Sun Jul 17 23:48:20 2022 +0430
+
+    add delete function to category
+
+[33mcommit 699cd5eaee9bfc8239e1f900fe8387384b161016[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Sun Jul 17 19:54:37 2022 +0430
+
+    add default google recaptcha key and delete from login in form
+
+[33mcommit 63ab11fd315e9e65bc7a817e01c1379b1c0622a8[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Sat Jul 16 23:14:38 2022 +0430
+
+    add read me
+
+[33mcommit 0b637e316bda5f6b7d39d780ba459f3929bc2036[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Sat Jul 16 22:21:29 2022 +0430
+
+    debug provider
+
+[33mcommit 94084f75cfcd0cdeffedadd2744f5563c2cad377[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Sat Jul 16 13:38:36 2022 +0430
+
+    debug datepicker
+
+[33mcommit abeceffe1cbaa0756aa62e13f007cfd2fddbe1c2[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Sat Jul 16 02:03:38 2022 +0430
+
+    debug repository provider
+
+[33mcommit 921156e3447b685e0d354c198a699c9c97d3780c[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Fri Jul 15 15:07:39 2022 +0430
+
+    edit repository service provider , add contact form to base setting for update news
+
+[33mcommit 10393ef22e07d41eba876bc7dfdf7f45919370f7[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Fri Jul 15 12:54:22 2022 +0430
+
+    increament max tries for send verification code and login action
+
+[33mcommit 948aa75e8f513d2e0a851ac5ef92872b275713ff[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Fri Jul 15 12:37:26 2022 +0430
+
+    add logo to email views and add google recaptcha rule for send verification code
+
+[33mcommit edc00fa1b65de16b23b1f552392dd666161d5717[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Fri Jul 15 01:07:46 2022 +0430
+
+    add error pages
+
+[33mcommit b01af21b36efc93d12c96947e6e273fa9a8c9ce6[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Thu Jul 14 18:13:04 2022 +0430
+
+    delete banner from home page , debug reductions , edit checkout
+
+[33mcommit ca33d7ae30fb07923af979a235d7677fb710916d[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Thu Jul 14 12:09:23 2022 +0430
+
+    add google recaptcha to login and register form
+
+[33mcommit d0e80684762c6a2512fcb091e3193adf31d11ef2[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Thu Jul 14 05:19:26 2022 +0430
+
+    add storage permissions , debug store user , edit checkout
+
+[33mcommit db20ad530ef6f6af00df1bd07ed2c876aecaadf4[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Thu Jul 14 02:58:07 2022 +0430
+
+    add delete function to orders , add event observer , edit course_id column from order_details table to biginteger , add event details
+
+[33mcommit 237a7c0215b3bc65eb70061384c20f2e634da96a[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Thu Jul 14 00:28:16 2022 +0430
+
+    debug send repository and add delete function for events , jobs and failed_jobs
+
+[33mcommit 99515bac541f0a7b92b45b7cfc398d853ba84ef7[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Thu Jul 14 00:02:46 2022 +0430
+
+    add logging for send sms and change event error file storage to public
+
+[33mcommit 1a5af12590bd7ba34e2e6be293304f4e0dd539bc[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Wed Jul 13 22:38:20 2022 +0430
+
+    add user details to comments and edit tickets and add user counts and orderBy to events and add filter comments by courses and articles
+
+[33mcommit 2e8dfcc8d53072140bf04fc259ee5d962f763984[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Wed Jul 13 20:46:42 2022 +0430
+
+    debug register new  comment
+
+[33mcommit fed3b968ccacdf1ae92ac29e758b88ce6ebe4e3d[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Wed Jul 13 19:15:00 2022 +0430
+
+    add teacher label to course comments
+
+[33mcommit 7bd4fb372bbeb00c7870eb2613681ec2da49deec[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Wed Jul 13 16:09:41 2022 +0430
+
+    debug courses
+
+[33mcommit 295cbd7fe2c78962537f07c1f8feb54c8c5c0fe5[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Wed Jul 13 15:28:50 2022 +0430
+
+    add homework system
+
+[33mcommit d5a8c853b4281501f920a2cab979d72f6c9dff61[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Tue Jul 12 15:57:59 2022 +0430
+
+    add episode permissions
+
+[33mcommit 227947fbcd35008a8130c75877d39bfbc266c7e0[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Tue Jul 12 15:38:46 2022 +0430
+
+    separate episodes from courses Delete lfm
+
+[33mcommit 705cef75b6271f920715ef7683f0aeae24c344ae[m[33m ([m[1;32mlfm[m[33m)[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Tue Jul 12 01:44:20 2022 +0430
+
+    edit admin store course lables
+
+[33mcommit 178896d84dfbc670cec0e7d1244576df648c61f0[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Tue Jul 12 01:39:46 2022 +0430
+
+    change file manager , add storage provider , add storage enum , edit custom helper functions file , add plyr package for local video , delete file and video upload method
+
+[33mcommit ee9c2a9b3d2491bee921fd7dcc4cd5f7a7250d1f[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Mon Jul 11 17:36:58 2022 +0430
+
+    edit lfm config
+
+[33mcommit dd14910b5bb21cf4573a2d21840f5f941161b277[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Mon Jul 11 00:23:11 2022 +0430
+
+    debug course file upload
+
+[33mcommit f129d0c760e921112d266e2e7b8f580fd5abd8d7[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Sun Jul 10 20:37:41 2022 +0430
+
+    update teachers panel and add softdelete to teachers table and debug episode file upload and show videos and add teacher role
+
+[33mcommit 581d835b13964cf7b048926875e8106709d7dd79[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Sun Jul 10 15:22:39 2022 +0430
+
+    add all orders , users , transcripts count to dashboard and add views count for courses and debug store questions
+
+[33mcommit 38ed98a30f878769240c50bbdb6eaa0acc1d0d81[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Sat Jul 9 18:06:54 2022 +0430
+
+    degub auth timer
+
+[33mcommit 6fc1d18369d23caa957a5ed70e2a8b1ead642feb[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Sat Jul 9 10:16:34 2022 +0430
+
+    add defualt gateway to checkout and profile page
+
+[33mcommit 60284b832629dca8977f2141ec4cca375b54c90f[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Fri Jul 8 22:18:58 2022 +0430
+
+    add certificate_code and certificate_date field to certificates and transcripts
+
+[33mcommit 697c2dcc3d58b0c7709367cacfb0499cccbb8859[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Fri Jul 8 21:10:30 2022 +0430
+
+    add certificate_code and certificate_date column to transcripts table and edit down method in add add softdeletes to certifiactes and add user_id to articles tables
+
+[33mcommit 1633c19c17dc46903db4eb6e3889bb0e72aa2409[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Fri Jul 8 20:00:08 2022 +0430
+
+    delete wishlist from coueses and add null comments message to courses and articles and debug send otp message timer and delete course source and edit courseRepository for get episodes (delete withTrashed method)
+
+[33mcommit 9297d19bc718338f0a93d0017e11c181dfddae81[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Thu Jul 7 22:35:05 2022 +0430
+
+    add none status to send notifications type and add user info to transcript details and translate base settings word and debug auth page timer
+
+[33mcommit aa93c7e73e3453b30dd01c30ecfd672adca2b0a3[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Wed Jul 6 19:42:41 2022 +0430
+
+    add user table to store-ticket.blade.php
+
+[33mcommit 7abb3012a02dbf5361b7ae4d695b15c6209fd8d5[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Wed Jul 6 19:25:16 2022 +0430
+
+    edit tichear find user method and verify wallet payment and add send email option for ticket and exam and orders
+
+[33mcommit 9db49a3c3c45ca574663f0b711103245a117f837[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Wed Jul 6 09:46:26 2022 +0430
+
+    add filemanger link to admin sidebar and modify sms settings words
+
+[33mcommit d22d045d9aa913bbb9b47388339401e64ccbf630[m
+Author: reza <rdezhhoot@gmail.com>
+Date:   Tue Jul 5 17:18:06 2022 +0430
+
+    add project

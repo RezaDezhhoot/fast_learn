@@ -31,11 +31,11 @@ class IndexEvent extends BaseComponent
 
     public function start()
     {
-        if (!app()->environment('local')) 
-        {
+        // if (!app()->environment('local')) 
+        // {
             if (DB::table('jobs')->where('queue','start')->exists())
                 return Artisan::call("queue:work --queue=start --timeout=45 --stop-when-empty");
-        }
+        // }
     }
     
 

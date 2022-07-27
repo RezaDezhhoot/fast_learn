@@ -30,6 +30,7 @@ class StoreEvent extends BaseComponent
 
         $this->data['event'] = EventEnum::getEvents();
         $this->data['orderBy'] = EventEnum::getOrderBy();
+        $this->data['count'] = EventEnum::getNumbers();
         $this->header = 'رویداد جدید';
     }
 
@@ -40,7 +41,7 @@ class StoreEvent extends BaseComponent
             'title' => ['required','string','max:120'],
             'body' => ['required','string','max:200000'],
             'event' => ['required','string','in:'.implode(',',array_keys(EventEnum::getEvents()))],
-            'count' => ['required','integer','min:0'],
+            'count' => ['required','integer','in:'.implode(',',array_keys(EventEnum::getNumbers()))],
             'orderBy' => ['required','in:'.implode(',',array_keys(EventEnum::getOrderBy()))]
         ],[],[
             'title' => 'عنوان',
@@ -55,8 +56,8 @@ class StoreEvent extends BaseComponent
             'event' => $this->event,
             'status' => EventEnum::PENDING,
             'user_id' => Auth::id() ,
-            'count' => ['required','integer','min:0'],
-            'orderBy' => ['required','in:'.implode(',',array_keys(EventEnum::getOrderBy()))]
+            'users_count' => EventEnum::getNumbers()[$this->count],
+            'order_by' => $this->orderBy
         ]);
         Artisan::call("jobs:set $event->id --orderBy=$this->orderBy --count=$this->count ");
         $this->reset(['title','body','event','orderBy','count']);

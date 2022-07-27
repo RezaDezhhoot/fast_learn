@@ -37,6 +37,11 @@ class Event extends Model
         return EventEnum::getEvents()[$this->event];
     }
 
+    public function getOrderLabelAttribute(): string
+    {
+        return EventEnum::getOrderBy()[$this->order_by];
+    }
+
     public function getJobCountAttribute(): int
     {
         return DB::table('jobs')->where('queue',$this->id)->count();
