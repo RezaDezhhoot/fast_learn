@@ -20,7 +20,8 @@ class UserFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
-            'email' => $this->faker->unique()->email(),
+            // 'email' => $this->faker->unique()->email(),
+            'email' => uniqid().'test@gmail.com',
             'phone' => $this->faker->unique()->numberBetween(12345678911,9999999999),
             'status' => UserEnum::CONFIRMED,
             'email_verified_at' => now(),

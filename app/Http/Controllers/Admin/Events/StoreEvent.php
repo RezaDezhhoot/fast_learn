@@ -4,11 +4,10 @@ namespace App\Http\Controllers\Admin\Events;
 
 use App\Enums\EventEnum;
 use App\Http\Controllers\BaseComponent;
-use App\Jobs\ProcessEvent;
 use App\Repositories\Interfaces\EventRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Artisan;
 class StoreEvent extends BaseComponent
 {
     public  $header;
@@ -59,13 +58,7 @@ class StoreEvent extends BaseComponent
             'count' => ['required','integer','min:0'],
             'orderBy' => ['required','in:'.implode(',',array_keys(EventEnum::getOrderBy()))]
         ]);
-
-
-        $users = $this->userRepository->getUsersForEvent($this->orderBy , $this->count);
-        foreach ($users as $item)
-            ProcessEvent::dispatch($event,$item)->delay(now()->addSeconds(7))->onQueue($event->id);
-
-
+        Artisan::call("jobs:set $event->id --orderBy=$this->orderBy --count=$this->count ");
         $this->reset(['title','body','event','orderBy','count']);
         $this->emitNotify('رویداد با موفقیت ذخیره شد');
 

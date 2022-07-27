@@ -10,6 +10,7 @@ class Kernel extends ConsoleKernel
 {
     protected $commands = [
         Commands\SetPermissionsAndRoles::class,
+        Commands\SetJobsCommand::class,
     ];
     /**
      * Define the application's command schedule.

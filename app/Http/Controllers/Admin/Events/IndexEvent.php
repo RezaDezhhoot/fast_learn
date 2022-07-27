@@ -33,8 +33,8 @@ class IndexEvent extends BaseComponent
     {
         $this->authorizing('show_events');
         $events = $this->eventRepository->getAllAdmin($this->status , $this->search , $this->per_page);
-        $failed_jobs = DB::table('failed_jobs')->count();
-        $jobs = DB::table('jobs')->count();
+        $failed_jobs = DB::table('failed_jobs')->where('queue','!=','start')->count();
+        $jobs = DB::table('jobs')->where('queue','!=','start')->count();
 
         return view('admin.events.index-event',['events'=>$events , 'failed_jobs' => $failed_jobs ,'jobs'=>$jobs])
             ->extends('admin.layouts.admin');
@@ -45,13 +45,6 @@ class IndexEvent extends BaseComponent
         $this->authorizing('edit_events');
         Artisan::call('queue:retry all');
         $this->emitNotify('رویداد ها اماده اجرا');
-    }
-
-    public function work()
-    {
-        $this->authorizing('edit_events');
-        Artisan::call('cache:clear');
-        Artisan::call("queue:work --queue=all --stop-when-empty");
     }
 
     public function downloadsError($id): BinaryFileResponse
@@ -87,8 +80,11 @@ class IndexEvent extends BaseComponent
     public function workSingle($id)
     {
         $this->authorizing('edit_events');
-        Artisan::call('cache:clear');
-        Artisan::call("queue:work --queue=$id --stop-when-empty");
+        if ($id != 'start')
+        {
+            Artisan::call('cache:clear');
+            Artisan::call("queue:work --queue=$id --stop-when-empty");
+        }
     }
 
     public function deleteSingle($id,$table)
