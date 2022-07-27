@@ -6,7 +6,6 @@ use Illuminate\Console\Command;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Repositories\Interfaces\EventRepositoryInterface;
 use App\Jobs\ProcessJob;
-use Illuminate\Support\Facades\Artisan;
 
 class SetJobsCommand extends Command
 {
@@ -43,9 +42,6 @@ class SetJobsCommand extends Command
     {
         $event = $this->eventRepository->find($this->argument('event'));
         ProcessJob::dispatch($event,$this->option('orderBy'),$this->option('count'))->onQueue('start');
-        if (!app()->environment('local')) 
-            Artisan::call("queue:work --queue=start --stop-when-empty");
-
         return 0;
     }
 }

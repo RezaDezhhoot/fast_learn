@@ -29,6 +29,13 @@ class IndexEvent extends BaseComponent
         $this->data['status'] = EventEnum::getStatus();
     }
 
+    public function start()
+    {
+        if (!app()->environment('local')) 
+            Artisan::call("queue:work --queue=start --stop-when-empty");
+    }
+    
+
     public function render()
     {
         $this->authorizing('show_events');
