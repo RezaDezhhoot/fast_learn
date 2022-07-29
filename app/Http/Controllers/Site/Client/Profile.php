@@ -34,7 +34,7 @@ class Profile extends BaseComponent
 
     public $teacher , $teacher_title , $teacher_content;
 
-    protected $queryString = ['tab'];
+    protected $queryString = ['tab','token'];
 
     public function __construct($id = null)
     {
@@ -122,6 +122,7 @@ class Profile extends BaseComponent
                 $this->isSuccessful = true;
                 $this->message = 'پرداخت با موفقیت انجام شد ';
             }
+            $this->reset(['token']);
         }
     }
 
