@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Facades\DB;
 use Morilog\Jalali\Jalalian;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\belongsToMany;
 
 /**
  * @property mixed reduction_value
@@ -245,5 +246,15 @@ class Course extends Model
     public function scopeHasCategory($query)
     {
         return $query->whereNotNull('category_id');
+    }
+
+    public function organizations(): belongsToMany
+    {
+        return $this->belongsToMany(Organization::class,'course_organization');
+    }
+
+    public function executives(): belongsToMany
+    {
+        return $this->belongsToMany(Executive::class,'course_executive');
     }
 }

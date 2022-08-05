@@ -29,6 +29,38 @@
             <x-admin.forms.lfm-standalone id="image" label="تصویر*" :file="$image" type="image" required="true" wire:model="image"/>
             <x-admin.forms.text-area label="کلمات کلیدی*" help="کلمات را با کاما از هم جدا کنید" wire:model.defer="seo_keywords" id="seo_keywords" />
             <x-admin.forms.text-area label="توضیحات سئو*" wire:model.defer="seo_description" id="seo_description" />
+            <x-admin.form-section label="سازمان ها">
+                <div class="row">
+                    @foreach($data['organs'] as $key => $value)
+                        <div class="col-12 border p-3">
+                            <x-admin.forms.checkbox value="{{$value->id}}" id="{{$key}}organs" label="{{$value->title}}" wire:model.defer="organizations.{{$value->id}}" />
+                            <div class="row">
+                                @foreach($value->child as $key2 => $value2)
+                                    <div class="col-3">
+                                        <x-admin.forms.checkbox value="{{$value2->id}}" id="{{$key2}}organsChild" label="{{$value2->title}}" wire:model.defer="organizations.{{$value2->id}}" />
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </x-admin.form-section>
+            <x-admin.form-section label="دستگاه های اجرایی">
+                <div class="row">
+                    @foreach($data['executives'] as $key => $value)
+                        <div class="col-12 border p-3">
+                            <x-admin.forms.checkbox value="{{$value->id}}" id="{{$key}}executives" label="{{$value->title}}" wire:model.defer="executives.{{$value->id}}" />
+                            <div class="row">
+                                @foreach($value->child as $key2 => $value2)
+                                    <div class="col-3">
+                                        <x-admin.forms.checkbox value="{{$value2->id}}" id="{{$key2}}executivesChild" label="{{$value2->title}}" wire:model.defer="executives.{{$value2->id}}" />
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </x-admin.form-section>
             <x-admin.form-section label="تگ ها">
                 <div class="row">
                     @foreach($data['tags'] as $key => $value)

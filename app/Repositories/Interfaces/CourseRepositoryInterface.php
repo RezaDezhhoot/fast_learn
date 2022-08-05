@@ -8,9 +8,9 @@ use App\Models\Course;
 
 interface CourseRepositoryInterface
 {
-    public function getAllAdmin($search , $status , $category , $per_page , $type);
+    public function getAllAdmin($search , $status , $category , $per_page , $type , $organization , $executive);
 
-    public function getAllSite($search = null , $orderBy = null , $type = null , $category = null , $teacher = null , $property = null);
+    public function getAllSite($search = null , $orderBy = null , $type = null , $category = null , $teacher = null , $property = null,$organization = null);
 
     public function save(Course $course);
 
@@ -21,6 +21,14 @@ interface CourseRepositoryInterface
     public function attachTags(Course $course , array $tags);
 
     public function syncTags(Course $course , array $tags);
+
+    public function attachOrgans(Course $course , array $organs);
+
+    public function syncOrgans(Course $course , array $organs);
+
+    public function attachExecutives(Course $course , array $executives);
+
+    public function syncExecutives(Course $course , array $executives);
 
     public function newCourseObject();
 

@@ -14,8 +14,6 @@ return new class extends Migration
     public function up()
     {
         Schema::table('courses', function (Blueprint $table) {
-            $table->bigInteger('organization_id')->unsigned()->nullable();
-            $table->bigInteger('executive_id')->unsigned()->nullable();
             $table->bigInteger('survey_id')->unsigned()->nullable();
             $table->string('standard_code');
         });
@@ -29,8 +27,6 @@ return new class extends Migration
     public function down()
     {
         Schema::table('courses', function (Blueprint $table) {
-            $table->dropColumn('organization_id');
-            $table->dropColumn('executive_id');
             $table->dropColumn('survey_id');
             $table->dropColumn('standard_code');
         });

@@ -63,8 +63,8 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->group(function (){
     Route::get('/courses/{action}/{id?}',App\Http\Controllers\Admin\Courses\StoreCourse::class)->name('admin.store.course');
     Route::get('/episodes',App\Http\Controllers\Admin\Episodes\IndexEpisode::class)->name('admin.episode');
     Route::get('/episodes/{action}/{id?}',App\Http\Controllers\Admin\Episodes\StoreEpisode::class)->name('admin.store.episode');
-    Route::get('/events',App\Http\Controllers\Admin\Events\IndexEvent::class)->name('admin.event');
-    Route::get('/events/{action}/{id?}',App\Http\Controllers\Admin\Events\StoreEvent::class)->name('admin.store.event');
+    // Route::get('/events',App\Http\Controllers\Admin\Events\IndexEvent::class)->name('admin.event');
+    // Route::get('/events/{action}/{id?}',App\Http\Controllers\Admin\Events\StoreEvent::class)->name('admin.store.event');
     Route::get('/notifications',App\Http\Controllers\Admin\Notifications\IndexNotification::class)->name('admin.notification');
     Route::get('/notifications/{action}/{id?}',App\Http\Controllers\Admin\Notifications\StoreNotification::class)->name('admin.store.notification');
     Route::get('/orders',App\Http\Controllers\Admin\Orders\IndexOrder::class)->name('admin.order');
@@ -101,8 +101,8 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->group(function (){
     Route::get('/logs', App\Http\Controllers\Admin\Logs\IndexLog::class)->name('admin.log');
 
     Route::get('/organizations',App\Http\Controllers\Admin\Organizations\IndexOrganization::class)->name('admin.organization');
-    Route::get('/organizations/{action}/{id?}',App\Http\Controllers\Admin\Organizations\StoreOrganization::class)->name('admin.store.executive');
-    Route::get('/executives',App\Http\Controllers\Admin\Executives\IndexExecutive::class)->name('admin.organization');
+    Route::get('/organizations/{action}/{id?}',App\Http\Controllers\Admin\Organizations\StoreOrganization::class)->name('admin.store.organization');
+    Route::get('/executives',App\Http\Controllers\Admin\Executives\IndexExecutive::class)->name('admin.executive');
     Route::get('/executives/{action}/{id?}',App\Http\Controllers\Admin\Executives\StoreExecutive::class)->name('admin.store.executive');
     Route::get('/surveys',App\Http\Controllers\Admin\Surveys\IndexSurvey::class)->name('admin.survey');
     Route::get('/surveys/{action}/{id?}',App\Http\Controllers\Admin\Surveys\StoreSurvey::class)->name('admin.store.survey');

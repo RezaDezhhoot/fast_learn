@@ -6,6 +6,28 @@
             <x-admin.forms.dropdown id="status" :data="$data['status']" label="وضعیت" wire:model="status"/>
             <x-admin.forms.dropdown id="category" :data="$data['category']" label="دسته بندی" wire:model="category"/>
             <x-admin.forms.dropdown id="type" :data="$data['type']" label="نوع دوره" wire:model="type"/>
+            <x-admin.forms.group-dropdown 
+            id="organization" 
+            :data="$data['organs']" 
+            label="سازمان ها" 
+            wire:model="organization"
+            child="child"
+            parent_key="id"
+            parent_value="title"
+            child_key="id"
+            child_value="title"
+            />
+            <x-admin.forms.group-dropdown 
+            id="executive" 
+            :data="$data['executives']" 
+            label="دستگاه های اجرایی" 
+            wire:model="executive"
+            child="child"
+            parent_key="id"
+            parent_value="title"
+            child_key="id"
+            child_value="title"
+            />
             @include('admin.layouts.advance-table')
             <div class="row">
                 <div class="col-lg-12 table-responsive">

@@ -112,9 +112,9 @@
                     <h4 class="menu-text">بخش ارتباطی</h4>
                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                 </li>
-                @can('show_events')
+                {{-- @can('show_events')
                     <x-admin.menu-item href="{{route('admin.event')}}" icon="fa fa-clock" :active="request()->routeIs(['admin.event','admin.store.event'])" label="رویداد ها " />
-                @endcan
+                @endcan --}}
                 @can('show_tickets')
                     <x-admin.menu-item href="{{route('admin.ticket')}}" icon="fas fa-ticket-alt" :active="request()->routeIs(['admin.ticket','admin.store.ticket'])" label="تیکت ها ({{$tickets}})" />
                 @endcan
@@ -126,6 +126,9 @@
                 @endcan
                 @can('show_contacts')
                     <x-admin.menu-item  href="{{route('admin.contact')}}" icon="flaticon-email" :active="request()->routeIs(['admin.contact','admin.store.contact'])" label=" ارتباط با ما ({{$contacts}})" />
+                @endcan
+                @can('show_surveys')
+                    <x-admin.menu-item  href="{{route('admin.survey')}}" icon="fab fa-wpforms" :active="request()->routeIs(['admin.survey','admin.store.survey'])" label="فرم های نظر سنجی" />
                 @endcan
                 <li class="menu-section">
                     <h4 class="menu-text">بخش مالی</h4>
@@ -156,6 +159,12 @@
                 @endcan
                 @can('show_logs')
                     <x-admin.menu-item href="{{route('admin.log')}}" icon="flaticon2-list-1" :active="request()->routeIs(['admin.log'])" label=" لاگ های کاربر" />
+                @endif
+                @can('show_organizations')
+                    <x-admin.menu-item href="{{route('admin.organization')}}" icon="far fa-building" :active="request()->routeIs(['admin.organization','admin.store.organization'])" label="سازمان ها" />
+                @endif
+                @can('show_executives')
+                    <x-admin.menu-item href="{{route('admin.executive')}}" icon="fas fa-building" :active="request()->routeIs(['admin.executive','admin.store.executive'])" label="دستگاه های اجرایی" />
                 @endif
                 @role('administrator')
                     <x-admin.menu-item href="{{route('telescope')}}" icon="flaticon-search" :active="request()->routeIs(['telescope'])" label=" گزارش های فنی سیستم" />

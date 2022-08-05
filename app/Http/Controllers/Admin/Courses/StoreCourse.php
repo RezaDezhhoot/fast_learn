@@ -12,6 +12,8 @@ use App\Repositories\Interfaces\QuizRepositoryInterface;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
 use App\Repositories\Interfaces\TagRepositoryInterface;
 use App\Repositories\Interfaces\TeacherRepositoryInterface;
+use App\Repositories\Interfaces\ExecutiveRepositoryInterface;
+use App\Repositories\Interfaces\OrganizationRepositoryInterface;
 use Livewire\WithFileUploads;
 
 class StoreCourse extends BaseComponent
@@ -19,7 +21,7 @@ class StoreCourse extends BaseComponent
     use WithFileUploads;
     public  $header , $slug , $title , $short_body , $long_body , $image  , $category ,  $quiz , $seo_keywords , $seo_description,
     $teacher , $level , $const_price , $status ,$reduction_type ,$reduction_value = 0 , $start_at , $expire_at  , $tags = [];
-    public  $course , $sub_title , $storage , $type;
+    public  $course , $sub_title , $storage , $type , $organizations = [] , $executives = [];
 
     public function __construct($id = null)
     {
@@ -30,6 +32,8 @@ class StoreCourse extends BaseComponent
         $this->quizRepository = app(QuizRepositoryInterface::class);
         $this->teacherRepository = app(TeacherRepositoryInterface::class);
         $this->settingRepository = app(SettingRepositoryInterface::class);
+        $this->organizationRepository = app(OrganizationRepositoryInterface::class);
+        $this->executiveRepository = app(ExecutiveRepositoryInterface::class);
     }
 
     public function mount($action , $id = null)
@@ -55,6 +59,8 @@ class StoreCourse extends BaseComponent
             $this->start_at = $this->dateConverter($this->course->start_at);
             $this->expire_at = $this->dateConverter($this->course->expire_at);
             $this->tags = $this->course->tags->pluck('id','id')->toArray();
+            $this->organizations = $this->course->organizations->pluck('id','id')->toArray();
+            $this->executives = $this->course->executives->pluck('id','id')->toArray();
             $this->seo_keywords = $this->course->seo_keywords;
             $this->seo_description = $this->course->seo_description;
             $this->const_price = $this->course->const_price;
@@ -80,10 +86,14 @@ class StoreCourse extends BaseComponent
         $this->data['type'] = CourseEnum::getTypes();
         $this->data['quiz'] = $this->quizRepository->getAll()->pluck('name','id');
 
+        
+
     }
 
     public function render()
     {
+        $this->data['organs'] = $this->organizationRepository->get(parent:true);
+        $this->data['executives'] = $this->executiveRepository->get(parent:true);
         return view('admin.courses.store-course')->extends('admin.layouts.admin');
     }
 
@@ -166,10 +176,18 @@ class StoreCourse extends BaseComponent
         $model->seo_description = $this->seo_description;
         $model = $this->courseRepository->save($model);
         $this->tags = array_filter($this->tags);
-        if ($this->mode == self::CREATE_MODE)
+        $this->organizations = array_filter($this->organizations);
+        $this->executives = array_filter($this->executives);
+        if ($this->mode == self::CREATE_MODE) {
             $this->courseRepository->attachTags($model,$this->tags);
-        elseif ($this->mode == self::UPDATE_MODE)
+            $this->courseRepository->attachOrgans($model,$this->organizations);
+            $this->courseRepository->attachExecutives($model,$this->executives);
+        }
+        elseif ($this->mode == self::UPDATE_MODE) {
             $this->courseRepository->syncTags($model,$this->tags);
+            $this->courseRepository->syncOrgans($model,$this->organizations);
+            $this->courseRepository->syncExecutives($model,$this->executives);
+        }
 
         return $this->emitNotify('اطلاعات با موفقیت ثبت شد');
     }

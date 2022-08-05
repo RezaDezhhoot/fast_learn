@@ -8,11 +8,19 @@
                     <p class="fs-14">ما <span class="text-black">{{ $courses->count() }}</span> دوره برای شما پیدا کردیم
                     </p>
                     <div class="d-flex flex-wrap align-items-center">
-                        <div class="select-container select--container">
+                        <div class="select-container p-1 select--container">
                             <select class="select-container-select form-control" wire:model="orderBy">
                                 <option value="">مرتب سازی</option>
                                 @foreach($orders as $key => $value)
                                 <option value="{{ $key }}">{{ $value }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="select-container p-1 select--container">
+                            <select class="select-container-select form-control" wire:model="type">
+                                <option value="">نوع هزینه</option>
+                                @foreach($types as $key => $item)
+                                    <option value="{{ $key }}">{{ $item }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -24,49 +32,6 @@
             <div class="row">
                 <div class="col-lg-3" wire:ignore>
                     <div class="sidebar mb-5">
-                        <div class="card card-item">
-                            <div class="card-body">
-                                <h3 class="card-title fs-18 pb-2">بر اساس هزینه</h3>
-                                <div class="divider"><span></span></div>
-                                @foreach($types as $key => $item)
-                                <div class="custom-control custom-checkbox mb-1 fs-15">
-                                    <input type="radio" name="type" class="custom-control-input" wire:model="type"
-                                        value="{{$key}}" id="{{$key}}" required="" />
-                                    <label class="custom-control-label custom--control-label text-black" for="{{$key}}">
-                                        {{$item}} </label>
-                                </div>
-                                @endforeach
-                                <div class="custom-control custom-checkbox mb-1 fs-15">
-                                    <input type="radio" name="type" class="custom-control-input" wire:model="type"
-                                        value="" id="all_types" required="" />
-                                    <label class="custom-control-label custom--control-label text-black"
-                                        for="all_types"> همه </label>
-                                </div>
-                                <!-- end custom-control -->
-                            </div>
-                        </div>
-                        <div class="card card-item">
-                            <div class="card-body">
-                                <h3 class="card-title fs-18 pb-2">بر اساس نوع دوره اموزشی</h3>
-                                <div class="divider"><span></span></div>
-                                @foreach($data['types'] as $key => $item)
-                                <div class="custom-control custom-checkbox mb-1 fs-15">
-                                    <input type="radio" name="property" class="custom-control-input"
-                                        wire:model="property" value="{{$key}}" id="{{$key}}_property" required="" />
-                                    <label class="custom-control-label custom--control-label text-black"
-                                        for="{{$key}}_property"> {{$item}} </label>
-                                </div>
-                                @endforeach
-                                <div class="custom-control custom-checkbox mb-1 fs-15">
-                                    <input type="radio" name="property" class="custom-control-input"
-                                        wire:model="property" value="" id="all_property" required="" />
-                                    <label class="custom-control-label custom--control-label text-black"
-                                        for="all_property"> همه </label>
-                                </div>
-                                <!-- end custom-control -->
-                            </div>
-                        </div>
-                        <!-- end card -->
                         <div class="card card-item">
                             <div class="card-body">
                                 <h3 class="card-title fs-18 pb-2">دسته بندی ها</h3>
@@ -100,6 +65,61 @@
                                 @endforeach
                             </div>
                         </div>
+                        <div class="card card-item">
+                            <div class="card-body">
+                                <h3 class="card-title fs-18 pb-2">بر اساس نوع دوره اموزشی</h3>
+                                <div class="divider"><span></span></div>
+                                @foreach($data['types'] as $key => $item)
+                                <div class="custom-control custom-checkbox mb-1 fs-15">
+                                    <input type="radio" name="property" class="custom-control-input"
+                                        wire:model="property" value="{{$key}}" id="{{$key}}_property" required="" />
+                                    <label class="custom-control-label custom--control-label text-black"
+                                        for="{{$key}}_property"> {{$item}} </label>
+                                </div>
+                                @endforeach
+                                <div class="custom-control custom-checkbox mb-1 fs-15">
+                                    <input type="radio" name="property" class="custom-control-input"
+                                        wire:model="property" value="" id="all_property" required="" />
+                                    <label class="custom-control-label custom--control-label text-black"
+                                        for="all_property"> همه </label>
+                                </div>
+                                <!-- end custom-control -->
+                            </div>
+                        </div>
+                        <div class="card card-item">
+                            <div class="card-body">
+                                <h3 class="card-title fs-18 pb-2">بر اساس سازمان ها</h3>
+                                <div class="divider"><span></span></div>
+                                @foreach($data['organs'] as $key => $item)
+                                <div class="custom-control custom-checkbox mb-1 fs-15">
+                                    <input type="radio" name="organs" class="custom-control-input"
+                                        wire:model="organs" value="{{$item['id']}}" id="{{$item['id']}}_organs" required="" />
+                                    <label class="custom-control-label custom--control-label text-black"
+                                        for="{{$item['id']}}_organs"> {{$item['title']}} </label>
+                                    @if(!empty($item['child']))
+                                        @foreach($item['child'] as $key => $value)
+                                            <div class="custom-control custom-checkbox mb-1 fs-15">
+                                                <input type="radio" name="organs" wire:model="organs" value="{{ $value['id'] }}"
+                                                    class="custom-control-input" id="{{$value['id']}}_organs" required="" />
+                                                <label class="custom-control-label custom--control-label text-black"
+                                                    for="{{$value['id']}}_organs"> <span
+                                                        class="text-gray">{{$value['title']}}</span>
+                                                </label>
+                                            </div>
+                                        @endforeach
+                                    @endif
+                                </div>
+                                @endforeach
+                                <div class="custom-control custom-checkbox mb-1 fs-15">
+                                    <input type="radio" name="organs" class="custom-control-input"
+                                        wire:model="organs" value="" id="all_organs" required="" />
+                                    <label class="custom-control-label custom--control-label text-black"
+                                        for="all_organs"> همه </label>
+                                </div>
+                                <!-- end custom-control -->
+                            </div>
+                        </div>
+                        
                         <!-- end card -->
                     </div>
                     <!-- end sidebar -->

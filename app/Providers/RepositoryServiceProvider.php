@@ -11,12 +11,14 @@ use App\Repositories\Classes\ContactUsRepository;
 use App\Repositories\Classes\CourseRepository;
 use App\Repositories\Classes\EpisodeRepository;
 use App\Repositories\Classes\EventRepository;
+use App\Repositories\Classes\ExecutiveRepository;
 use App\Repositories\Classes\HomeworkRepository;
 use App\Repositories\Classes\LogRepository;
 use App\Repositories\Classes\NotificationRepository;
 use App\Repositories\Classes\OrderDetailRepository;
 use App\Repositories\Classes\OrderNoteRepository;
 use App\Repositories\Classes\OrderRepository;
+use App\Repositories\Classes\OrganizationRepository;
 use App\Repositories\Classes\OtpRepository;
 use App\Repositories\Classes\PaymentRepository;
 use App\Repositories\Classes\PermissionRepository;
@@ -27,6 +29,7 @@ use App\Repositories\Classes\ReductionRepository;
 use App\Repositories\Classes\RoleRepository;
 use App\Repositories\Classes\SendRepository;
 use App\Repositories\Classes\SettingRepository;
+use App\Repositories\Classes\SurveyRepository;
 use App\Repositories\Classes\TagRepository;
 use App\Repositories\Classes\TeacherRepository;
 use App\Repositories\Classes\TicketRepository;
@@ -43,12 +46,14 @@ use App\Repositories\Interfaces\ContactUsRepositoryInterface;
 use App\Repositories\Interfaces\CourseRepositoryInterface;
 use App\Repositories\Interfaces\EpisodeRepositoryInterface;
 use App\Repositories\Interfaces\EventRepositoryInterface;
+use App\Repositories\Interfaces\ExecutiveRepositoryInterface;
 use App\Repositories\Interfaces\HomeworkRepositoryInterface;
 use App\Repositories\Interfaces\LogRepositoryInterface;
 use App\Repositories\Interfaces\NotificationRepositoryInterface;
 use App\Repositories\Interfaces\OrderDetailRepositoryInterface;
 use App\Repositories\Interfaces\OrderNoteRepositoryInterface;
 use App\Repositories\Interfaces\OrderRepositoryInterface;
+use App\Repositories\Interfaces\OrganizationRepositoryInterface;
 use App\Repositories\Interfaces\OtpRepositoryInterface;
 use App\Repositories\Interfaces\PaymentRepositoryInterface;
 use App\Repositories\Interfaces\PermissionRepositoryInterface;
@@ -59,6 +64,7 @@ use App\Repositories\Interfaces\ReductionRepositoryInterface;
 use App\Repositories\Interfaces\RoleRepositoryInterface;
 use App\Repositories\Interfaces\SendRepositoryInterface;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
+use App\Repositories\Interfaces\SurveyRepositoryInterface;
 use App\Repositories\Interfaces\TagRepositoryInterface;
 use App\Repositories\Interfaces\TeacherRepositoryInterface;
 use App\Repositories\Interfaces\TicketRepositoryInterface;
@@ -239,6 +245,22 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             LogRepositoryInterface::class,
             LogRepository::class,
+        );
+
+
+        $this->app->bind(
+            OrganizationRepositoryInterface::class,
+            OrganizationRepository::class,
+        );
+
+        $this->app->bind(
+            ExecutiveRepositoryInterface::class,
+            ExecutiveRepository::class,
+        );
+
+        $this->app->bind(
+            SurveyRepositoryInterface::class,
+            SurveyRepository::class,
         );
     }
 

@@ -17,7 +17,7 @@ class RoleRepository implements RoleRepositoryInterface
 
     public function whereNotIn($name, array $values , $find = null)
     {
-        return !is_null($find) ? Role::whereNotIn($name, $values)->find($find) : Role::whereNotIn($name, $values)->get();
+        return !is_null($find) ? Role::whereNotIn($name, $values)->findOrFail($find) : Role::whereNotIn($name, $values)->get();
     }
 
     public function find($id)

@@ -3,6 +3,9 @@
 namespace App\Observers;
 
 use App\Models\Executive;
+use Exception;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ExecutiveObserver
 {
@@ -36,7 +39,21 @@ class ExecutiveObserver
      */
     public function deleted(Executive $executive)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $executive->child()->forceDelete();
+            $executive->courses()->update(['executive_id' => null]);
+            foreach ($executive->users as $value) 
+                if (!is_null($value->details)) 
+                    $value->details->details->update(['executive_id' => null]);
+                
+        
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+            $executive->restore();
+            Log::error($e->getMessage());
+        }
     }
 
     /**

@@ -16,6 +16,8 @@ use App\Repositories\Classes\HomeworkRepository;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\Interfaces\CourseRepositoryInterface;
 use App\Repositories\Interfaces\EventRepositoryInterface;
+use App\Repositories\Interfaces\ExecutiveRepositoryInterface;
+use App\Repositories\Interfaces\OrganizationRepositoryInterface;
 use App\Repositories\Interfaces\TicketRepositoryInterface;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -71,6 +73,8 @@ class EventServiceProvider extends ServiceProvider
         app(CourseRepositoryInterface::class)::observe();
         app(HomeworkRepository::class)::observe();
         app(EventRepositoryInterface::class)::observe();
+        app(OrganizationRepositoryInterface::class)::observe();
+        app(ExecutiveRepositoryInterface::class)::observe();
     }
 
     /**

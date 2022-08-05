@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CourseRepository implements CourseRepositoryInterface
 {
-    public function getAllAdmin($search , $status, $category, $per_page, $type)
+    public function getAllAdmin($search , $status, $category, $per_page, $type , $organization , $executive)
     {
         return Course::latest('id')->when($category,function ($q) use ($category){
             return $q->wherehas('category',function ($q) use ($category) {
@@ -25,10 +25,22 @@ class CourseRepository implements CourseRepositoryInterface
             return $q->where('status', $status);
         })->when($type,function ($q) use ($type){
             return $q->where('type', $type);
-        })->search($search)->paginate($per_page);
+        })->when($organization , function($q) use ($organization) {
+            return $q->whereHas('organizations' , function($q) use ($organization) {
+                return $q->where('organization_id',$organization);
+            });
+        })->when($executive , function($q) use ($executive) {
+            return $q->whereHas('executives' , function($q) use ($executive) {
+                return $q->where('executive_id',$executive);
+            });
+        })
+        ->search($search)->paginate($per_page);
     }
 
-    public function getAllSite($search = null, $orderBy = null, $type = null, $category = null , $teacher = null, $property = null)
+    public function getAllSite(
+        $search = null, $orderBy = null, $type = null, $category = null , $teacher = null, $property = null , 
+        $organization = null
+        )
     {
         return Course::published()->when($type, function($q) use ($type) {
             return match ($type) {
@@ -56,6 +68,10 @@ class CourseRepository implements CourseRepositoryInterface
         })->when($search,function ($q) use ($search) {
             return $q->where('title',$search)->orWhere('slug',$search)->orWhereHas('tags',function ($q) use ($search){
                 return $q->where('name',$search);
+            });
+        })->when($organization , function($q) use ($organization) {
+            return $q->whereHas('organizations' , function($q) use ($organization) {
+                return $q->where('organization_id',$organization);
             });
         })->when($teacher , function ($q) use ($teacher){
             return $q->where('teacher_id',base64_decode($teacher));
@@ -88,6 +104,26 @@ class CourseRepository implements CourseRepositoryInterface
     public function syncTags(Course $course, array $tags)
     {
         $course->tags()->sync($tags);
+    }
+
+    public function attachOrgans(Course $course , array $organs) 
+    {
+        $course->organizations()->attach($organs);
+    }
+
+    public function syncOrgans(Course $course , array $organs) 
+    {
+        $course->organizations()->sync($organs);
+    }
+
+    public function attachExecutives(Course $course , array $executives) 
+    {
+        $course->executives()->attach($executives);
+    }
+
+    public function syncExecutives(Course $course , array $executives)
+    {
+        $course->executives()->sync($executives);
     }
 
     public function newCourseObject(): Course
