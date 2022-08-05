@@ -100,6 +100,14 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->group(function (){
     Route::get('/settings/fag/{action}/{id?}', App\Http\Controllers\Admin\Settings\StoreFag::class)->name('admin.setting.fag.create');
     Route::get('/logs', App\Http\Controllers\Admin\Logs\IndexLog::class)->name('admin.log');
 
+    Route::get('/organizations',App\Http\Controllers\Admin\Organizations\IndexOrganization::class)->name('admin.organization');
+    Route::get('/organizations/{action}/{id?}',App\Http\Controllers\Admin\Organizations\StoreOrganization::class)->name('admin.store.executive');
+    Route::get('/executives',App\Http\Controllers\Admin\Executives\IndexExecutive::class)->name('admin.organization');
+    Route::get('/executives/{action}/{id?}',App\Http\Controllers\Admin\Executives\StoreExecutive::class)->name('admin.store.executive');
+    Route::get('/surveys',App\Http\Controllers\Admin\Surveys\IndexSurvey::class)->name('admin.survey');
+    Route::get('/surveys/{action}/{id?}',App\Http\Controllers\Admin\Surveys\StoreSurvey::class)->name('admin.store.survey');
+
+
 });
 
 Route::middleware('guest')->get('auth',App\Http\Controllers\Site\Auth\Auth::class)->name('auth');
