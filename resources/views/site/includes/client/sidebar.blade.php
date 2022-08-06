@@ -16,7 +16,7 @@
         <x-site.client.sidebar-link title=" ازموان های من" link="{{ route('user.quizzes') }}" icon="la la-pen pr-2" :active="request()->routeIs(['user.quizzes','user.quiz','user.exam'])" />
         <x-site.client.sidebar-link title=" گواهینامه ها" link="{{ route('user.certificates') }}" icon="la la-certificate pr-2" :active="request()->routeIs(['user.certificates','user.certificate'])" />
         <x-site.client.sidebar-link title=" پرسش های من" link="{{ route('user.comments') }}" icon="la la-comment pr-2" :active="request()->routeIs('user.comments')" />
-        <x-site.client.sidebar-link title=" تمرین های من" link="{{ route('user.homeworks') }}" icon="la la-file-archive pr-2" :active="request()->routeIs('user.homeworks')" />
+        {{-- <x-site.client.sidebar-link title=" تمرین های من" link="{{ route('user.homeworks') }}" icon="la la-file-archive pr-2" :active="request()->routeIs('user.homeworks')" /> --}}
         <x-site.client.sidebar-link title=" پیام ها" link="{{ route('user.notifications') }}" icon="la la-bell pr-2" :active="request()->routeIs('user.notifications')" />
         <x-site.client.sidebar-link title="پشتیبانی" link="{{ route('user.tickets') }}" icon="la la-support pr-2" :active="request()->routeIs(['user.tickets','user.ticket'])" />
         <x-site.client.sidebar-link title="خروج" link="{{ route('logout') }}" icon="la la-power-off pr-2" :active="request()->routeIs('logout')" />

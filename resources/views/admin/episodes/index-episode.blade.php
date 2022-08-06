@@ -17,8 +17,8 @@
                             <th>اخرین اپدیت</th>
                             <th>فضای ذخیره سازی فایل</th>
                             <th>فضای ذخیره سازی ویدئو</th>
-                            <th>امکان ارسال تمرین</th>
-                            <th>تعداد تمرین</th>
+                            {{-- <th>امکان ارسال تمرین</th> --}}
+                            {{-- <th>تعداد تمرین</th> --}}
                             <th>وضعیت</th>
                             <th>عملیات</th>
                         </tr>
@@ -37,8 +37,8 @@
                                 <td>{{ $item->updated_at->diffForHumans() }}</td>
                                 <td>{{ $item->file_storage_label }}</td>
                                 <td>{{ $item->video_storage_label }}</td>
-                                <td>{{ $item->can_homework ? 'دارد' : 'ندارد' }}</td>
-                                <td>{{ $item->homeworks_count }}</td>
+                                {{-- <td>{{ $item->can_homework ? 'دارد' : 'ندارد' }}</td> --}}
+                                {{-- <td>{{ $item->homeworks_count }}</td> --}}
                                 <td>{{ $item->free ? 'رایگان' : 'نقدی' }}</td>
                                 <td>
                                     <x-admin.edit-btn href="{{ route('admin.store.episode',['edit', $item->id]) }}" />

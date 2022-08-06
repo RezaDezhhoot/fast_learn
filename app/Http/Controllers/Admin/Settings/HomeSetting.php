@@ -31,6 +31,7 @@ class HomeSetting extends BaseComponent
             'articles' => 'اخبار و مقالات',
             'courses' => 'دوره ها',
             'categories' => 'دسته بندی ها',
+            'organizations' => 'سازمان ها'
         ];
         $this->data['width'] = [
             '1' => '8.33%',

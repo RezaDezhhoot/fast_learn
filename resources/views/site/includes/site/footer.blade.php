@@ -10,7 +10,8 @@
                         <li><a href="{{ route('contact') }}">با ما تماس بگیرید</a></li>
                         <li><a href="{{ route('fag') }}">سوالات متداول</a></li>
                         <li><a href="{{ route('courses') }}">دوره های اموزشی</a></li>
-                        <li><a href="{{ route('teachers') }}">مدریسن</a></li>
+                        <li><a href="{{ route('articles') }}">مقالات</a></li>
+                        {{-- <li><a href="{{ route('teachers') }}">مدریسن</a></li> --}}
                     </ul>
                 </div>
                 <!-- end footer-item -->
@@ -22,7 +23,7 @@
                     <div class="divider border-bottom-0"><span></span></div>
                     <ul class="generic-list-item">
                         <li><a href="{{route('home')}}">صفحه اصلی</a></li>
-                        <li><a href="{{ route('articles') }}">مقالات</a></li>
+                        {{-- <li><a href="{{ route('articles') }}">مقالات</a></li> --}}
                         <li><a href="{{route('user.dashboard')}}">ناحیه کاربری</a></li>
                         <li><a href="{{route('cart')}}">سبد خرید </a></li>
                         <li><a href="{{route('checkout')}}">تکمیل خرید</a></li>

@@ -12,6 +12,8 @@ use App\Repositories\Interfaces\SettingRepositoryInterface;
 use App\Repositories\Interfaces\TeacherRepositoryInterface;
 use App\Repositories\Interfaces\UserDetailRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
+use App\Repositories\Interfaces\ExecutiveRepositoryInterface;
+use App\Repositories\Interfaces\OrganizationRepositoryInterface;
 use App\Rules\ValidNationCode;
 use Bavix\Wallet\Exceptions\BalanceIsEmpty;
 use Bavix\Wallet\Exceptions\InsufficientFunds;
@@ -21,7 +23,7 @@ class StoreUser extends BaseComponent
 {
     public $user  ,$name, $header , $userRole = [] , $password  , $code_id   , $avatar , $image;
     public $phone , $province , $city  , $status , $email , $actionWallet , $editWallet , $sendMessage , $subjectMessage,
-        $statusMessage , $result , $walletMessage   , $userWallet , $father_name , $birthday , $password_lgh ;
+        $statusMessage , $result , $walletMessage   , $userWallet , $father_name , $birthday , $password_lgh , $organization , $executive;
 
     public function __construct($id = null)
     {
@@ -32,6 +34,8 @@ class StoreUser extends BaseComponent
         $this->notificationRepository = app(NotificationRepositoryInterface::class);
         $this->userDetailRepository = app(UserDetailRepositoryInterface::class);
         $this->teacherRepository = app(TeacherRepositoryInterface::class);
+        $this->organizationRepository = app(OrganizationRepositoryInterface::class);
+        $this->executiveRepository = app(ExecutiveRepositoryInterface::class);
     }
 
     public function mount($action , $id = null)
@@ -53,6 +57,9 @@ class StoreUser extends BaseComponent
             $this->avatar = $this->user->details->avatar ?? null;
             $this->father_name = $this->user->details->father_name ?? null;
             $this->birthday = $this->user->details->birthday ?? null;
+            $this->organization = $this->user->details->organization_id ?? null;
+            $this->executive = $this->user->details->executive_id ?? null;
+
             $this->userRole = $this->user->roles()->pluck('name','id')->toArray();
             $this->userWallet = $this->userRepository->walletTransactions($this->user);
             $this->result = $this->user->alerts;
@@ -109,6 +116,8 @@ class StoreUser extends BaseComponent
             'father_name' => ['nullable','string','max:250'],
             'birthday' => ['nullable','string','max:255'],
             'avatar' => ['nullable','string','max:255'],
+            'organization' => ['nullable','in:'.implode(',', array_value_recursive('id',$this->data['organs'])  )],
+            'executive' => ['nullable','in:'.implode(',', array_value_recursive('id',$this->data['executives'])  )],
         ];
         $messages = [
             'name' => 'نام ',
@@ -122,6 +131,8 @@ class StoreUser extends BaseComponent
             'father_name' => 'نام پدر',
             'birthday' => 'بیوگرافی',
             'avatar' => 'تصویر رسمی',
+            'organization' => 'سازمان',
+            'executive' => 'دستگاه اجرایی'
         ];
 
         if ($this->mode == self::CREATE_MODE)
@@ -151,7 +162,8 @@ class StoreUser extends BaseComponent
             'code_id' => $this->code_id,
             'father_name' => $this->father_name,
             'birthday' => $this->birthday,
-            'avatar' => $this->avatar,
+            'organization_id' => $this->organization,
+            'executive_id' => $this->executive,
         ]);
         if ((auth()->user()->hasRole('super_admin') && !$model->hasRole('administrator')) || auth()->user()->hasRole('administrator'))
         {
@@ -224,6 +236,8 @@ class StoreUser extends BaseComponent
 
     public function render()
     {
+        $this->data['organs'] = $this->organizationRepository->get(parent:true);
+        $this->data['executives'] = $this->executiveRepository->get(parent:true);
         $this->data['city'] = [];
         if (isset($this->province) && !empty($this->province)){
 

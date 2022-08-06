@@ -17,6 +17,30 @@
                 <x-admin.forms.input with="6" type="text" id="birthday" label="تاریخ تولد" wire:model.defer="birthday"/>
                 <x-admin.forms.dropdown with="6" id="province" :data="$data['province']" label="استان" wire:model="province"/>
                 <x-admin.forms.dropdown with="6" id="city" :data="$data['city']" label="شهر" wire:model.defer="city"/>
+                <x-admin.forms.group-dropdown 
+                                    id="organization" 
+                                    :data="$data['organs']" 
+                                    label="سازمان ها" 
+                                    wire:model.defer="organization"
+                                    child="child"
+                                    parent_key="id"
+                                    parent_value="title"
+                                    child_key="id"
+                                    child_value="title"
+                                    width="6"
+                                />
+                <x-admin.forms.group-dropdown 
+                                    id="executive" 
+                                    :data="$data['executives']" 
+                                    label="دستگاه های اجرایی" 
+                                    wire:model.defer="executive"
+                                    child="child"
+                                    parent_key="id"
+                                    parent_value="title"
+                                    child_key="id"
+                                    child_value="title"
+                                    width="6"
+                                />
                 @if($mode == self::CREATE_MODE)
                     <x-admin.forms.input type="password" help="حداقل {{ $password_lgh}} حرف شامل اعداد و حروف" id="password" label="گذرواژه*" wire:model.defer="password"/>
                 @endif

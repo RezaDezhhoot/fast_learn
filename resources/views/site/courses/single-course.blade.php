@@ -172,7 +172,7 @@
                                                         </a>
                                                     </li>
                                                     @endif
-                                                    @if($item->can_homework)
+                                                    {{-- @if($item->can_homework)
                                                     <li data-toggle="modal" data-target="#homeworkModal">
                                                         <a class="d-flex align-items-center justify-content-between"
                                                             data-toggle="modal" data-target="#previewModal">
@@ -184,7 +184,7 @@
 
                                                         </a>
                                                     </li>
-                                                    @endif
+                                                    @endif --}}
                                                     <small class="text-info" wire:loading>
                                                         در حال دریافت ...
                                                     </small>
@@ -211,7 +211,7 @@
                             <!-- end curriculum-content -->
                         </div>
                         <!-- end course-overview-card -->
-                        @if(!is_null($course->teacher))
+                        {{-- @if(!is_null($course->teacher))
                         <div class="course-overview-card pt-4">
                             <h3 class="fs-24 font-weight-semi-bold pb-4">در مورد مربی</h3>
                             <div class="instructor-wrap">
@@ -249,7 +249,7 @@
                             </div>
                             <!-- end instructor-wrap -->
                         </div>
-                        @endif
+                        @endif --}}
                         <!-- end course-overview-card -->
                         @auth
                         <div class="course-overview-card pt-4">
@@ -453,6 +453,31 @@
                                     (!is_null($course->quiz) && !is_null($course->quiz->certificate)) ? 'بعله' : 'خیر'
                                     }}
                                 </li>
+                                @if(sizeof($course->organizations) > 0)
+                                    <li class="d-flex align-items-center justify-content-between">
+                                        <span><i class="la la-building mr-2 text-color"></i>سازمان ها</span>  
+
+                                        <small>
+                                            {{ 
+                                            str()->limit(implode(" و ",$course->organizations->pluck('title','id')->toArray()),
+                                                $limit = 40 , $end = '...') 
+                                            }}
+                                           
+                                        </small>
+                                    </li>
+                                @endif
+                                @if(sizeof($course->executives) > 0)
+                                    <li class="d-flex align-items-center justify-content-between">
+                                        <span><i class="la la-building mr-2 text-color"></i>دستگاه های اجرایی</span>  
+                                        <small>
+                                            {{ 
+                                            str()->limit(implode(" و ",$course->executives->pluck('title','id')->toArray()),
+                                                $limit = 40 , $end = '...') 
+                                            }}
+                                           
+                                        </small>
+                                    </li>
+                                @endif
                             </ul>
                         </div>
                     </div>
@@ -507,7 +532,7 @@
 <!-- end container -->
 </section>
 
-<div wire:ignore.self class="modal fade modal-container" id="homeworkModal" tabindex="-1" role="dialog"
+{{-- <div wire:ignore.self class="modal fade modal-container" id="homeworkModal" tabindex="-1" role="dialog"
     aria-labelledby="homeworkModalTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -611,7 +636,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 <div class="modal fade modal-container" id="shareModal" tabindex="-1" role="dialog" aria-labelledby="shareModalTitle"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">

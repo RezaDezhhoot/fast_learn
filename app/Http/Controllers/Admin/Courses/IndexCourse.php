@@ -40,6 +40,8 @@ class IndexCourse extends BaseComponent
         $this->authorizing('show_courses');
         $this->data['organs'] = $this->organizationRepository->get(parent:true);
         $this->data['executives'] = $this->executiveRepository->get(parent:true);
+       
+
         $courses =  $this->courseRepository->getAllAdmin(
             $this->search , $this->status , $this->category, $this->per_page , $this->type , $this->organization , $this->executive
         );

@@ -25,8 +25,8 @@ Route::get('/about-us',App\Http\Controllers\Site\Settings\About::class)->name('a
 Route::get('/fag',App\Http\Controllers\Site\Settings\Fag::class)->name('fag');
 Route::get('/cart',App\Http\Controllers\Site\Carts\Cart::class)->name('cart');
 Route::get('/auth',App\Http\Controllers\Site\Auth\Auth::class)->name('auth');
-Route::get('/teachers',App\Http\Controllers\Site\Teachers\IndexTeacher::class)->name('teachers');
-Route::get('/teachers/{id}',App\Http\Controllers\Site\Teachers\SingleTeacher::class)->name('teacher');
+// Route::get('/teachers',App\Http\Controllers\Site\Teachers\IndexTeacher::class)->name('teachers');
+// Route::get('/teachers/{id}',App\Http\Controllers\Site\Teachers\SingleTeacher::class)->name('teacher');
 Route::get('/codes/{code}',App\Http\Controllers\CodeController::class)->name('codes');
 
 Route::middleware(['auth'])->group(function (){
@@ -46,7 +46,7 @@ Route::prefix('client')->middleware(['auth'])->group(function (){
     Route::get('/certificates',App\Http\Controllers\Site\Client\Certificates::class)->name('user.certificates');
     Route::get('/certificates/{id}',App\Http\Controllers\Site\Client\Certificate::class)->name('user.certificate');
     Route::get('/exam/{token}',App\Http\Controllers\Site\Client\Exam::class)->name('user.exam');
-    Route::get('/homeworks',App\Http\Controllers\Site\Client\Homeworks::class)->name('user.homeworks');
+    // Route::get('/homeworks',App\Http\Controllers\Site\Client\Homeworks::class)->name('user.homeworks');
 });
 Route::prefix('admin')->middleware(['auth','role:admin'])->group(function (){
     Route::get('/dashboard',App\Http\Controllers\Admin\Dashboard\IndexDashboard::class)->name('admin.dashboard');
@@ -81,8 +81,8 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->group(function (){
     Route::get('/roles/{action}/{id?}',App\Http\Controllers\Admin\Roles\StoreRole::class)->name('admin.store.role');
     Route::get('/tags',App\Http\Controllers\Admin\Tags\IndexTag::class)->name('admin.tag');
     Route::get('/tags/{action}/{id?}',App\Http\Controllers\Admin\Tags\StoreTag::class)->name('admin.store.tag');
-    Route::get('/teachers',App\Http\Controllers\Admin\Teachers\IndexTeacher::class)->name('admin.teacher');
-    Route::get('/teachers/{action}/{id?}',App\Http\Controllers\Admin\Teachers\StoreTeacher::class)->name('admin.store.teacher');
+    // Route::get('/teachers',App\Http\Controllers\Admin\Teachers\IndexTeacher::class)->name('admin.teacher');
+    // Route::get('/teachers/{action}/{id?}',App\Http\Controllers\Admin\Teachers\StoreTeacher::class)->name('admin.store.teacher');
     Route::get('/tickets',App\Http\Controllers\Admin\Tickets\IndexTicket::class)->name('admin.ticket');
     Route::get('/tickets/{action}/{id?}',App\Http\Controllers\Admin\Tickets\StoreTicket::class)->name('admin.store.ticket');
     Route::get('/transcripts',App\Http\Controllers\Admin\Transcripts\IndexTranscript::class)->name('admin.transcript');

@@ -22,6 +22,13 @@
             <x-site.categories.category-grid :data="$item" />
             @endif
             @break
+            @case('organizations')
+            @if($item['type'] == 'slider')
+            <x-site.organizations.organization-slider :data="$item" />
+            @else
+            <x-site.organizations.organization-grid :data="$item" />
+            @endif
+            @break
             @case('courses')
             @if($item['type'] == 'slider')
             <x-site.courses.course-slider :data="$item" />

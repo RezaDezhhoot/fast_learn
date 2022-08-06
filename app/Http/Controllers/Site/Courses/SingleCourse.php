@@ -182,97 +182,97 @@ class SingleCourse extends BaseComponent
         $this->commentCount = $this->commentCount + 10;
     }
 
-    public function homework($id)
-    {
-        if (Auth::check()) {
-            if ($rateKey = rateLimiter(value:Auth::id().'_homework_'.$this->course->id,max_tries: 25))
-            {
-                $this->show_homework_form = false;
-                return $this->emitNotify('زیادی تلاش کردید. لطفا پس از مدتی دوباره تلاش کنید.','warning');
-            }
-            $user_has_episode = $this->user->hasCourse($this->course->id);
-            if ($this->course->price == 0 && !$user_has_episode)
-                $user_has_episode = $this->getFreeOrder();
+    // public function homework($id)
+    // {
+    //     if (Auth::check()) {
+    //         if ($rateKey = rateLimiter(value:Auth::id().'_homework_'.$this->course->id,max_tries: 25))
+    //         {
+    //             $this->show_homework_form = false;
+    //             return $this->emitNotify('زیادی تلاش کردید. لطفا پس از مدتی دوباره تلاش کنید.','warning');
+    //         }
+    //         $user_has_episode = $this->user->hasCourse($this->course->id);
+    //         if ($this->course->price == 0 && !$user_has_episode)
+    //             $user_has_episode = $this->getFreeOrder();
 
-            if ($user_has_episode) {
-                $this->episode = $this->episodeRepository->find($id);
-                if (!is_null($this->episode) && $this->episode->can_homework){
-                    $this->homework = $this->homeworkRepository->get([
-                        ['user_id',auth()->id()],
-                        ['episode_id',$this->episode->id]
-                    ]);
-                }
-                if (!is_null($this->homework)) {
-                    $this->file_path = $this->homework->file;
-                    $this->homework_description = $this->homework->description;
-                }
-            } else $this->emitNotify('شما هنوز این دوره را شروع نکرده اید','warning');
-        }
-    }
+    //         if ($user_has_episode) {
+    //             $this->episode = $this->episodeRepository->find($id);
+    //             if (!is_null($this->episode) && $this->episode->can_homework){
+    //                 $this->homework = $this->homeworkRepository->get([
+    //                     ['user_id',auth()->id()],
+    //                     ['episode_id',$this->episode->id]
+    //                 ]);
+    //             }
+    //             if (!is_null($this->homework)) {
+    //                 $this->file_path = $this->homework->file;
+    //                 $this->homework_description = $this->homework->description;
+    //             }
+    //         } else $this->emitNotify('شما هنوز این دوره را شروع نکرده اید','warning');
+    //     }
+    // }
 
-    public function delete_homework()
-    {
-        if (Auth::check()) {
-            if (!is_null($this->episode) && !is_null($this->homework) && empty($this->homework->result)) {
-                $this->homeworkRepository->destroy($this->homework->id);
-                $this->reset(['homework','homework_file','homework_description','file_path']);
-                $this->emitNotify('تمرین با موفقیت حذف شد');
-            }
-        }
+    // public function delete_homework()
+    // {
+    //     if (Auth::check()) {
+    //         if (!is_null($this->episode) && !is_null($this->homework) && empty($this->homework->result)) {
+    //             $this->homeworkRepository->destroy($this->homework->id);
+    //             $this->reset(['homework','homework_file','homework_description','file_path']);
+    //             $this->emitNotify('تمرین با موفقیت حذف شد');
+    //         }
+    //     }
 
-    }
+    // }
 
-    public function submit_homework()
-    {
-        if (Auth::check()) {
-            if ($rateKey = rateLimiter(value:Auth::id().'_homework_submit_'.$this->course->id,max_tries: 5))
-            {
-                $this->show_homework_form = false;
-                return $this->emitNotify('زیادی تلاش کردید. لطفا پس از مدتی دوباره تلاش کنید.','warning');
-            }
-            $user_has_episode = $this->user->hasCourse($this->course->id);
-            if ($user_has_episode) {
-                if (!is_null($this->episode) && is_null($this->homework)) {
-                    $this->validate([
-                        'homework_file' => ['required','file','mimes:jpg,jpeg,png,PNG,JPG,JPEG,rar,zip','max:2048'],
-                        'homework_description' => ['nullable','string','max:240'],
-                        'homework_recaptcha' => ['required', new ReCaptchaRule],
-                    ],[],[
-                        'homework_file' => 'فایل تمرین',
-                        'homework_description' => 'توضیحات تمرین',
-                        'homework_recaptcha' => 'فیلد امنیتی'
-                    ]);
-                    $this->uploader();
-                    $this->homework = $this->homeworkRepository->updateOrCreate([
-                        'episode_id' => $this->episode->id,
-                        'user_id' => auth()->id()
-                    ],[
-                        'file' => $this->file_path,
-                        'description' => $this->homework_description,
-                        'episode_title' => $this->episode->title,
-                        'storage' => $this->episode->homework_storage
-                    ]);
-                    $this->emit('resetReCaptcha');
-                    $this->emitNotify('تمرین شما با موفقیت ارسال شد');
-                } else $this->emitNotify('امکان بارگذاری مجدد تمرین موجود نمی باشد','warning');
-            } else $this->emitNotify('شما هنوز این دوره را شروع نکرده اید','warning');
-        }
+    // public function submit_homework()
+    // {
+    //     if (Auth::check()) {
+    //         if ($rateKey = rateLimiter(value:Auth::id().'_homework_submit_'.$this->course->id,max_tries: 5))
+    //         {
+    //             $this->show_homework_form = false;
+    //             return $this->emitNotify('زیادی تلاش کردید. لطفا پس از مدتی دوباره تلاش کنید.','warning');
+    //         }
+    //         $user_has_episode = $this->user->hasCourse($this->course->id);
+    //         if ($user_has_episode) {
+    //             if (!is_null($this->episode) && is_null($this->homework)) {
+    //                 $this->validate([
+    //                     'homework_file' => ['required','file','mimes:jpg,jpeg,png,PNG,JPG,JPEG,rar,zip','max:2048'],
+    //                     'homework_description' => ['nullable','string','max:240'],
+    //                     'homework_recaptcha' => ['required', new ReCaptchaRule],
+    //                 ],[],[
+    //                     'homework_file' => 'فایل تمرین',
+    //                     'homework_description' => 'توضیحات تمرین',
+    //                     'homework_recaptcha' => 'فیلد امنیتی'
+    //                 ]);
+    //                 $this->uploader();
+    //                 $this->homework = $this->homeworkRepository->updateOrCreate([
+    //                     'episode_id' => $this->episode->id,
+    //                     'user_id' => auth()->id()
+    //                 ],[
+    //                     'file' => $this->file_path,
+    //                     'description' => $this->homework_description,
+    //                     'episode_title' => $this->episode->title,
+    //                     'storage' => $this->episode->homework_storage
+    //                 ]);
+    //                 $this->emit('resetReCaptcha');
+    //                 $this->emitNotify('تمرین شما با موفقیت ارسال شد');
+    //             } else $this->emitNotify('امکان بارگذاری مجدد تمرین موجود نمی باشد','warning');
+    //         } else $this->emitNotify('شما هنوز این دوره را شروع نکرده اید','warning');
+    //     }
 
-    }
+    // }
 
-    private function uploader()
-    {
-        $disk = getDisk($this->episode->homework_storage);
-        if (!empty($this->homework_file)) {
-            $this->file_path = $disk->put('homeworks',$this->homework_file);
-            $this->reset(['homework_file']);
-        }
-    }
+    // private function uploader()
+    // {
+    //     $disk = getDisk($this->episode->homework_storage);
+    //     if (!empty($this->homework_file)) {
+    //         $this->file_path = $disk->put('homeworks',$this->homework_file);
+    //         $this->reset(['homework_file']);
+    //     }
+    // }
 
-    public function updatedHomeworkFile()
-    {
-        $this->resetErrorBag();
-    }
+    // public function updatedHomeworkFile()
+    // {
+    //     $this->resetErrorBag();
+    // }
 
     public function getFreeOrder() {
         if (Auth::check()) {

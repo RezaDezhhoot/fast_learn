@@ -6,6 +6,7 @@ namespace App\Repositories\Classes;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Course;
+use App\Models\Organization;
 use App\Models\Setting;
 use App\Models\Teacher;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
@@ -125,6 +126,7 @@ class SettingRepository implements SettingRepositoryInterface
             'courses' => new Course(),
             'articles' => new Article(),
             'teachers' => new Teacher(),
+            'organizations' => new Organization()
         ];
     }
 }

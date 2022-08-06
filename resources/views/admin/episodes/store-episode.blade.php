@@ -15,10 +15,10 @@
                 <x-admin.forms.select2 id="course_id" :data="$data['course']" label=" دوره اموزشی"
                     wire:model.defer="course_id" />
                 <x-admin.forms.checkbox value="1" id="free" label="رایگان " wire:model.defer="free" />
-                <x-admin.forms.checkbox value="1" id="can_homework" label="امکان بارگذاری تمرین "
-                    wire:model.defer="can_homework" />
-                <x-admin.forms.dropdown id="homework_storage" :data="$data['storage']" label="  فضای ذخیره سازی تمرین"
-                    wire:model.defer="homework_storage" />
+                {{-- <x-admin.forms.checkbox value="1" id="can_homework" label="امکان بارگذاری تمرین "
+                    wire:model.defer="can_homework" /> --}}
+                {{-- <x-admin.forms.dropdown id="homework_storage" :data="$data['storage']" label="  فضای ذخیره سازی تمرین"
+                    wire:model.defer="homework_storage" /> --}}
                 <x-admin.forms.text-area label="کد اشتراک گذاریapi " wire:model.defer="api_bucket" id="api_bucket" />
                 <x-admin.forms.checkbox value="1" id="show_api_video"
                                         label="نمایش ویدئو " wire:model.defer="show_api_video" />
@@ -68,7 +68,7 @@
                         </tbody>
                     </table>
                 </x-admin.form-section>
-                @if(!is_null($episode))
+                {{-- @if(!is_null($episode))
                 <x-admin.form-section class="col-12" label="تمرین ها">
                     <div class="table-responsive">
                         <table class="table table-bordered">
@@ -113,11 +113,11 @@
                     </div>
                     {{$homeworks->links('admin.layouts.paginate')}}
                 </x-admin.form-section>
-                @endif
+                @endif --}}
             </div>
         </div>
     </div>
-    <x-admin.modal-page id="homework" title="تمرین" wire:click="storeHomework">
+    {{-- <x-admin.modal-page id="homework" title="تمرین" wire:click="storeHomework">
         <div class="table-responsive">
             <table class="table table-bordered">
                 <thead>
@@ -158,7 +158,7 @@
                     wire:model.defer="h_score" />
             </x-admin.form-section>
         </div>
-    </x-admin.modal-page>
+    </x-admin.modal-page> --}}
 </div>
 @push('scripts')
 <script>

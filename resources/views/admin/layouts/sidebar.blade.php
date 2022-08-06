@@ -77,13 +77,13 @@
                 @can('show_transcripts')
                     <x-admin.menu-item href="{{route('admin.transcript')}}" icon="flaticon2-paper" :active="request()->routeIs(['admin.transcript','admin.store.transcript'])" label="کارنامه ها" />
                 @endcan
-                <li class="menu-section">
+                {{-- <li class="menu-section">
                     <h4 class="menu-text">بخش مدرسین</h4>
                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                 </li>
                 @can('show_teachers')
                     <x-admin.menu-item href="{{route('admin.teacher')}}" icon="fas fa-chalkboard-teacher" :active="request()->routeIs(['admin.teacher','admin.store.teacher'])" label="مدرسین" />
-                @endcan
+                @endcan --}}
                 <li class="menu-section">
                     <h4 class="menu-text">بخش محتوا</h4>
                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>

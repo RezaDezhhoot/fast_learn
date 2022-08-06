@@ -20,7 +20,8 @@
             </h6>
             <h5 class="card-title"><a href="{{ route('course',$item['slug']) }}">{{ $item['title'] }}</a></h5>
             @if(!is_null($item->teacher))
-            <p class="card-text"><a href="{{ route('teacher',$item->teacher->id) }}">{{ $item->teacher->user->name ?? '' }}</a></p>
+            {{-- <p class="card-text"><a href="{{ route('teacher',$item->teacher->id) }}">{{ $item->teacher->user->name ?? '' }}</a></p> --}}
+            <p class="card-text"><a>{{ $item->teacher->user->name ?? '' }}</a></p>
             @endif
             <div class="rating-wrap d-flex align-items-center py-2">
                 <div class="review-stars">
@@ -58,7 +59,8 @@
                 <div class="card card-item">
                     <div class="card-body">
                         @if(!is_null($item->teacher))
-                            <p class="card-text pb-2">مدرس <a href="{{ route('teacher',$item->teacher->id) }}">{{ $item->teacher->user->name ?? '' }}</a></p>
+                            {{-- <p class="card-text pb-2">مدرس <a href="{{ route('teacher',$item->teacher->id) }}">{{ $item->teacher->user->name ?? '' }}</a></p> --}}
+                            <p class="card-text pb-2">مدرس <a>{{ $item->teacher->user->name ?? '' }}</a></p>
                         @endif
                         <h5 class="card-title pb-1"><a href="{{ route('course',$item['slug']) }}">{{ $item['title'] }}</a></h5>
                         <div class="d-flex align-items-center pb-1">

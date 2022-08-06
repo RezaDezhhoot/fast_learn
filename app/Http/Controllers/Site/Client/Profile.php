@@ -9,6 +9,8 @@ use App\Repositories\Interfaces\SettingRepositoryInterface;
 use App\Repositories\Interfaces\TeacherRepositoryInterface;
 use App\Repositories\Interfaces\UserDetailRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
+use App\Repositories\Interfaces\ExecutiveRepositoryInterface;
+use App\Repositories\Interfaces\OrganizationRepositoryInterface;
 use App\Rules\ValidNationCode;
 use Artesaos\SEOTools\Facades\JsonLd;
 use Artesaos\SEOTools\Facades\OpenGraph;
@@ -30,7 +32,7 @@ class Profile extends BaseComponent
     public $code_id  , $father_name , $birthday , $province , $city ;
     public $file , $gateways = [] , $price , $gateway , $tab;
     public $token ;
-    public $isSuccessful, $message;
+    public $isSuccessful, $message , $organization , $executive;
 
     public $teacher , $teacher_title , $teacher_content;
 
@@ -44,6 +46,8 @@ class Profile extends BaseComponent
         $this->userRepository = app(UserRepositoryInterface::class);
         $this->userDetailRepository = app(UserDetailRepositoryInterface::class);
         $this->teacherRepository = app(TeacherRepositoryInterface::class);
+        $this->organizationRepository = app(OrganizationRepositoryInterface::class);
+        $this->executiveRepository = app(ExecutiveRepositoryInterface::class);
         $this->disk = getDisk('public');
     }
 
@@ -74,10 +78,10 @@ class Profile extends BaseComponent
         $this->email = $this->user->email;
         $this->image = $this->user->image;
 
-        if (Auth::user()->hasRole('teacher') && $this->teacher = Auth::user()->teacher){
-            $this->teacher_title = $this->teacher->sub_title;
-            $this->teacher_content = $this->teacher->body;
-        }
+        // if (Auth::user()->hasRole('teacher') && $this->teacher = Auth::user()->teacher){
+        //     $this->teacher_title = $this->teacher->sub_title;
+        //     $this->teacher_content = $this->teacher->body;
+        // }
 
         if ($this->userDetails) {
             $this->code_id = $this->user->details->code_id;
@@ -85,6 +89,8 @@ class Profile extends BaseComponent
             $this->birthday = $this->user->details->birthday;
             $this->province = $this->user->details->province;
             $this->city = $this->user->details->city;
+            $this->organization = $this->user->details->organization_id;
+            $this->executive = $this->user->details->executive_id;
         }
         $this->data['province'] = $this->settingRepository::getProvince();
         $gateways = $this->settingRepository->getRow('gateway',[]);
@@ -128,6 +134,8 @@ class Profile extends BaseComponent
 
     public function render()
     {
+        $this->data['organs'] = $this->organizationRepository->get(parent:true);
+        $this->data['executives'] = $this->executiveRepository->get(parent:true);
         $this->data['city'] = [];
         if (isset($this->province) && in_array($this->province,array_keys($this->data['province'])))
             $this->data['city'] = $this->settingRepository::getCity($this->province);
@@ -139,34 +147,17 @@ class Profile extends BaseComponent
         )->extends('site.layouts.client.client');
     }
 
-    public function store()
+    public function storeProfile()
     {
-        if (
-            preg_match("/^[0-9]{4}-([1-9]|1[0-2])-([1-9]|[1-2][0-9]|3[0-1])$/",$this->birthday) ||
-            preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/",$this->birthday)
-        )
-            $this->birthday = Carbon::make($this->birthday)->format('Y-m-d');
-        else return $this->addError('birthday','تاریخ تولد با الگوی Y-m-d مطابقت ندارد.');
-
         $fields = [
             'name' => ['required', 'string','max:150'],
             'email' => ['required','email','max:255' , 'unique:users,email,'. ($this->user->id ?? 0)],
             'file' => ['nullable','image','mimes:jpg,jpeg,png,PNG,JPG,JPEG','max:'.($this->settingRepository->getRow('max_profile_image_size') ?? 2048)],
-            'code_id' => ['required',new ValidNationCode(),'unique:user_details,code_id,'.(auth()->id())],
-            'father_name' => ['required','string','max:70'],
-            'birthday' => ['required'],
-            'province' => ['required','in:'.implode(',',array_keys($this->data['province']))],
-            'city' => ['required','in:'.implode(',',array_keys($this->data['city']))],
         ];
         $messages = [
             'name' => 'نام ',
             'email' => 'ایمیل',
             'file' => 'تصویر پروفایل',
-            'code_id' => 'کد ملی',
-            'father_name' => 'نام پدر',
-            'birthday' => 'تاریخ تولد',
-            'province' => 'استان',
-            'city' => 'شهر',
         ];
         if (isset($this->password))
         {
@@ -191,31 +182,66 @@ class Profile extends BaseComponent
             $this->user->password = $this->password;
 
         $this->userRepository->save($this->user);
+        $this->emitNotify('اطلاعات با موفقیت ثبت شد');
+    }
+
+    public function storeDetails()
+    {
+        if (
+            preg_match("/^[0-9]{4}-([1-9]|1[0-2])-([1-9]|[1-2][0-9]|3[0-1])$/",$this->birthday) ||
+            preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/",$this->birthday)
+        )
+            $this->birthday = Carbon::make($this->birthday)->format('Y-m-d');
+        else return $this->addError('birthday','تاریخ تولد با الگوی Y-m-d مطابقت ندارد.');
+
+        $fields = [
+            'code_id' => ['required',new ValidNationCode(),'unique:user_details,code_id,'.($this->user->details->id ?? 0)],
+            'father_name' => ['required','string','max:70'],
+            'birthday' => ['required'],
+            'province' => ['required','in:'.implode(',',array_keys($this->data['province']))],
+            'city' => ['required','in:'.implode(',',array_keys($this->data['city']))],
+            'organization' => ['nullable','in:'.implode(',', array_value_recursive('id',$this->data['organs'])  )],
+            'executive' => ['nullable','in:'.implode(',', array_value_recursive('id',$this->data['executives'])  )],
+        ];
+        $messages = [
+            'code_id' => 'کد ملی',
+            'father_name' => 'نام پدر',
+            'birthday' => 'تاریخ تولد',
+            'province' => 'استان',
+            'city' => 'شهر',
+            'organization' => 'سازمان',
+            'executive' => 'دستگاه اجرایی'
+        ];
+
+        $this->validate($fields,[],$messages);
+
         $this->userDetailRepository->updateOrCreate(['user_id' => $this->user->id],[
             'code_id' => $this->code_id,
             'father_name' => $this->father_name,
             'birthday' => $this->birthday,
             'province' => $this->province,
             'city' => $this->city,
+            'organization_id' => $this->organization,
+            'executive_id' => $this->executive,
         ]);
 
         $this->emitNotify('اطلاعات با موفقیت ثبت شد');
     }
 
-    public function storeTeacher()
-    {
-        $this->validate([
-            'teacher_title' => ['required','max:70'],
-            'teacher_content' => ['required','string','max:12500'],
-        ],[],[
-            'teacher_title' => 'عنوان',
-            'teacher_content' => 'متن',
-        ]);
-        $this->teacher->sub_title  = $this->teacher_title;
-        $this->teacher->body = $this->teacher_content;
-        $this->teacherRepository->save($this->teacher);
-        return $this->emitNotify('اطلاعات با موفقیت ثبت شد');
-    }
+    // public function storeTeacher()
+    // {
+    //     $this->validate([
+    //         'teacher_title' => ['required','max:70'],
+    //         'teacher_content' => ['required','string','max:12500'],
+    //     ],[],[
+    //         'teacher_title' => 'عنوان',
+    //         'teacher_content' => 'متن',
+    //     ]);
+    //     $this->teacher->sub_title  = $this->teacher_title;
+    //     $this->teacher->body = $this->teacher_content;
+    //     $this->teacherRepository->save($this->teacher);
+    //     return $this->emitNotify('اطلاعات با موفقیت ثبت شد');
+    // }
 
     public function uploadFile()
     {
