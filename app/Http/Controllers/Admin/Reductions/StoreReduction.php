@@ -12,7 +12,8 @@ class StoreReduction extends BaseComponent
     public $header;
     public $code, $description, $type, $amount, $starts_at, $expires_at , $reduction;
     public $minimum_amount, $maximum_amount, $product_ids, $exclude_product_ids, $exclude_sale_items,
-        $category_ids, $exclude_category_ids, $usage_limit, $usage_limit_per_user,$value_limit;
+        $category_ids, $exclude_category_ids, $usage_limit, $usage_limit_per_user,$value_limit,
+        $organization_ids, $exclude_organization_ids;
 
     public function __construct($id = null)
     {
@@ -46,6 +47,8 @@ class StoreReduction extends BaseComponent
             $this->usage_limit = $meta->where('name', 'usage_limit')->first()->value ?? '';
             $this->usage_limit_per_user = $meta->where('name', 'usage_limit_per_user')->first()->value ?? '';
             $this->value_limit =  $meta->where('name', 'value_limit')->first()->value ?? '';
+            $this->organization_ids =  $meta->where('name', 'organization_ids')->first()->value ?? '';
+            $this->exclude_organization_ids =  $meta->where('name', 'exclude_organization_ids')->first()->value ?? '';
         } elseif ($this->mode == self::CREATE_MODE)
             $this->header = 'کد جدید';
         else abort(404);
@@ -65,7 +68,7 @@ class StoreReduction extends BaseComponent
             $this->saveInDatabase($this->reductionRepository->newReductionObject());
             $this->reset(['code','description','type','amount','starts_at','expires_at','minimum_amount','maximum_amount'
                 ,'product_ids','exclude_product_ids','exclude_sale_items','category_ids','exclude_category_ids','usage_limit','usage_limit_per_user'
-                ,'value_limit']);
+                ,'value_limit','organization_ids','exclude_organization_ids']);
         }
     }
 
@@ -92,6 +95,10 @@ class StoreReduction extends BaseComponent
                 'exclude_sale_items' => ['nullable', 'boolean'],
                 'category_ids' => ['nullable', 'string', 'max:250'],
                 'exclude_category_ids' => ['nullable', 'string', 'max:250'],
+                
+                'organization_ids' => ['nullable', 'string', 'max:250'],
+                'exclude_organization_ids' => ['nullable', 'string', 'max:250'],
+
                 'usage_limit' => ['nullable', 'integer', 'min:0'],
                 'usage_limit_per_user' => ['nullable', 'integer', 'min:0'],
                 'value_limit' => ['nullable', 'integer', 'min:0'],
@@ -114,6 +121,9 @@ class StoreReduction extends BaseComponent
                 'usage_limit' => 'حداکثر استفاده',
                 'usage_limit_per_user' => 'حداکثر استفاده برای کاربر',
                 'value_limit' => 'حداکثر مقدار تخفیف ',
+
+                'organization_ids' => 'سازمان های مجاز',
+                'exclude_organization_ids' => 'سازمان های غیر مجاز',
             ]
         );
 
@@ -136,6 +146,8 @@ class StoreReduction extends BaseComponent
             'usage_limit' => $this->usage_limit,
             'usage_limit_per_user' => $this->usage_limit_per_user,
             'value_limit' => $this->value_limit,
+            'organization_ids' => $this->organization_ids,
+            'exclude_organization_ids' => $this->exclude_organization_ids
         ];
 
         foreach ($meta as $key => $item) {

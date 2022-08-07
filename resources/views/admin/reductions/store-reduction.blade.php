@@ -20,6 +20,10 @@
                 <x-admin.forms.input with="6" id="exclude_product_ids" type="text" label="محصولات غیرمجاز" help="شماره شناسه ها را با کاما جدا کنید" wire:model.defer="exclude_product_ids"/>
                 <x-admin.forms.input with="6" id="category_ids" type="text" label="دسته بندی های مجاز" help="شماره شناسه ها را با کاما جدا کنید" wire:model.defer="category_ids"/>
                 <x-admin.forms.input with="6" id="exclude_category_ids" type="text" label="دسته بندی های غیرمجاز" help="شماره شناسه ها را با کاما جدا کنید" wire:model.defer="exclude_category_ids"/>
+
+                <x-admin.forms.input with="6" id="organization_ids" type="text" label=" سازمان های مجاز" help="شماره شناسه ها را با کاما جدا کنید" wire:model.defer="organization_ids"/>
+                <x-admin.forms.input with="6" id="exclude_organization_ids" type="text" label=" سازمان های غیرمجاز" help="شماره شناسه ها را با کاما جدا کنید" wire:model.defer="exclude_organization_ids"/>
+
                 <x-admin.forms.input with="6" id="usage_limit" type="number" label="حداکثر استفاده" wire:model.defer="usage_limit"/>
                 <x-admin.forms.input with="6" id="usage_limit_per_user" type="number" label="حداکثر استفاده برای هر یک از کاربران" wire:model.defer="usage_limit_per_user"/>
             </div>

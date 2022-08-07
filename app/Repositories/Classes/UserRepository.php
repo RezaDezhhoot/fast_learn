@@ -9,6 +9,8 @@ use Alexusmai\LaravelFileManager\Services\ConfigService\ConfigRepository;
 use Illuminate\Support\Facades\Auth;
 use App\Enums\StorageEnum;
 use App\Enums\EventEnum;
+use App\Models\UserCertificate;
+
 class UserRepository implements UserRepositoryInterface , ConfigRepository
 {
     public function getDiskList(): array
@@ -113,11 +115,11 @@ class UserRepository implements UserRepositoryInterface , ConfigRepository
         return $user->certificates()->where([['certificate_id',$certificate_id],['transcript_id',$transcript_id]])->first();
     }
 
-    public function findCertificate(User $user, $id,$status)
+    public function findCertificate($id,$status)
     {
         return $status == 'demo' ?
-            $user->certificates()->findOrFail($id) :
-            $user->certificates()->where('transcript_id','!=',0)->findOrFail($id);
+            UserCertificate::findOrFail($id) :
+            UserCertificate::where('transcript_id','!=',0)->findOrFail($id);
     }
 
     public function findBy($where = [])

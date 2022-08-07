@@ -44,4 +44,9 @@ class OrganizationRepository implements OrganizationRepositoryInterface
     public static function observe() {
         return Organization::observe(OrganizationObserver::class);
     }
+
+    public function find($id)
+    {
+        return Organization::find($id);
+    }
 }

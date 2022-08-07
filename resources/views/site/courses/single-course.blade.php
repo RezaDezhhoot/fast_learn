@@ -1,4 +1,4 @@
-<div>
+<div wire:init="loadCourse()">
     <x-site.courses.breadcrumbs :data="$page_address" :course="$course" />
     <section class="course-details-area pb-20px">
         <div class="container">
@@ -352,7 +352,7 @@
                         </div>
                         <!-- end review-wrap -->
                         <div class="see-more-review-btn text-center">
-                            @if($commentCount < $comments->count())
+                            @if($commentCount < count($comments))
                                 <button type="button" wire:click="moreComment()"
                                     class="btn theme-btn theme-btn-transparent">بارگیری نظرات بیشتر</button>
                                 @endif
@@ -453,6 +453,12 @@
                                     (!is_null($course->quiz) && !is_null($course->quiz->certificate)) ? 'بعله' : 'خیر'
                                     }}
                                 </li>
+                                @if (!empty($course->standard_code))
+                                <li class="d-flex align-items-center justify-content-between">
+                                    <span><i class="la la-star mr-2 text-color"></i>استاندارد آموزشی</span> {{
+                                    $course->standard_code }}
+                                </li>
+                                @endif
                                 @if(sizeof($course->organizations) > 0)
                                     <li class="d-flex align-items-center justify-content-between">
                                         <span><i class="la la-building mr-2 text-color"></i>سازمان ها</span>  

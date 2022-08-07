@@ -32,6 +32,6 @@ class UserDetail extends Model
 
     public function organ(): BelongsTo
     {
-        return $this->belongsTo(Organization::class,'organization');
+        return $this->belongsTo(Organization::class,'organization_id');
     }
 }

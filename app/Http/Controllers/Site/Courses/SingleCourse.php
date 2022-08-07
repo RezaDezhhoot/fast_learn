@@ -31,7 +31,7 @@ class SingleCourse extends BaseComponent
 {
     use WithFileUploads , AuthorizesRequests;
     public  $course;
-    public  $related_courses , $comments , $recaptcha , $episodes , $user , $commentCount = 10 , $actionComment  , $actionLabel = 'دیدگاه جدید';
+    public  $related_courses = [] , $comments = [] , $recaptcha , $episodes , $user , $commentCount = 10 , $actionComment  , $actionLabel = 'دیدگاه جدید';
     public ?string $api_bucket = null , $local_video , $comment = null , $episode_title = null , $episode_id;
 
     public $homework , $file_path , $homework_file , $homework_description , $homework_recaptcha;
@@ -70,6 +70,12 @@ class SingleCourse extends BaseComponent
         JsonLd::setDescription($this->course->seo_description);
         JsonLd::addImage(asset($this->settingRepository->getRow('logo')));
         $this->user = auth()->user();
+        
+    }
+
+    public function loadCourse()
+    {
+        
         $this->page_address = [
             'home' => ['link' => route('home') , 'label' => 'صفحه اصلی'],
             'courses' => ['link' => route('courses') , 'label' => 'دوره های اموزشی'],

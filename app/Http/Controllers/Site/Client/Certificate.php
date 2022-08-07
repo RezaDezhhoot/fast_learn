@@ -10,15 +10,16 @@ use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Facades\TwitterCard;
 use Carbon\Carbon;
 use Livewire\Component;
-
+use Illuminate\Support\Facades\Crypt;
 class Certificate extends Component
 {
     public $user , $certificate , $hour , $status;
     protected $queryString = ['status'];
     public function mount(SettingRepositoryInterface $settingRepository , UserRepositoryInterface $userRepository , $id)
     {
+        $id = Crypt::decryptString($id);
         $this->user = auth()->user();
-        $this->certificate = $userRepository->findCertificate($this->user,$id,$this->status);
+        $this->certificate = $userRepository->findCertificate($id,$this->status);
         $this->hour = Carbon::make($this->certificate->transcript->created_at ?? now())->diffInHours($this->certificate->transcript->updated_at ?? now());
         $this->hour = $this->hour > 0 ? $this->hour : 10;
         SEOMeta::setTitle($this->certificate->certificate->name);

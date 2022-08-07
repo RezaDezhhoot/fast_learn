@@ -1,14 +1,15 @@
 @import url("../../assets/css/Vazir-FD.css");
 @font-face {
     font-family: 'Nastaliq';
-    src: url('../fonts/IranNastaliq.eot?#') format('eot'),
-    url('../fonts/IranNastaliq.ttf') format('truetype'),
-    url('../fonts/IranNastaliq.woff2') format('woff2'),
-    url('../fonts/IranNastaliq.woff') format('woff');
+    src: url('../fonts/IranNastaliq.eot?#') format('eot'), url('../fonts/IranNastaliq.ttf') format('truetype'), url('../fonts/IranNastaliq.woff2') format('woff2'), url('../fonts/IranNastaliq.woff') format('woff');
 }
 
-*{
+h1 {
     font-family: "Nastaliq", sans-serif;
+}
+
+b {
+    font-size: 19px !important;
 }
 
 body {
@@ -16,7 +17,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-
     height: 100%;
 }
 
@@ -51,7 +51,6 @@ body {
     text-align: center;
     width: 77%;
     margin-bottom: 0;
-
 }
 
 header .logo {
@@ -72,48 +71,55 @@ header .codes {
     padding-left: 15px;
 }
 
-header .codes img{
-    width:70px;
+header .codes img {
+    width: 70px;
 }
+
 header .title {
     width: 40%;
     text-align: center;
     font-family: "Nastaliq", sans-serif;
     margin-top: -50px;
 }
-header .title h1{
+
+header .title h1 {
     font-size: 50px;
     font-weight: normal;
     padding: 0;
-    margin-top: 80px;
 }
-header .title h5{
+
+header .title h4 {
     padding: 0;
-    /*margin: -60px 0;*/
+    margin-top: 40px;
     font-size: 15px;
 }
-.codes_row{
-    width:100%;
+
+.codes_row {
+    width: 100%;
+    text-align: right;
 }
-.codes_row>p{
-    margin-right: -1rem;
+
+.codes_row>p {
+    margin-right: 0rem;
     padding: 0 1rem 0 1rem;
     margin-bottom: 8px;
 }
-.codes_row p b{
+
+.codes_row p b {
     font-family: initial;
 }
 
-.barcode{
+.barcode {
     transform: scale(0.4);
-    margin-right: -1rem;
+    margin-right: 2rem;
 }
-.certificate-image{
+
+.certificate-image {
     width: 3cm;
     height: 4cm;
 }
 
-header .codes p b {
+header .codes p small {
     font-weight: bolder;
     font-size: 14px;
     overflow: hidden;
@@ -139,9 +145,11 @@ header .codes p b {
 .content .row table tr td b {
     font-size: 22px;
 }
-.content .row table tr td span{
+
+.content .row table tr td span {
     font-family: initial;
 }
+
 .content .row table {
     width: 100%;
 }
@@ -172,16 +180,15 @@ header .codes p b {
     text-align: center;
     position: absolute;
     left: 25%;
-
 }
 
-.certificate .certificate-border footer .autograph img{
+.certificate .certificate-border footer .autograph img {
     max-width: 250px;
     max-height: 125px;
     margin-top: 8px;
 }
 
-.printAble{
+.printAble {
     padding: 5px 8px;
     font-size: 15px;
     margin: 5px 0;
@@ -192,17 +199,17 @@ header .codes p b {
     /*border-radius: 3px;*/
 }
 
-@media print
-{
-    .no-print, .no-print *
-    {
+@media print {
+    .no-print,
+    .no-print * {
         display: none !important;
     }
 }
-.controls{
+
+.controls {
     font-family: initial;
 }
 
-.text-red{
+.text-red {
     color: #8b0000;
 }

@@ -6,57 +6,62 @@
                     <img src="{{asset($certificate->certificate->logo)}}" alt="">
                 </div>
                 <div class="title">
-                    <h1>گواهینامه </h1>
-                    <h5 class="pt-1">
+                    <h4>به اسم تعالی</h4>
+                    <h1>گواهینامه پایان دوره  </h1>
+                    {{-- <h5 class="pt-2 mt-1">
                         <span>
                             (</span><span  class="text-red">{{$certificate->transcript->course->category->title ?? 'دسته بندی'}}</span><span>)
                         </span>
-                    </h5>
+                    </h5> --}}
                 </div>
                 <div class="codes">
                     <div class="codes_row">
-                        <p>
-                            <b>
-                                تاریخ صدور : {{ $certificate->transcript->certificate_date ?? '-' }}
-                            </b>
-                        </p>
-                        <p>
-                            <b>
-                                شماره گواهینامه : {{ $certificate->transcript->certificate_code ?? '-' }}
-                            </b>
-                        </p>
-                        <p>
-                            <b>
-                                کد دوره : {{ $certificate->transcript->course->id ?? '000' }}
-                            </b>
-                        </p>
+                        {!! QrCode::size(85)->generate(url()->current()) !!}
                     </div>
                     <div class="codes_row">
-                        {!! QrCode::size(100)->generate(url()->current()) !!}
+                        <p>
+                            <small>
+                                تاریخ صدور : {{ $certificate->transcript->certificate_date ?? '-' }}
+                            </small>
+                        </p>
+                        <p>
+                            <small>
+                                شماره گواهینامه : {{ $certificate->transcript->certificate_code ?? '-' }}
+                            </small>
+                        </p>
+                        <p>
+                            <small>
+                                کد دوره : {{ $certificate->transcript->course->id ?? '000' }}
+                            </small>
+                        </p>
                     </div>
+                   
                 </div>
             </header>
             <main>
                 <div class="content">
-                    <div class="row mt-4">
+                    <div class="row mt-5">
                         <div class="row">
                             <div class="col-1">
 
                             </div>
-                            <div class="col-9">
-                                <div class="col-10">
+                            <div class="col-11">
+                                <div class="col-12">
                                    <table>
                                        <tr>
                                            <td>
-                                               <b>گواهی می شود اقا/خانم</b>
-                                               <span>{{ $certificate->user->name ?? '-' }}</span>
+                                               <b style="font-size:18px">براساس مجوز شماره 24074 سازمان مدیریت و برنامه ریزی استان خراسان شمالی گواهی می شود</b>
                                            </td>
                                        </tr>
                                    </table>
                                </div>
-                                <div class="col-10">
+                                <div class="col-11">
                                     <table>
                                         <tr>
+                                            <td>
+                                                <b>اقا/خانم</b>
+                                                <span>{{ $certificate->user->name ?? '-' }}</span>
+                                            </td>
                                             <td>
                                                 <b>فرزند</b>
                                                 <span>{{ $certificate->user->details->father_name ?? 'نام پدر' }}</span>
@@ -72,15 +77,13 @@
                                         </tr>
                                     </table>
                                 </div>
-                                <div class="col-10">
-
-                                </div>
+                                
                             </div>
-                            <div class="col-2 p-1 d-flex justify-content-end">
+                            {{-- <div class="col-2 p-1 d-flex justify-content-end">
                                 @if(!empty($certificate->user->image))
                                     <img class="certificate-image" src="{{ asset($certificate->user->image) }}" alt="">
                                 @endif
-                            </div>
+                            </div> --}}
                             <div class="col-1">
 
                             </div>

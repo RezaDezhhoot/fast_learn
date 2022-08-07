@@ -40,7 +40,7 @@ interface UserRepositoryInterface
 
     public function has_certificate(User $user , $certificate_id , $transcript_id);
 
-    public function findCertificate(User $user , $id,$status);
+    public function findCertificate($id,$status);
 
     public function findBy($where = []);
 

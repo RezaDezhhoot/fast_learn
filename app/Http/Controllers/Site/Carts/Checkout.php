@@ -18,6 +18,7 @@ use App\Repositories\Interfaces\SettingRepositoryInterface;
 use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use App\Http\Controllers\Cart\Facades\Cart;
+use App\Repositories\Interfaces\OrganizationRepositoryInterface;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
@@ -50,6 +51,7 @@ class Checkout extends BaseComponent
         $this->orderDetailRepository = app(OrderDetailRepositoryInterface::class);
         $this->paymentReporitory = app(PaymentRepositoryInterface::class);
         $this->orderNoteRepository = app(OrderNoteRepositoryInterface::class);
+        $this->organizationRepository = app(OrganizationRepositoryInterface::class);
     }
 
     public function mount()
@@ -237,6 +239,49 @@ class Checkout extends BaseComponent
                 }
             }
         }
+
+
+        if ($meta->contains('name', 'organization_ids')){
+            foreach (Cart::content() as $item){
+                if (is_null(auth()->user()->details->organization_id)) {
+                    $this->addError('voucher', 'امکان استفاده روی ابن محصولات وجود ندارد');
+                        $this->calculatePrice();
+                        $this->voucherCode = null;
+                        return;
+                }
+              
+                $organs = explode(',', $meta->where('name', 'organization_ids')->first()->value);
+
+                if (!in_array(auth()->user()->details->organization_id,$organs)){
+                    $this->addError('voucher', 'امکان استفاده روی ابن محصولات وجود ندارد');
+                        $this->calculatePrice();
+                        $this->voucherCode = null;
+                        return;
+                }
+                
+            }
+        }
+
+        if ($meta->contains('name', 'exclude_organization_ids')){
+            foreach (Cart::content() as $item){
+                if (is_null(auth()->user()->details->organization_id)) {
+                    $this->addError('voucher', 'امکان استفاده روی ابن محصولات وجود ندارد');
+                        $this->calculatePrice();
+                        $this->voucherCode = null;
+                        return;
+                }
+
+                $organs = explode(',', $meta->where('name', 'exclude_organization_ids')->first()->value);
+
+                if (in_array(auth()->user()->details->organization_id,$organs)){
+                    $this->addError('voucher', 'امکان استفاده روی ابن محصولات وجود ندارد');
+                        $this->calculatePrice();
+                        $this->voucherCode = null;
+                        return;
+                }
+            }
+        }
+
 
         if ($meta->contains('name', 'usage_limit')){
             $count = $this->orderRepository->count([['reduction_code', $voucher->code]]);

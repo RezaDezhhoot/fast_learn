@@ -44,7 +44,7 @@ Route::prefix('client')->middleware(['auth'])->group(function (){
     Route::get('/quizzes',App\Http\Controllers\Site\Client\Quizzes::class)->name('user.quizzes');
     Route::get('/quizzes/{id}',App\Http\Controllers\Site\Client\Quiz::class)->name('user.quiz');
     Route::get('/certificates',App\Http\Controllers\Site\Client\Certificates::class)->name('user.certificates');
-    Route::get('/certificates/{id}',App\Http\Controllers\Site\Client\Certificate::class)->name('user.certificate');
+    Route::get('/certificates/{id}',App\Http\Controllers\Site\Client\Certificate::class)->name('user.certificate')->withoutMiddleware(['auth']);
     Route::get('/exam/{token}',App\Http\Controllers\Site\Client\Exam::class)->name('user.exam');
     // Route::get('/homeworks',App\Http\Controllers\Site\Client\Homeworks::class)->name('user.homeworks');
 });

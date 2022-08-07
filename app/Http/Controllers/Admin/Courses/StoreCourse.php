@@ -21,7 +21,7 @@ class StoreCourse extends BaseComponent
     use WithFileUploads;
     public  $header , $slug , $title , $short_body , $long_body , $image  , $category ,  $quiz , $seo_keywords , $seo_description,
     $teacher , $level , $const_price , $status ,$reduction_type ,$reduction_value = 0 , $start_at , $expire_at  , $tags = [];
-    public  $course , $sub_title , $storage , $type , $organizations = [] , $executives = [];
+    public  $course , $sub_title , $storage , $type , $organizations = [] , $executives = [] , $standard_code;
 
     public function __construct($id = null)
     {
@@ -66,6 +66,7 @@ class StoreCourse extends BaseComponent
             $this->const_price = $this->course->const_price;
             $this->level = $this->course->level;
             $this->type = $this->course->type;
+            $this->standard_code = $this->course->standard_code;
         } elseif ($this->mode == self::CREATE_MODE) {
             $this->header = 'دوره جدید';
         } else abort(404);
@@ -108,7 +109,7 @@ class StoreCourse extends BaseComponent
         elseif ($this->mode == self::CREATE_MODE){
             $this->saveInDataBase($this->courseRepository->newCourseObject());
             $this->reset(['slug','sub_title','title','short_body','long_body','image','category','quiz','teacher',
-                'status','level','type','reduction_type','const_price','reduction_value','start_at','expire_at','tags','seo_keywords','seo_description']);
+                'status','level','standard_code','type','reduction_type','const_price','reduction_value','start_at','expire_at','tags','seo_keywords','seo_description']);
         }
     }
 
@@ -119,6 +120,7 @@ class StoreCourse extends BaseComponent
         $this->expire_at = $this->dateConverter($this->expire_at,'m') ;
         $this->validate([
             'title' => ['required','string','max:255'],
+            'standard_code' => ['required','string','max:50'],
             'sub_title' => ['required','string','max:255'],
             'short_body' => ['required','string','max:5200'],
             'seo_keywords' => ['required','string','max:5200'],
@@ -138,6 +140,7 @@ class StoreCourse extends BaseComponent
             'type' => ['required','in:'.implode(',',array_keys(CourseEnum::getTypes()))]
         ],[],[
             'title' => 'عنوان',
+            'standard_code' => 'استاندارد اموزشی',
             'sub_title' => 'عنوان فرعی',
             'short_body' => 'توضیحات کوتاه',
             'seo_keywords' => 'کلمات سئو',
@@ -174,6 +177,7 @@ class StoreCourse extends BaseComponent
         $model->expire_at = $this->expire_at;
         $model->seo_keywords = $this->seo_keywords;
         $model->seo_description = $this->seo_description;
+        $model->standard_code = $this->standard_code;
         $model = $this->courseRepository->save($model);
         $this->tags = array_filter($this->tags);
         $this->organizations = array_filter($this->organizations);

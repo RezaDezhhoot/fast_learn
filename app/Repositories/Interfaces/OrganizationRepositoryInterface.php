@@ -22,4 +22,6 @@ interface OrganizationRepositoryInterface
     public function save(Organization $organization);
 
     public static function observe();
+
+    public function find($id);
 }

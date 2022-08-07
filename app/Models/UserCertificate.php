@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Crypt;
 
 class UserCertificate extends Model
 {
@@ -29,5 +30,10 @@ class UserCertificate extends Model
     public function transcript()
     {
         return $this->belongsTo(Transcript::class);
+    }
+
+    public function getIdAttribute($value)
+    {
+        return Crypt::encryptString($value);
     }
 }
