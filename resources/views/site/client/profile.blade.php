@@ -60,7 +60,7 @@
                             </div>
                         </div>
                         <!-- end media -->
-                        <form wire:submit.prevent="store()" class="row pt-40px">
+                        <form wire:submit.prevent="storeProfile()" class="row pt-40px">
                             <div class="input-box col-lg-6">
                                 <label class="label-text">نام کامل</label>
                                 <div class="form-group">
@@ -96,83 +96,91 @@
                                     @enderror
                                 </div>
                             </div>
-
-                            <div class="input-box col-lg-6">
-                                <label class="label-text">شماره ملی </label>
-                                <div class="form-group">
-                                    <input class="form-control form--control" type="text" name="text"
-                                           wire:model.defer="code_id"/>
-                                    <span class="la la-id-card input-icon"></span>
-                                    @error('code_id')
-                                    <small class="text-danger">{{$message}}</small>
-                                    @enderror
-                                </div>
-                            </div>
-                            <!-- end input-box -->
-                            <div class="input-box col-lg-6">
-                                <label class="label-text">نام پدر</label>
-                                <div class="form-group">
-                                    <input class="form-control form--control" type="text" name="text"
-                                           wire:model.defer="father_name"/>
-                                    <span class="la la-user input-icon"></span>
-                                    @error('father_name')
-                                    <small class="text-danger">{{$message}}</small>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="input-box col-lg-6  position-relative" id="date-pickers">
-                                <label class="label-text">تاریخ تولد</label>
-                                <div class="form-group">
-                                    <input id="birthday" class="form-control form--control" wire:model.defer="birthday"
-                                           x-data
-                                           x-init="$('#birthday').persianDatepicker({
-                                   formatDate: 'YYYY-MM-DD',
-                                   onSelect: function () {
-                                            $dispatch('input', $('#birthday').val())
-                                        },
-
-                                   });">
-                                    <span class="la la-calendar-day input-icon"></span>
-                                    @error('birthday')
-                                    <small class="text-danger">{{ $message }}</small>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="input-box col-lg-6">
-                                <label class="label-text">استان</label>
-                                <div class="form-group">
-                                    <select class="form-control form--control" name="province" wire:model="province"
-                                            id="province">
-                                        <option value="">انتخاب کنید</option>
-                                        @foreach($data['province'] as $key => $item)
-                                            <option value="{{$key}}">{{$item}}</option>
-                                        @endforeach
-                                    </select>
-                                    <span class="la la-city input-icon"></span>
-                                    @error('province')
-                                    <small class="text-danger">{{$message}}</small>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="input-box col-lg-6">
-                                <label class="label-text">شهر</label>
-                                <div class="form-group">
-                                    <select class="form-control form--control" name="city" wire:model.defer="city"
-                                            id="city">
-                                        <option value="">انتخاب کنید</option>
-                                        @foreach($data['city'] as $key => $item)
-                                            <option value="{{$key}}">{{$item}}</option>
-                                        @endforeach
-                                    </select>
-                                    <span class="la la-city input-icon"></span>
-                                    @error('city')
-                                    <small class="text-danger">{{$message}}</small>
-                                    @enderror
-                                </div>
-                            </div>
                             <div class="input-box col-lg-12 py-2">
-                                <button type="submit" class="btn theme-btn">ذخیره تغییرات</button>
+                                <button type="submit" class="btn btn-outline-success">ذخیره تغییرات</button>
                             </div>
+                        </form>
+                        <form wire:submit.prevent="storeDetails()" class="row pt-40px">
+                            <fieldset class="row border p-4">
+                                <legend class="float-none w-auto">سایر اطلاعات :</legend>
+                                <div class="input-box col-lg-6">
+                                    <label class="label-text">شماره ملی </label>
+                                    <div class="form-group">
+                                        <input class="form-control form--control" type="text" name="text"
+                                               wire:model.defer="code_id"/>
+                                        <span class="la la-id-card input-icon"></span>
+                                        @error('code_id')
+                                        <small class="text-danger">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <!-- end input-box -->
+                                <div class="input-box col-lg-6">
+                                    <label class="label-text">نام پدر</label>
+                                    <div class="form-group">
+                                        <input class="form-control form--control" type="text" name="text"
+                                               wire:model.defer="father_name"/>
+                                        <span class="la la-user input-icon"></span>
+                                        @error('father_name')
+                                        <small class="text-danger">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="input-box col-lg-6  position-relative" id="date-pickers">
+                                    <label class="label-text">تاریخ تولد</label>
+                                    <div class="form-group">
+                                        <input id="birthday" class="form-control form--control" wire:model.defer="birthday"
+                                               x-data
+                                               x-init="$('#birthday').persianDatepicker({
+                                       formatDate: 'YYYY-MM-DD',
+                                       onSelect: function () {
+                                                $dispatch('input', $('#birthday').val())
+                                            },
+    
+                                       });">
+                                        <span class="la la-calendar-day input-icon"></span>
+                                        @error('birthday')
+                                        <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="input-box col-lg-6">
+                                    <label class="label-text">استان</label>
+                                    <div class="form-group">
+                                        <select class="form-control form--control" name="province" wire:model="province"
+                                                id="province">
+                                            <option value="">انتخاب کنید</option>
+                                            @foreach($data['province'] as $key => $item)
+                                                <option value="{{$key}}">{{$item}}</option>
+                                            @endforeach
+                                        </select>
+                                        <span class="la la-city input-icon"></span>
+                                        @error('province')
+                                        <small class="text-danger">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="input-box col-lg-6">
+                                    <label class="label-text">شهر</label>
+                                    <div class="form-group">
+                                        <select class="form-control form--control" name="city" wire:model.defer="city"
+                                                id="city">
+                                            <option value="">انتخاب کنید</option>
+                                            @foreach($data['city'] as $key => $item)
+                                                <option value="{{$key}}">{{$item}}</option>
+                                            @endforeach
+                                        </select>
+                                        <span class="la la-city input-icon"></span>
+                                        @error('city')
+                                        <small class="text-danger">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="input-box col-lg-12 py-2">
+                                    <button type="submit" class="btn btn-outline-success">ذخیره تغییرات</button>
+                                </div>
+                            </fieldset>
+                            
                             <!-- end input-box -->
                         </form>
                     </div>
