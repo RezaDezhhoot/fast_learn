@@ -1,41 +1,28 @@
 <div>
-<section class="hero-area position-relative hero-area-3">
-    <div class="hero-slider-item hero-bg-5" style="background-image: url({{asset($sliderImage)}});background-size: cover;background-position: center">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 mx-auto text-center">
-                    <div class="hero-content">
-                        <div class="section-heading pb-4">
-                            {!! $slider !!}
-                            @if($sliderLink)
-                                <p class="pt-2">
-                                    <a href="{{ $sliderLink }}" class="btn btn-sm btn-outline-info d-inline-flex align-items-center">مشاهده<i class="la la-arrow-left icon ml-1"></i></a>
-                                </p>
-                            @endif
-                        </div>
-                        <!-- end section-heading -->
-                        <form wire:submit.prevent="search" method="get" class="w-75 pt-2 mx-auto">
-                            <div class="form-group mb-0">
-                                <input wire:model.defer="q" class="form-control form--control pl-3" type="text" name="search" placeholder="جستجوی دوره ها با کلمات کلیدی" />
-                                <span wire:click="search" class="la la-search search-icon"></span>
-                            </div>
-                        </form>
+    <section class="hero-area bg-gray hero-area-4">
+        <div class="hero-slider-item after-none" style="background-image: url({{asset($sliderImage)}});background-size: cover;background-position: center">
+            <div class="container">
+                <div class="hero-content text-center">
+                    <div class="section-heading">
+                        {!! $slider !!}
                     </div>
-                    <!-- end hero-content -->
+                    <!-- end section-heading -->
+                    <form mwire:submit.prevent="search" method="get"  class="w-50 mx-auto">
+                        <div class="form-group mb-0">
+                            <input  wire:model.defer="q" class="form-control form--control pl-3 shadow-sm border-0" type="text" name="search" placeholder="چه چیزی را می خواهید یاد بگیرید؟">
+                            <span  wire:click="search"class="la la-search search-icon"></span>
+                        </div>
+                    </form>
                 </div>
-                <!-- end col-lg-7 -->
-
-                <!-- end col-lg-5 -->
+                <!-- end hero-content -->
             </div>
-            <!-- end row -->
+            <!-- end container -->
         </div>
-        <!-- end container -->
-    </div>
-    <!-- end hero-slider-item -->
-</section>
+        <!-- end hero-slider-item -->
+    </section>
 <section class="hero-area position-relative hero-area-2">
 
-        <div class="bg-gradient overflow-hidden">
+        <div class="bg-info overflow-hidden">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-4 responsive-column-half">
