@@ -87,7 +87,7 @@ class StoreCourse extends BaseComponent
         $this->data['type'] = CourseEnum::getTypes();
         $this->data['quiz'] = $this->quizRepository->getAll()->pluck('name','id');
 
-        
+
 
     }
 
@@ -129,7 +129,7 @@ class StoreCourse extends BaseComponent
             'image' => ['required','string','max:255'],
             'category' => ['required','exists:categories,id'],
             'quiz' => ['nullable','exists:quizzes,id'],
-            'teacher' => ['required','exists:users,id'],
+//            'teacher' => ['required','exists:users,id'],
             'const_price' => ['required','between:0,99999999999999.9999','numeric'],
             'status' => ['required','in:'.implode(',',array_keys(CourseEnum::getStatus()))],
             'reduction_type' => ['nullable','in:'.implode(',',array_keys(ReductionEnum::getType()))],
@@ -149,7 +149,7 @@ class StoreCourse extends BaseComponent
             'image' => 'تصویر',
             'category' => 'دسته بندی',
             'quiz' => 'ازمون',
-            'teacher' => 'مدرس',
+//            'teacher' => 'مدرس',
             'status' => 'وضعیت',
             'const_price' => 'مبلغ ثابت',
             'reduction_type' => 'نوع تخفیف',
@@ -166,7 +166,7 @@ class StoreCourse extends BaseComponent
         $model->image = $this->image;
         $model->category_id = $this->category;
         $model->quiz_id = $this->quiz;
-        $model->teacher_id = $this->teacher;
+        $model->teacher_id = null;
         $model->status = $this->status;
         $model->const_price = $this->const_price;
         $model->reduction_type = $this->reduction_type;

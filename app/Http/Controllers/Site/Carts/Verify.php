@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Site\Carts;
 
 use App\Enums\OrderEnum;
+use App\Enums\PaymentEnum;
 use App\Enums\QuizEnum;
 use App\Events\OrderEvent;
 use App\Http\Controllers\BaseComponent;
@@ -59,6 +60,7 @@ class Verify extends BaseComponent
             $this->token =request()->id;
         elseif (request()->exists('Authority'))
             $this->token = request()->Authority;
+
 
         $this->gateway = $gateway;
         $this->getOrder();
@@ -127,6 +129,8 @@ class Verify extends BaseComponent
         }
         if ($this->order->wallet_pay > 0)
             auth()->user()->forceWithdraw($this->order->wallet_pay, ['description' => 'بابت سفارش ' . $this->order->tracking_code]);
+
+        $this->reset(['token']);
     }
 
     private function getOrder()
@@ -135,7 +139,7 @@ class Verify extends BaseComponent
         $paymentRepository = $this->paymentReporitory;
         if (!is_null($this->token)) {
             $transaction = $paymentRepository->get([
-                ['payment_gateway', $this->gateway],['payment_token', $this->token],['model_type', 'order']
+                ['payment_gateway', $this->gateway],['payment_token', $this->token],['model_type', PaymentEnum::order()]
             ]);
             $this->order = $orderRepository->get([['user_id', auth()->id()],['id', $transaction->model_id]]);
         } else {
