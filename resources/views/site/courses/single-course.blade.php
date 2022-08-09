@@ -1,4 +1,4 @@
-<div>
+<div wire:init="loadCourse">
     <x-site.courses.breadcrumbs :data="$page_address" :course="$course" />
     <section class="course-details-area pb-20px">
         <div class="container">
@@ -352,7 +352,7 @@
                         </div>
                         <!-- end review-wrap -->
                         <div class="see-more-review-btn text-center">
-                            @if($commentCount < $comments->count())
+                            @if($commentCount < count($comments))
                                 <button type="button" wire:click="moreComment()"
                                     class="btn theme-btn theme-btn-transparent">بارگیری نظرات بیشتر</button>
                                 @endif
@@ -399,12 +399,12 @@
                                         class="la la-shopping-cart fs-18 mr-1"></i> ثبت
                                     نام در این دوره</button>
                                     @endif
-                                    
+
                                     @else
                                     <button wire:click="addToCart()" type="button" class="btn theme-btn w-100 mb-2"><i
                                             class="la la-shopping-cart fs-18 mr-1"></i> به سبد خرید اضافه کنید</button>
                                     @endif
-                                    
+
                                 </div>
                                 <div class="preview-course-incentives">
                                     <h3 class="card-title fs-18 mt-2 pb-2">این دوره شامل</h3>
