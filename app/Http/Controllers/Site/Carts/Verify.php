@@ -136,7 +136,7 @@ class Verify extends BaseComponent
         $paymentRepository = $this->paymentReporitory;
         if (!is_null($this->token)) {
             $transaction = $paymentRepository->get([
-                ['payment_gateway', $this->gateway],['payment_token', $this->token],['model_type', ['model_type', PaymentEnum::order()]]
+                ['payment_gateway', $this->gateway],['payment_token', $this->token],['model_type', PaymentEnum::order()]
             ]);
             $this->order = $orderRepository->get([['user_id', auth()->id()],['id', $transaction->model_id]]);
         } else {
