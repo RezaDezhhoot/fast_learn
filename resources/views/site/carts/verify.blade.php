@@ -13,18 +13,20 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($order->details as $item)
-                        <tr>
-                            <td>
-                                <a href="{{ route('course',$item->course->slug) }}">{{ $item->course->title }}</a>
-                            </td>
-                            <td>
-                                {{ number_format($item->price) }} تومان
-                            </td>
-                            <td>{{ number_format($item->total_price) }}تومان</td>
-                            <td>{{ $item->status_label }}</td>
-                        </tr>
-                    @endforeach
+                    @if(!is_null($order))
+                        @foreach($order->details as $item)
+                            <tr>
+                                <td>
+                                    <a href="{{ route('course',$item->course->slug) }}">{{ $item->course->title }}</a>
+                                </td>
+                                <td>
+                                    {{ number_format($item->price) }} تومان
+                                </td>
+                                <td>{{ number_format($item->total_price) }}تومان</td>
+                                <td>{{ $item->status_label }}</td>
+                            </tr>
+                        @endforeach
+                    @endif
                     </tbody>
                     <tfoot>
                        <tr>
@@ -34,10 +36,10 @@
                 </table>
                <div class="mt-4">
                    @if($isSuccessful)
-                       <p class="text-center"><a class="btn btn-primary" href="{{ route('user.courses') }}">مشاهده دوره ها</a></p>
+                       <p class="text-center"><a class="btn btn-outline-primary mb-3" href="{{ route('user.courses') }}">مشاهده دوره ها</a></p>
                    @else
                        <div class="text-center">
-                           <button class="btn btn-warning" wire:click="try_again">پرداخت مجدد</button>
+                           <button class="btn btn-outline-warning mb-3" wire:click="try_again">پرداخت مجدد</button>
                            <br>
                            <div class="text-right" wire:loading>
                                <p class="text-secondary text-right">
