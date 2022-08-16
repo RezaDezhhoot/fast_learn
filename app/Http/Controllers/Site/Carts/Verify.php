@@ -62,29 +62,37 @@ class Verify extends BaseComponent
             $this->token = request()->Authority;
 
         $this->gateway = $gateway;
-        $this->getOrder();
-        if (is_null($this->gateway)) {
-            $this->success();
-        } else {
-            $result =  $this->paymentReporitory->verify(
-                $this->order->total_price*$this->gateways[$this->gateway]['unit'],
-                $this->gateway,
-                $this->gateways[$gateway],
-                $this->token,
-                fn($payment = null,$amount = null) => $this->success($payment)
-            );
-            if (!$result){
-                $this->isSuccessful = false;
-                $this->message = 'پرداخت ناموفق بود';
-            } else {
-                $this->isSuccessful = true;
-                $this->message = 'پرداخت با موفقیت انجام شد ';
-            }
-        }
         try {
-            OrderEvent::dispatch($this->order);
+            $this->getOrder();
+            if (is_null($this->gateway)) {
+                $this->success();
+            } else {
+                $result =  $this->paymentReporitory->verify(
+                    $this->order->total_price*$this->gateways[$this->gateway]['unit'],
+                    $this->gateway,
+                    $this->gateways[$gateway],
+                    $this->token,
+                    fn($payment = null,$amount = null) => $this->success($payment)
+                );
+                if (!$result){
+                    $this->isSuccessful = false;
+                    $this->message = 'پرداخت ناموفق بود';
+                } else {
+                    $this->isSuccessful = true;
+                    $this->message = 'پرداخت با موفقیت انجام شد ';
+                }
+            }
         } catch (\Exception $e) {
+            $this->isSuccessful = false;
+            $this->message = 'عملیات پرداخت با خطا مواجه شد ';
             Log::error($e->getMessage());
+        }
+        if (!is_null($this->order)) {
+            try {
+                OrderEvent::dispatch($this->order);
+            } catch (\Exception $e) {
+                Log::error($e->getMessage());
+            }
         }
         Cart::destroy();
     }

@@ -7,9 +7,7 @@ use App\Http\Controllers\BaseComponent;
 
 class Footer extends BaseComponent
 {
-    public  $title , $footerText , $address , $email , $autographs , $tel , $search , $copyRight;
-
-
+    public  $title , $footerText , $address , $email , $autographs , $tel , $search , $copyRight ;
 
     public function mount(SettingRepositoryInterface $settingRepository)
     {
@@ -29,6 +27,8 @@ class Footer extends BaseComponent
 
     public function search()
     {
-        return redirect()->route('articles',['q' => $this->search]);
+        if (!is_null($this->search)) {
+            redirect()->route('articles',['q'=>$this->search]);
+        }
     }
 }

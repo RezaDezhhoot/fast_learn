@@ -55,7 +55,7 @@
                     <form method="get" wire:submit.prevent="search" class="subscriber-form">
                         <p class="pb-3 lh-24">به دنبال اخبار خاصی می گردید؟</p>
                         <div class="form-group">
-                            <input type="email" wire:model.defer="q" name="email" class="form-control form--control pl-3" placeholder="جستوجو اخبار" />
+                            <input type="email" wire:model.defer="search" name="email" class="form-control form--control pl-3" placeholder="جستوجو اخبار" />
                             <button wire:click="search" class="btn theme-btn w-100 mt-3" type="button">جستجو <i class="la la-arrow-left icon ml-1"></i></button>
                         </div>
                     </form>

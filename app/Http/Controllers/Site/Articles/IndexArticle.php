@@ -14,9 +14,9 @@ use Artesaos\SEOTools\Facades\TwitterCard;
 
 class IndexArticle extends BaseComponent
 {
-    protected $queryString = ['q','category'];
     public array $categories = [];
     public ?string $q = null , $category = null;
+    protected $queryString = ['q','category'];
 
     public function __construct($id = null)
     {
