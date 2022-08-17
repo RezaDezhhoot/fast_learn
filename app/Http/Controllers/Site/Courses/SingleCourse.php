@@ -192,7 +192,7 @@ class SingleCourse extends BaseComponent
     {
         $this->resetHomework();
         if (Auth::check()) {
-            if ($rateKey = rateLimiter(value:Auth::id().'_homework_'.$this->course->id,max_tries: 25))
+            if ($rateKey = rateLimiter(value:Auth::id().'_homework_'.$this->course->id,max_tries: 300))
             {
                 $this->show_homework_form = false;
                 return $this->emitNotify('زیادی تلاش کردید. لطفا پس از مدتی دوباره تلاش کنید.','warning');
@@ -212,6 +212,8 @@ class SingleCourse extends BaseComponent
                 if (!is_null($this->homework)) {
                     $this->file_path = $this->homework->file;
                     $this->homework_description = $this->homework->description;
+                } else {
+                    $this->emit('loadRecaptcha');
                 }
             } else $this->emitNotify('شما هنوز این دوره را شروع نکرده اید','warning');
         }

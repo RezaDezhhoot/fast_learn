@@ -568,7 +568,7 @@
                             @enderror
                         </div>
                         <div
-                            class="input-box col-lg-12 text-right overflow-hidden mb-3 {{ !is_null($homework) ? 'd-none' : '' }}">
+                            class="input-box col-lg-12 text-right overflow-hidden mb-3">
                             <div class="g-recaptcha d-inline-block"
                                 data-sitekey="{{ config('services.recaptcha.site_key') }}"
                                 data-callback="homeworkReCaptchaCallback" wire:ignore></div>
@@ -699,6 +699,18 @@
 
         Livewire.on('resetReCaptcha', () => {
             grecaptcha.reset();
+        });
+
+        Livewire.on('loadRecaptcha', () => {
+            const script = document.createElement('script');
+
+            script.setAttribute('src', 'https://www.google.com/recaptcha/api.js');
+
+            const start = document.createElement('script');
+
+
+            document.body.appendChild(script);
+            document.body.appendChild(start);
         });
 </script>
 @endpush
