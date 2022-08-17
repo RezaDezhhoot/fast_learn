@@ -190,6 +190,7 @@ class SingleCourse extends BaseComponent
 
     public function homework($id)
     {
+        $this->resetHomework();
         if (Auth::check()) {
             if ($rateKey = rateLimiter(value:Auth::id().'_homework_'.$this->course->id,max_tries: 25))
             {
@@ -221,7 +222,7 @@ class SingleCourse extends BaseComponent
         if (Auth::check()) {
             if (!is_null($this->episode) && !is_null($this->homework) && empty($this->homework->result)) {
                 $this->homeworkRepository->destroy($this->homework->id);
-                $this->reset(['homework','homework_file','homework_description','file_path']);
+                $this->resetHomework();
                 $this->emitNotify('تمرین با موفقیت حذف شد');
             }
         }
@@ -263,7 +264,7 @@ class SingleCourse extends BaseComponent
                 } else $this->emitNotify('امکان بارگذاری مجدد تمرین موجود نمی باشد','warning');
             } else $this->emitNotify('شما هنوز این دوره را شروع نکرده اید','warning');
         }
-
+        $this->resetHomework();
     }
 
     private function uploader()
@@ -271,13 +272,18 @@ class SingleCourse extends BaseComponent
         $disk = getDisk($this->episode->homework_storage);
         if (!empty($this->homework_file)) {
             $this->file_path = $disk->put('homeworks',$this->homework_file);
-            $this->reset(['homework_file']);
+            $this->reset(['homework_file','file_path']);
         }
     }
 
     public function updatedHomeworkFile()
     {
         $this->resetErrorBag();
+    }
+
+    public function resetHomework()
+    {
+        $this->reset(['homework','homework_file','homework_description','file_path']);
     }
 
     public function getFreeOrder() {
