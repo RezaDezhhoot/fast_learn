@@ -192,7 +192,7 @@ class SingleCourse extends BaseComponent
     {
         $this->resetHomework();
         if (Auth::check()) {
-            if ($rateKey = rateLimiter(value:Auth::id().'_homework_'.$this->course->id,max_tries: 300))
+            if ($rateKey = rateLimiter(value:Auth::id().'_homework_'.$this->course->id,max_tries: 100))
             {
                 $this->show_homework_form = false;
                 return $this->emitNotify('زیادی تلاش کردید. لطفا پس از مدتی دوباره تلاش کنید.','warning');
