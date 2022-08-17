@@ -101,7 +101,7 @@
                             </div>
                         </form>
                         <form wire:submit.prevent="storeDetails()" class="row pt-40px">
-                            <fieldset class="row border p-4">
+                            <fieldset class="row col-12 border p-4">
                                 <legend class="float-none w-auto">سایر اطلاعات :</legend>
                                 <div class="input-box col-lg-6">
                                     <label class="label-text">شماره ملی </label>
@@ -136,7 +136,7 @@
                                        onSelect: function () {
                                                 $dispatch('input', $('#birthday').val())
                                             },
-    
+
                                        });">
                                         <span class="la la-calendar-day input-icon"></span>
                                         @error('birthday')
@@ -180,33 +180,35 @@
                                     <button type="submit" class="btn btn-outline-success">ذخیره تغییرات</button>
                                 </div>
                             </fieldset>
-                            
+
                             <!-- end input-box -->
                         </form>
                     </div>
 
                     <div class="setting-body pt-20px" wire:ignore.self>
-                        <h3 class="fs-17 font-weight-semi-bold pb-4">اطلاعات مدرس</h3>
                         @role('teacher')
                         <form wire:submit.prevent="storeTeacher()" class="row">
-                            <div class="input-box col-12">
-                                <label class="label-text">عنوان</label>
-                                <div class="form-group">
-                                    <input class="form-control form--control" type="text" name="text"
-                                           wire:model.defer="teacher_title"/>
-                                    <span class="la la-user input-icon"></span>
-                                    @error('teacher_title')
-                                    <small class="text-danger">{{$message}}</small>
-                                    @enderror
+                            <fieldset class="row col-12 border p-4">
+                                <legend class="float-none w-auto">اطلاعات مدرس :</legend>
+                                <div class="input-box col-12">
+                                    <label class="label-text">عنوان</label>
+                                    <div class="form-group">
+                                        <input class="form-control form--control" type="text" name="text"
+                                               wire:model.defer="teacher_title"/>
+                                        <span class="la la-user input-icon"></span>
+                                        @error('teacher_title')
+                                        <small class="text-danger">{{$message}}</small>
+                                        @enderror
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="input-box col-12">
-                                <label class="label-text">متن</label>
-                                <x-admin.forms.basic-text-editor with="12" id="content" label="" wire:model.defer="teacher_content"/>
-                            </div>
-                            <div class="input-box col-lg-12 py-2">
-                                <button type="submit" class="btn theme-btn">ذخیره تغییرات</button>
-                            </div>
+                                <div class="input-box col-12">
+                                    <label class="label-text">متن</label>
+                                    <x-admin.forms.basic-text-editor with="12" id="content" label="" wire:model.defer="teacher_content"/>
+                                </div>
+                                <div class="input-box col-lg-12 py-2">
+                                    <button type="submit" class="btn theme-btn">ذخیره تغییرات</button>
+                                </div>
+                            </fieldset>
                         </form>
                         @endif
                     </div>
