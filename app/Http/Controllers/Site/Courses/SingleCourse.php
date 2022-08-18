@@ -167,20 +167,22 @@ class SingleCourse extends BaseComponent
         if (!auth()->check())
             return $this->addError('comment','لطفا ابتدا ثبت نام کنید');
 
+        $status = CommentEnum::NOT_CONFIRMED;
+        if (!is_null($this->course->teacher) && $this->course->teacher->user->id == Auth::id()) {
+            $status = CommentEnum::CONFIRMED;
+        }
         $data = [
             'user_id' => auth()->id(),
             'content' => $this->comment,
             'parent_id'=> $this->actionComment ?? null,
-            'status' => !is_null($this->course->teacher) ?
-                ($this->course->teacher->user->id == Auth::id() ? CommentEnum::CONFIRMED : CommentEnum::NOT_CONFIRMED) :
-                CommentEnum::NOT_CONFIRMED
+            'status' => $status
         ];
-        $this->emit('resetReCaptcha');
         $this->courseRepository->newComment($this->course,$data);
+        $this->emit('resetReCaptcha');
         $this->reset(['comment','actionLabel','actionComment','recaptcha']);
         if (!is_null($this->course->teacher) && $this->course->teacher->user->id == Auth::id())
             return $this->emitNotify(' دیدگاه با موفقیت ثبت شد');
-        else return $this->emitNotify(' دیدگاه با موفقیت ثبت شد پس از تایید نمایش داده خواهد شد');
+        return $this->emitNotify(' دیدگاه با موفقیت ثبت شد پس از تایید نمایش داده خواهد شد');
     }
 
     public function moreComment()

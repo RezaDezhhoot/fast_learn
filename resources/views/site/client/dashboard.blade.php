@@ -4,7 +4,7 @@
         <div class="breadcrumb-content d-flex flex-wrap align-items-center justify-content-between mb-3">
             <div class="media media-card align-items-center">
                 <div class="media-img media--img media-img-md rounded-full">
-                    <img class="rounded-full" src="{{ asset(auth()->user()->image) }}" alt="تصویر کاربر" />
+                    <img class="rounded-full" src="{{asset(auth()->user()->image)}}" alt="" />
                 </div>
                 <div class="media-body">
                     <h2 class="section__title fs-30">سلام، {{ auth()->user()->name }}</h2>
