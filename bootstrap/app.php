@@ -15,6 +15,13 @@ $app = new Illuminate\Foundation\Application(
     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 );
 
+# for shared hosts:
+
+//$app->bind('path.public', function() {
+//    return realpath(base_path().'/../public_html');
+//});
+
+
 /*
 |--------------------------------------------------------------------------
 | Bind Important Interfaces
