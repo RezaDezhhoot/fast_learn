@@ -148,12 +148,13 @@ class SetPermissionsAndRoles extends Command
             DB::beginTransaction();
             $permissionRepository->insert($permissions);
             $admin = $roleRepository->create(['name' => 'admin']);
+            $teacher = $roleRepository->create(['name' => 'teacher']);
             $super_admin = $roleRepository->create(['name' => 'super_admin']);
             $administrator = $roleRepository->create(['name' => 'administrator']);
             $super_admin->syncPermissions($permissionRepository->getAll());
             $administrator->syncPermissions($permissionRepository->getAll());
             $user = $userRepository->create($user);
-            $userRepository->syncRoles($user,[$admin,$super_admin,$administrator]);
+            $userRepository->syncRoles($user,[$admin,$super_admin,$administrator,$teacher]);
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();

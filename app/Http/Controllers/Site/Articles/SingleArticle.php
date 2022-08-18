@@ -86,11 +86,15 @@ class SingleArticle extends BaseComponent
         if (!auth()->check())
             return $this->addError('comment','لطفا ابتدا ثبت نام کنید');
 
+        $status = CommentEnum::NOT_CONFIRMED;
+        if ($this->article->user_id == auth()->id()) {
+            $status = CommentEnum::CONFIRMED;
+        }    
         $data = [
             'user_id' => auth()->id(),
             'content' => $this->comment,
             'parent_id'=> $this->actionComment ?? null,
-            'status' => $this->article->user_id == auth()->id() ? CommentEnum::CONFIRMED : CommentEnum::NOT_CONFIRMED
+            'status' => $status 
         ];
 
         $comment = $this->articleRepository->newComment($this->article,$data);

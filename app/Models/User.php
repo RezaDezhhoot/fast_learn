@@ -48,6 +48,8 @@ class User extends Authenticatable implements Wallet, Confirmable
 
     protected array $searchAbleColumns = ['email','phone'];
 
+    const USER_DEFAULT_IMAGE = 'site/images/icons8-user-30.png';
+
 
     protected $table = 'users';
     /**
@@ -110,6 +112,14 @@ class User extends Authenticatable implements Wallet, Confirmable
     public function setImageAttribute($value)
     {
         $this->attributes['image'] = str_replace(env('APP_URL'), '', $value);
+    }
+
+    public function getImageAttribute($value)
+    {
+        if (empty($value))
+            return self::USER_DEFAULT_IMAGE;
+
+        return $value;  
     }
 
     public function details(): HasOne

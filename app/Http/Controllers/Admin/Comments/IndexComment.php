@@ -26,7 +26,7 @@ class IndexComment extends BaseComponent
     public function mount()
     {
         foreach (CommentEnum::getStatus() as $key => $value)
-            $this->data['status'][$key] = $value.' ('.$this->commentRepository->getByConditionCount('status','=',$key).')';
+            $this->data['status'][$key] = $value.' ('.$this->commentRepository->getByConditionCount('status','=',$key,false).')';
 
         $this->data['for'] = CommentEnum::getFor();
     }

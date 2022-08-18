@@ -11,7 +11,6 @@
                 </div>
             </div>
             <x-admin.forms.dropdown id="for" :data="$data['for']" label="نوع" wire:model="for"/>
-            <x-admin.forms.dropdown id="case" :data="$data['case']" label="مورد" wire:model="case"/>
             @include('admin.layouts.advance-table')
             <div class="row">
                 <div class="col-lg-12 table-responsive">

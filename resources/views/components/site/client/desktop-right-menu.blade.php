@@ -12,11 +12,7 @@
     <ul class="cart-dropdown-menu after-none p-0 notification-dropdown-menu">
         <li class="menu-heading-block d-flex align-items-center">
             <a class="avatar-sm flex-shrink-0 d-block">
-                @if(auth()->user()->image)
-                    <img class="rounded-full img-fluid h-100" src="{{asset(auth()->user()->image)}}" alt="" />
-                @else
-                    <img class="rounded-full img-fluid h-100" src="{{asset('site/images/icons8-user-30.png')}}" alt="" />
-                @endif
+                <img class="rounded-full img-fluid h-100" src="{{asset(auth()->user()->image)}}" alt="" />
             </a>
             <div class="ml-2">
                 <h4><a class="text-black">{{ auth()->user()->name }}</a></h4>

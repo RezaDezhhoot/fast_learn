@@ -31,11 +31,11 @@
         });
         Livewire.on('notify', data => {
             Swal.fire({
-                position: 'bottom-end',
+                position: 'top-end',
                 icon: data.icon,
                 title: data.title,
                 showConfirmButton: false,
-                timer: 1500,
+                timer: 3500,
                 toast: true,
                 timerProgressBar: true,
                 didOpen: (toast) => {
