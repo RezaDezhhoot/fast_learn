@@ -23,10 +23,10 @@ php artisan migrate
 ````
 And in the last step, you can enter the following command to access the app
 ````bash
-php attisan app:start
+php artisan app:start
 ````
 Then
 ````bash
-php attisan serve
+php artisan serve
 ````
 Now you can enter the admin panel from the address ****127.0.0.1:8000/auth**** with the phone and password of the **1234** - **admin**
