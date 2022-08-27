@@ -112,7 +112,7 @@
                     autoplay: !1,
                     margin: 25,
                     navText: ["<i class='la la-arrow-right'></i>", "<i class='la la-arrow-left'></i>"],
-                    responsive: { 320: { items: 2 }, 992: { items: 3 } ,1200:{items:4} },
+                    responsive: { 320: { items: 1 }, 767: { items: 2 }, 992: { items: 3 }, 1025: { items: 4 } },
                 }),
             e(d).length && e(d).owlCarousel({ loop: !0, items: 1,rtl: true, nav: !1, dots: !0, smartSpeed: 500, autoplay: !0, margin: 15 }),
             e(u).length && e(u).owlCarousel({ loop: !0, items: 3,rtl: true, nav: !1, dots: !0, smartSpeed: 500, autoplay: !0, margin: 15, responsive: { 320: { items: 1 }, 768: { items: 2 }, 992: { items: 3 } } }),
@@ -127,7 +127,7 @@
                     autoplay: !1,
                     margin: 30,
                     autoHeight: !0,
-                    responsive: { 320: { items: 1 }, 767: { items: 2 }, 992: { items: 3 }, 1025: { items: 4 }, 1441: { items: 5 } },
+                    responsive: { 320: { items: 1 }, 767: { items: 2 }, 992: { items: 3 }, 1025: { items: 4 }},
                 }),
             e(g).length &&
                 e(g).owlCarousel({
@@ -141,7 +141,7 @@
                     margin: 30,
                     autoHeight: !0,
                     navText: ["<i class='la la-angle-right'></i>", "<i class='la la-angle-left'></i>"],
-                    responsive: { 320: { items: 1 }, 768: { items: 2 } },
+                     responsive: { 320: { items: 1 }, 767: { items: 2 }, 992: { items: 3 }, 1025: { items: 4 } },
                 }),
             e(p).length &&
                 e(p).owlCarousel({
@@ -155,7 +155,7 @@
                     margin: 30,
                     autoHeight: !0,
                     navText: ["<i class='la la-arrow-right'></i>", "<i class='la la-arrow-left'></i>"],
-                    responsive: { 320: { items: 1 }, 768: { items: 2 }, 1025: { items: 3 } },
+                     responsive: { 320: { items: 1 }, 767: { items: 2 }, 992: { items: 3 }, 1025: { items: 4 } },
                 }),
             e(v).length && e(v).owlCarousel({ loop: !0,rtl: true, items: 5, nav: !1, dots: !1, smartSpeed: 500, autoplay: !0, responsive: { 0: { items: 2 }, 481: { items: 3 }, 768: { items: 4 }, 992: { items: 5 } } }),
             e(h).length && e(h).owlCarousel({ loop: !0,rtl: true, items: 3, nav: !1, dots: !0, smartSpeed: 500, autoplay: !1, margin: 30, responsive: { 320: { items: 1 }, 992: { items: 3 },1200:{items:4} } }),
@@ -171,7 +171,7 @@
                     margin: 20,
                     autoHeight: !0,
                     navText: ["<i class='la la-arrow-right'></i>", "<i class='la la-arrow-left'></i>"],
-                    responsive: { 320: { items: 1 }, 480: { items: 2 }, 768: { items: 3 }, 992: { items: 5 } },
+                     responsive: { 320: { items: 1 }, 767: { items: 2 }, 992: { items: 3 }, 1025: { items: 4 } },
                 }),
             e(k).length && e(k).owlCarousel({ loop: !0, items: 1,rtl: true, nav: !0, dots: !1, smartSpeed: 500, autoplay: !1, margin: 20, autoHeight: !0, navText: ["<i class='la la-arrow-right'></i>", "<i class='la la-arrow-left'></i>"] }),
             e(C).length &&
@@ -186,7 +186,7 @@
                     margin: 20,
                     autoHeight: !0,
                     navText: ["<i class='la la-arrow-right'></i>", "<i class='la la-arrow-left'></i>"],
-                    responsive: { 320: { items: 1 }, 768: { items: 2 }, 992: { items: 3 } },
+                     responsive: { 320: { items: 1 }, 767: { items: 2 }, 992: { items: 3 }, 1025: { items: 4 } },
                 }),
             e('[data-toggle="tooltip"]').tooltip(),
             s.on("click", ".portfolio-filter li", function () {
