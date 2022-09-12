@@ -470,7 +470,7 @@
                                 <div class="media-body">
                                     <h5 class="fs-15"><a href="{{ route('course',$item->slug) }}">{{ $item->title }}</a>
                                     </h5>
-                                    <span class="d-block lh-18 py-1 fs-14">{{ $item->teacher->name }}</span>
+                                    <span class="d-block lh-18 py-1 fs-14">{{ $item->teacher->name ?? '' }}</span>
                                     <p class="text-black font-weight-semi-bold lh-18 fs-15">{{ $item->price >0 ?
                                         number_format($item->price).' تومان' : 'رایگان' }}</p>
                                 </div>
