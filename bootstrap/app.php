@@ -17,9 +17,9 @@ $app = new Illuminate\Foundation\Application(
 
 # for shared hosts:
 
-//$app->bind('path.public', function() {
-//    return realpath(base_path().'/../public_html');
-//});
+$app->bind('path.public', function() {
+    return realpath(base_path().'/../public_html');
+});
 
 
 /*
