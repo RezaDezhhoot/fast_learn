@@ -1,6 +1,6 @@
 <div>
     @section('title',' سفارش ها ')
-    <x-admin.form-control store="{{false}}" title="سفارش ها"/>
+    <x-admin.form-control link="{{ route('admin.create.order',['create'] ) }}" title="سفارش ها"/>
     <div class="card card-custom">
         <div class="card-body">
             <x-admin.forms.dropdown id="status" :data="$data['status']" label="وضیعت" wire:model="status"/>

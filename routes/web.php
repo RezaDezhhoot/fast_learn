@@ -73,7 +73,8 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->group(function (){
     Route::get('/notifications',App\Http\Controllers\Admin\Notifications\IndexNotification::class)->name('admin.notification');
     Route::get('/notifications/{action}/{id?}',App\Http\Controllers\Admin\Notifications\StoreNotification::class)->name('admin.store.notification');
     Route::get('/orders',App\Http\Controllers\Admin\Orders\IndexOrder::class)->name('admin.order');
-    Route::get('/orders/{action}/{id?}',App\Http\Controllers\Admin\Orders\StoreOrder::class)->name('admin.store.order');
+    Route::get('/orders/{action}/{id}',App\Http\Controllers\Admin\Orders\StoreOrder::class)->name('admin.store.order');
+    Route::get('/order/{action}',App\Http\Controllers\Admin\Orders\CreateOrder::class)->name('admin.create.order');
     Route::get('/payments',App\Http\Controllers\Admin\Payments\IndexPayment::class)->name('admin.payment');
     Route::get('/payments/{action}/{id?}',App\Http\Controllers\Admin\Payments\StorePayment::class)->name('admin.store.payment');
     Route::get('/questions',App\Http\Controllers\Admin\Questions\IndexQuestion::class)->name('admin.question');

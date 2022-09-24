@@ -137,7 +137,7 @@
                     <i class="menu-icon ki ki-bold-more-hor icon-md "></i>
                 </li>
                 @can('show_orders')
-                    <x-admin.menu-item href="{{route('admin.order')}}" icon="flaticon2-box"  :active="request()->routeIs(['admin.order','admin.store.order'])" label="سفارش ها" />
+                    <x-admin.menu-item href="{{route('admin.order')}}" icon="flaticon2-box"  :active="request()->routeIs(['admin.order','admin.store.order','admin.create.order'])" label="سفارش ها" />
                 @endcan
                 @can('show_payments')
                     <x-admin.menu-item href="{{route('admin.payment')}}" icon="fab fa-cc-amazon-pay" :active="request()->routeIs(['admin.payment','admin.store.payment'])" label="پرداختی ها " />

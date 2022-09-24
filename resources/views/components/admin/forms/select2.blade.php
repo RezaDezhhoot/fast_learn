@@ -1,8 +1,13 @@
 @props(['id', 'label','data', 'value' => false])
 <div class="form-group col-12" wire:ignore>
         <label for="{{$id}}"> {{$label}} </label>
+    <style>
+        .select2-container {
+            width: 100% !important;
+        }
+    </style>    
     <select id="{{$id}}" {{ $attributes->wire('model') }}
-            class="form-control select2"  name="param">
+            class="form-control select2" {!! $attributes->merge(['class'=> 'form-control']) !!}>
         <option value="">انتخاب</option>
         @foreach($data as $key => $item)
             <option  value="{{ $value ? $item : $key }}">{{$item}}</option>
