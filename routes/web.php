@@ -28,6 +28,9 @@ Route::get('/auth',App\Http\Controllers\Site\Auth\Auth::class)->name('auth');
 Route::get('/teachers',App\Http\Controllers\Site\Teachers\IndexTeacher::class)->name('teachers');
 Route::get('/teachers/{id}',App\Http\Controllers\Site\Teachers\SingleTeacher::class)->name('teacher');
 Route::get('/codes/{code}',App\Http\Controllers\CodeController::class)->name('codes');
+// v2-samples
+Route::get('/sample-questions',App\Http\Controllers\Site\Samples\IndexSample::class)->name('samples');
+Route::get('/sample-questions/{slug}',App\Http\Controllers\Site\Samples\SingleSample::class)->name('sample');
 
 Route::middleware(['auth'])->group(function (){
     Route::get('/checkout',App\Http\Controllers\Site\Carts\Checkout::class)->name('checkout');
@@ -47,6 +50,8 @@ Route::prefix('client')->middleware(['auth'])->group(function (){
     Route::get('/certificates/{id}',App\Http\Controllers\Site\Client\Certificate::class)->name('user.certificate');
     Route::get('/exam/{token}',App\Http\Controllers\Site\Client\Exam::class)->name('user.exam');
     Route::get('/homeworks',App\Http\Controllers\Site\Client\Homeworks::class)->name('user.homeworks');
+    // v2-samples
+    Route::get('/sample-questions',App\Http\Controllers\Site\Client\MySample::class)->name('user.sample');
 });
 Route::prefix('admin')->middleware(['auth','role:admin'])->group(function (){
     Route::get('/dashboard',App\Http\Controllers\Admin\Dashboard\IndexDashboard::class)->name('admin.dashboard');
@@ -99,7 +104,9 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->group(function (){
     Route::get('/settings/fag', App\Http\Controllers\Admin\Settings\FagSetting::class)->name('admin.setting.fag');
     Route::get('/settings/fag/{action}/{id?}', App\Http\Controllers\Admin\Settings\StoreFag::class)->name('admin.setting.fag.create');
     Route::get('/logs', App\Http\Controllers\Admin\Logs\IndexLog::class)->name('admin.log');
-
+    // v2-samples
+    Route::get('/samples',App\Http\Controllers\Admin\Samples\IndexSample::class)->name('admin.sample');
+    Route::get('/samples/{action}/{id?}',App\Http\Controllers\Admin\Samples\StoreSample::class)->name('admin.store.sample');
 });
 
 Route::middleware('guest')->get('auth',App\Http\Controllers\Site\Auth\Auth::class)->name('auth');

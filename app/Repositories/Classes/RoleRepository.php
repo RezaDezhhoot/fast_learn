@@ -52,4 +52,9 @@ class RoleRepository implements RoleRepositoryInterface
         // TODO: Implement create() method.
         return Role::create($data);
     }
+
+    public function getByName($name)
+    {
+        return Role::where('name',$name)->firstOrFail();
+    }
 }

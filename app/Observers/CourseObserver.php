@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Enums\SampleEnum;
 use App\Models\Course;
 
 class CourseObserver
@@ -38,6 +39,7 @@ class CourseObserver
     {
         $course->details()->update(['course_id' => null]);
         $course->transcripts()->update(['course_id'=> null ]);
+        $course->samples()->update(['course_id'=> null ,'status' => SampleEnum::DEMO]);
     }
 
     /**

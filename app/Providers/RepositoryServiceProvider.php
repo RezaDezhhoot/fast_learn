@@ -25,6 +25,7 @@ use App\Repositories\Classes\QuizRepository;
 use App\Repositories\Classes\ReductionMetaRepository;
 use App\Repositories\Classes\ReductionRepository;
 use App\Repositories\Classes\RoleRepository;
+use App\Repositories\Classes\SampleRepository;
 use App\Repositories\Classes\SendRepository;
 use App\Repositories\Classes\SettingRepository;
 use App\Repositories\Classes\TagRepository;
@@ -57,6 +58,7 @@ use App\Repositories\Interfaces\QuizRepositoryInterface;
 use App\Repositories\Interfaces\ReductionMetaRepositoryInterface;
 use App\Repositories\Interfaces\ReductionRepositoryInterface;
 use App\Repositories\Interfaces\RoleRepositoryInterface;
+use App\Repositories\Interfaces\SampleRepositoryInterface;
 use App\Repositories\Interfaces\SendRepositoryInterface;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
 use App\Repositories\Interfaces\TagRepositoryInterface;
@@ -239,6 +241,11 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             LogRepositoryInterface::class,
             LogRepository::class,
+        );
+
+        $this->app->bind(
+            SampleRepositoryInterface::class,
+            SampleRepository::class,
         );
     }
 

@@ -25,6 +25,17 @@ class CategoryRepository  implements CategoryRepositoryInterface
         };
     }
 
+    public function getCategoriesWithTheirSubCategories($list = null , array $where = [])
+    {
+        $categories = $this->getAll($list,$where);
+        foreach ($categories as $item){
+            $item->sub_categories = array_value_recursive('slug',$item->childrenRecursive->toArray());
+            $item->sub_categories_title = array_value_recursive('title',$item->childrenRecursive->toArray());
+        }
+
+        return $categories->toArray();
+    }
+
     /**
      * @param $search
      * @param $type

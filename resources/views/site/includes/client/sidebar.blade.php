@@ -15,6 +15,7 @@
         <x-site.client.sidebar-link title=" دوره های من" link="{{ route('user.courses') }}" icon="la la-file pr-2" :active="request()->routeIs('user.courses')" />
         <x-site.client.sidebar-link title=" ازموان های من" link="{{ route('user.quizzes') }}" icon="la la-pen pr-2" :active="request()->routeIs(['user.quizzes','user.quiz','user.exam'])" />
         <x-site.client.sidebar-link title=" گواهینامه ها" link="{{ route('user.certificates') }}" icon="la la-certificate pr-2" :active="request()->routeIs(['user.certificates','user.certificate'])" />
+        <x-site.client.sidebar-link title="نمونه سوالات من" link="{{ route('user.sample') }}" icon="la la-question pr-2" :active="request()->routeIs(['user.sample'])" />
         <x-site.client.sidebar-link title=" پرسش های من" link="{{ route('user.comments') }}" icon="la la-comment pr-2" :active="request()->routeIs('user.comments')" />
         <x-site.client.sidebar-link title=" تمرین های من" link="{{ route('user.homeworks') }}" icon="la la-file-archive pr-2" :active="request()->routeIs('user.homeworks')" />
         <x-site.client.sidebar-link title=" پیام ها" link="{{ route('user.notifications') }}" icon="la la-bell pr-2" :active="request()->routeIs('user.notifications')" />

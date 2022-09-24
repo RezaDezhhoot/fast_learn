@@ -37,13 +37,8 @@ class IndexCourse extends BaseComponent
         JsonLd::setTitle($settingRepository->getRow('title').' دوره های اموزشی ');
         JsonLd::setDescription($settingRepository->getRow('seoDescription'));
         JsonLd::addImage(asset($settingRepository->getRow('logo')));
-        $categories = $categoryRepository->getAll(CategoryEnum::COURSE,[['parent_id',null]]);
-        foreach ($categories as $item){
-            $item->sub_categories = array_value_recursive('slug',$item->childrenRecursive->toArray());
-            $item->sub_categories_title = array_value_recursive('title',$item->childrenRecursive->toArray());
-        }
 
-        $this->categories = $categories->toArray();
+        $this->categories = $categoryRepository->getCategoriesWithTheirSubCategories(CategoryEnum::COURSE,[['parent_id',null]]);
         $this->types = ['free' => 'رایگان' , 'cash' => 'نقدی'];
         $this->data['types'] = CourseEnum::getTypes();
         $this->orders = [

@@ -33,6 +33,9 @@
                     <a href="{{route('user.dashboard')}}"> <i class="la la-dashboard mr-1"></i> داشبورد </a>
                 </li>
                 <li>
+                    <a href="{{route('user.sample')}}"> <i class="la la-question mr-1"></i> نمونه سوالات من </a>
+                </li>
+                <li>
                     <a href="{{route('user.profile')}}"> <i class="la la-gear mr-1"></i> پروفایل </a>
                 </li>
                 <li>

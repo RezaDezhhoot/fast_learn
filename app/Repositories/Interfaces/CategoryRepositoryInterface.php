@@ -27,4 +27,7 @@ interface CategoryRepositoryInterface
     public function get(array $where = [], $get = 'get');
 
     public static function observe();
+
+    public function getCategoriesWithTheirSubCategories($list = null , array $where = []);
+
 }

@@ -53,6 +53,7 @@ class Permission extends \Spatie\Permission\Models\Permission
             'episodes' => 'درس ها',
             'contacts' => 'ارتباط با ما',
             'logs' => 'لاگ ها',
+            'samples' => 'نمونه سوالات'
         ];
     }
 

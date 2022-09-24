@@ -27,7 +27,7 @@
             @empty
                 <div class="custom-box-shadow d-flex align-items-center justify-content-center alert alert-info">
                     <p>
-                        شماره هنوز در دوره ای ثبت نام نکرده ایا.
+                        شماره هنوز در دوره ای ثبت نام نکرده اید.
                     </p>
                 </div>
             @endforelse

@@ -456,6 +456,25 @@
                             </ul>
                         </div>
                     </div>
+                    @if($has_sample)
+                        <div class="card card-item">
+                            <div class="card-body">
+                                <h3 class="card-title fs-18 pb-2">نمونه سوالات</h3>
+                                <div class="divider"><span></span></div>
+                                
+                                @foreach($course->samples as $item)
+                                    <div class="">
+                                        @livewire('components.site.samples.sample-row', ['sample' => $item])
+                                    </div>
+                                @endforeach
+                                <!-- end media -->
+                                <div class="view-all-course-btn-box">
+                                    <a href="{{ route('samples') }}" class="btn theme-btn w-100">مشاهده همه  نمونه سوالات <i
+                                            class="la la-arrow-left icon ml-1"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                     <!-- end card -->
                     <div class="card card-item">
                         <div class="card-body">

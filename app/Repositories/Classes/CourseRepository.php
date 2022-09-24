@@ -5,6 +5,7 @@ namespace App\Repositories\Classes;
 
 use App\Enums\CourseEnum;
 use App\Enums\OrderEnum;
+use App\Enums\SampleEnum;
 use App\Models\Course;
 use App\Observers\CourseObserver;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
@@ -102,7 +103,13 @@ class CourseRepository implements CourseRepositoryInterface
 
     public function get($col, $value , $published = false)
     {
-        return $published ? Course::published()->with(['episodes','comments'])->where($col,$value)->firstOrfail() : Course::where($col,$value)->with(['episodes','comments'])->firstOrfail();
+        return $published ? 
+        Course::published()->with(['episodes','comments','samples' => function($q){
+            return $q->where('type',SampleEnum::PUBLIC_TYPE);
+        }])->where($col,$value)->firstOrfail() :
+        Course::where($col,$value)->with(['episodes','comments','samples'=> function($q){
+            return $q->where('type',SampleEnum::PUBLIC_TYPE);
+        }])->firstOrfail();
     }
 
     public function whereIn($col, array $value , $take = false , $published = false , $where = [])

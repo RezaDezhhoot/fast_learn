@@ -23,4 +23,6 @@ interface RoleRepositoryInterface
     public function delete(Role $role);
 
     public function create(array $data);
+
+    public function getByName($name);
 }

@@ -57,7 +57,7 @@ class SingleArticle extends BaseComponent
         $this->page_address = [
             'home' => ['link' => route('home') , 'label' => 'صفحه اصلی'],
             'articles' => ['link' => route('articles') , 'label' => 'مقالات'],
-            'category' => ['link' => route('courses',['category' => $this->article->category_id]) ,'label' => $this->article->category->title],
+            'category' => ['link' => route('articles',['category' => $this->article->category_id]) ,'label' => $this->article->category->title],
             'article' => ['link' => '' , 'label' => $this->article->title],
         ];
         $ids = array_value_recursive('id',$this->categoryRepository->find($this->article->category_id)->toArray());

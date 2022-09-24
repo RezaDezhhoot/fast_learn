@@ -15,6 +15,9 @@
             <a href="{{route('articles')}}">مقالات </a>
         </li>
         <li>
+            <a href="{{route('samples')}}">نمونه سوالات </a>
+        </li>
+        <li>
             <a href="{{route('cart')}}">سبد خرید </a>
         </li>
         <li>

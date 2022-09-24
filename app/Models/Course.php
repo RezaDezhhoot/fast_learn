@@ -246,4 +246,9 @@ class Course extends Model
     {
         return $query->whereNotNull('category_id');
     }
+
+    public function samples()
+    {
+        return $this->hasMany(Sample::class);
+    }
 }
