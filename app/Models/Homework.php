@@ -43,7 +43,7 @@ class Homework extends Model
     protected function storageLabel(): Attribute
     {
         return Attribute::make(
-            get: fn () => in_array($this->storage , StorageEnum::storages()) ? StorageEnum::getStorages()[$this->storage] : ''
+            get: fn () => in_array($this->storage , array_flip(getAvailableStorages()) ) ? getAvailableStorages()[$this->storage] : ''
         );
     }
 }

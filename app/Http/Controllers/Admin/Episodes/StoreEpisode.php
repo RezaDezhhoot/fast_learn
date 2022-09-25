@@ -30,15 +30,13 @@ class StoreEpisode extends BaseComponent
         $this->settingRepository = app(SettingRepositoryInterface::class);
         $this->episodeRepository = app(EpisodeRepositoryInterface::class);
         $this->homeworkRepository = app(HomeworkRepositoryInterface::class);
-        $this->storage = $this->settingRepository->getRow('storage') ?? StorageEnum::PRIVATE;
-        $this->disk = getDisk(storage:$this->storage);
     }
 
     public function mount($action , $id = null)
     {
         $this->authorizing('show_episodes');
         $this->set_mode($action);
-        $this->data['storage'] = array_flip(getAvailableStorages());
+        $this->data['storage'] = getAvailableStorages();
         $this->data['course'] = $this->courseRepository->getAll()->pluck('title','id');
         if ($this->mode == self::UPDATE_MODE) {
             $this->episode = $this->episodeRepository->findOrFail($id);
@@ -91,9 +89,9 @@ class StoreEpisode extends BaseComponent
             'allow_show_local_video' => ['required','boolean'],
             'course_id' => ['required','exists:courses,id'],
             'view' => ['required','integer'],
-            'file_storage' => [Rule::requiredIf(fn() => !empty($this->file)) ,'in:'.implode(',',array_values(getAvailableStorages())).','.null],
-            'video_storage' => [Rule::requiredIf(fn() => !empty($this->local_video)) ,'in:'.implode(',',array_values(getAvailableStorages())).','.null],
-            'homework_storage' => [Rule::requiredIf(fn() => $this->can_homework ==true) ,'in:'.implode(',',array_values(getAvailableStorages())).','.null],
+            'file_storage' => [Rule::requiredIf(fn() => !empty($this->file)) ,'in:'.implode(',',array_keys(getAvailableStorages())).','.null],
+            'video_storage' => [Rule::requiredIf(fn() => !empty($this->local_video)) ,'in:'.implode(',',array_keys(getAvailableStorages())).','.null],
+            'homework_storage' => [Rule::requiredIf(fn() => $this->can_homework ==true) ,'in:'.implode(',',array_keys(getAvailableStorages())).','.null],
             'free' => ['boolean'],
             'can_homework' => ['boolean'],
             'downloadable_local_video' => [Rule::requiredIf(fn() => !empty($this->downloadable_local_video)) ,'boolean'],

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Site\Client;
 
 use App\Enums\PaymentEnum;
+use App\Enums\StorageEnum;
 use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\PaymentRepositoryInterface;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
@@ -44,7 +45,7 @@ class Profile extends BaseComponent
         $this->userRepository = app(UserRepositoryInterface::class);
         $this->userDetailRepository = app(UserDetailRepositoryInterface::class);
         $this->teacherRepository = app(TeacherRepositoryInterface::class);
-        $this->disk = getDisk('public');
+        $this->disk = getDisk(StorageEnum::PUBLIC);
     }
 
     public function mount($gateway = null)

@@ -14,6 +14,7 @@
                 <a wire:click="download()" class="icon-element icon-element-sm shadow-sm cursor-pointer ml-1 text-success" data-toggle="tooltip" data-placement="top" data-title="دانلود">
                     <i class="la la-download"></i>
                 </a>
+                <small wire:loading="download()">در حال بارگیری ...</small>
             </div>
         </div>
     </div>

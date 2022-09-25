@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Enums\StorageEnum;
 use App\Events\AuthenticationEvent;
 use App\Events\ContactUsEvent;
 use App\Events\ExamEvent;
@@ -12,14 +13,17 @@ use App\Listeners\SendAuthenticationNotify;
 use App\Listeners\SendExamNotify;
 use App\Listeners\SendOrderNotify;
 use App\Listeners\SendRegisterNotify;
-use App\Repositories\Classes\HomeworkRepository;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\Interfaces\CourseRepositoryInterface;
 use App\Repositories\Interfaces\EventRepositoryInterface;
+use App\Repositories\Interfaces\HomeworkRepositoryInterface;
+use App\Repositories\Interfaces\SettingRepositoryInterface;
+use App\Repositories\Interfaces\StorageRepositoryInterface;
 use App\Repositories\Interfaces\TicketRepositoryInterface;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
@@ -65,12 +69,44 @@ class EventServiceProvider extends ServiceProvider
             [ContactUsListener::class, 'handle']
         );
 
+
+
+        $storage_repository = app(StorageRepositoryInterface::class);
+        $setting_repository = app(SettingRepositoryInterface::class);
         # Observers
         app(TicketRepositoryInterface::class)::observe();
         app(CategoryRepositoryInterface::class)::observe();
         app(CourseRepositoryInterface::class)::observe();
-        app(HomeworkRepository::class)::observe();
+        app(HomeworkRepositoryInterface::class)::observe();
         app(EventRepositoryInterface::class)::observe();
+        $storage_repository::observe();
+
+        Event::listen(
+            'Alexusmai\LaravelFileManager\Events\FilesUploading',
+            function ($event) use ($storage_repository , $setting_repository) {
+                $allowFileTypes = [];
+                $max_file_size = null;
+                if (!in_array($event->disk(), StorageEnum::getStorages())) {
+                    $storage = $storage_repository->first([['name', $event->disk()]]);
+                    Artisan::call('cache:clear');
+                    Artisan::call('config:clear');
+                    $allowFileTypes = explode(',', $storage->file_types);
+                    $max_file_size = !empty($storage->max_file_size) ? (int)$storage->max_file_size : null;
+                } else {
+                    $max_file_size_db_public = $setting_repository->getRow('public_max_file_size');
+                    $max_file_size_db_private = $setting_repository->getRow('private_max_file_size');
+                    if ($event->disk() == StorageEnum::PUBLIC_LABEL) {
+                        $allowFileTypes = explode(',', $setting_repository->getRow('public_storage_file_types'));
+                        $max_file_size = !empty($max_file_size_db_public) ? (int)$max_file_size_db_public : null ;
+                    } else {
+                        $allowFileTypes = explode(',', $setting_repository->getRow('private_storage_file_types'));
+                        $max_file_size = !empty($max_file_size_db_private) ? (int)$max_file_size_db_private : null ;
+                    }
+                }
+                config(['file-manager.allowFileTypes' =>  $allowFileTypes]);
+                config(['file-manager.maxUploadFileSize' =>  $max_file_size]);
+            }
+        );
     }
 
     /**

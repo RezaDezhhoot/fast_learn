@@ -5,38 +5,36 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Repositories\Interfaces\PermissionRepositoryInterface;
 use App\Repositories\Interfaces\RoleRepositoryInterface;
-use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 use Exception;
-use Illuminate\Support\Facades\Artisan;
 
-class MergeSampleQuestion extends Command
+class SetStoragesPermission extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'sample:run';
+    protected $signature = 'custom_storage:run';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'sample question settings';
+    protected $description = 'storage settings';
 
     /**
      * Execute the console command.
      *
      * @return int
      */
-    public function handle(PermissionRepositoryInterface $permissionRepository , RoleRepositoryInterface $roleRepository )
+    public function handle(PermissionRepositoryInterface $permissionRepository , RoleRepositoryInterface $roleRepository)
     {
         $permissions = [
-            ['name' => 'show_samples' , 'guard_name'=> 'web'],
-            ['name' => 'edit_samples', 'guard_name'=> 'web'],
-            ['name' => 'delete_samples', 'guard_name'=> 'web'],
+            ['name' => 'show_storages' , 'guard_name'=> 'web'],
+            ['name' => 'edit_storages', 'guard_name'=> 'web'],
+            ['name' => 'delete_storages', 'guard_name'=> 'web'],
         ];
         try {
             DB::beginTransaction();
@@ -44,7 +42,7 @@ class MergeSampleQuestion extends Command
             $administrator = $roleRepository->getByName('administrator');
             $administrator->syncPermissions($permissionRepository->getAll());
             DB::commit();
-            echo 'permissions of sample questions has been set into database successfully';
+            echo 'permissions of storages  been set into database successfully';
         } catch (Exception $e) {
             DB::rollBack();
             echo $e->getMessage();

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Profile;
 
+use App\Enums\StorageEnum;
 use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
@@ -18,7 +19,7 @@ class Profile extends BaseComponent
         parent::__construct($id);
         $this->settingRepository = app(SettingRepositoryInterface::class);
         $this->userRepository = app(UserRepositoryInterface::class);
-        $this->disk = getDisk(storage: 'public');
+        $this->disk = getDisk(storage: StorageEnum::PUBLIC);
     }
 
     public function mount()

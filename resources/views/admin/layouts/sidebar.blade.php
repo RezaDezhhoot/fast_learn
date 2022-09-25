@@ -165,6 +165,9 @@
                 @role('administrator')
                     <x-admin.menu-item href="{{route('telescope')}}" icon="flaticon-search" :active="request()->routeIs(['telescope'])" label=" گزارش های فنی سیستم" />
                 @endif
+                @can('show_storages')
+                    <x-admin.menu-item href="{{route('admin.storage')}}" icon="far fa-hdd" :active="request()->routeIs(['admin.storage','admin.store.storage'])" label="فضا های ذخیره سازی" />
+                @endif
                 @can('show_settings')
                     <x-admin.menu-group icon="flaticon2-settings" :active="request()->routeIs(
                     ['admin.setting.base','admin.setting.home','admin.setting.aboutUs','admin.setting.contactUs'

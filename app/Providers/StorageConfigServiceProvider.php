@@ -26,77 +26,50 @@ class StorageConfigServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $storage_table = 'storages';
+        $disks = [
+            'local' => [
+                'driver' => 'local',
+                'root' => storage_path('app'),
+                'throw' => false,
+            ],
+            StorageEnum::PUBLIC_LABEL => [
+                'driver' => 'local',
+                'root' => storage_path('app/public'),
+                'url' => env('APP_URL').'/storage',
+                'visibility' => 'public',
+                'throw' => false,
+            ],
+            StorageEnum::PRIVATE_LABEL => [
+                'driver' => 'local',
+                'root' => storage_path('app/private'),
+                'url' => '',
+                'visibility' => 'private',
+                'throw' => false,
+            ]
+        ];
 
-        if (Schema::hasTable('settings'))
-        {
-            $disks = [
-                StorageEnum::FTP_LABEL => [
-                    'driver' => 'FTP',
-                    'root' => env('FTP_ROOT',DB::table('settings')->where('name',StorageEnum::FTP_LABEL."_root")->first()->value ?? null),
-                    'host' => env('FTP_HOST',DB::table('settings')->where('name',StorageEnum::FTP_LABEL."_ip")->first()->value ?? null),
-                    'username' => env('FTP_USERNAME',DB::table('settings')->where('name',StorageEnum::FTP_LABEL."_username")->first()->value ?? null),
-                    'password' => env('FTP_PASSWORD',DB::table('settings')->where('name',StorageEnum::FTP_LABEL."_password")->first()->value ?? null),
-                    'port' => env('FTP_PORT',(int)(DB::table('settings')->where('name',StorageEnum::FTP_LABEL."_port")->first()->value ?? 21)),
-                    'ssl' => (DB::table('settings')->where('name',StorageEnum::FTP_LABEL."_ssl")->first()->value ?? false) == 1,
-                    'timeout' => 120,
-                ],
-                StorageEnum::S3_LABEL => [
-                    'driver' => 's3',
-                    'key' => env('AWS_ACCESS_KEY_ID',DB::table('settings')->where('name',StorageEnum::S3_LABEL."_key")->first()->value ?? null),
-                    'secret' => env('AWS_SECRET_ACCESS_KEY',DB::table('settings')->where('name',StorageEnum::S3_LABEL."_secret")->first()->value ?? null),
-                    'region' => env('AWS_DEFAULT_REGION',DB::table('settings')->where('name',StorageEnum::S3_LABEL."_region")->first()->value ?? null),
-                    'bucket' => env('AWS_BUCKET',DB::table('settings')->where('name',StorageEnum::S3_LABEL."_bucket")->first()->value ?? null),
-                    'url' => env('AWS_URL',DB::table('settings')->where('name',StorageEnum::S3_LABEL."_url")->first()->value ?? null),
-                    'endpoint' => env('AWS_ENDPOINT',DB::table('settings')->where('name',StorageEnum::S3_LABEL."_endpoint")->first()->value ?? null),
-                    'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', (DB::table('settings')->where('name',StorageEnum::S3_LABEL."_use_path_style_endpoint")->first()->value ?? 0) == 1),
-                    'throw' => false,
-                ],
-                StorageEnum::SFTP_LABEL => [
-                    'driver' => 'SFTP',
-                    'host' => env('SFTP_HOST',DB::table('settings')->where('name',StorageEnum::SFTP_LABEL."_host")->first()->value ?? null),
-                    'username' => env('SFTP_USERNAME',DB::table('settings')->where('name',StorageEnum::SFTP_LABEL."_username")->first()->value ?? null),
-                    'password' => env('SFTP_PASSWORD',DB::table('settings')->where('name',StorageEnum::SFTP_LABEL."_password")->first()->value ?? null),
-                    'privateKey' => env('SFTP_PRIVATE_KEY',DB::table('settings')->where('name',StorageEnum::SFTP_LABEL."_privateKey")->first()->value ?? null),
-                    'hostFingerprint' => env('SFTP_HOST_FINGERPRINT',(DB::table('settings')->where('name',StorageEnum::SFTP_LABEL."_hostFingerprint")->first()->value ?? null)),
-                    'maxTries' => (int)(DB::table('settings')->where('name',StorageEnum::SFTP_LABEL."_maxTries")->first()->value ?? 0),
-                    'passphrase' => env('SFTP_PASSPHRASE',(DB::table('settings')->where('name',StorageEnum::SFTP_LABEL."_passphrase")->first()->value ?? null)),
-                    'port' => env('SFTP_PORT' ,(int)(DB::table('settings')->where('name',StorageEnum::SFTP_LABEL."_port")->first()->value ?? 22)),
-                    'root' => env('SFTP_ROOT',(DB::table('settings')->where('name',StorageEnum::SFTP_LABEL."_root")->first()->value ?? null)),
-                    'timeout' => 30,
-                    'useAgent' => (DB::table('settings')->where('name',StorageEnum::SFTP_LABEL."_useAgent")->first()->value ?? false) == 1,
-                ],
-                'local' => [
-                    'driver' => 'local',
-                    'root' => storage_path('app'),
-                    'throw' => false,
-                ],
-                StorageEnum::PUBLIC_LABEL => [
-                    'driver' => 'local',
-                    'root' => storage_path('app/public'),
-                    'url' => env('APP_URL').'/storage',
-                    'visibility' => 'public',
-                    'throw' => false,
-                ],
-                StorageEnum::PRIVATE_LABEL => [
-                    'driver' => 'local',
-                    'root' => storage_path('app/private'),
-                    'url' => '',
-                    'visibility' => 'private',
-                    'throw' => false,
-                ]
-            ];
+        if (Schema::hasTable($storage_table)) {
+            $storages = DB::table($storage_table)
+            ->whereNull('deleted_at')
+            ->where('status',StorageEnum::AVAILABLE)
+            ->get()
+            ->map(function($item , $key){
+                $item->config = json_decode($item->config,true);
 
-            config(['filesystems.disks' => $disks]);
-
-
-            $lfm_disks = [];
-            foreach (StorageEnum::storages() as $key => $item)
-            {
-                if ((DB::table('settings')->where('name',"{$key}_available")->first()->value ?? false) || $key == StorageEnum::PRIVATE_LABEL || $key == StorageEnum::PUBLIC_LABEL)
-                    $lfm_disks[] = $key;
-            }
-
-            config(['file-manager.diskList' => $lfm_disks]);
+                if (isset($item->config['port'])) 
+                    $item->config['port'] = (int)$item->config['port'];
+                
+                if (isset($item->config['privateKey'])) 
+                    $item->config['privateKey'] = emptyToNull($item->config['privateKey']);
+                
+                return $item;
+            })
+            ->pluck('config','name')
+            ->toArray();
+            
+            $disks = array_merge($storages,$disks);
         }
+        config(['filesystems.disks' => $disks]);
     }
 }

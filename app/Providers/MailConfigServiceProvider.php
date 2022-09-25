@@ -16,13 +16,14 @@ class MailConfigServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        if (Schema::hasTable('settings'))
+        $setting_table = 'settings';
+        if (Schema::hasTable($setting_table))
         {
-            $email_host = DB::table('settings')->where('name','email_host')->first();
+            $email_host = DB::table($setting_table)->where('name','email_host')->first();
             if (!empty($email_host->value))
             {
-                $email_user_name = DB::table('settings')->where('name','email_username')->first();
-                $email_password = DB::table('settings')->where('name','email_password')->first();
+                $email_user_name = DB::table($setting_table)->where('name','email_username')->first();
+                $email_password = DB::table($setting_table)->where('name','email_password')->first();
                 $config = array(
                     'transport' => 'smtp',
                     'host' => trim($email_host->value),

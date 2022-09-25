@@ -9,4 +9,6 @@ interface PermissionRepositoryInterface
     public function getAll();
 
     public function insert(array $data);
+
+    public function groupDelete(array $where = []);
 }

@@ -2,6 +2,7 @@
 
 use App\Enums\StorageEnum;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
+use App\Repositories\Interfaces\StorageRepositoryInterface;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Storage;
@@ -18,27 +19,12 @@ function array_value_recursive($key, array $arr): array
 
 function getDisk($storage = null): Filesystem
 {
-    $SettingRepository = app(SettingRepositoryInterface::class);
-    if (is_null($storage))
-        $storage = $SettingRepository->getRow('storage');
-    return match ($storage) {
-        StorageEnum::PRIVATE => Storage::disk(StorageEnum::PRIVATE_LABEL),
-        StorageEnum::FTP =>  Storage::disk(StorageEnum::FTP_LABEL),
-        StorageEnum::S3 => Storage::disk(StorageEnum::S3_LABEL),
-        StorageEnum::SFTP => Storage::disk(StorageEnum::SFTP_LABEL),
-        default => Storage::disk(StorageEnum::PUBLIC_LABEL)
-    };
+    return Storage::disk(getAvailableStorages()[$storage]);
 }
 
 function getAvailableStorages(): array
 {
-    $SettingRepository = app(SettingRepositoryInterface::class);
-    $storages = [];
-    foreach (StorageEnum::storages() as $key => $item)
-        if ((bool)$SettingRepository->getRow("{$key}_available") || $key == StorageEnum::PRIVATE_LABEL || $key == StorageEnum::PUBLIC_LABEL)
-            $storages[$key] = $item;
-
-    return $storages;
+    return array_flip(StorageEnum::storages());
 }
 
 function rateLimiter($value , int $decalSeconds = 3 * 60 * 60 ,int $max_tries = 6): bool|string

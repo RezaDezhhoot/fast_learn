@@ -463,7 +463,7 @@
                                 <div class="divider"><span></span></div>
                                 
                                 @foreach($course->samples as $item)
-                                    <div class="">
+                                    <div wire:ignore>
                                         @livewire('components.site.samples.sample-row', ['sample' => $item])
                                     </div>
                                 @endforeach

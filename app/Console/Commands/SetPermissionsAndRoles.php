@@ -127,9 +127,6 @@ class SetPermissionsAndRoles extends Command
 
             ['name' => 'public_driver', 'guard_name'=> 'web'],
             ['name' => 'private_driver', 'guard_name'=> 'web'],
-            ['name' => 'ftp_driver', 'guard_name'=> 'web'],
-            ['name' => 'sftp_driver', 'guard_name'=> 'web'],
-            ['name' => 's3_driver', 'guard_name'=> 'web'],
 
             ['name' => 'show_contacts', 'guard_name'=> 'web'],
             ['name' => 'edit_contacts', 'guard_name'=> 'web'],

@@ -9,20 +9,33 @@ use Alexusmai\LaravelFileManager\Services\ConfigService\ConfigRepository;
 use Illuminate\Support\Facades\Auth;
 use App\Enums\StorageEnum;
 use App\Enums\EventEnum;
-class UserRepository implements UserRepositoryInterface , ConfigRepository
+use App\Repositories\Interfaces\StorageRepositoryInterface;
+use Illuminate\Support\Facades\Log;
+
+class UserRepository implements UserRepositoryInterface, ConfigRepository
 {
     public function getDiskList(): array
     {
         $storages = [];
         $storages[] = Auth::user()->hasPermissionTo('public_driver') ? StorageEnum::PUBLIC_LABEL : null;
         $storages[] = Auth::user()->hasPermissionTo('private_driver') ? StorageEnum::PRIVATE_LABEL : null;
-        $storages[] = Auth::user()->hasPermissionTo('ftp_driver') ? StorageEnum::FTP_LABEL : null;
-        $storages[] = Auth::user()->hasPermissionTo('sftp_driver') ? StorageEnum::SFTP_LABEL : null;
-        $storages[] = Auth::user()->hasPermissionTo('s3_driver') ? StorageEnum::S3_LABEL : null;
-        return $storages;
+        $custom_storages = app(StorageRepositoryInterface::class)->getAll();
+
+        try {
+            foreach ($custom_storages as $value) {
+                if (Auth::user()->hasPermissionTo($value->permission_name)) {
+                    $storages[] = $value->name;
+                }
+            }
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+        }
+
+
+        return array_filter($storages);
     }
 
-    public function searchUsers($select , $where = [] , $orWhere = [])
+    public function searchUsers($select, $where = [], $orWhere = [])
     {
         return User::latest('id')->select($select)->where($where)->orWhere($orWhere)->cursor();
     }
@@ -38,14 +51,14 @@ class UserRepository implements UserRepositoryInterface , ConfigRepository
         return User::create($data);
     }
 
-    public function syncRoles(User $user ,$roles)
+    public function syncRoles(User $user, $roles)
     {
         return $user->syncRoles($roles);
     }
 
     public function getUser($col, $value)
     {
-        return User::where($col,$value)->firstOrFail();
+        return User::where($col, $value)->firstOrFail();
     }
 
     public function find($id)
@@ -81,7 +94,7 @@ class UserRepository implements UserRepositoryInterface , ConfigRepository
     public function getAllAdminList($status, $roles, $search, $pagination)
     {
         return User::latest('id')->when($status, function ($query) use ($status) {
-            return $query->where('status' , $status);
+            return $query->where('status', $status);
         })->when($roles, function ($query) use ($roles) {
             return $query->role($roles);
         })->search($search)->paginate($pagination);
@@ -98,26 +111,26 @@ class UserRepository implements UserRepositoryInterface , ConfigRepository
         return auth()->user()->hasRole($role);
     }
 
-    public function submit_certificate(User $user, $certificate_id,$transcript_id)
+    public function submit_certificate(User $user, $certificate_id, $transcript_id)
     {
-        return $user->certificates()->updateOrCreate(['certificate_id'=>$certificate_id,'transcript_id'=>$transcript_id],[]);
+        return $user->certificates()->updateOrCreate(['certificate_id' => $certificate_id, 'transcript_id' => $transcript_id], []);
     }
 
-    public function reclaiming_certificate(User $user, $certificate_id,$transcript_id)
+    public function reclaiming_certificate(User $user, $certificate_id, $transcript_id)
     {
-        $user->certificates()->where([['certificate_id',$certificate_id],['transcript_id',$transcript_id]])->delete();
+        $user->certificates()->where([['certificate_id', $certificate_id], ['transcript_id', $transcript_id]])->delete();
     }
 
-    public function has_certificate(User $user, $certificate_id , $transcript_id)
+    public function has_certificate(User $user, $certificate_id, $transcript_id)
     {
-        return $user->certificates()->where([['certificate_id',$certificate_id],['transcript_id',$transcript_id]])->first();
+        return $user->certificates()->where([['certificate_id', $certificate_id], ['transcript_id', $transcript_id]])->first();
     }
 
-    public function findCertificate(User $user, $id,$status)
+    public function findCertificate(User $user, $id, $status)
     {
         return $status == 'demo' ?
             $user->certificates()->findOrFail($id) :
-            $user->certificates()->where('transcript_id','!=',0)->findOrFail($id);
+            $user->certificates()->where('transcript_id', '!=', 0)->findOrFail($id);
     }
 
     public function findBy($where = [])
@@ -125,9 +138,9 @@ class UserRepository implements UserRepositoryInterface , ConfigRepository
         return User::where($where)->firstOrFail();
     }
 
-    public function getDashboardData($from_date , $to_date)
+    public function getDashboardData($from_date, $to_date)
     {
-        return User::whereBetween('created_at', [$from_date." 00:00:00", $to_date." 23:59:59"])->count();
+        return User::whereBetween('created_at', [$from_date . " 00:00:00", $to_date . " 23:59:59"])->count();
     }
 
     public function count()
@@ -140,14 +153,13 @@ class UserRepository implements UserRepositoryInterface , ConfigRepository
         $priod = EventEnum::getPriods()[$count];
 
         if ($priod != EventEnum::ALL) {
-            $counts = ceil(User::count()/$priod[0]);
+            $counts = ceil(User::count() / $priod[0]);
             $skip = $counts * $priod[1];
-            return User::select('email','phone')->skip($skip)->take($counts)
-            ->orderBy('id',$orderBy)->cursor();
-        }
-        else {
-            return User::select('email','phone')
-            ->orderBy('id',$orderBy)->cursor();
+            return User::select('email', 'phone')->skip($skip)->take($counts)
+                ->orderBy('id', $orderBy)->cursor();
+        } else {
+            return User::select('email', 'phone')
+                ->orderBy('id', $orderBy)->cursor();
         }
     }
 

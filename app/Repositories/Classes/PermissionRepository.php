@@ -18,4 +18,14 @@ class PermissionRepository implements PermissionRepositoryInterface
         // TODO: Implement insert() method.
         return Permission::insert($data);
     }
+
+    public function findOrFail($id , array $where = [])
+    {
+        return Permission::where($where)->findOrFail($id);
+    }
+
+    public function groupDelete(array $where = [])
+    {
+        return Permission::where($where)->delete();
+    }
 }

@@ -48,7 +48,7 @@ class SingleCourse extends BaseComponent
         $this->orderRepository = app(OrderRepositoryInterface::class);
         $this->orderDetailRepository = app(OrderDetailRepositoryInterface::class);
         $this->homeworkRepository = app(HomeworkRepositoryInterface::class);
-        $this->disk = getDisk();
+        $this->disk = getDisk(1);
     }
 
     /**
@@ -71,6 +71,8 @@ class SingleCourse extends BaseComponent
         JsonLd::addImage(asset($this->settingRepository->getRow('logo')));
         $this->user = auth()->user();
         $this->has_sample = sizeof($this->course->samples) > 0;
+        if (Auth::check())
+            $this->show_homework_form = $this->user->hasCourse($this->course->id);
     }
 
     public function loadCourse()
@@ -85,8 +87,6 @@ class SingleCourse extends BaseComponent
         $this->related_courses = $this->courseRepository->whereIn('category_id',$ids,3,true,[['id' , '!=' , $this->course->id]]);
         $this->comments = $this->course->comments;
         $this->courseRepository->increment($this->course,1);
-        if (Auth::check())
-            $this->show_homework_form = $this->user->hasCourse($this->course->id);
     }
 
     public function render()
@@ -117,35 +117,39 @@ class SingleCourse extends BaseComponent
         if ($this->course->price == 0 && !$user_has_episode){
             $this->getFreeOrder();
         }
-        switch ($type){
-            case 'api_bucket':
-                if (!is_null($episode->api_bucket) and $episode->show_api_video and (($this->course->price == 0) || $user_has_episode)):
-                    $this->episode_title = $episode->title;
-                    return $this->api_bucket = $episode->api_bucket;
+        try {
+            switch ($type){
+                case 'api_bucket':
+                    if (!is_null($episode->api_bucket) and $episode->show_api_video and (($this->course->price == 0) || $user_has_episode)):
+                        $this->episode_title = $episode->title;
+                        return $this->api_bucket = $episode->api_bucket;
+                        endif;
+                    break;
+                case 'local_video':
+                    if ( ( $this->course->price == 0 || $user_has_episode) and $episode->downloadable_local_video ) {
+                        if ($disk = getDisk($episode->video_storage))
+                            return $disk->download($episode->local_video);
+                    }
+                    break;
+                case 'show_local_video':
+                    if (!is_null($episode->local_video) and $episode->allow_show_local_video and ($this->course->price == 0 || $user_has_episode)):
+                        $this->episode_title = $episode->title;
+                        $this->local_video = route('storage',[$episode->id,'video']);
+                        $this->emit('setVideo',['title' => '1','src' => $this->local_video]);
                     endif;
-                break;
-            case 'local_video':
-                if ( ( $this->course->price == 0 || $user_has_episode) and $episode->downloadable_local_video ) {
-                    if ($disk = getDisk($episode->video_storage))
-                        return $disk->download($episode->local_video);
-                }
-                break;
-            case 'show_local_video':
-                if (!is_null($episode->local_video) and $episode->allow_show_local_video and ($this->course->price == 0 || $user_has_episode)):
-                    $this->episode_title = $episode->title;
-                    $this->local_video = route('storage',[$episode->id,'video']);
-                    $this->emit('setVideo',['title' => '1','src' => $this->local_video]);
-                endif;
-                break;
-            case 'file':
-                if ($disk = getDisk($episode->file_storage))
-                    if ($disk->exists($episode->file) and (( $this->course->price == 0) || $user_has_episode))
-                        return $disk->download($episode->file);
-                break;
-            case 'link':
-                if (!is_null($episode->link) and ((  $this->course->price == 0) || $user_has_episode))
-                    return redirect()->away($episode->link);
-                break;
+                    break;
+                case 'file':
+                    if ($disk = getDisk($episode->file_storage))
+                        if ($disk->exists($episode->file) and (( $this->course->price == 0) || $user_has_episode))
+                            return $disk->download($episode->file);
+                    break;
+                case 'link':
+                    if (!is_null($episode->link) and ((  $this->course->price == 0) || $user_has_episode))
+                        return redirect()->away($episode->link);
+                    break;
+            }
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
         }
     }
 

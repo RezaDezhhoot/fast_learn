@@ -21,52 +21,14 @@
            </div>
             <x-admin.form-section  label="فضا های ذخیره سازی ">
                 <div class="border p-3">
-                    <x-admin.forms.radio value="{{ App\Enums\StorageEnum::PRIVATE }}" id="local_storage" name="storage" label="local driver(private)" wire:model="storage" />
-                    <hr>
-                    <x-admin.forms.radio value="{{ App\Enums\StorageEnum::FTP }}" id="ftp_storage" name="storage" label="ftp driver" wire:model="storage" />
-                    @if($storage == App\Enums\StorageEnum::FTP)
-                        <div class="row">
-                            <x-admin.forms.input with="6" type="text" id="storage_root" placeholder="root" label="root" wire:model.defer="ftp_root"/>
-                            <x-admin.forms.input with="6" type="text" id="storage_ip" placeholder="دامنه/ای پی" label="دامنه/ای پی" wire:model.defer="ftp_ip"/>
-                            <x-admin.forms.input with="6" type="text" id="storage_username" placeholder="نام کاربری" label="نام کاربری" wire:model.defer="ftp_username"/>
-                            <x-admin.forms.input with="6" type="text" id="storage_password" placeholder="رمزعبور" label="رمزعبور" wire:model.defer="ftp_password"/>
-                            <x-admin.forms.input with="12" type="number" id="storage_port" placeholder="پورت" label="پورت" wire:model.defer="ftp_port"/>
-                            <x-admin.forms.checkbox value="1" id="storage_ssl"  label="ssl" wire:model.defer="ftp_ssl" />
-                            <x-admin.forms.checkbox value="1" id="ftp_available"  label="فعال سازی" wire:model.defer="ftp_available" />
-                        </div>
-                    @endif
-                    <hr>
-                    <x-admin.forms.radio value="{{ App\Enums\StorageEnum::S3 }}" id="s3_storage" name="storage" label="Amazon S3 driver" wire:model="storage" />
-                    @if($storage == App\Enums\StorageEnum::S3)
-                        <div class="row">
-                            <x-admin.forms.input with="6" type="text" id="s3_key" placeholder="key" label="key" wire:model.defer="s3_key"/>
-                            <x-admin.forms.input with="6" type="text" id="s3_secret" placeholder="secret" label="secret" wire:model.defer="s3_secret"/>
-                            <x-admin.forms.input with="6" type="text" id="s3_region" placeholder="region" label="region" wire:model.defer="s3_region"/>
-                            <x-admin.forms.input with="6" type="text" id="s3_bucket" placeholder="bucket" label="bucket" wire:model.defer="s3_bucket"/>
-                            <x-admin.forms.input with="6" type="text" id="s3_url" placeholder="url" label="url" wire:model.defer="s3_url"/>
-                            <x-admin.forms.input with="6" type="text" id="s3_endpoint" placeholder="endpoint" label="endpoint" wire:model.defer="s3_endpoint"/>
-                            <x-admin.forms.checkbox value="1" id="use_path_style_endpoint"  label="use path style endpoint" wire:model.defer="s3_use_path_style_endpoint" />
-                            <x-admin.forms.checkbox value="1" id="s3_available"  label="فعال سازی" wire:model.defer="s3_available" />
-                        </div>
-                    @endif
-                    <hr>
-                    <x-admin.forms.radio value="{{ App\Enums\StorageEnum::SFTP }}" id="sftp_storage" name="storage" label="SFTP driver" wire:model="storage" />
-                    @if($storage == App\Enums\StorageEnum::SFTP)
-                        <div class="row">
-                            <x-admin.forms.input with="6" type="text" id="sftp_host" placeholder="host" label="host" wire:model.defer="sftp_host"/>
-                            <x-admin.forms.input with="6" type="text" id="sftp_username" placeholder="username" label="username" wire:model.defer="sftp_username"/>
-                            <x-admin.forms.input with="6" type="text" id="sftp_password" placeholder="password" label="password" wire:model.defer="sftp_password"/>
-                            <x-admin.forms.input with="6" type="text" id="sftp_privateKey" placeholder="private key" label="private key" wire:model.defer="sftp_privateKey"/>
-                            <x-admin.forms.input with="6" type="text" id="sftp_hostFingerprint" placeholder="host fingerprint" label="host fingerprint" wire:model.defer="sftp_hostFingerprint"/>
-                            <x-admin.forms.input with="6" type="number" id="sftp_maxTries" placeholder="max tries" label="max tries" wire:model.defer="sftp_maxTries"/>
-                            <x-admin.forms.input with="6" type="text" id="sftp_passphrase" placeholder="passphrase" label="passphrase" wire:model.defer="sftp_passphrase"/>
-                            <x-admin.forms.input with="6" type="number" id="sftp_port" placeholder="port" label="port" wire:model.defer="sftp_port"/>
-                            <x-admin.forms.input with="12" type="text" id="sftp_root" placeholder="root" label="root" wire:model.defer="sftp_root"/>
-                            <x-admin.forms.checkbox value="1" id="sftp_useAgent"  label="use agent" wire:model.defer="sftp_useAgent" />
-                            <x-admin.forms.checkbox value="1" id="sftp_available"  label="فعال سازی" wire:model.defer="sftp_available" />
-
-                        </div>
-                    @endif
+                    <x-admin.form-section  label="private : ">
+                        <x-admin.forms.input type="number" help="درصورت خالی گذاشتن بدون محدودیت قرار داده می شود" id="private_max_file_size" label="حداکثر حجم مجاز اپلود فایل(KB)" wire:model.defer="private_max_file_size"/>
+                        <x-admin.forms.text-area id="private_storage_file_types" label="فرمت فای های مجاز" help="در صورت خالی گذاشتن محدودیتی اعمال نمی شود. فرمت هارا با کاما از هم جدا کنید : png,PNG,zip" wire:model.defer="private_storage_file_types"/>
+                    </x-admin.form-section>
+                    <x-admin.form-section  label="public : ">
+                        <x-admin.forms.input type="number" help="درصورت خالی گذاشتن بدون محدودیت قرار داده می شود" id="public_max_file_size" label="حداکثر حجم مجاز اپلود فایل(KB)" wire:model.defer="public_max_file_size"/>
+                        <x-admin.forms.text-area id="public_storage_file_types" label="فرمت فای های مجاز" help="در صورت خالی گذاشتن محدودیتی اعمال نمی شود. فرمت هارا با کاما از هم جدا کنید : png,PNG,zip" wire:model.defer="public_storage_file_types"/>
+                    </x-admin.form-section>
                 </div>
             </x-admin.form-section>
             <x-admin.form-section  label="درگاه های بانکی">

@@ -65,14 +65,14 @@ class Episode extends Model
     protected function fileStorageLabel(): Attribute
     {
         return Attribute::make(
-            get: fn () => in_array($this->file_storage , StorageEnum::storages()) ? StorageEnum::getStorages()[$this->file_storage] : ''
+            get: fn () => in_array($this->file_storage , array_flip(getAvailableStorages()) ) ? getAvailableStorages()[$this->file_storage] : ''
         );
     }
 
     protected function videoStorageLabel(): Attribute
     {
         return Attribute::make(
-            get: fn () => in_array($this->video_storage , StorageEnum::storages()) ?  StorageEnum::getStorages()[$this->video_storage] : ''
+            get: fn () => in_array($this->video_storage , array_flip(getAvailableStorages()) ) ?  getAvailableStorages()[$this->video_storage] : ''
         );
     }
 }

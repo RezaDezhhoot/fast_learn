@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Site\Client;
 
+use App\Enums\StorageEnum;
 use App\Enums\TicketEnum;
 use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
@@ -25,7 +26,7 @@ class Ticket extends BaseComponent
         parent::__construct($id);
         $this->ticketRepository = app(TicketRepositoryInterface::class);
         $this->settingRepository = app(SettingRepositoryInterface::class);
-        $this->disk = getDisk(storage:'public');
+        $this->disk = getDisk(storage:StorageEnum::PUBLIC);
     }
 
     public function mount($action , $id = null)

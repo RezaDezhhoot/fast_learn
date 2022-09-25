@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Models;
+
+use App\Enums\StorageEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * @property mixed name
@@ -53,19 +55,25 @@ class Permission extends \Spatie\Permission\Models\Permission
             'episodes' => 'درس ها',
             'contacts' => 'ارتباط با ما',
             'logs' => 'لاگ ها',
-            'samples' => 'نمونه سوالات'
+            'samples' => 'نمونه سوالات',
+            'storages' => 'فضا های دخیره سازی'
         ];
     }
 
     public function getLabelAttribute()
     {
-        $names = explode('_',$this->name);
-        if (in_array(str_replace($names[0].'_','',$this->name),array_keys($this->lang()))){
-            $action = $this->lang()[$names[0]];
-            $model = $this->lang()[str_replace($names[0].'_','',$this->name)];
-            return $action.' '.$model;
+        if (preg_match('/'.StorageEnum::PERMISSION_PREFIX."[0-9]/i",$this->name)) {
+            $id = str_replace(StorageEnum::PERMISSION_PREFIX,'',$this->name);
+            return Storage::find($id)->name ?? $this->name;
+        } else {
+            $names = explode('_',$this->name);
+            if (in_array(str_replace($names[0].'_','',$this->name),array_keys($this->lang()))){
+                $action = $this->lang()[$names[0]];
+                $model = $this->lang()[str_replace($names[0].'_','',$this->name)];
+                return $action.' '.$model;
+            }
         }
-        return  $this->name;
+        return $this->name;
     }
 
 }

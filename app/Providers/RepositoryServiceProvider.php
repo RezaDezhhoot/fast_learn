@@ -28,6 +28,7 @@ use App\Repositories\Classes\RoleRepository;
 use App\Repositories\Classes\SampleRepository;
 use App\Repositories\Classes\SendRepository;
 use App\Repositories\Classes\SettingRepository;
+use App\Repositories\Classes\StorageRepository;
 use App\Repositories\Classes\TagRepository;
 use App\Repositories\Classes\TeacherRepository;
 use App\Repositories\Classes\TicketRepository;
@@ -61,6 +62,7 @@ use App\Repositories\Interfaces\RoleRepositoryInterface;
 use App\Repositories\Interfaces\SampleRepositoryInterface;
 use App\Repositories\Interfaces\SendRepositoryInterface;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
+use App\Repositories\Interfaces\StorageRepositoryInterface;
 use App\Repositories\Interfaces\TagRepositoryInterface;
 use App\Repositories\Interfaces\TeacherRepositoryInterface;
 use App\Repositories\Interfaces\TicketRepositoryInterface;
@@ -246,6 +248,11 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             SampleRepositoryInterface::class,
             SampleRepository::class,
+        );
+
+        $this->app->bind(
+            StorageRepositoryInterface::class,
+            StorageRepository::class,
         );
     }
 

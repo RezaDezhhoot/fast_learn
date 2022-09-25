@@ -6,6 +6,7 @@ namespace App\Repositories\Classes;
 use App\Enums\SampleEnum;
 use App\Models\Sample;
 use App\Repositories\Interfaces\SampleRepositoryInterface;
+use Illuminate\Support\Facades\Log;
 
 class SampleRepository implements SampleRepositoryInterface
 {
@@ -16,7 +17,7 @@ class SampleRepository implements SampleRepositoryInterface
 
     public function destroy($id)
     {
-        return Sample::withoutGlobalScope('published')->destroy($id);
+        return $this->findOrFail($id)->delete();
     }
 
     public function getAllAdmin($search, $status, $course, $pagination)
@@ -47,23 +48,27 @@ class SampleRepository implements SampleRepositoryInterface
 
     public function download($item)
     {
-        if (! $item instanceof Sample) 
-            $item = Sample::findOrFail($item);
-        
-        if ($disk = getDisk($item->driver)) {
-            if ($disk->exists($item->file)) {
-                if ($item->type == SampleEnum::PRIVATE_TYPE) {
-                    if (auth()->check()) {
-                        if (!is_null($item->course_id) && auth()->user()->hasCourse($item->course_id)) {
-                            $item->increment('downloads');
-                            return $disk->download($item->file);
+        try {
+            if (!$item instanceof Sample)
+                $item = Sample::findOrFail($item);
+
+            if ($disk = getDisk($item->driver)) {
+                if ($disk->exists($item->file)) {
+                    if ($item->type == SampleEnum::PRIVATE_TYPE) {
+                        if (auth()->check()) {
+                            if (!is_null($item->course_id) && auth()->user()->hasCourse($item->course_id)) {
+                                $item->increment('downloads');
+                                return $disk->download($item->file);
+                            }
                         }
+                    } elseif ($item->type == SampleEnum::PUBLIC_TYPE) {
+                        $item->increment('downloads');
+                        return $disk->download($item->file);
                     }
-                } elseif ($item->type == SampleEnum::PUBLIC_TYPE) {
-                    $item->increment('downloads');
-                    return $disk->download($item->file);
                 }
             }
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
         }
 
         return false;
@@ -101,14 +106,14 @@ class SampleRepository implements SampleRepositoryInterface
         abort(404);
     }
 
-    public function getRelatedSamples(Sample $sample , $take = 3)
+    public function getRelatedSamples(Sample $sample, $take = 3)
     {
         $samples = [];
         if ($sample->course) {
-            return Sample::latest('id')->where([['type',SampleEnum::PUBLIC_TYPE],['id','!=',$sample->id]])
-            ->whereHas('course',function($q) use ($sample) {
-                return $sample->where('id',$sample->course_id);
-            })->take($take)->get();
+            return Sample::latest('id')->where([['type', SampleEnum::PUBLIC_TYPE], ['id', '!=', $sample->id]])
+                ->whereHas('course', function ($q) use ($sample) {
+                    return $sample->where('id', $sample->course_id);
+                })->take($take)->get();
         }
         return $samples;
     }

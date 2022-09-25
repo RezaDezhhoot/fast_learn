@@ -108,6 +108,9 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->group(function (){
     // v2-samples
     Route::get('/samples',App\Http\Controllers\Admin\Samples\IndexSample::class)->name('admin.sample');
     Route::get('/samples/{action}/{id?}',App\Http\Controllers\Admin\Samples\StoreSample::class)->name('admin.store.sample');
+    // v2-storages
+    Route::get('/stoages',App\Http\Controllers\Admin\Storages\IndexStorages::class)->name('admin.storage');
+    Route::get('/stoages/{action}/{id?}',App\Http\Controllers\Admin\Storages\StoreStorages::class)->name('admin.store.storage');
 });
 
 Route::middleware('guest')->get('auth',App\Http\Controllers\Site\Auth\Auth::class)->name('auth');
