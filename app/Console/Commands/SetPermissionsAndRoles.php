@@ -132,6 +132,14 @@ class SetPermissionsAndRoles extends Command
             ['name' => 'edit_contacts', 'guard_name'=> 'web'],
             ['name' => 'delete_contacts', 'guard_name'=> 'web'],
             ['name' => 'show_logs', 'guard_name'=> 'web'],
+
+            ['name' => 'show_samples' , 'guard_name'=> 'web'],
+            ['name' => 'edit_samples', 'guard_name'=> 'web'],
+            ['name' => 'delete_samples', 'guard_name'=> 'web'],
+
+            ['name' => 'show_storages' , 'guard_name'=> 'web'],
+            ['name' => 'edit_storages', 'guard_name'=> 'web'],
+            ['name' => 'delete_storages', 'guard_name'=> 'web'],
         ];
         $user = [
             'name'=> 'admin',
