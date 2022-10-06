@@ -16,6 +16,10 @@ class Storage extends Model
 
     protected array $searchAbleColumns = ['name'];
 
+    protected $casts = [
+        'name' => 'string',
+    ];
+
     protected $guarded = ['id'];
 
     public function scopeAvailable($query)
@@ -65,6 +69,13 @@ class Storage extends Model
         return Attribute::make(
             set: fn($value) => json_encode($value),
             get: fn($value) => json_decode($value,true)
+        );
+    }
+
+    public function name(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => is_numeric($value) ? 'driver-'.$value : $value
         );
     }
 
