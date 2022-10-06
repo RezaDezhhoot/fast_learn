@@ -67,6 +67,12 @@ class Ticket extends Model
         $this->attributes['file'] = implode(',',$file);
     }
 
+    public function getFileAttribute($value)
+    {
+        
+        return explode(',',$value);
+    }
+
     public static function getNew()
     {
         return Ticket::where('status',TicketEnum::PENDING)->count();

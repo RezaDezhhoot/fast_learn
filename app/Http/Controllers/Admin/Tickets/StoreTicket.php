@@ -62,7 +62,7 @@ class StoreTicket extends BaseComponent
                 'subject' => ['required','string','max:250'],
                 'user' => ['required','exists:users,phone'],
                 'content' => ['required','string','max:95000'],
-                'file' => ['nullable','string','max:800'],
+                'file' => ['array','nullable'],
                 'priority' => ['required','in:'.implode(',',array_keys(TicketEnum::getPriority()))],
             ] , [] , [
                 'subject' => 'موضوع',
@@ -75,7 +75,7 @@ class StoreTicket extends BaseComponent
         $model->subject = $this->subject;
         $model->user_id = $this->userRepository->findBy([['phone',$this->user]])->id;
         $model->content = $this->content;
-        $model->file = $this->file;
+        $model->file = ($this->mode == self::UPDATE_MODE) ? implode(',',$this->file) : $this->file;
         $model->parent_id = null;
         $model->sender_id  = auth()->id();
         $model->sender_type  = TicketEnum::ADMIN;

@@ -42,6 +42,7 @@
                             <label class="label-text">متن اصلی*</label>
                             <x-admin.forms.basic-text-editor with="12" id="content" label="" wire:model.defer="content"/>
                         </div>
+                        @foreach($file as $key => $value)
                         <div class="input-box col-12">
                             <div class="form-group">
                                 <div x-data="{ isUploading: false, progress: 0 }"
@@ -49,30 +50,37 @@
                                      x-on:livewire-upload-finish="isUploading = false"
                                      x-on:livewire-upload-error="isUploading = false"
                                      x-on:livewire-upload-progress="progress = $event.detail.progress" class="custom-file my-4">
-                                    <input type="file" class="custom-file-input" wire:model="file" id="image">
-                                    <label class="custom-file-label"  for="image">انتخاب فایل</label>
+                                    <input type="file" class="custom-file-input" wire:model="file.{{$key}}" id="image{{$key}}">
+                                    <label class="custom-file-label"  for="image{{$key}}">
+                                        {{ (!empty($file[$key] && $file[$key]->temporaryUrl())) ? str()->limit($file[$key]->temporaryUrl(),40) : 'انتخاب فایل' }}
+                                    </label>
+                                    <button type="button" wire:click="deleteFile('{{$key}}')" class="btn btn-sm btn-outline-danger">حذف فایل</button>
+
                                     <div class="mt-2" x-show="isUploading">
                                         در حال اپلود فایل...
                                         <progress max="100" x-bind:value="progress"></progress>
                                     </div>
+                                    
                                     <br>
                                     <small class="text-info">حداقل حجم مجاز : {{'2048'}} کیلوبایت</small>
-                                    <small class="text-info">jpg,jpeg,png</small>
+                                    <small class="text-info">jpg,jpeg,png,pdf</small>
+
                                     <br>
-                                    @error('file')
+                                    @error('file.*')
                                         <small class="text-danger">{{$message}}</small>
                                     @enderror
                                 </div>
                             </div>
                         </div>
-                        <div class="input-box col-lg-12">
-                            <div class="g-recaptcha d-inline-block" data-sitekey="{{ config('services.recaptcha.site_key') }}"
-                                 data-callback="reCaptchaCallback" wire:ignore></div>
-                            @error('recaptcha')<span class="invalid-feedback d-block">{{ $message }}</span>@enderror
+                        @endforeach
+                        <div class="input-box col-lg-12 py-2" wire:ignore>
+                            <button type="button" wire:click="addFile" class="btn btn-sm btn-outline-primary">افزودن فایل جدید</button>
                         </div>
+                        
+                      
                 @else
                         <div class="input-box col-lg-6">
-                            <label class="label-text">موضوع*</label>
+                            <label class="label-text">موضوع</label>
                             <div class="form-group">
                                 <select disabled class="form-control form--control" name="subject" wire:model="subject" id="subject">
                                     <option value="">انتخاب کنید</option>
@@ -87,7 +95,7 @@
                             </div>
                         </div>
                         <div class="input-box col-lg-6">
-                            <label class="label-text">الویت*</label>
+                            <label class="label-text">الویت</label>
                             <div class="form-group">
                                 <select disabled class="form-control form--control" name="priority" wire:model="priority" id="priority">
                                     <option value="">انتخاب کنید</option>
@@ -102,36 +110,21 @@
                             </div>
                         </div>
                         <div class="input-box col-12">
-                            <label class="label-text">متن اصلی*</label>
-                            <x-admin.forms.basic-text-editor disabled with="12" id="content" label="" wire:model.defer="content"/>
-                        </div>
-                        <div class="input-box col-12">
-                            <div class="form-group">
-                                <div x-data="{ isUploading: false, progress: 0 }"
-                                     x-on:livewire-upload-start="isUploading = true"
-                                     x-on:livewire-upload-finish="isUploading = false"
-                                     x-on:livewire-upload-error="isUploading = false"
-                                     x-on:livewire-upload-progress="progress = $event.detail.progress" class="custom-file my-4">
-                                    <input disabled type="file" class="custom-file-input" wire:model.defer="file" id="image">
-                                    <label class="custom-file-label"  for="image">انتخاب فایل</label>
-                                    <div class="mt-2" x-show="isUploading">
-                                        در حال اپلود فایل...
-                                        <progress max="100" x-bind:value="progress"></progress>
-                                    </div>
-                                    <br>
-                                    <small class="text-info">حداقل حجم مجاز : {{'2048'}} کیلوبایت</small>
-                                    <small class="text-info">jpg,jpeg,png,rar,zip</small>
-                                    <br>
-                                </div>
-
+                            <label class="label-text">متن اصلی</label>
+                            <div class="media media-card  p-4 my-1 shadow-sm">
+                                {!! $content !!}
                             </div>
                         </div>
+                        
                     @if(!empty($ticketFile))
                         <div class="form-group col-12">
-                            <div class="form-control">
-                                <small>
-                                    <a target="_blank" href="{{ asset($ticketFile) }}">{{$ticketFile}}</a>
-                                </small>
+                            <label class="label-text">فایل ها :</label>
+                            <div class="">
+                                @foreach($ticketFile as $item)
+                                    <small class="d-block">
+                                        <a target="_blank" href="{{ asset($item) }}">مشاهده</a>
+                                    </small>
+                                @endforeach
                             </div>
                         </div>
                     @endif
@@ -149,11 +142,11 @@
                                             </p>
                                             @if(!empty($item->file))
                                                 <div class="mt-2 p-2 bg-white">
-                                                    <div class="d-flex align-items-center">
+                                                    <div class="text-right">
                                                         <p class="text-danger mb-0 vazir font-13">فایل</p>
-                                                        <p class="text-justify my-2 vazir font-13">
-                                                            @foreach(explode(',',$item->file) as $value)
-                                                                <a class="btn btn-link" href="{{ asset($value) }}">مشاهده</a>
+                                                        <p class="my-2 vazir font-13">
+                                                            @foreach($item->file as $value)
+                                                                <a class="btn btn-link d-block text-right" href="{{ asset($value) }}">مشاهده</a>
                                                             @endforeach
                                                         </p>
                                                     </div>
@@ -172,31 +165,41 @@
                         <div class="form-group col-12">
                             <x-admin.form-section label="ارسال پاسخ">
                                 <x-admin.forms.basic-text-editor id="answer" label="" wire:model.defer="answer"/>
+                                @foreach($file as $key => $value)
+                        <div class="input-box col-12">
+                            <div class="form-group">
                                 <div x-data="{ isUploading: false, progress: 0 }"
                                      x-on:livewire-upload-start="isUploading = true"
                                      x-on:livewire-upload-finish="isUploading = false"
                                      x-on:livewire-upload-error="isUploading = false"
                                      x-on:livewire-upload-progress="progress = $event.detail.progress" class="custom-file my-4">
-                                    <input type="file" class="custom-file-input" wire:model="file" id="image">
-                                    <label class="custom-file-label"  for="image">انتخاب فایل</label>
+                                    <input type="file" class="custom-file-input" wire:model="file.{{$key}}" id="image{{$key}}">
+                                    <label class="custom-file-label"  for="image{{$key}}">
+                                        {{ (!empty($file[$key] && $file[$key]->temporaryUrl())) ? str()->limit($file[$key]->temporaryUrl(),40) : 'انتخاب فایل' }}
+                                    </label>
+                                    <button type="button" wire:click="deleteFile('{{$key}}')" class="btn btn-sm btn-outline-danger">حذف فایل</button>
+
                                     <div class="mt-2" x-show="isUploading">
                                         در حال اپلود فایل...
                                         <progress max="100" x-bind:value="progress"></progress>
                                     </div>
+                                    
                                     <br>
                                     <small class="text-info">حداقل حجم مجاز : {{'2048'}} کیلوبایت</small>
-                                    <small class="text-info">jpg,jpeg,png</small>
+                                    <small class="text-info">jpg,jpeg,png,pdf</small>
 
                                     <br>
-                                    @error('file')
+                                    @error('file.*')
                                         <small class="text-danger">{{$message}}</small>
                                     @enderror
                                 </div>
-                                <div class="input-box mt-4">
-                                    <div class="g-recaptcha d-inline-block" data-sitekey="{{ config('services.recaptcha.site_key') }}"
-                                         data-callback="reCaptchaCallback" wire:ignore></div>
-                                    @error('recaptcha')<span class="invalid-feedback d-block">{{ $message }}</span>@enderror
-                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                        <div class="input-box col-lg-12 py-2" wire:ignore>
+                            <button type="button" wire:click="addFile" class="btn btn-sm btn-outline-primary">افزودن فایل جدید</button>
+                        </div>
+                                 
                             </x-admin.form-section>
                         </div>
                 @endif
@@ -208,16 +211,3 @@
         </div>
     </div>
 </div>
-@push('scripts')
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-
-    <script>
-        function reCaptchaCallback(response) {
-        @this.set('recaptcha', response);
-        }
-
-        Livewire.on('resetReCaptcha', () => {
-            grecaptcha.reset();
-        });
-    </script>
-@endpush

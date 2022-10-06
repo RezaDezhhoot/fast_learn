@@ -19,7 +19,22 @@
             </div>
             <hr>
             <x-admin.forms.full-text-editor id="content" label="متن اصلی*" wire:model.defer="content"/>
+            @if($mode == self::CREATE_MODE)
             <x-admin.forms.lfm-standalone id="file" label="فایل" :file="$file" type="image" required="true" wire:model="file"/>
+            @else
+                @if(!empty($file))
+                    <div class="form-group col-12">
+                        <h5>فایل ها :</h5>
+                        <div class="">
+                            @foreach($file as $item)
+                                <strong class="d-block">
+                                    <a target="_blank" href="{{ asset($item) }}">مشاهده</a>
+                                </strong>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+            @endif
             @if($mode == self::UPDATE_MODE)
                 <x-admin.form-section label="کاربر">
                     <div class="row">
@@ -57,7 +72,7 @@
                                 @if(!empty($item->file))
                                     <p>
                                         <label for="">فایل</label>
-                                        @foreach(explode(',',$item->file) as $value)
+                                        @foreach($item->file as $value)
                                             <a class="btn btn-link" href="{{ asset($value) }}">مشاهده</a>
                                         @endforeach
                                     </p>
