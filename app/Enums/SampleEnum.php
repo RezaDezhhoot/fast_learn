@@ -15,7 +15,7 @@ final class SampleEnum extends Enum
     {
         return [
             self::PUBLIC_TYPE => 'عمومی',
-            self::PRIVATE_TYPE => 'حصوصی'
+            self::PRIVATE_TYPE => 'خصوصی'
         ];
     }
 

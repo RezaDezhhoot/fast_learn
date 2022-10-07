@@ -70,6 +70,7 @@ class CreateOrder extends BaseComponent
 
     public function updatedUserNumber()
     {
+        $this->validateUser();
         if ($this->details->count() == 0) {
             $this->user = $this->userRepository->findBy([['phone',$this->user_number]]);
             $this->user_wallet = $this->calculateWallet();

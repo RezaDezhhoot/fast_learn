@@ -36,6 +36,13 @@ class MySample extends BaseComponent
 
     public function render()
     {
-        return view('site.client.my-sample')->extends('site.layouts.client.client');
+        $samples = [];
+        $courses = auth()->user()->courses;
+        foreach ($courses as $value) {
+            foreach ($value->samples as $item) {
+                $samples[] = $item;
+            }
+        }
+        return view('site.client.my-sample',['samples'=>array_unique($samples)])->extends('site.layouts.client.client');
     }
 }

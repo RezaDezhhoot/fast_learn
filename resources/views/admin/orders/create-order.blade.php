@@ -27,9 +27,9 @@
                         @foreach($details as $key => $value)
                         <tr>
                             <td>{{ $value['course_title'] }}</td>
+                            <td>{{ number_format($value['total_amount']).' تومان' }}</td>
                             <td>{{ number_format($value['wallet_amount']).' تومان' }}</td>
                             <td>{{ number_format($value['reduction_amount']).' تومان' }}</td>
-                            <td>{{ number_format($value['total_amount']).' تومان' }}</td>
                             <td>{{ number_format($value['final_total_amount']).' تومان' }}</td>
                             <td>
                                 <button type="button" wire:click="editDetails('{{$key}}')"
@@ -91,8 +91,8 @@
                 موجودی کیف پول کاربر (تومان) : {{number_format($user_wallet)}}
             </p>
         </div>
-        <x-admin.forms.input type="number" id="wallet" label=" هزیزنه کیف پول (تومان)" wire:model="wallet" />
-        <x-admin.forms.input type="number" id="reduction" label=" هزیزنه  تخفیف (تومان)" wire:model="reduction" />
+        <x-admin.forms.input type="number" id="wallet" label=" هزینه کیف پول (تومان)" wire:model="wallet" />
+        <x-admin.forms.input type="number" id="reduction" label=" هزینه  تخفیف (تومان)" wire:model="reduction" />
         <x-admin.forms.input type="number" id="final_total" label="هزینه نهایی (تومان)" disabled wire:model.defer="final_total" />
         
 

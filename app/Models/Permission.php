@@ -64,7 +64,7 @@ class Permission extends \Spatie\Permission\Models\Permission
     {
         if (preg_match('/'.StorageEnum::PERMISSION_PREFIX."[0-9]/i",$this->name)) {
             $id = str_replace(StorageEnum::PERMISSION_PREFIX,'',$this->name);
-            return Storage::find($id)->name ?? $this->name;
+            return Storage::withoutGlobalScope('available')->find($id)->name ?? $this->name;
         } else {
             $names = explode('_',$this->name);
             if (in_array(str_replace($names[0].'_','',$this->name),array_keys($this->lang()))){

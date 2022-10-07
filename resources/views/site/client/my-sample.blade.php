@@ -10,14 +10,8 @@
            </a>
         </div>
         <div class="dashboard-cards mb-5">
-            @forelse(auth()->user()->orders as $item)
-                @foreach($item->details as $detail)
-                    @foreach($detail->course->samples as $sample)
-                        @livewire('components.site.samples.sample-row', ['sample' => $sample,'show_course_name'=>true])
-                    @endforeach
-                @endforeach
-                
-            </div>
+            @forelse($samples as $sample)
+                @livewire('components.site.samples.sample-row', ['sample' => $sample,'show_course_name'=>true])
             @empty
                 <div class="custom-box-shadow d-flex align-items-center justify-content-center alert alert-info">
                     <p>

@@ -72,10 +72,10 @@ class Storage extends Model
         );
     }
 
-    public function name(): Attribute
+    public function showName(): Attribute
     {
         return Attribute::make(
-            get: fn($value) => is_numeric($value) ? 'driver-'.$value : $value
+            get: fn() => is_numeric($this->name) ? 'driver-'.$this->name : $this->name
         );
     }
 

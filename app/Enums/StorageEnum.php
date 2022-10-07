@@ -29,7 +29,7 @@ final class StorageEnum extends Enum
         ];
         $custome_storages = app(StorageRepositoryInterface::class)
         ->getAll()
-        ->pluck('key','name')
+        ->pluck('key','show_name')
         ->toArray();
         $storages = array_merge($custome_storages , $storages);
         return $storages;
