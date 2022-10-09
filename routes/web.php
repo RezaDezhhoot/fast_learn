@@ -1,6 +1,5 @@
 <?php
 
-
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -31,6 +30,8 @@ Route::get('/codes/{code}',App\Http\Controllers\CodeController::class)->name('co
 // v2-samples
 Route::get('/sample-questions',App\Http\Controllers\Site\Samples\IndexSample::class)->name('samples');
 Route::get('/sample-questions/{slug}',App\Http\Controllers\Site\Samples\SingleSample::class)->name('sample');
+// v3-teachers
+Route::middleware(['auth','no_teacher'])->get('/teacher-apply',App\Http\Controllers\Site\Settings\TeacherRequest::class)->name('teacher.apply');
 
 Route::middleware(['auth'])->group(function (){
     Route::get('/checkout',App\Http\Controllers\Site\Carts\Checkout::class)->name('checkout');
@@ -52,6 +53,8 @@ Route::prefix('client')->middleware(['auth'])->group(function (){
     Route::get('/homeworks',App\Http\Controllers\Site\Client\Homeworks::class)->name('user.homeworks');
     // v2-samples
     Route::get('/sample-questions',App\Http\Controllers\Site\Client\MySample::class)->name('user.sample');
+    // v3-teachers
+    Route::get('/requests',App\Http\Controllers\Site\Client\Requests::class)->name('user.requests');
 });
 Route::prefix('admin')->middleware(['auth','role:admin'])->group(function (){
     Route::get('/dashboard',App\Http\Controllers\Admin\Dashboard\IndexDashboard::class)->name('admin.dashboard');
@@ -111,8 +114,38 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->group(function (){
     // v2-storages
     Route::get('/stoages',App\Http\Controllers\Admin\Storages\IndexStorages::class)->name('admin.storage');
     Route::get('/stoages/{action}/{id?}',App\Http\Controllers\Admin\Storages\StoreStorages::class)->name('admin.store.storage');
+    // v3-teachers
+    Route::get('/checkouts',App\Http\Controllers\Admin\TeacherCheckouts\IndexTeacherCheckout::class)->name('admin.checkout');
+    Route::get('/checkouts/{action}/{id?}',App\Http\Controllers\Admin\TeacherCheckouts\StoreTeacherCheckout::class)->name('admin.store.checkout');
+    Route::get('/requests',App\Http\Controllers\Admin\TeacherRequests\IndexTeacherRequest::class)->name('admin.request');
+    Route::get('/requests/{action}/{id?}',App\Http\Controllers\Admin\TeacherRequests\StoreTeacherRequest::class)->name('admin.store.request');
+    Route::get('/accounts',App\Http\Controllers\Admin\BankAccounts\IndexBankAccount::class)->name('admin.account');
+    Route::get('/accounts/{action}/{id?}',App\Http\Controllers\Admin\BankAccounts\StoreBankAccount::class)->name('admin.store.account');
+    Route::get('/incomming-methods',App\Http\Controllers\Admin\IncommingMethods\IndexIncommingMethod::class)->name('admin.incomming');
+    Route::get('/incomming-methods/{action}/{id?}',App\Http\Controllers\Admin\IncommingMethods\StoreIncommingMethod::class)->name('admin.store.incomming');
+    Route::get('/new-courses',App\Http\Controllers\Admin\NewCourses\IndexNewCourse::class)->name('admin.newCourse');
+    Route::get('/new-courses/{action}/{id?}',App\Http\Controllers\Admin\NewCourses\StoreNewCourse::class)->name('admin.store.newCourse');
 });
-
+// v3-teachers
+Route::prefix('teacher')->name('teacher.')->middleware(['auth','role:teacher'])->group(function(){
+    Route::get('/dashboard', App\Http\Controllers\Teacher\Dashboards\Dashboard::class)->name('dashboard');
+    Route::get('/courses', App\Http\Controllers\Teacher\Courses\IndexCourse::class)->name('courses');
+    Route::get('/courses/new', App\Http\Controllers\Teacher\Courses\StoreCourse::class)->name('new.courses');
+    Route::get('/episodes', App\Http\Controllers\Teacher\Epiosodes\IndexEpisode::class)->name('episodes');
+    Route::get('/episodes/{action}/{id?}', App\Http\Controllers\Teacher\Epiosodes\StoreEpisode::class)->name('store.episodes');
+    Route::get('/checkouts', App\Http\Controllers\Teacher\Checkouts\IndexCheckout::class)->name('checkouts');
+    Route::get('/checkouts/{action}/{id?}', App\Http\Controllers\Teacher\Checkouts\StoreCheckout::class)->name('store.checkouts');
+    Route::get('/comments', App\Http\Controllers\Teacher\Comments\IndexComment::class)->name('comments');
+    Route::get('/comments/{action}/{id?}', App\Http\Controllers\Teacher\Comments\StoreComment::class)->name('store.comments');
+    Route::get('/bank-accounts', App\Http\Controllers\Teacher\BankAccounts\IndexBankAccount::class)->name('bankAccounts');
+    Route::get('/bank-accounts/{action}/{id?}', App\Http\Controllers\Teacher\BankAccounts\StoreBankAccount::class)->name('store.bankAccounts');
+    Route::get('/quizzes', App\Http\Controllers\Teacher\Quizzes\IndexQuiz::class)->name('quizzes');
+    Route::get('/quizzes/{action}/{id?}', App\Http\Controllers\Teacher\Quizzes\StoreQuiz::class)->name('store.quizzes');
+    Route::get('/questions', App\Http\Controllers\Teacher\Questions\IndexQuestion::class)->name('questions');
+    Route::get('/questions/{action}/{id?}', App\Http\Controllers\Teacher\Questions\StoreQuestion::class)->name('store.questions');
+    Route::get('/samples', App\Http\Controllers\Teacher\Samples\IndexSamples::class)->name('samples');
+    Route::get('/samples/{action}/{id?}', App\Http\Controllers\Teacher\Samples\StoreSamples::class)->name('store.samples');
+});
 Route::middleware('guest')->get('auth',App\Http\Controllers\Site\Auth\Auth::class)->name('auth');
 
 Route::get('/logout', function (){
