@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Repositories\Classes\ArticleRepository;
+use App\Repositories\Classes\BankAccountRepository;
 use App\Repositories\Classes\CategoryRepository;
 use App\Repositories\Classes\CertificateRepository;
 use App\Repositories\Classes\ChoiceRepository;
@@ -12,7 +13,9 @@ use App\Repositories\Classes\CourseRepository;
 use App\Repositories\Classes\EpisodeRepository;
 use App\Repositories\Classes\EventRepository;
 use App\Repositories\Classes\HomeworkRepository;
+use App\Repositories\Classes\IncommingMethodRepository;
 use App\Repositories\Classes\LogRepository;
+use App\Repositories\Classes\NewCourseRepository;
 use App\Repositories\Classes\NotificationRepository;
 use App\Repositories\Classes\OrderDetailRepository;
 use App\Repositories\Classes\OrderNoteRepository;
@@ -30,13 +33,16 @@ use App\Repositories\Classes\SendRepository;
 use App\Repositories\Classes\SettingRepository;
 use App\Repositories\Classes\StorageRepository;
 use App\Repositories\Classes\TagRepository;
+use App\Repositories\Classes\TeacherCheckoutRepository;
 use App\Repositories\Classes\TeacherRepository;
+use App\Repositories\Classes\TeacherRequestRepository;
 use App\Repositories\Classes\TicketRepository;
 use App\Repositories\Classes\TranscriptRepository;
 use App\Repositories\Classes\UserDetailRepository;
 use App\Repositories\Classes\UserRepository;
 use App\Repositories\Classes\WalletRepository;
 use App\Repositories\Interfaces\ArticleRepositoryInterface;
+use App\Repositories\Interfaces\BankAccountRepositoryInterface;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\Interfaces\CertificateRepositoryInterface;
 use App\Repositories\Interfaces\ChoiceRepositoryInterface;
@@ -46,7 +52,9 @@ use App\Repositories\Interfaces\CourseRepositoryInterface;
 use App\Repositories\Interfaces\EpisodeRepositoryInterface;
 use App\Repositories\Interfaces\EventRepositoryInterface;
 use App\Repositories\Interfaces\HomeworkRepositoryInterface;
+use App\Repositories\Interfaces\IncommingMethodRepositoryInterface;
 use App\Repositories\Interfaces\LogRepositoryInterface;
+use App\Repositories\Interfaces\NewCourseRepositoryInterface;
 use App\Repositories\Interfaces\NotificationRepositoryInterface;
 use App\Repositories\Interfaces\OrderDetailRepositoryInterface;
 use App\Repositories\Interfaces\OrderNoteRepositoryInterface;
@@ -64,7 +72,9 @@ use App\Repositories\Interfaces\SendRepositoryInterface;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
 use App\Repositories\Interfaces\StorageRepositoryInterface;
 use App\Repositories\Interfaces\TagRepositoryInterface;
+use App\Repositories\Interfaces\TeacherCheckoutRepositoryInterface;
 use App\Repositories\Interfaces\TeacherRepositoryInterface;
+use App\Repositories\Interfaces\TeacherRequestRepositoryInterface;
 use App\Repositories\Interfaces\TicketRepositoryInterface;
 use App\Repositories\Interfaces\TranscriptRepositoryInterface;
 use App\Repositories\Interfaces\UserDetailRepositoryInterface;
@@ -253,6 +263,31 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             StorageRepositoryInterface::class,
             StorageRepository::class,
+        );
+
+        $this->app->bind(
+            BankAccountRepositoryInterface::class,
+            BankAccountRepository::class,
+        );
+
+        $this->app->bind(
+            IncommingMethodRepositoryInterface::class,
+            IncommingMethodRepository::class,
+        );
+
+        $this->app->bind(
+            NewCourseRepositoryInterface::class,
+            NewCourseRepository::class,
+        );
+
+        $this->app->bind(
+            TeacherCheckoutRepositoryInterface::class,
+            TeacherCheckoutRepository::class,
+        );
+
+        $this->app->bind(
+            TeacherRequestRepositoryInterface::class,
+            TeacherRequestRepository::class,
         );
     }
 

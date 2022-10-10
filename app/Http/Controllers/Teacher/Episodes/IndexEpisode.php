@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Teacher\Epiosodes;
+namespace App\Http\Controllers\Teacher\Episodes;
 
 use Livewire\Component;
 

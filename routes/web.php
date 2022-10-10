@@ -131,8 +131,8 @@ Route::prefix('teacher')->name('teacher.')->middleware(['auth','role:teacher'])-
     Route::get('/dashboard', App\Http\Controllers\Teacher\Dashboards\Dashboard::class)->name('dashboard');
     Route::get('/courses', App\Http\Controllers\Teacher\Courses\IndexCourse::class)->name('courses');
     Route::get('/courses/new', App\Http\Controllers\Teacher\Courses\StoreCourse::class)->name('new.courses');
-    Route::get('/episodes', App\Http\Controllers\Teacher\Epiosodes\IndexEpisode::class)->name('episodes');
-    Route::get('/episodes/{action}/{id?}', App\Http\Controllers\Teacher\Epiosodes\StoreEpisode::class)->name('store.episodes');
+    Route::get('/episodes', App\Http\Controllers\Teacher\Episodes\IndexEpisode::class)->name('episodes');
+    Route::get('/episodes/{action}/{id?}', App\Http\Controllers\Teacher\Episodes\StoreEpisode::class)->name('store.episodes');
     Route::get('/checkouts', App\Http\Controllers\Teacher\Checkouts\IndexCheckout::class)->name('checkouts');
     Route::get('/checkouts/{action}/{id?}', App\Http\Controllers\Teacher\Checkouts\StoreCheckout::class)->name('store.checkouts');
     Route::get('/comments', App\Http\Controllers\Teacher\Comments\IndexComment::class)->name('comments');
