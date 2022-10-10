@@ -4,14 +4,19 @@ namespace App\Enums;
 
 use BenSampo\Enum\Enum;
 
-/**
- * @method static static OptionOne()
- * @method static static OptionTwo()
- * @method static static OptionThree()
- */
 final class TeacherEnum extends Enum
 {
-    const OptionOne =   0;
-    const OptionTwo =   1;
-    const OptionThree = 2;
+    const APPLY_PENDING = 'pending';
+    const APPLY_REJECTED = 'rejected';
+    const APPLY_CONFIRMED = 'confirmed';
+
+
+    public static function getStatus()
+    {
+        return [
+            self::APPLY_CONFIRMED => 'تایید شده',
+            self::APPLY_PENDING => 'در حال بررسی',
+            self::APPLY_REJECTED => 'رد شده'
+        ];
+    }
 }

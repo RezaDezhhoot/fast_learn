@@ -31,7 +31,7 @@ Route::get('/codes/{code}',App\Http\Controllers\CodeController::class)->name('co
 Route::get('/sample-questions',App\Http\Controllers\Site\Samples\IndexSample::class)->name('samples');
 Route::get('/sample-questions/{slug}',App\Http\Controllers\Site\Samples\SingleSample::class)->name('sample');
 // v3-teachers
-Route::middleware(['auth','no_teacher'])->get('/teacher-apply',App\Http\Controllers\Site\Settings\TeacherRequest::class)->name('teacher.apply');
+Route::middleware(['auth','no_teacher'])->get('/apply',App\Http\Controllers\Site\Settings\TeacherRequest::class)->name('teacher.apply');
 
 Route::middleware(['auth'])->group(function (){
     Route::get('/checkout',App\Http\Controllers\Site\Carts\Checkout::class)->name('checkout');

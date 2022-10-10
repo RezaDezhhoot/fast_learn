@@ -16,6 +16,9 @@ class NoTeacher
      */
     public function handle(Request $request, Closure $next)
     {
-        return $next($request);
+        if (auth()->user()->hasRole('teacher')) {
+            return $next($request);
+        }
+        abort(403);
     }
 }
