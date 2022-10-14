@@ -8,8 +8,9 @@
     {!! Twitter::generate() !!}
     {!! JsonLd::generate() !!}
     <!-- Google fonts -->
-    <script src="https://cdn.plyr.io/3.6.12/plyr.js"></script>
-    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.12/plyr.css" />
+{{--    <script src="https://cdn.plyr.io/3.6.12/plyr.js"></script>--}}
+{{--    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.12/plyr.css" />--}}
+    <link rel="stylesheet" href="{{asset('site/library/plyr/plyr.css?v=1.0.1')}}">
     <link rel="preconnect" href="https://fonts.gstatic.com/" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet" />
 

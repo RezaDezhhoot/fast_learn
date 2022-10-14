@@ -14,7 +14,7 @@
 <script src="{{ asset('site/js/emojionearea.min.js') }}"></script>
 <script src="{{ asset('site/js/tooltipster.bundle.min.js') }}"></script>
 <script src="{{ asset('site/js/main.js') }}"></script>
-
+<script src="{{asset('site/library/plyr/plyr.polyfilled.js?v=1.0.1')}}"></script>
 <script src="{{asset('admin/js/jdate/persianDatepicker.min.js')}}"></script>
 <script src="{{asset('bower_components/jquery.countdown/dist/jquery.countdown.js')}}"></script>
 <script>
