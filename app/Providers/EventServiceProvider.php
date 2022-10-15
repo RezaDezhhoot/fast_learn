@@ -20,8 +20,10 @@ use App\Repositories\Interfaces\CourseRepositoryInterface;
 use App\Repositories\Interfaces\EventRepositoryInterface;
 use App\Repositories\Interfaces\HomeworkRepositoryInterface;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
+use App\Repositories\Interfaces\StoragePermissionRepositoryInterface;
 use App\Repositories\Interfaces\StorageRepositoryInterface;
 use App\Repositories\Interfaces\TicketRepositoryInterface;
+use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -80,6 +82,7 @@ class EventServiceProvider extends ServiceProvider
 
         $storage_repository = app(StorageRepositoryInterface::class);
         $setting_repository = app(SettingRepositoryInterface::class);
+        $storage_permission_repository = app(StoragePermissionRepositoryInterface::class);
         # Observers
         app(TicketRepositoryInterface::class)::observe();
         app(CategoryRepositoryInterface::class)::observe();
@@ -87,6 +90,8 @@ class EventServiceProvider extends ServiceProvider
         app(HomeworkRepositoryInterface::class)::observe();
         app(EventRepositoryInterface::class)::observe();
         $storage_repository::observe();
+
+
 
         Event::listen(
             'Alexusmai\LaravelFileManager\Events\FilesUploading',
@@ -101,6 +106,7 @@ class EventServiceProvider extends ServiceProvider
                         $allowFileTypes = explode(',', $storage->file_types);
 
                     $max_file_size = !empty($storage->max_file_size) ? (int)$storage->max_file_size : null;
+
                 } else {
                     $max_file_size_db_public = $setting_repository->getRow('public_max_file_size');
                     $max_file_size_db_private = $setting_repository->getRow('private_max_file_size');
@@ -119,7 +125,30 @@ class EventServiceProvider extends ServiceProvider
                 config(['file-manager.maxUploadFileSize' =>  $max_file_size]);
             }
         );
+
+
+        \Event::listen('Alexusmai\LaravelFileManager\Events\Rename',
+            function ($event) use ($storage_repository,$storage_permission_repository) {
+                if (!in_array($event->disk(), StorageEnum::getStorages())) {
+                    $storage = $storage_repository->first([['name', $event->disk()]]);
+                    if (!is_null($storage->acl)) {
+                        foreach ($storage->acl as $item) {
+                            $newValue = [];
+                            foreach ($item->path as $key => $value) {
+                                $newValue[$key] = $value;
+                                $newValue[$key]['path'] = str_replace($event->oldName(),$event->newName(),$value['path']);
+                            }
+
+                            $storage_permission_repository->update($item->id,['path'=>$newValue]);
+                        }
+
+                    }
+                }
+            }
+        );
+
     }
+
 
     /**
      * Determine if events and listeners should be automatically discovered.

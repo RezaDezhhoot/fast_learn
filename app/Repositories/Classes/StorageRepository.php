@@ -22,7 +22,7 @@ class StorageRepository implements StorageRepositoryInterface
         return Storage::observe(StorageObserver::class);
     }
 
-    public function destroy($id) 
+    public function destroy($id)
     {
         $item = $this->findOrFail($id);
         if ($item->trashed()) {
@@ -56,5 +56,10 @@ class StorageRepository implements StorageRepositoryInterface
     public function getAll()
     {
         return Storage::all();
+    }
+
+    public function getFreeStorages()
+    {
+        return Storage::doesntHave('acl')->get();
     }
 }

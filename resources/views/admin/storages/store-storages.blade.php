@@ -44,7 +44,7 @@
                     </div>
                 @endif
             </x-admin.form-section>
-            
+
         </div>
     </div>
 </div>

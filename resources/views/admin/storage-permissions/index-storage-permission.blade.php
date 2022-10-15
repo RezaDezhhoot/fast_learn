@@ -1,9 +1,9 @@
 <div>
-    @section('title','فضا های ذخیره سازی')
-    <x-admin.form-control link="{{ route('admin.store.storage',['create'] ) }}"  title="فضا های ذخیره سازی"/>
+    @section('title','قوانین فضا های ذخیره سازی ')
+    <x-admin.form-control link="{{ route('admin.store.acl',['create'] ) }}"  title="قوانین فضا های ذخیره سازی"/>
     <div class="card card-custom">
         <div class="card-body">
-            <x-admin.forms.dropdown id="status" :data="$data['status']" label="وضعیت" wire:model="status"/>
+            <x-admin.forms.dropdown id="storage" :data="$data['storage']" label="دیسک" wire:model="storage"/>
             @include('admin.layouts.advance-table')
             <div class="row">
                 <div class="col-lg-12 table-responsive">
@@ -11,27 +11,23 @@
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>عنوان</th>
-                            <th>وضعیت</th>
-                            <th>درایور</th>
+                            <th>دیسک</th>
+                            <th>کد کاربر</th>
+                            <th>نام کاربر</th>
+                            <th>شماره کاربر</th>
                             <th>عملیات</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @forelse($storages as $item)
+                        @forelse($acl as $item)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $item->name }}</td>
+                                <td>{{ $item->storage->name }}</td>
+                                <td>{{ $item->user->id }}</td>
+                                <td>{{ $item->user->name }}</td>
+                                <td>{{ $item->user->phone }}</td>
                                 <td>
-                                    <span class="badge badge-pill badge-dark">
-                                        <span class="d-flex align-items-center">
-                                            <i class="fa fa fa-circle text-{{$item->color}} pr-2"></i> {{ $item->status_label }}
-                                        </span>
-                                    </span>
-                                </td>
-                                <td>{{ $item->driver_label }}</td>
-                                <td>
-                                    <x-admin.edit-btn href="{{ route('admin.store.storage',['edit', $item->id]) }}" />
+                                    <x-admin.edit-btn href="{{ route('admin.store.acl',['edit', $item->id]) }}" />
                                     <x-admin.delete-btn onclick="deleteItem({{$item->id}})" />
                                 </td>
                             </tr>
@@ -44,7 +40,7 @@
                     </table>
                 </div>
             </div>
-            {{$storages->links('admin.layouts.paginate')}}
+            {{$acl->links('admin.layouts.paginate')}}
         </div>
     </div>
 </div>

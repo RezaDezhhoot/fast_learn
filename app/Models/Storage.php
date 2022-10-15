@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @method static doesntHave(string $string)
+ */
 class Storage extends Model
 {
     use HasFactory , SoftDeletes , Searchable;
@@ -26,7 +29,7 @@ class Storage extends Model
     {
         return $query->where('status',StorageEnum::AVAILABLE);
     }
-    
+
     public function statusLabel(): Attribute
     {
         return Attribute::make(
@@ -67,8 +70,8 @@ class Storage extends Model
     public function config(): Attribute
     {
         return Attribute::make(
-            set: fn($value) => json_encode($value),
-            get: fn($value) => json_decode($value,true)
+            get: fn($value) => json_decode($value,true),
+            set: fn($value) => json_encode($value)
         );
     }
 
@@ -84,5 +87,10 @@ class Storage extends Model
         static::addGlobalScope('available', function (Builder $builder) {
             $builder->where('status', StorageEnum::AVAILABLE);
         });
+    }
+
+    public function acl()
+    {
+        return $this->hasMany(StoragePermission::class);
     }
 }

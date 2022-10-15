@@ -92,6 +92,7 @@ class StoreTeacherRequest extends BaseComponent
     {
         $this->authorizing('delete_teacher_requests');
         $this->teacherRequestRepository->destroy($this->request->id);
+        redirect()->route('admin.request');
     }
 
     public function download($file)

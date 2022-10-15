@@ -31,6 +31,7 @@ use App\Repositories\Classes\RoleRepository;
 use App\Repositories\Classes\SampleRepository;
 use App\Repositories\Classes\SendRepository;
 use App\Repositories\Classes\SettingRepository;
+use App\Repositories\Classes\StoragePermissionRepository;
 use App\Repositories\Classes\StorageRepository;
 use App\Repositories\Classes\TagRepository;
 use App\Repositories\Classes\TeacherCheckoutRepository;
@@ -70,6 +71,7 @@ use App\Repositories\Interfaces\RoleRepositoryInterface;
 use App\Repositories\Interfaces\SampleRepositoryInterface;
 use App\Repositories\Interfaces\SendRepositoryInterface;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
+use App\Repositories\Interfaces\StoragePermissionRepositoryInterface;
 use App\Repositories\Interfaces\StorageRepositoryInterface;
 use App\Repositories\Interfaces\TagRepositoryInterface;
 use App\Repositories\Interfaces\TeacherCheckoutRepositoryInterface;
@@ -288,6 +290,11 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             TeacherRequestRepositoryInterface::class,
             TeacherRequestRepository::class,
+        );
+
+        $this->app->bind(
+            StoragePermissionRepositoryInterface::class,
+            StoragePermissionRepository::class,
         );
     }
 

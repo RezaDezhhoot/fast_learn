@@ -11,8 +11,9 @@ use App\Enums\StorageEnum;
 use App\Enums\EventEnum;
 use App\Repositories\Interfaces\StorageRepositoryInterface;
 use Illuminate\Support\Facades\Log;
+use Alexusmai\LaravelFileManager\Services\ACLService\ACLRepository;
 
-class UserRepository implements UserRepositoryInterface, ConfigRepository
+class UserRepository implements UserRepositoryInterface, ConfigRepository , ACLRepository
 {
     public function getDiskList(): array
     {
@@ -377,5 +378,56 @@ class UserRepository implements UserRepositoryInterface, ConfigRepository
     public function getModelNamespace(): string
     {
         return User::class;
+    }
+
+    public function getUserID()
+    {
+        return Auth::id();
+    }
+
+    public function getRules(): array
+    {
+        $acl = Auth::user()->acl;
+        $free_storages = app(StorageRepositoryInterface::class)->getFreeStorages();
+        $permissions = [];
+
+        if (in_array(StorageEnum::PUBLIC_LABEL,$this->getDiskList())) {
+            $permissions[] = [
+                'disk' => StorageEnum::PUBLIC_LABEL,
+                'path' => '*',
+                'access' => 2
+            ];
+        }
+
+        if (in_array(StorageEnum::PRIVATE_LABEL,$this->getDiskList())) {
+            $permissions[] = [
+                'disk' => StorageEnum::PRIVATE_LABEL,
+                'path' => '*',
+                'access' => 2
+            ];
+        }
+
+        foreach ($free_storages as $item) {
+            if (in_array($item->name,$this->getDiskList())) {
+                $permissions[] = [
+                    'disk' => $item->name,
+                    'path' => '*',
+                    'access' => 2
+                ];
+            }
+        }
+
+        if (!is_null($acl)) {
+            foreach ($acl as $item) {
+                foreach ($item->path as $path) {
+                    $permissions[] = [
+                        'disk' => $item->storage->name,
+                        'path' => $path['path'],
+                        'access' => $path['access']
+                    ];
+                }
+            }
+        }
+        return $permissions;
     }
 }

@@ -20,19 +20,29 @@ final class StorageEnum extends Enum
     const PERMISSION_PREFIX = 'custom_storage-';
 
     const RELATION_KEY_PREFIX = 'cs-';
-    
+
+    const BLACK_LIST_STRATEGY = 'blacklist' , WHITE_LIST_STRATEGY = 'whitelist';
+
+    #[ArrayShape([self::BLACK_LIST_STRATEGY => "string", self::WHITE_LIST_STRATEGY => "string"])]
+    public static function getStrategy(): array
+    {
+        return [
+            self::BLACK_LIST_STRATEGY => 'همه دسترسی دارند بجز کاربران تعریف شده',
+            self::WHITE_LIST_STRATEGY => 'هیچ کس دسترسی ندارد بجز کاربران تعریف شده'
+        ];
+    }
+
     public static function storages(): array
     {
         $storages = [
             self::PUBLIC_LABEL => self::PUBLIC,
             self::PRIVATE_LABEL => self::PRIVATE,
         ];
-        $custome_storages = app(StorageRepositoryInterface::class)
+        $custom_storages = app(StorageRepositoryInterface::class)
         ->getAll()
         ->pluck('key','show_name')
         ->toArray();
-        $storages = array_merge($custome_storages , $storages);
-        return $storages;
+        return array_merge($custom_storages , $storages);
     }
 
     public static function getStorages(): array

@@ -12,6 +12,7 @@ class StoreStorages extends BaseComponent
 {
     public $storage, $name, $driver, $config , $status, $description, $header , $max_file_size , $file_types;
 
+
     public function __construct($id = null)
     {
         parent::__construct($id);
@@ -64,7 +65,7 @@ class StoreStorages extends BaseComponent
     private function saveInDataBase($model)
     {
         $this->name = trim($this->name);
-        $fileds = [
+        $fields = [
             'name' => ['required',Rule::notIn(StorageEnum::getStorages()), 'string', 'max:200', 'unique:storages,name,' . ($this->storage->id ?? 0)],
             'status' => ['required', 'string', 'in:' . implode(',', array_keys(StorageEnum::getStatus()))],
             'description' => ['nullable', 'string', 'max:250'],
@@ -76,19 +77,19 @@ class StoreStorages extends BaseComponent
             'status' => 'وضعیت',
             'description' => 'توضیحات',
             'max_file_size' => 'حداکثر حجم مجاز اپلود فایل',
-            'file_types' => 'فرمت فایل های مجاز'
+            'file_types' => 'فرمت فایل های مجاز',
         ];
         if ($this->mode == self::CREATE_MODE) {
-            $fileds['driver'] = ['required', 'string', 'in:' . implode(',', array_keys($this->data['drivers']))];
+            $fields['driver'] = ['required', 'string', 'in:' . implode(',', array_keys($this->data['drivers']))];
             $messages['driver'] = 'درایور';
         }
-        $this->validate($fileds, [], $messages);
+        $this->validate($fields, [], $messages);
         $config = [];
         if ($this->driver == StorageEnum::PRIVATE) {
             if ($this->mode == self::CREATE_MODE) {
                 $folder_name = uniqid('custom_storage_');
             } else $folder_name = $model->folder_name;
-            
+
             $config = [
                 'driver' => 'local',
                 'root' => storage_path("app/$folder_name"),
@@ -157,7 +158,6 @@ class StoreStorages extends BaseComponent
         $model->status = $this->status;
         $model->file_types = $this->file_types;
         $model->max_file_size = $this->max_file_size;
-        $model->status = $this->status;
         $model->description = $this->description;
         $model = $this->storageRepository->save($model);
 
@@ -174,7 +174,7 @@ class StoreStorages extends BaseComponent
 
     public function resetData()
     {
-        $this->reset(['config','name','driver','status','description']);
+        $this->reset(['config','name','driver','status','description','file_types','max_file_size']);
     }
 
     public function render()

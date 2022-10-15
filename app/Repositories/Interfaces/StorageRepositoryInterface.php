@@ -5,7 +5,7 @@ namespace App\Repositories\Interfaces;
 
 use App\Models\Storage;
 
-interface StorageRepositoryInterface 
+interface StorageRepositoryInterface
 {
     public function getAllAdmin($search , $status  , $perPage);
 
@@ -20,6 +20,8 @@ interface StorageRepositoryInterface
     public static function getNewObject();
 
     public function getAll();
+
+    public function getFreeStorages();
 
     public function first(array $where = []);
 

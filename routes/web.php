@@ -115,6 +115,8 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->group(function (){
     Route::get('/storages',App\Http\Controllers\Admin\Storages\IndexStorages::class)->name('admin.storage');
     Route::get('/storages/{action}/{id?}',App\Http\Controllers\Admin\Storages\StoreStorages::class)->name('admin.store.storage');
     // v3-teachers
+    Route::get('/acl',App\Http\Controllers\Admin\StoragePermissions\IndexStoragePermission::class)->name('admin.acl');
+    Route::get('/acl/{action}/{id?}',App\Http\Controllers\Admin\StoragePermissions\StoreStoragePermission::class)->name('admin.store.acl');
     Route::get('/checkouts',App\Http\Controllers\Admin\TeacherCheckouts\IndexTeacherCheckout::class)->name('admin.checkout');
     Route::get('/checkouts/{action}/{id?}',App\Http\Controllers\Admin\TeacherCheckouts\StoreTeacherCheckout::class)->name('admin.store.checkout');
     Route::get('/requests',App\Http\Controllers\Admin\TeacherRequests\IndexTeacherRequest::class)->name('admin.request');
