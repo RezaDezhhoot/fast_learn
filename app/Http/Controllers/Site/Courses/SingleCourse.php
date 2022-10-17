@@ -113,7 +113,7 @@ class SingleCourse extends BaseComponent
 
         $episode = $this->episodeRepository->find($id);
         $this->episode_id = $episode->id;
-        $user_has_episode = $this->user->hasCourse($this->course->id);
+        $user_has_episode = $this->user->hasCourse($this->course->id) || $episode->free;
         if ($this->course->price == 0 && !$user_has_episode){
             $this->getFreeOrder();
         }
@@ -342,5 +342,5 @@ class SingleCourse extends BaseComponent
         }
     }
 
-   
+
 }

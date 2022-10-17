@@ -96,10 +96,12 @@ class EventServiceProvider extends ServiceProvider
                     $max_file_size_db_public = $setting_repository->getRow('public_max_file_size');
                     $max_file_size_db_private = $setting_repository->getRow('private_max_file_size');
                     if ($event->disk() == StorageEnum::PUBLIC_LABEL) {
-                        $allowFileTypes = explode(',', $setting_repository->getRow('public_storage_file_types'));
+                        if (!empty($setting_repository->getRow('public_storage_file_types')))
+                            $allowFileTypes = explode(',', $setting_repository->getRow('public_storage_file_types'));
                         $max_file_size = !empty($max_file_size_db_public) ? (int)$max_file_size_db_public : null ;
                     } else {
-                        $allowFileTypes = explode(',', $setting_repository->getRow('private_storage_file_types'));
+                        if (!empty($setting_repository->getRow('private_storage_file_types')))
+                            $allowFileTypes = explode(',', $setting_repository->getRow('private_storage_file_types'));
                         $max_file_size = !empty($max_file_size_db_private) ? (int)$max_file_size_db_private : null ;
                     }
                 }

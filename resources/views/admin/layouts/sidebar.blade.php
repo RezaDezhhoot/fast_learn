@@ -56,11 +56,7 @@
                     <h4 class="menu-text">بخش رسانه</h4>
                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                 </li>
-                @if(auth()->user()->hasPermissionTo('public_driver') || auth()->user()->hasPermissionTo('private_driver') ||
-                auth()->user()->hasPermissionTo('ftp_driver') ||auth()->user()->hasPermissionTo('sftp_driver') ||
-                auth()->user()->hasPermissionTo('s3_driver'))
-                    <x-admin.menu-item href="{{route('fm.fm-button')}}" icon="flaticon2-file" :active="request()->routeIs('unisharp.lfm.show')" label="مدیریت رسانه ها" />
-                @endif
+                <x-admin.menu-item href="{{route('fm.fm-button')}}" icon="flaticon2-file" :active="request()->routeIs('unisharp.lfm.show')" label="مدیریت رسانه ها" />
                 <li class="menu-section">
                     <h4 class="menu-text">بخش ازمون و گواهینامه</h4>
                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
@@ -108,7 +104,7 @@
                 @can('show_articles')
                     <x-admin.menu-item href="{{route('admin.article')}}" icon="fas fa-text-height"  :active="request()->routeIs(['admin.article','admin.store.article'])" label="مقالات " />
                 @endcan
-                
+
                 {{-- v2-samples --}}
                 @can('show_samples')
                     <x-admin.menu-item href="{{route('admin.sample')}}" icon="fa fa-question"  :active="request()->routeIs(['admin.sample','admin.store.sample'])" label="نمونه سوالات " />
