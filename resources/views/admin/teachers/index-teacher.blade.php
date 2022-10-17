@@ -10,6 +10,7 @@
                         <thead>
                         <tr>
                             <th>#</th>
+                            <th>کد کاربر</th>
                             <th>شماره شناسه</th>
                             <th>شماره همراه</th>
                             <th>ایمیل</th>
@@ -21,6 +22,7 @@
                         @forelse($teachers as $item)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
+                                <td>{{ $item->user->id }}</td>
                                 <td>{{ $item->id }}</td>
                                 <td>{{ $item->user->phone }}</td>
                                 <td>{{ $item->user->email }}</td>

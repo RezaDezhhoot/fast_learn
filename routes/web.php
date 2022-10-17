@@ -112,8 +112,8 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->group(function (){
     Route::get('/samples',App\Http\Controllers\Admin\Samples\IndexSample::class)->name('admin.sample');
     Route::get('/samples/{action}/{id?}',App\Http\Controllers\Admin\Samples\StoreSample::class)->name('admin.store.sample');
     // v2-storages
-    Route::get('/stoages',App\Http\Controllers\Admin\Storages\IndexStorages::class)->name('admin.storage');
-    Route::get('/stoages/{action}/{id?}',App\Http\Controllers\Admin\Storages\StoreStorages::class)->name('admin.store.storage');
+    Route::get('/storages',App\Http\Controllers\Admin\Storages\IndexStorages::class)->name('admin.storage');
+    Route::get('/storages/{action}/{id?}',App\Http\Controllers\Admin\Storages\StoreStorages::class)->name('admin.store.storage');
     // v3-teachers
     Route::get('/checkouts',App\Http\Controllers\Admin\TeacherCheckouts\IndexTeacherCheckout::class)->name('admin.checkout');
     Route::get('/checkouts/{action}/{id?}',App\Http\Controllers\Admin\TeacherCheckouts\StoreTeacherCheckout::class)->name('admin.store.checkout');
@@ -121,10 +121,11 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->group(function (){
     Route::get('/requests/{action}/{id?}',App\Http\Controllers\Admin\TeacherRequests\StoreTeacherRequest::class)->name('admin.store.request');
     Route::get('/accounts',App\Http\Controllers\Admin\BankAccounts\IndexBankAccount::class)->name('admin.account');
     Route::get('/accounts/{action}/{id?}',App\Http\Controllers\Admin\BankAccounts\StoreBankAccount::class)->name('admin.store.account');
-    Route::get('/incomming-methods',App\Http\Controllers\Admin\IncommingMethods\IndexIncommingMethod::class)->name('admin.incomming');
-    Route::get('/incomming-methods/{action}/{id?}',App\Http\Controllers\Admin\IncommingMethods\StoreIncommingMethod::class)->name('admin.store.incomming');
+    Route::get('/incoming-methods',App\Http\Controllers\Admin\IncomingMethods\IndexIncomingMethod::class)->name('admin.incoming');
+    Route::get('/incoming-methods/{action}/{id?}',App\Http\Controllers\Admin\IncomingMethods\StoreIncomingMethod::class)->name('admin.store.incoming');
     Route::get('/new-courses',App\Http\Controllers\Admin\NewCourses\IndexNewCourse::class)->name('admin.newCourse');
     Route::get('/new-courses/{action}/{id?}',App\Http\Controllers\Admin\NewCourses\StoreNewCourse::class)->name('admin.store.newCourse');
+    Route::get('/settings/apply', App\Http\Controllers\Admin\Settings\Law::class)->name('admin.setting.apply');
 });
 // v3-teachers
 Route::prefix('teacher')->name('teacher.')->middleware(['auth','role:teacher'])->group(function(){

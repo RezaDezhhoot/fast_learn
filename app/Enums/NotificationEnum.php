@@ -18,7 +18,7 @@ final class NotificationEnum extends Enum
 {
     const PUBLIC = 'public' , PRIVATE = 'private';
 
-    const ORDER = 'Order' , AUTH = 'Auth' ;
+    const ORDER = 'Order' , AUTH = 'Auth' , TEACHER = 'teacher' ;
     const TICKET = 'Ticket' , ALL = 'All' , SECURITY = 'Security' , USER = 'User' , QUIZ = 'Quiz';
 
     public static function getSubject()
@@ -31,6 +31,7 @@ final class NotificationEnum extends Enum
             self::SECURITY => 'امنیتی',
             self::QUIZ => 'ازمون',
             self::ALL => 'عمومی',
+            self::TEACHER => 'مدرسین'
         ];
     }
 

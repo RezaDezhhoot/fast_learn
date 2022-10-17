@@ -13,6 +13,7 @@
                             <thead>
                             <tr>
                                 <th>#</th>
+                                <th>کد</th>
                                 <th> نام</th>
                                 <th>شماره همراه</th>
                                 <th>موجودی کیف پول(تومان)</th>
@@ -25,6 +26,7 @@
                             @forelse($users as $item)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $item->id }}</td>
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->phone }}</td>
                                     <td>{{ number_format( $item->balance)  }} تومان</td>
@@ -38,7 +40,7 @@
                                     </td>
                                 </tr>
                             @empty
-                                <td class="text-center" colspan="9">
+                                <td class="text-center" colspan="10">
                                     دیتایی جهت نمایش وجود ندارد
                                 </td>
                             @endforelse

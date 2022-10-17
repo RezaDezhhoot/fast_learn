@@ -42,6 +42,7 @@
                             <table class="table table-striped table-bordered">
                                 <thead>
                                 <tr>
+                                    <th>کد کاربر</th>
                                     <td>نام</td>
                                     <td>شماره همراه</td>
                                     <td>وضعیت</td>
@@ -49,6 +50,7 @@
                                 </thead>
                                 <tbody>
                                 <tr>
+                                    <td>{{ $ticket->user->id }}</td>
                                     <td>{{ $ticket->user->name }}</td>
                                     <td>{{ $ticket->user->phone }}</td>
                                     <td>{{ $ticket->user->status_label }}</td>

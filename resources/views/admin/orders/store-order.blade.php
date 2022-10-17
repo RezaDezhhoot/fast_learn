@@ -10,6 +10,7 @@
                         <table class="table table-striped table-bordered">
                             <thead>
                             <tr>
+                                <th>کد کاربر</th>
                                 <td>نام</td>
                                 <td>شماره همراه</td>
                                 <td>وضعیت</td>
@@ -19,6 +20,7 @@
                             </thead>
                             <tbody>
                             <tr>
+                                <td>{{ $order->user->id }}</td>
                                 <td>{{ $order->user->name }}</td>
                                 <td>{{ $order->user->phone }}</td>
                                 <td>{{ $order->user->status_label }}</td>

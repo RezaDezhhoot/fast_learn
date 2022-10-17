@@ -165,7 +165,7 @@ class Ticket extends BaseComponent
     {
         $file = [];
         foreach ($this->file as $value) {
-            if (isset($value) && !empty($this->file))
+            if (isset($value) && !empty($value))
                 $file[] = 'storage/' . $this->disk->put('tickets', $value);
         }
 

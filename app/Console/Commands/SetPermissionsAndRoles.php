@@ -133,6 +133,7 @@ class SetPermissionsAndRoles extends Command
             ['name' => 'delete_contacts', 'guard_name'=> 'web'],
             ['name' => 'show_logs', 'guard_name'=> 'web'],
 
+            // v2.0.1
             ['name' => 'show_samples' , 'guard_name'=> 'web'],
             ['name' => 'edit_samples', 'guard_name'=> 'web'],
             ['name' => 'delete_samples', 'guard_name'=> 'web'],
@@ -140,6 +141,27 @@ class SetPermissionsAndRoles extends Command
             ['name' => 'show_storages' , 'guard_name'=> 'web'],
             ['name' => 'edit_storages', 'guard_name'=> 'web'],
             ['name' => 'delete_storages', 'guard_name'=> 'web'],
+
+            // v3.0.2
+            ['name' => 'show_teacher_requests' , 'guard_name'=> 'web'],
+            ['name' => 'edit_teacher_requests', 'guard_name'=> 'web'],
+            ['name' => 'delete_teacher_requests', 'guard_name'=> 'web'],
+
+            ['name' => 'show_new_courses' , 'guard_name'=> 'web'],
+            ['name' => 'edit_new_courses', 'guard_name'=> 'web'],
+            ['name' => 'delete_new_courses', 'guard_name'=> 'web'],
+
+            ['name' => 'show_checkouts' , 'guard_name'=> 'web'],
+            ['name' => 'edit_checkouts', 'guard_name'=> 'web'],
+            ['name' => 'delete_checkouts', 'guard_name'=> 'web'],
+
+            ['name' => 'show_bank_accounts' , 'guard_name'=> 'web'],
+            ['name' => 'edit_bank_accounts', 'guard_name'=> 'web'],
+            ['name' => 'delete_bank_accounts', 'guard_name'=> 'web'],
+
+            ['name' => 'show_incoming_methods' , 'guard_name'=> 'web'],
+            ['name' => 'edit_incoming_methods', 'guard_name'=> 'web'],
+            ['name' => 'delete_incoming_methods', 'guard_name'=> 'web'],
         ];
         $user = [
             'name'=> 'admin',
@@ -159,7 +181,7 @@ class SetPermissionsAndRoles extends Command
             $super_admin->syncPermissions($permissionRepository->getAll());
             $administrator->syncPermissions($permissionRepository->getAll());
             $user = $userRepository->create($user);
-            $userRepository->syncRoles($user,[$admin,$super_admin,$administrator,$teacher]);
+            $userRepository->syncRoles($user,[$admin,$super_admin,$administrator]);
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();

@@ -13,6 +13,7 @@
                             <th>#</th>
                             <th>شماره کارنامه</th>
                             <th>شماره گواهینامه</th>
+                            <th>کد کاربر</th>
                             <th>نام کاربر</th>
                             <th>شماره کاربر</th>
                             <th>دوره</th>
@@ -29,6 +30,7 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->id }}</td>
                                 <td>{{ $item->certificate_code ?? '' }}</td>
+                                <td>{{ $item->user->id }}</td>
                                 <td>{{ $item->user->name }}</td>
                                 <td>{{ $item->user->phone }}</td>
                                 <td>{{ $item->course_data['title'] }}</td>
@@ -42,7 +44,7 @@
                                 </td>
                             </tr>
                         @empty
-                            <td class="text-center" colspan="10">
+                            <td class="text-center" colspan="12">
                                 دیتایی جهت نمایش وجود ندارد
                             </td>
                         @endforelse

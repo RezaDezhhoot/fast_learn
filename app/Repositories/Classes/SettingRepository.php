@@ -35,6 +35,10 @@ class SettingRepository implements SettingRepositoryInterface
                 '{exam_score}' => 'نمره دریافت شده',
                 '{exam_min_score}' => 'حداقل نمره',
                 '{exam_max_score}' => 'حداکثر نمره',
+            ],
+            'teacher' => [
+                '{teacher_name}' => 'نام کاربر',
+                '{request_id}' => 'شماره درخواست'
             ]
         ];
     }

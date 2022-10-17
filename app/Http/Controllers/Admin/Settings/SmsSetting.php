@@ -13,6 +13,8 @@ class SmsSetting extends BaseComponent
     public $auth_login , $auth_register;
     public $exam_passed , $exam_rejected;
 
+    public $teacher_apply_reject , $teacher_apply_confirm;
+
     public function __construct($id = null)
     {
         parent::__construct($id);
@@ -34,6 +36,9 @@ class SmsSetting extends BaseComponent
         $this->auth_register = $this->settingRepository->getRow('auth_register');
         $this->exam_passed = $this->settingRepository->getRow('exam_passed');
         $this->exam_rejected = $this->settingRepository->getRow('exam_rejected');
+
+        $this->teacher_apply_confirm = $this->settingRepository->getRow('teacher_apply_confirm');
+        $this->teacher_apply_reject = $this->settingRepository->getRow('teacher_apply_reject');
     }
 
     public function render()
@@ -56,6 +61,8 @@ class SmsSetting extends BaseComponent
                 'auth_register' => ['nullable', 'string','max:650'],
                 'exam_passed' => ['nullable', 'string','max:650'],
                 'exam_rejected' => ['nullable', 'string','max:650'],
+                'teacher_apply_confirm' => ['nullable', 'string','max:650'],
+                'teacher_apply_reject' => ['nullable', 'string','max:650'],
             ] , [] , [
                 'order_completed' => 'تکمیل سفارش',
                 'order_processing' => 'در حال پردازش',
@@ -67,6 +74,8 @@ class SmsSetting extends BaseComponent
                 'auth_register' => 'ثبت نام',
                 'exam_passed' => 'قبول شدن در ازمون',
                 'exam_rejected' => 'رد شدن در ازمون',
+                'teacher_apply_confirm' => 'تایید درخواست برای مدرس شدن',
+                'teacher_apply_reject' => 'رد درخواست برای مدرس شدن',
             ]
         );
         $this->settingRepository::updateOrCreate(['name' => 'order_completed'], ['value' => $this->order_completed]);
@@ -79,6 +88,9 @@ class SmsSetting extends BaseComponent
         $this->settingRepository::updateOrCreate(['name' => 'auth_register'], ['value' => $this->auth_register]);
         $this->settingRepository::updateOrCreate(['name' => 'exam_passed'], ['value' => $this->exam_passed]);
         $this->settingRepository::updateOrCreate(['name' => 'exam_rejected'], ['value' => $this->exam_rejected]);
+
+        $this->settingRepository::updateOrCreate(['name' => 'teacher_apply_confirm'], ['value' => $this->teacher_apply_confirm]);
+        $this->settingRepository::updateOrCreate(['name' => 'teacher_apply_reject'], ['value' => $this->teacher_apply_reject]);
         $this->emitNotify('اطلاعات با موفقیت ثبت شد');
     }
 }

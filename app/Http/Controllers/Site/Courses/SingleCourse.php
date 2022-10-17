@@ -126,7 +126,9 @@ class SingleCourse extends BaseComponent
                         endif;
                     break;
                 case 'local_video':
-                    if ( ( $this->course->price == 0 || $user_has_episode) and $episode->downloadable_local_video ) {
+
+                    if ( ( $this->course->price == 0 || $user_has_episode ) and $episode->downloadable_local_video ) {
+
                         if ($disk = getDisk($episode->video_storage))
                             return $disk->download($episode->local_video);
                     }

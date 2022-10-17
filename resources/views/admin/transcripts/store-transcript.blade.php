@@ -41,6 +41,7 @@
                                     <table class="table table-striped table-bordered">
                                         <thead>
                                         <tr>
+                                            <td>کد کاربر</td>
                                             <td>نام</td>
                                             <td>شماره همراه</td>
                                             <td>وضعیت</td>
@@ -48,6 +49,7 @@
                                         </thead>
                                         <tbody>
                                         <tr>
+                                            <td>{{ $transcript->user->id }}</td>
                                             <td>{{ $transcript->user->name }}</td>
                                             <td>{{ $transcript->user->phone }}</td>
                                             <td>{{ $transcript->user->status_label }}</td>

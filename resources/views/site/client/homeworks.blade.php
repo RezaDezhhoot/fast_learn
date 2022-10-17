@@ -26,7 +26,7 @@
                             <td>{{ $item->created_at->diffForHumans() }}</td>
                             <td>
                                 <p wire:click="homework('{{$item->id}}')" data-toggle="modal" data-target="#homeworkModal" class="d-flex align-items-center cursor-pointers">
-                                    <i class="la la-eye"></i> مشاهده
+                                     مشاهده <i class="la la-eye px-2 la-lg"></i>
                                 </p>
                             </td>
                         </tr>

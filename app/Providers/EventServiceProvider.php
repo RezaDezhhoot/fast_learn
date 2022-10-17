@@ -8,11 +8,13 @@ use App\Events\ContactUsEvent;
 use App\Events\ExamEvent;
 use App\Events\OrderEvent;
 use App\Events\RegisterEvent;
+use App\Events\TeacherEvent;
 use App\Listeners\ContactUsListener;
 use App\Listeners\SendAuthenticationNotify;
 use App\Listeners\SendExamNotify;
 use App\Listeners\SendOrderNotify;
 use App\Listeners\SendRegisterNotify;
+use App\Listeners\TeacherListener;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\Interfaces\CourseRepositoryInterface;
 use App\Repositories\Interfaces\EventRepositoryInterface;
@@ -69,6 +71,11 @@ class EventServiceProvider extends ServiceProvider
             [ContactUsListener::class, 'handle']
         );
 
+        Event::listen(
+            TeacherEvent::class,
+            [TeacherListener::class, 'handle']
+        );
+
 
 
         $storage_repository = app(StorageRepositoryInterface::class);
@@ -90,7 +97,9 @@ class EventServiceProvider extends ServiceProvider
                     $storage = $storage_repository->first([['name', $event->disk()]]);
                     Artisan::call('cache:clear');
                     Artisan::call('config:clear');
-                    $allowFileTypes = explode(',', $storage->file_types);
+                    if (!is_null($storage->file_types))
+                        $allowFileTypes = explode(',', $storage->file_types);
+
                     $max_file_size = !empty($storage->max_file_size) ? (int)$storage->max_file_size : null;
                 } else {
                     $max_file_size_db_public = $setting_repository->getRow('public_max_file_size');
@@ -103,6 +112,7 @@ class EventServiceProvider extends ServiceProvider
                         if (!empty($setting_repository->getRow('private_storage_file_types')))
                             $allowFileTypes = explode(',', $setting_repository->getRow('private_storage_file_types'));
                         $max_file_size = !empty($max_file_size_db_private) ? (int)$max_file_size_db_private : null ;
+
                     }
                 }
                 config(['file-manager.allowFileTypes' =>  $allowFileTypes]);

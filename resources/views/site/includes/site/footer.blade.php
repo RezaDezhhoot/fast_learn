@@ -23,6 +23,7 @@
                     <div class="divider border-bottom-0"><span></span></div>
                     <ul class="generic-list-item">
                         <li><a href="{{route('home')}}">صفحه اصلی</a></li>
+                        <li><a href="{{ route('teacher.apply') }}">مدرس شوید</a></li>
                         <li><a href="{{ route('articles') }}">مقالات</a></li>
                         <li><a href="{{route('user.dashboard')}}">ناحیه کاربری</a></li>
                         <li><a href="{{route('cart')}}">سبد خرید </a></li>

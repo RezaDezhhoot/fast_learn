@@ -13,14 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('incomming_methods', function (Blueprint $table) {
+        Schema::create('incoming_methods', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->string('type');
             $table->string('value')->nullable();
             $table->integer('expire_limit')->nullable();
-            $table->integer('counr_limit')->nullable();
-            $table->longText('formola')->nullbale();
+            $table->integer('count_limit')->nullable();
+            $table->longText('formula')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -32,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('incomming_methods');
+        Schema::dropIfExists('incoming_methods');
     }
 };

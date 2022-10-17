@@ -15,7 +15,7 @@
                                 <th>تاریخ</th>
                                 <th>عملیات</th>
                                 <th>موضوع کاربر</th>
-                               
+
                                 <th>جزئیات دقیق</th>
                             </tr>
                         </thead>
@@ -26,7 +26,7 @@
                                 <td>
                                     @if (!is_null($item->causer))
                                     <ul>
-                                        <li> شماره شناسه : {{ $item->causer->id }}</a></li>
+                                        <li> کد کاربر  : {{ $item->causer->id }}</a></li>
                                         <li> نام کامل : <a title="صفحه جزئیات کاربر"
                                                 href="{{route('admin.store.user',['edit', $item->causer->id])}}">{{
                                                 $item->causer->name }}</a></li>
@@ -40,7 +40,7 @@
                                 <td>{{ $item->date }}</td>
                                 <td>{{ $item->event_label }}</td>
                                 <td>{{ $item->subject_label }}</td>
-                                
+
                                 <td>
                                     <button wire:click="downloadDetails({{$item->id}})" class="btn btn-success btn-sm">
                                         دانلود

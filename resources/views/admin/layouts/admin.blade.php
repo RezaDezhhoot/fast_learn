@@ -68,6 +68,7 @@
                 <a href="{{ route('admin.profile') }}" class="font-weight-bold font-size-h5 text-dark-75 text-hover-primary">
                     {{ auth()->user()->name }}
                 </a>
+                <strong>کد کاربری : {{ auth()->id() }}</strong>
                 <div class="text-muted mt-1">
                     @foreach(auth()->user()->roles as $item)
                         {!!  $item->name."<br>" !!}

@@ -57,6 +57,19 @@
                 <x-admin.forms.text-area id="exam_passed" label="قبول شدن در ازمون" wire:model.defer="exam_passed"/>
                 <x-admin.forms.text-area id="exam_rejected" label="رد شدن در ازمون" wire:model.defer="exam_rejected"/>
             </x-admin.form-section>
+
+            <x-admin.form-section label="مدرسین">
+                <div class="row mx-2 py-2">
+                    @foreach($variables['teacher'] as $key => $value)
+                        <div class="col-2">
+                            <p class="text-base m-0"> {{ $key }} </p>
+                            <small class="text-info">{{$value}}</small>
+                        </div>
+                    @endforeach
+                </div>
+                <x-admin.forms.text-area id="teacher_apply_confirm" label="تایید درخواست برای مدرس شدن" wire:model.defer="teacher_apply_confirm"/>
+                <x-admin.forms.text-area id="teacher_apply_reject" label="رد درخواست برای مدرس شدن" wire:model.defer="teacher_apply_reject"/>
+            </x-admin.form-section>
         </div>
     </div>
 </div>

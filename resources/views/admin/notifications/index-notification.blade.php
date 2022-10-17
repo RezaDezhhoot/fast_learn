@@ -14,6 +14,7 @@
                             <th>#</th>
                             <th>شماره</th>
                             <th>موضوع</th>
+                            <th>کد کاربر</th>
                             <th>نام کاربری</th>
                             <th>شماره همراه کاربر</th>
                             <th>ایمیل کاربر</th>
@@ -29,6 +30,7 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->id }}</td>
                                 <td>{{ $item->subjectLabel }}</td>
+                                <td>{{ $item->user->id ?? 'عمومی' }}</td>
                                 <td>{{ $item->user->name ?? 'عمومی' }}</td>
                                 <td>{{ $item->user->phone ?? 'عمومی' }}</td>
                                 <td>{{ $item->user->email ?? 'عمومی' }}</td>

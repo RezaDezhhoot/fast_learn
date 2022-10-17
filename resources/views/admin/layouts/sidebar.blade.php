@@ -80,6 +80,11 @@
                 @can('show_teachers')
                     <x-admin.menu-item href="{{route('admin.teacher')}}" icon="fas fa-chalkboard-teacher" :active="request()->routeIs(['admin.teacher','admin.store.teacher'])" label="مدرسین" />
                 @endcan
+                {{-- v3-teacher-requests --}}
+                @can('show_teacher_requests')
+                    <x-admin.menu-item  href="{{route('admin.request')}}" icon="fas fa-chalkboard-teacher" :active="request()->routeIs(['admin.request','admin.store.request'])" label=" درخواست های مدرس جدید ({{$new_teachers}})" />
+                @endcan
+
                 <li class="menu-section">
                     <h4 class="menu-text">بخش محتوا</h4>
                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
@@ -99,6 +104,10 @@
                         @can('show_episodes')
                             <x-admin.menu-item href="{{route('admin.episode')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['admin.episode','admin.store.episode'])" label="درس ها  " />
                         @endcan
+                            {{-- v3-new-courses --}}
+                            @can('show_new_courses')
+                                <x-admin.menu-item href="{{route('admin.newCourse')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['admin.newCourse','admin.store.newCourse'])" label="دروه های جدید ({{$comments}})" />
+                            @endcan
                     </x-admin.menu-group>
                 @endcan
                 @can('show_articles')
@@ -128,15 +137,28 @@
                 @can('show_contacts')
                     <x-admin.menu-item  href="{{route('admin.contact')}}" icon="flaticon-email" :active="request()->routeIs(['admin.contact','admin.store.contact'])" label=" ارتباط با ما ({{$contacts}})" />
                 @endcan
+
                 <li class="menu-section">
                     <h4 class="menu-text">بخش مالی</h4>
-                    <i class="menu-icon ki ki-bold-more-hor icon-md "></i>
+                    <i class="menu-icon ki ki-bold-more-hor icon-md  "></i>
                 </li>
                 @can('show_orders')
                     <x-admin.menu-item href="{{route('admin.order')}}" icon="flaticon2-box"  :active="request()->routeIs(['admin.order','admin.store.order','admin.create.order'])" label="سفارش ها" />
                 @endcan
                 @can('show_payments')
                     <x-admin.menu-item href="{{route('admin.payment')}}" icon="fab fa-cc-amazon-pay" :active="request()->routeIs(['admin.payment','admin.store.payment'])" label="پرداختی ها " />
+                @endcan
+                {{-- v3-teachers-checkouts --}}
+                @can('show_checkouts')
+                <x-admin.menu-item  href="{{route('admin.checkout')}}" icon="fmenu-icon fab fa-cc-amazon-pay" :active="request()->routeIs(['admin.checkout','admin.store.checkout'])" label="    تسویه حساب ها ({{$contacts}})" />
+                @endcan
+                {{-- v3-teachers-bank-accounts --}}
+                @can('show_bank_accounts')
+                <x-admin.menu-item  href="{{route('admin.account')}}" icon="fa fa-piggy-bank" :active="request()->routeIs(['admin.account','admin.store.account'])" label="     حساب های بانکی ({{$contacts}})" />
+                @endcan
+                {{-- v3-teachers-incoming-methods --}}
+                @can('show_incoming_methods')
+                <x-admin.menu-item  href="{{route('admin.incoming')}}" icon="fa fa-percent" :active="request()->routeIs(['admin.incoming','admin.store.incoming'])" label="روش های محاسبه درامد" />
                 @endcan
                 <li class="menu-section">
                     <h4 class="menu-text">بخش کاربر</h4>
@@ -161,13 +183,14 @@
                 @role('administrator')
                     <x-admin.menu-item href="{{route('telescope')}}" icon="flaticon-search" :active="request()->routeIs(['telescope'])" label=" گزارش های فنی سیستم" />
                 @endif
+                {{-- v2-storages --}}
                 @can('show_storages')
                     <x-admin.menu-item href="{{route('admin.storage')}}" icon="far fa-hdd" :active="request()->routeIs(['admin.storage','admin.store.storage'])" label="فضا های ذخیره سازی" />
                 @endif
                 @can('show_settings')
                     <x-admin.menu-group icon="flaticon2-settings" :active="request()->routeIs(
                     ['admin.setting.base','admin.setting.home','admin.setting.aboutUs','admin.setting.contactUs'
-                       ,'admin.setting.fag','admin.setting.fag.create','admin.setting.sms'])" label="تنظیمات" >
+                       ,'admin.setting.fag','admin.setting.fag.create','admin.setting.sms','admin.setting.apply'])" label="تنظیمات" >
                         @can('show_settings_base')
                             <x-admin.menu-item href="{{route('admin.setting.base')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs('admin.setting.base')" label="پایه " />
                         @endcan
@@ -186,6 +209,10 @@
                         @can('show_settings_fag')
                             <x-admin.menu-item href="{{route('admin.setting.fag')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['admin.setting.fag','admin.setting.fag.create'])" label="سوالات متداول " />
                         @endcan
+                            {{-- v3-apply-law --}}
+                            @can('show_settings_contactUs')
+                                <x-admin.menu-item href="{{route('admin.setting.apply')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs('admin.setting.apply')" label="مدرس شوید" />
+                            @endcan
                     </x-admin.menu-group>
                 @endcan
                 <li class="menu-section">

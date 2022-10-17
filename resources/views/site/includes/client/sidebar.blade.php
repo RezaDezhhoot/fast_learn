@@ -11,6 +11,9 @@
         @role('admin')
             <x-site.client.sidebar-link title="پنل مدیریت" link="{{ route('admin.dashboard') }}" icon="la la-user-circle pr-2" :active="request()->routeIs('admin.dashboard')" />
         @endif
+        @role('teacher')
+            <x-site.client.sidebar-link title="پنل مدرس" link="{{ route('teacher.dashboard') }}" icon="la la-chalkboard-teacher pr-2" :active="request()->routeIs('teacher.dashboard')" />
+        @endif
         <x-site.client.sidebar-link title=" پروفایل من" link="{{ route('user.profile') }}" icon="la la-user pr-2" :active="request()->routeIs('user.profile')" />
         <x-site.client.sidebar-link title=" دوره های من" link="{{ route('user.courses') }}" icon="la la-file pr-2" :active="request()->routeIs('user.courses')" />
         <x-site.client.sidebar-link title=" ازموان های من" link="{{ route('user.quizzes') }}" icon="la la-pen pr-2" :active="request()->routeIs(['user.quizzes','user.quiz','user.exam'])" />
@@ -19,6 +22,7 @@
         <x-site.client.sidebar-link title=" پرسش های من" link="{{ route('user.comments') }}" icon="la la-comment pr-2" :active="request()->routeIs('user.comments')" />
         <x-site.client.sidebar-link title=" تمرین های من" link="{{ route('user.homeworks') }}" icon="la la-file-archive pr-2" :active="request()->routeIs('user.homeworks')" />
         <x-site.client.sidebar-link title=" پیام ها" link="{{ route('user.notifications') }}" icon="la la-bell pr-2" :active="request()->routeIs('user.notifications')" />
+        <x-site.client.sidebar-link title=" درخواست های همکاری" link="{{ route('user.requests') }}" icon="la la-chalkboard-teacher pr-2" :active="request()->routeIs('user.requests')" />
         <x-site.client.sidebar-link title="پشتیبانی" link="{{ route('user.tickets') }}" icon="la la-support pr-2" :active="request()->routeIs(['user.tickets','user.ticket'])" />
         <x-site.client.sidebar-link title="خروج" link="{{ route('logout') }}" icon="la la-power-off pr-2" :active="request()->routeIs('logout')" />
     </ul>
