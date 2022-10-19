@@ -23,7 +23,7 @@
                         <td>{{ $item->created_at }}</td>
                         <td>{{ $item->status_label }}</td>
                         <td>
-                            <p wire:click="show_details('{{$key}}')" data-toggle="modal" data-target="#show_details" class="d-flex align-items-center cursor-pointers">
+                            <p wire:click="show_details('{{$item->id}}')" data-toggle="modal" data-target="#show_details" class="d-flex align-items-center cursor-pointers">
                                 مشاهده<i class="la la-eye px-2 la-lg"></i>
                             </p>
                         </td>

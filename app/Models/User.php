@@ -232,4 +232,14 @@ class User extends Authenticatable implements Wallet, Confirmable
     {
         return $this->hasMany(StoragePermission::class);
     }
+
+    public function newCourses(): HasMany
+    {
+        return $this->hasMany(NewCourse::class);
+    }
+
+    public function last_activities(): HasMany
+    {
+        return $this->hasMany(LastActivity::class)->latest();
+    }
 }

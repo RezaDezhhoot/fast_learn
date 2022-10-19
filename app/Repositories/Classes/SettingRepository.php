@@ -39,6 +39,11 @@ class SettingRepository implements SettingRepositoryInterface
             'teacher' => [
                 '{teacher_name}' => 'نام کاربر',
                 '{request_id}' => 'شماره درخواست'
+            ],
+            'new_course' => [
+                '{title}' => 'عنوان دوره',
+                '{user_name}' => 'نام مدرس',
+                '{level}' => 'سطح دوره',
             ]
         ];
     }

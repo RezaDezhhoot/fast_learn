@@ -12,6 +12,8 @@ interface CourseRepositoryInterface
 
     public function getAllSite($search = null , $orderBy = null , $type = null , $category = null , $teacher = null , $property = null);
 
+    public function getAllTeacher($search , $level , $status , $per_page);
+
     public function save(Course $course);
 
     public function delete(Course $course);

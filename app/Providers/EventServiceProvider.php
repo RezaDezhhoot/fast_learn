@@ -6,10 +6,12 @@ use App\Enums\StorageEnum;
 use App\Events\AuthenticationEvent;
 use App\Events\ContactUsEvent;
 use App\Events\ExamEvent;
+use App\Events\NewCourseEvent;
 use App\Events\OrderEvent;
 use App\Events\RegisterEvent;
 use App\Events\TeacherEvent;
 use App\Listeners\ContactUsListener;
+use App\Listeners\NewCourseListener;
 use App\Listeners\SendAuthenticationNotify;
 use App\Listeners\SendExamNotify;
 use App\Listeners\SendOrderNotify;
@@ -76,6 +78,11 @@ class EventServiceProvider extends ServiceProvider
         Event::listen(
             TeacherEvent::class,
             [TeacherListener::class, 'handle']
+        );
+
+        Event::listen(
+            NewCourseEvent::class,
+            [NewCourseListener::class, 'handle']
         );
 
 

@@ -64,7 +64,7 @@ class Ticket extends BaseComponent
     public function addFile()
     {
         if (sizeof($this->file) < 5) {
-            array_push($this->file, null);
+            $this->file[] = null;
         }
     }
 

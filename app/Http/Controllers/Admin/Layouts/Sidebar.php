@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Layouts;
 use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\CommentRepositoryInterface;
 use App\Repositories\Interfaces\ContactUsRepositoryInterface;
+use App\Repositories\Interfaces\NewCourseRepositoryInterface;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
 use App\Repositories\Interfaces\TeacherRequestRepositoryInterface;
 use App\Repositories\Interfaces\TicketRepositoryInterface;
@@ -16,7 +17,8 @@ class Sidebar extends BaseComponent
     (
         TicketRepositoryInterface $ticketRepository , CommentRepositoryInterface $commentRepository,
         UserRepositoryInterface $userRepository , SettingRepositoryInterface $settingRepository ,
-        ContactUsRepositoryInterface $contactUsRepository , TeacherRequestRepositoryInterface $teacherRequestRepository
+        ContactUsRepositoryInterface $contactUsRepository , TeacherRequestRepositoryInterface $teacherRequestRepository,
+        NewCourseRepositoryInterface $newCourseRepository
     )
     {
         $data = [
@@ -24,7 +26,8 @@ class Sidebar extends BaseComponent
             'comments' => $commentRepository::getNew(),
             'users' => $userRepository::getNew(),
             'contacts' => $contactUsRepository->get_new_items(),
-            'new_teachers' => $teacherRequestRepository::getNew()
+            'new_teachers' => $teacherRequestRepository::getNew(),
+            'new_courses' => $newCourseRepository::getNew(),
         ];
         return view('admin.layouts.sidebar',$data);
     }

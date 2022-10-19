@@ -146,6 +146,8 @@ Route::prefix('teacher')->name('teacher.')->middleware(['auth','role:teacher'])-
     Route::get('/quizzes/{action}/{id?}', App\Http\Controllers\Teacher\Quizzes\StoreQuiz::class)->name('store.quizzes');
     Route::get('/questions', App\Http\Controllers\Teacher\Questions\IndexQuestion::class)->name('questions');
     Route::get('/questions/{action}/{id?}', App\Http\Controllers\Teacher\Questions\StoreQuestion::class)->name('store.questions');
+    Route::get('/transcripts', App\Http\Controllers\Teacher\Transcripts\IndexTranscript::class)->name('transcripts');
+    Route::get('/transcripts/{action}/{id?}', App\Http\Controllers\Teacher\Transcripts\StoreTranscript::class)->name('store.transcripts');
     Route::get('/samples', App\Http\Controllers\Teacher\Samples\IndexSamples::class)->name('samples');
     Route::get('/samples/{action}/{id?}', App\Http\Controllers\Teacher\Samples\StoreSamples::class)->name('store.samples');
 });

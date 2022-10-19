@@ -52,6 +52,9 @@
                 </li>
                 <x-admin.menu-item href="{{route('admin.profile')}}" icon="flaticon2-user" :active="request()->routeIs('admin.profile')" label="پروفایل" />
                 <x-admin.menu-item href="{{route('user.dashboard')}}" icon="flaticon2-user" :active="request()->routeIs('user.dashboard')" label="پنل کاربری" />
+                @role('admin')
+                    <x-admin.menu-item href="{{route('teacher.dashboard')}}" icon="fas fa-chalkboard-teacher" :active="request()->routeIs('teacher.dashboard')" label="پنل مدرس" />
+                @endif
                 <li class="menu-section">
                     <h4 class="menu-text">بخش رسانه</h4>
                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
@@ -95,9 +98,9 @@
                 @can('show_tags')
                     <x-admin.menu-item href="{{route('admin.tag')}}" icon="fas fa-tag" :active="request()->routeIs(['admin.tag','admin.store.tag'])" label="تگ ها" />
                 @endcan
-                @can('show_courses' , 'show_episodes')
+                @if(auth()->user()->hasAnyPermission('show_courses','show_episodes','show_new_courses'))
                     <x-admin.menu-group icon="fab fa-product-hunt" :active="request()->routeIs(
-                    ['admin.course','admin.store.course','admin.episode','admin.store.episode'])" label="دوره های اموزشی" >
+                    ['admin.course','admin.store.course','admin.episode','admin.store.episode','admin.newCourse','admin.store.newCourse'])" label="دوره های اموزشی" >
                         @can('show_courses')
                             <x-admin.menu-item href="{{route('admin.course')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['admin.course','admin.store.course'])" label="دروه ها  " />
                         @endcan
@@ -106,10 +109,10 @@
                         @endcan
                             {{-- v3-new-courses --}}
                             @can('show_new_courses')
-                                <x-admin.menu-item href="{{route('admin.newCourse')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['admin.newCourse','admin.store.newCourse'])" label="دروه های جدید ({{$comments}})" />
+                                <x-admin.menu-item href="{{route('admin.newCourse')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['admin.newCourse','admin.store.newCourse'])" label="دروه های جدید ({{$new_courses}})" />
                             @endcan
                     </x-admin.menu-group>
-                @endcan
+                @endif
                 @can('show_articles')
                     <x-admin.menu-item href="{{route('admin.article')}}" icon="fas fa-text-height"  :active="request()->routeIs(['admin.article','admin.store.article'])" label="مقالات " />
                 @endcan

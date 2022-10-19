@@ -57,7 +57,7 @@
                        {!! $descriptions !!}
                    </fieldset>
                 </div>
-
+                @if(!empty($files))
                 <div class="col-12">
                     <fieldset class="border p-4">
                         <legend>فایل ها</legend>
@@ -68,6 +68,7 @@
                         @endforeach
                     </fieldset>
                 </div>
+                @endif
             </div>
             <x-admin.forms.dropdown  id="status" :data="$data['status']" label="وضعیت*" wire:model.defer="status"/>
             <x-admin.forms.full-text-editor id="result" label="نتیجه نهایی*" wire:model.defer="result"/>

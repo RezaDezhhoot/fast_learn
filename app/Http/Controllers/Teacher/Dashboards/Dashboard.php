@@ -8,6 +8,6 @@ class Dashboard extends Component
 {
     public function render()
     {
-        return view('teacher.dashboards.dashboard');
+        return view('teacher.dashboards.dashboard')->extends('teacher.layouts.teacher');
     }
 }

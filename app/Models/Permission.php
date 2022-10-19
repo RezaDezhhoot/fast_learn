@@ -56,7 +56,12 @@ class Permission extends \Spatie\Permission\Models\Permission
             'contacts' => 'ارتباط با ما',
             'logs' => 'لاگ ها',
             'samples' => 'نمونه سوالات',
-            'storages' => 'فضا های دخیره سازی'
+            'storages' => 'فضا های دخیره سازی',
+            'teacher_requests' => 'درخواست های همکاری',
+            'new_courses' => 'دوره های جدید',
+            'checkouts' => 'نسویه حساب های مدرسین',
+            'bank_accounts' => 'حساب های بانکی',
+            'incoming_methods' => 'روش های محاسبه درامد',
         ];
     }
 

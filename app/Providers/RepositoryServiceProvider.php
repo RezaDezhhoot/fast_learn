@@ -14,6 +14,7 @@ use App\Repositories\Classes\EpisodeRepository;
 use App\Repositories\Classes\EventRepository;
 use App\Repositories\Classes\HomeworkRepository;
 use App\Repositories\Classes\IncommingMethodRepository;
+use App\Repositories\Classes\LastActivityRepository;
 use App\Repositories\Classes\LogRepository;
 use App\Repositories\Classes\NewCourseRepository;
 use App\Repositories\Classes\NotificationRepository;
@@ -54,6 +55,7 @@ use App\Repositories\Interfaces\EpisodeRepositoryInterface;
 use App\Repositories\Interfaces\EventRepositoryInterface;
 use App\Repositories\Interfaces\HomeworkRepositoryInterface;
 use App\Repositories\Interfaces\IncommingMethodRepositoryInterface;
+use App\Repositories\Interfaces\LastActivityRepositoryInterface;
 use App\Repositories\Interfaces\LogRepositoryInterface;
 use App\Repositories\Interfaces\NewCourseRepositoryInterface;
 use App\Repositories\Interfaces\NotificationRepositoryInterface;
@@ -295,6 +297,11 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             StoragePermissionRepositoryInterface::class,
             StoragePermissionRepository::class,
+        );
+
+        $this->app->bind(
+            LastActivityRepositoryInterface::class,
+            LastActivityRepository::class,
         );
     }
 

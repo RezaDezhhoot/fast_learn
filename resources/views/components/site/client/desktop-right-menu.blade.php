@@ -26,6 +26,11 @@
                     <a href="{{route('admin.dashboard')}}"> <i class="la la-gears"></i> مدیریت </a>
                 </li>
                 @endif
+                @role('teacher')
+                <li>
+                    <a href="{{route('teacher.dashboard')}}"> <i class="la la-chalkboard-teacher"></i> پنل مدرس </a>
+                </li>
+                @endif
                 <li>
                     <a href="{{route('user.courses')}}"> <i class="la la-file-video-o mr-1"></i> دوره های من </a>
                 </li>

@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('courses', function (Blueprint $table) {
-            $table->bigInteger('incoming_method')->nullable();
+            $table->unsignedBigInteger('incoming_method_id')->index()->nullable();
         });
     }
 
@@ -26,7 +26,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('courses', function (Blueprint $table) {
-            $table->dropColumn('incoming_method');
+            $table->dropColumn('incoming_method_id');
         });
     }
 };

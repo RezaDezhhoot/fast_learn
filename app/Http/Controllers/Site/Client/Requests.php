@@ -40,6 +40,8 @@ class Requests extends BaseComponent
 
     public function show_details($key)
     {
-        $this->result = auth()->user()->applies[$key]->result;
+        $this->result = auth()->user()->applies->filter(function ($v,$k) use ($key){
+            return $v['id'] == $key;
+        })->first()->result;
     }
 }

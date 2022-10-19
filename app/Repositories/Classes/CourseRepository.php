@@ -13,6 +13,7 @@ use App\Repositories\Interfaces\CourseRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class CourseRepository implements CourseRepositoryInterface
 {
@@ -103,7 +104,7 @@ class CourseRepository implements CourseRepositoryInterface
 
     public function get($col, $value , $published = false)
     {
-        return $published ? 
+        return $published ?
         Course::published()->with(['episodes','comments','samples' => function($q){
             return $q->where('type',SampleEnum::PUBLIC_TYPE);
         }])->where($col,$value)->firstOrfail() :
@@ -153,5 +154,16 @@ class CourseRepository implements CourseRepositoryInterface
     public function increment(Course $course, int $int)
     {
         $course->increment('views',$int);
+    }
+
+    public function getAllTeacher($search, $level, $status, $per_page)
+    {
+        return Course::latest('id')->with('teacher')->withCount('episodes')->whereHas('teacher',function ($q){
+           return $q->where('id',Auth::id());
+        })->when($level,function ($q) use ($level) {
+            return $q->where('level',$level);
+        })->when($status,function ($q) use ($status) {
+            return $q->where('status',$status);
+        })->search($search)->paginate($per_page);
     }
 }

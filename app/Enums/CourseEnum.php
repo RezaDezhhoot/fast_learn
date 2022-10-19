@@ -43,7 +43,7 @@ final class CourseEnum extends Enum
             self::FINISHED => 'اتمام یافته',
         ];
     }
-    
+
     #[ArrayShape([self::OFFLINE => "string", self::IN_PERSON => "string", self::ONLINE => "string"])]
     public static function getTypes(): array
     {
@@ -53,4 +53,19 @@ final class CourseEnum extends Enum
             self::ONLINE => 'دوره انلاین',
         ];
     }
+
+    // new course checking
+
+    const NEW_COURSE_PENDING  = 'new_course_pending' , NEW_COURSE_REJECTED = 'new_course_rejected' , NEW_COURSE_ACCEPTED = 'new_course_accepted';
+
+    #[ArrayShape([self::NEW_COURSE_PENDING => "string", self::NEW_COURSE_REJECTED => "string", self::NEW_COURSE_ACCEPTED => "string"])]
+    public static function getNewCourseStatus(): array
+    {
+        return [
+            self::NEW_COURSE_PENDING => 'در حال بررسی',
+            self::NEW_COURSE_REJECTED => 'رد شده',
+            self::NEW_COURSE_ACCEPTED => 'تایید شده',
+        ];
+    }
+
 }

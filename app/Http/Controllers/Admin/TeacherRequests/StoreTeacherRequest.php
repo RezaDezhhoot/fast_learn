@@ -100,7 +100,7 @@ class StoreTeacherRequest extends BaseComponent
         try {
             return getDisk(StorageEnum::PRIVATE)->download($file);
         } catch (\Exception $e) {
-            $this->emitNotify('خظا در هنگام دانلود فایل');
+            $this->emitNotify('خظا در هنگام دانلود فایل','warning');
             Log::error($e->getMessage());
         }
     }
