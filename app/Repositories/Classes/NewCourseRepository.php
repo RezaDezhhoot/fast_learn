@@ -40,7 +40,13 @@ class NewCourseRepository implements NewCourseRepositoryInterface
 
     public static function getNew()
     {
-        return NewCourse::where('status',CourseEnum::NEW_COURSE_PENDING)->count();
+        return NewCourse::where('status',CourseEnum::NEW_COURSE_PENDING)->orWhere('status',CourseEnum::NEW_COURSE_TEACHER_ANSWERED)->count();
+    }
+
+    public static function getNewTeacher()
+    {
+        return NewCourse::where('status',CourseEnum::NEW_COURSE_ANSWERED)->count();
+
     }
 
     public function getAllTeacher($search, $status, $per_page)
@@ -49,7 +55,7 @@ class NewCourseRepository implements NewCourseRepositoryInterface
            return $q->where('id',Auth::id());
         })->when($status,function ($q) use ($status) {
             return $q->where('status',$status);
-        })->search($status)->paginate($per_page);
+        })->search($search)->paginate($per_page);
     }
 
     public function getNewObject()

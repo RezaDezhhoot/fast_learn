@@ -1,18 +1,19 @@
 <div>
     @section('title','دوره  ')
-    <x-teacher.form-control deleteAble="true"  mode="{{$mode}}" title="شروع دوره جدید" />
+    <x-teacher.form-control deleteAble="true" deleteAble="{{false}}"  mode="{{$mode}}" title="{{$header}}" />
     <div class="card card-custom gutter-b example example-compact">
         <div class="card-header">
             <h3 class="card-title">{{ $header }}</h3>
         </div>
         <x-teacher.forms.validation-errors/>
         <div class="card-body">
+            @if($mode == self::CREATE_MODE)
             <div class="row">
                 <x-teacher.forms.input with="6" type="text" id="title" label="عنوان*" wire:model.defer="title"/>
                 <x-teacher.forms.dropdown with="6" id="level" :data="$data['level']" label="سطح دوره*" wire:model.defer="level"/>
             </div>
             <x-teacher.forms.basic-text-editor id="descriptions" label="توضیحات کامل" wire:model.defer="descriptions"/>
-            <x-admin.form-section label="فایل ها">
+            <x-teacher.form-section label="فایل ها">
                 <div class="">
                     <div wire:ignore.self>
                         @foreach($files as $key => $value)
@@ -51,8 +52,46 @@
                         <button type="button" wire:click="addFile" class="btn btn-sm btn-outline-primary">افزودن فایل جدید</button>
                     </div>
                 </div>
-            </x-admin.form-section>
-
+            </x-teacher.form-section>
+            @elseif($mode == self::UPDATE_MODE)
+                <div class="row">
+                    <div class="col-12">
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                            <tr>
+                                <td>عنوان دوره اموزشی</td>
+                                <td>سطح دوره اموزشی</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>{{$course->title}}</td>
+                                <td>{{$course->level_label}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-12">
+                        <fieldset class="border p-4">
+                            <legend>شرح درخواست</legend>
+                            {!! $course->descriptions !!}
+                        </fieldset>
+                    </div>
+                </div>
+                <br>
+                <x-teacher.form-section label="فایل ها">
+                    @if(!empty($course->files))
+                        @foreach($course->files as $item)
+                            <strong class="d-block">
+                                <button class="btn btn-sm btn-outline-success" wire:click="download('{{$item}}')">بارگیری فایل</button>
+                            </strong>
+                        @endforeach
+                    @endif
+                </x-teacher.form-section>
+                <x-teacher.form-section label="پاسخ ها">
+                    <x-chat-panel :chats="$course->chats" :file="$file" />
+                </x-teacher.form-section>
+            @endif
         </div>
     </div>
 </div>

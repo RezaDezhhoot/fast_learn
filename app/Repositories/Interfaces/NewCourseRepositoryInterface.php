@@ -20,5 +20,7 @@ interface NewCourseRepositoryInterface
 
     public static function getNew();
 
+    public static function getNewTeacher();
+
     public function getNewObject();
 }

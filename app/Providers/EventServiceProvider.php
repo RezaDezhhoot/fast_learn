@@ -21,6 +21,7 @@ use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\Interfaces\CourseRepositoryInterface;
 use App\Repositories\Interfaces\EventRepositoryInterface;
 use App\Repositories\Interfaces\HomeworkRepositoryInterface;
+use App\Repositories\Interfaces\IncomingMethodRepositoryInterface;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
 use App\Repositories\Interfaces\StoragePermissionRepositoryInterface;
 use App\Repositories\Interfaces\StorageRepositoryInterface;
@@ -96,6 +97,7 @@ class EventServiceProvider extends ServiceProvider
         app(CourseRepositoryInterface::class)::observe();
         app(HomeworkRepositoryInterface::class)::observe();
         app(EventRepositoryInterface::class)::observe();
+        app(IncomingMethodRepositoryInterface::class)::observe();
         $storage_repository::observe();
 
 

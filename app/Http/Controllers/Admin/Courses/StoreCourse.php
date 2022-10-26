@@ -8,6 +8,7 @@ use App\Enums\ReductionEnum;
 use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\Interfaces\CourseRepositoryInterface;
+use App\Repositories\Interfaces\IncomingMethodRepositoryInterface;
 use App\Repositories\Interfaces\QuizRepositoryInterface;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
 use App\Repositories\Interfaces\TagRepositoryInterface;
@@ -19,7 +20,7 @@ class StoreCourse extends BaseComponent
     use WithFileUploads;
     public  $header , $slug , $title , $short_body , $long_body , $image  , $category ,  $quiz , $seo_keywords , $seo_description,
     $teacher , $level , $const_price , $status ,$reduction_type ,$reduction_value = 0 , $start_at , $expire_at  , $tags = [];
-    public  $course , $sub_title , $storage , $type;
+    public  $course , $sub_title , $storage , $type , $incomingMethod;
 
     public function __construct($id = null)
     {
@@ -30,6 +31,7 @@ class StoreCourse extends BaseComponent
         $this->quizRepository = app(QuizRepositoryInterface::class);
         $this->teacherRepository = app(TeacherRepositoryInterface::class);
         $this->settingRepository = app(SettingRepositoryInterface::class);
+        $this->incomingMethodRepository = app(IncomingMethodRepositoryInterface::class);
     }
 
     public function mount($action , $id = null)
@@ -60,6 +62,7 @@ class StoreCourse extends BaseComponent
             $this->const_price = $this->course->const_price;
             $this->level = $this->course->level;
             $this->type = $this->course->type;
+            $this->incomingMethod = $this->course->incoming_method_id;
         } elseif ($this->mode == self::CREATE_MODE) {
             $this->header = 'دوره جدید';
         } else abort(404);
@@ -79,6 +82,7 @@ class StoreCourse extends BaseComponent
         $this->data['status'] = CourseEnum::getStatus();
         $this->data['type'] = CourseEnum::getTypes();
         $this->data['quiz'] = $this->quizRepository->getAll()->pluck('name','id');
+        $this->data['incoming'] = $this->incomingMethodRepository->getAll()->pluck('title','id');
 
     }
 
@@ -98,7 +102,8 @@ class StoreCourse extends BaseComponent
         elseif ($this->mode == self::CREATE_MODE){
             $this->saveInDataBase($this->courseRepository->newCourseObject());
             $this->reset(['slug','sub_title','title','short_body','long_body','image','category','quiz','teacher',
-                'status','level','type','reduction_type','const_price','reduction_value','start_at','expire_at','tags','seo_keywords','seo_description']);
+                'status','level','type','reduction_type','const_price','reduction_value','start_at','expire_at',
+                'tags','seo_keywords','seo_description','incomingMethod']);
         }
     }
 
@@ -125,7 +130,8 @@ class StoreCourse extends BaseComponent
             'start_at' => ['nullable','date'],
             'expire_at' => ['nullable','date'],
             'level' => ['required','in:'.implode(',',array_keys(CourseEnum::getLevels()))],
-            'type' => ['required','in:'.implode(',',array_keys(CourseEnum::getTypes()))]
+            'type' => ['required','in:'.implode(',',array_keys(CourseEnum::getTypes()))],
+            'incomingMethod' => ['nullable','exists:incoming_methods,id']
         ],[],[
             'title' => 'عنوان',
             'sub_title' => 'عنوان فرعی',
@@ -145,6 +151,7 @@ class StoreCourse extends BaseComponent
             'expire_at' => 'پایان تخفیف',
             'level' => 'سطح دوره',
             'type' => 'نوع دوره',
+            'incomingMethod' => 'روش محاسبه درامد'
         ]);
         $model->title = $this->title;
         $model->sub_title = $this->sub_title;
@@ -164,6 +171,7 @@ class StoreCourse extends BaseComponent
         $model->expire_at = $this->expire_at;
         $model->seo_keywords = $this->seo_keywords;
         $model->seo_description = $this->seo_description;
+        $model->incoming_method_id = emptyToNull($this->incomingMethod);
         $model = $this->courseRepository->save($model);
         $this->tags = array_filter($this->tags);
         if ($this->mode == self::CREATE_MODE)

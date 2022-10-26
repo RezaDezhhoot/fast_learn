@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Morilog\Jalali\Jalalian;
 
 /**
@@ -63,9 +64,14 @@ class NewCourse extends Model
 
     public function getFilesAttribute($value)
     {
-        if (!is_null($value))
+        if (!empty($value))
             return explode(',',$value);
 
         return null;
+    }
+
+    public function chats(): HasMany
+    {
+        return $this->hasMany(NewCourseChat::class,'new_course_request_id');
     }
 }

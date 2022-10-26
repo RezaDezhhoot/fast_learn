@@ -13,9 +13,10 @@ use App\Repositories\Classes\CourseRepository;
 use App\Repositories\Classes\EpisodeRepository;
 use App\Repositories\Classes\EventRepository;
 use App\Repositories\Classes\HomeworkRepository;
-use App\Repositories\Classes\IncommingMethodRepository;
+use App\Repositories\Classes\IncomingMethodRepository;
 use App\Repositories\Classes\LastActivityRepository;
 use App\Repositories\Classes\LogRepository;
+use App\Repositories\Classes\NewCourseChatRepository;
 use App\Repositories\Classes\NewCourseRepository;
 use App\Repositories\Classes\NotificationRepository;
 use App\Repositories\Classes\OrderDetailRepository;
@@ -54,9 +55,10 @@ use App\Repositories\Interfaces\CourseRepositoryInterface;
 use App\Repositories\Interfaces\EpisodeRepositoryInterface;
 use App\Repositories\Interfaces\EventRepositoryInterface;
 use App\Repositories\Interfaces\HomeworkRepositoryInterface;
-use App\Repositories\Interfaces\IncommingMethodRepositoryInterface;
+use App\Repositories\Interfaces\IncomingMethodRepositoryInterface;
 use App\Repositories\Interfaces\LastActivityRepositoryInterface;
 use App\Repositories\Interfaces\LogRepositoryInterface;
+use App\Repositories\Interfaces\NewCourseChatRepositoryInterface;
 use App\Repositories\Interfaces\NewCourseRepositoryInterface;
 use App\Repositories\Interfaces\NotificationRepositoryInterface;
 use App\Repositories\Interfaces\OrderDetailRepositoryInterface;
@@ -275,8 +277,8 @@ class RepositoryServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            IncommingMethodRepositoryInterface::class,
-            IncommingMethodRepository::class,
+            IncomingMethodRepositoryInterface::class,
+            IncomingMethodRepository::class,
         );
 
         $this->app->bind(
@@ -302,6 +304,11 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             LastActivityRepositoryInterface::class,
             LastActivityRepository::class,
+        );
+
+        $this->app->bind(
+            NewCourseChatRepositoryInterface::class,
+            NewCourseChatRepository::class,
         );
     }
 

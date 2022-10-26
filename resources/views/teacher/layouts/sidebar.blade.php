@@ -271,47 +271,47 @@
                                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                                 </li>
                                 @role('admin')
-                                    <x-admin.menu-item href="{{route('admin.dashboard')}}" icon="flaticon2-user" :active="request()->routeIs('admin.dashboard')" label="مدیریت" />
+                                    <x-teacher.menu-item href="{{route('admin.dashboard')}}" icon="flaticon2-user" :active="request()->routeIs('admin.dashboard')" label="مدیریت" />
                                 @endif
-                                <x-admin.menu-item href="{{route('user.dashboard')}}" icon="flaticon2-user" :active="request()->routeIs('user.dashboard')" label="پنل کاربری" />
-                                <x-admin.menu-item href="{{route('user.profile')}}" icon="flaticon2-user" :active="request()->routeIs('user.profile')" label="پروفایل" />
+                                <x-teacher.menu-item href="{{route('user.dashboard')}}" icon="flaticon2-user" :active="request()->routeIs('user.dashboard')" label="پنل کاربری" />
+                                <x-teacher.menu-item href="{{route('user.profile')}}" icon="flaticon2-user" :active="request()->routeIs('user.profile')" label="پروفایل" />
                                 <li class="menu-section">
                                     <h4 class="menu-text">بخش رسانه</h4>
                                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                                 </li>
-                                <x-admin.menu-item href="{{route('fm.fm-button')}}" icon="flaticon2-file" :active="request()->routeIs('unisharp.lfm.show')" label="مدیریت رسانه ها" />
+                                <x-teacher.menu-item href="{{route('fm.fm-button')}}" icon="flaticon2-file" :active="request()->routeIs('unisharp.lfm.show')" label="مدیریت رسانه ها" />
                                 <li class="menu-section">
                                     <h4 class="menu-text">بخش ازمون و سوالات</h4>
                                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                                 </li>
-                                <x-admin.menu-item href="{{route('teacher.questions')}}" icon="far fa-question-circle" :active="request()->routeIs(['teacher.questions','teacher.store.questions'])" label="سوالات " />
-                                <x-admin.menu-item href="{{route('teacher.quizzes')}}" icon="fas fa-pen-alt" :active="request()->routeIs(['teacher.quizzes','teacher.store.quizzes'])" label="ازمون ها " />
-                                <x-admin.menu-item href="{{route('teacher.transcripts')}}" icon="flaticon2-paper" :active="request()->routeIs(['teacher.transcripts','teacher.store.transcripts'])" label="کارنامه ها" />
+                                <x-teacher.menu-item href="{{route('teacher.questions')}}" icon="far fa-question-circle" :active="request()->routeIs(['teacher.questions','teacher.store.questions'])" label="سوالات " />
+                                <x-teacher.menu-item href="{{route('teacher.quizzes')}}" icon="fas fa-pen-alt" :active="request()->routeIs(['teacher.quizzes','teacher.store.quizzes'])" label="ازمون ها " />
+                                <x-teacher.menu-item href="{{route('teacher.transcripts')}}" icon="flaticon2-paper" :active="request()->routeIs(['teacher.transcripts','teacher.store.transcripts'])" label="کارنامه ها" />
                                 <li class="menu-section">
                                     <h4 class="menu-text">بخش محتوا</h4>
                                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                                 </li>
-                                <x-admin.menu-group icon="fab fa-product-hunt" :active="request()->routeIs(['teacher.courses','teacher.new.courses','teacher.store.courses','teacher.episodes','teacher.store.episodes'])" label="دوره های اموزشی" >
-                                    <x-admin.menu-item href="{{route('teacher.courses')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['teacher.courses','teacher.new.courses'])" label="دروه ها  " />
-                                    <x-admin.menu-item href="{{route('teacher.episodes')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['teacher.episodes','teacher.store.episodes'])" label="درس ها  " />
-                                </x-admin.menu-group>
-                                <x-admin.menu-item href="{{route('teacher.samples')}}" icon="fa fa-question"  :active="request()->routeIs(['teacher.samples','teacher.store.samples'])" label="نمونه سوالات " />
+                                <x-teacher.menu-group icon="fab fa-product-hunt" :active="request()->routeIs(['teacher.courses','teacher.new.courses','teacher.store.courses','teacher.episodes','teacher.store.episodes'])" label="دوره های اموزشی" >
+                                    <x-teacher.menu-item href="{{route('teacher.courses')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['teacher.courses','teacher.new.courses'])" label="دروه ها  " :new="$new_courses" />
+                                    <x-teacher.menu-item href="{{route('teacher.episodes')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['teacher.episodes','teacher.store.episodes'])" label="درس ها  " />
+                                </x-teacher.menu-group>
+                                <x-teacher.menu-item href="{{route('teacher.samples')}}" icon="fa fa-question"  :active="request()->routeIs(['teacher.samples','teacher.store.samples'])" label="نمونه سوالات " />
                                 <li class="menu-section">
                                     <h4 class="menu-text">بخش ارتباطی</h4>
                                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                                 </li>
-                                <x-admin.menu-item  href="{{route('teacher.comments')}}" icon="fa fa-comment-alt" :active="request()->routeIs(['teacher.comments','teacher.store.comments'])" label="کامنت ها "  />
+                                <x-teacher.menu-item  href="{{route('teacher.comments')}}" icon="fa fa-comment-alt" :active="request()->routeIs(['teacher.comments','teacher.store.comments'])" label="کامنت ها "  />
                                 <li class="menu-section">
                                     <h4 class="menu-text">بخش مالی</h4>
                                     <i class="menu-icon ki ki-bold-more-hor icon-md  "></i>
                                 </li>
-                                <x-admin.menu-item  href="{{route('teacher.checkouts')}}" icon="fmenu-icon fab fa-cc-amazon-pay" :active="request()->routeIs(['teacher.checkouts','teacher.store.checkouts'])" label=" تسویه حساب ها " />
-                                <x-admin.menu-item  href="{{route('teacher.bankAccounts')}}" icon="fa fa-piggy-bank" :active="request()->routeIs(['teacher.bankAccounts','teacher.store.bankAccounts'])" label=" حساب های بانکی " />
+                                <x-teacher.menu-item  href="{{route('teacher.checkouts')}}" icon="fmenu-icon fab fa-cc-amazon-pay" :active="request()->routeIs(['teacher.checkouts','teacher.store.checkouts'])" label=" تسویه حساب ها " />
+                                <x-teacher.menu-item  href="{{route('teacher.bankAccounts')}}" icon="fa fa-piggy-bank" :active="request()->routeIs(['teacher.bankAccounts','teacher.store.bankAccounts'])" label=" حساب های بانکی " />
                                 <li class="menu-section">
                                     <h4 class="menu-text"> خروج</h4>
                                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                                 </li>
-                                <x-admin.menu-item href="{{route('logout')}}" icon="flaticon-logout" :active="request()->routeIs('logout')" label="خروج" />
+                                <x-teacher.menu-item href="{{route('logout')}}" icon="flaticon-logout" :active="request()->routeIs('logout')" label="خروج" />
                             </ul>
                             <!--end::Menu Nav-->
                         </div>

@@ -7,11 +7,14 @@ use App\Enums\StorageEnum;
 use App\Events\NewCourseEvent;
 use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\NewCourseRepositoryInterface;
+use App\Traits\ChatPanel;
 use Illuminate\Support\Facades\Log;
+use Livewire\WithFileUploads;
 
 class StoreNewCourse extends BaseComponent
 {
-    public $course , $status , $result , $header;
+    use WithFileUploads , ChatPanel;
+    public $course , $status , $result , $header , $component = 'admin';
 
     public function __construct($id = null)
     {
@@ -54,7 +57,7 @@ class StoreNewCourse extends BaseComponent
             'result' => ['nullable','string','max:250000']
         ],[],[
             'status' => 'وضعیت',
-            'result' => 'نتیجه نهایی'
+            'result' => 'پاسخ کوتاه'
         ]);
         $model->status = $this->status;
         $model->result = $this->result;
@@ -64,15 +67,7 @@ class StoreNewCourse extends BaseComponent
         NewCourseEvent::dispatch($model);
     }
 
-    public function download($file)
-    {
-        try {
-            return getDisk(StorageEnum::PRIVATE)->download($file);
-        } catch (\Exception $e) {
-            $this->emitNotify('خظا در هنگام دانلود فایل','warning');
-            Log::error($e->getMessage());
-        }
-    }
+
 
     public function render()
     {

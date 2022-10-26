@@ -6,14 +6,15 @@ use App\Enums\CourseEnum;
 use App\Enums\StorageEnum;
 use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\NewCourseRepositoryInterface;
+use App\Traits\ChatPanel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Livewire\WithFileUploads;
 
 class StoreCourse extends BaseComponent
 {
-    use WithFileUploads;
-    public $title , $descriptions , $level  ,$files = [] , $header;
+    use WithFileUploads , ChatPanel;
+    public $title , $descriptions , $level  ,$files = [] , $header , $course , $component = 'teacher';
 
     public function __construct($id = null)
     {
@@ -22,17 +23,30 @@ class StoreCourse extends BaseComponent
         $this->disk = getDisk(StorageEnum::PRIVATE);
     }
 
-    public function mount()
+    public function mount($action = null , $id = null)
     {
-        $this->mode = self::CREATE_MODE;
-        $this->data['level'] = CourseEnum::getLevels();
-        $this->header = 'ثبت درخواست برای شروع دوره جدید';
+        self::set_mode($action);
+        if ($this->mode == self::CREATE_MODE) {
+            $this->data['level'] = CourseEnum::getLevels();
+            $this->header = 'ثبت درخواست برای شروع دوره جدید';
+        } elseif ($this->mode == self::UPDATE_MODE) {
+            $this->course = $this->newCoursesRepository->findOrFail($id);
+            $this->header = $this->course->title;
+        } else {
+            abort(404);
+        }
+
     }
 
     public function store()
     {
-        $this->saveInDataBase($this->newCoursesRepository->getNewObject());
-        $this->reset(['title','descriptions','level','files']);
+        if ($this->mode == self::UPDATE_MODE)
+            $this->sendChatText();
+        else {
+            $this->saveInDataBase($this->newCoursesRepository->getNewObject());
+            $this->reset(['title','descriptions','level','files']);
+        }
+
     }
 
     private function saveInDataBase($mode)
@@ -43,7 +57,7 @@ class StoreCourse extends BaseComponent
             'level' => ['required','in:'.implode(',',array_keys(CourseEnum::getLevels()))],
             'files' => [Rule::requiredIf(function(){
                 return sizeof($this->files) > 0;
-            }), 'array', 'max:5'],
+            }), 'array', 'max:45'],
             'files.*' => ['required', 'mimes:jpg,jpeg,png,pdf,zip,rar', 'max:2048'],
         ],[],[
             'files' => 'فایل ها',
@@ -56,12 +70,12 @@ class StoreCourse extends BaseComponent
         $mode->level = $this->level;
         $mode->user_id = Auth::id();
         $mode->status = CourseEnum::NEW_COURSE_PENDING;
-        $mode->files = $this->uploadFiles();
+        $mode->files = $this->uploadBaseFiles();
         $model = $this->newCoursesRepository->save($mode);
         $this->emitNotify('اطلاعات با موفیت ذخیره شد');
     }
 
-    private function uploadFiles()
+    private function uploadBaseFiles()
     {
         $file = [];
         foreach ($this->files as $value) {

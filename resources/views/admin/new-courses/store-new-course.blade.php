@@ -71,7 +71,11 @@
                 @endif
             </div>
             <x-admin.forms.dropdown  id="status" :data="$data['status']" label="وضعیت*" wire:model.defer="status"/>
-            <x-admin.forms.full-text-editor id="result" label="نتیجه نهایی" wire:model.defer="result"/>
+            <x-admin.forms.full-text-editor id="result" label="پاسخ کوتاه" wire:model.defer="result"/>
+            <br>
+            <x-teacher.form-section label="پاسخ ها">
+                <x-chat-panel :chats="$course->chats" :file="$file" />
+            </x-teacher.form-section>
         </div>
 
     </div>

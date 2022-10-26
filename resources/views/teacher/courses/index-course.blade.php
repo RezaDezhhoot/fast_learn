@@ -1,6 +1,6 @@
 <div>
     @section('title','دوره ها ')
-    <x-teacher.form-control link="{{ route('teacher.new.courses' ) }}" confirmContent="شروع یک دوره جدید"  title="دوره ها "/>
+    <x-teacher.form-control link="{{ route('teacher.new.courses',['create'] ) }}" confirmContent="شروع یک دوره جدید"  title="دوره ها "/>
     <div class="card card-custom">
         <div class="card-body">
             <x-teacher.nav-tabs-list>
@@ -65,19 +65,21 @@
                                 <th>سطح دوره</th>
                                 <th>وضعیت</th>
                                 <th>تاریخ</th>
-                                <td>مشاهده جزئیات</td>
+                                <td>مشاهده پیام</td>
                             </tr>
                             </thead>
                             <tbody>
                             @forelse($courses as $key => $item)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $item->title }}</td>
+                                    <td class="cursor-pointer">
+                                        <a title="مشاده جزیئیات" href="{{route('teacher.new.courses',['edit',$item->id])}}">{{ $item->title }}</a>
+                                    </td>
                                     <td>{{ $item->level_label }}</td>
                                     <td>{{ $item->status_label }}</td>
                                     <td>{{ $item->created_at }}</td>
                                     <td>
-                                        <p wire:click="show_details('{{$item->id}}')" data-toggle="modal" data-target="#show_details" class="d-flex align-items-center cursor-pointers">
+                                        <p wire:click="show_details('{{$item->id}}')" data-toggle="modal" data-target="#show_details" class="d-flex align-items-center cursor-pointer">
                                             مشاهده<i class="fa fa-eye px-2 la-lg"></i>
                                         </p>
                                     </td>
@@ -101,14 +103,14 @@
             <div class="modal-content">
                 <div class="modal-header border-bottom-gray d-flex justify-content-between align-items-center">
                     <div class="d-flex align-items-center">
-                        <h5 class="modal-title fs-19 font-weight-semi-bold" id="shareModalTitle">نتیجه درخواست همکاری شما : </h5>
+                        <h5 class="modal-title fs-19 font-weight-semi-bold" id="shareModalTitle">پیام کوتاه درخواست همکاری شما : </h5>
                     </div>
                 </div>
                 <div class="modal-body">
                     @if(!empty($result))
                         {!! $result !!}
                     @else
-                        <p class="text-info">نتیجه ای ثبت نشده است</p>
+                        <p class="text-info">پیامی ثبت نشده است</p>
                     @endif
                 </div>
                 <div class="modal-footer justify-content-center border-top-gray">

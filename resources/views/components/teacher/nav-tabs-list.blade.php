@@ -1,4 +1,4 @@
-<div class="card-header px-0 card-header-tabs-line nav-tabs-line-3x">
+<div class="card-header border-0 px-0 card-header-tabs-line nav-tabs-line-3x">
 
     <div class="card-toolbar">
 

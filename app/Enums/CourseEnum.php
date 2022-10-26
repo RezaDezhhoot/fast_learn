@@ -56,15 +56,22 @@ final class CourseEnum extends Enum
 
     // new course checking
 
-    const NEW_COURSE_PENDING  = 'new_course_pending' , NEW_COURSE_REJECTED = 'new_course_rejected' , NEW_COURSE_ACCEPTED = 'new_course_accepted';
+    const NEW_COURSE_PENDING  = 'new_course_pending' ,
+        NEW_COURSE_REJECTED = 'new_course_rejected' ,
+        NEW_COURSE_ACCEPTED = 'new_course_accepted' ,
+        NEW_COURSE_ANSWERED = 'new_course_answered' ,
+        NEW_COURSE_TEACHER_ANSWERED = 'new_course_teacher_answered';
 
-    #[ArrayShape([self::NEW_COURSE_PENDING => "string", self::NEW_COURSE_REJECTED => "string", self::NEW_COURSE_ACCEPTED => "string"])]
+
+    #[ArrayShape([self::NEW_COURSE_PENDING => "string", self::NEW_COURSE_REJECTED => "string", self::NEW_COURSE_ACCEPTED => "string", self::NEW_COURSE_ANSWERED => "string", self::NEW_COURSE_TEACHER_ANSWERED => "string"])]
     public static function getNewCourseStatus(): array
     {
         return [
             self::NEW_COURSE_PENDING => 'در حال بررسی',
             self::NEW_COURSE_REJECTED => 'رد شده',
             self::NEW_COURSE_ACCEPTED => 'تایید شده',
+            self::NEW_COURSE_ANSWERED => 'پاسخ داده شده',
+            self::NEW_COURSE_TEACHER_ANSWERED => 'پاسخ مدرس',
         ];
     }
 
