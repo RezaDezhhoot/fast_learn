@@ -6,7 +6,7 @@
         <div class="card-body">
             @if ($details->count() > 0)
                 <x-admin.forms.input  type="text" id="user_number" disabled label="شماره کاربر *" wire:model.defer="user_number" />
-            @else    
+            @else
                 <x-admin.forms.input  type="text" id="user_number" label="شماره کاربر *" wire:model.defer="user_number" />
             @endif
             <x-admin.form-section label="سبد خرید">
@@ -60,7 +60,7 @@
                 </table>
                 <table class="table table-striped table-bordered dt-responsive">
                     <tbody>
-                        
+
                         <tr>
                             <td>هزینه کل کیف پول</td>
                             <td>{{ number_format($details->sum('wallet_amount')) }} تومان</td>
@@ -94,7 +94,7 @@
         <x-admin.forms.input type="number" id="wallet" label=" هزینه کیف پول (تومان)" wire:model="wallet" />
         <x-admin.forms.input type="number" id="reduction" label=" هزینه  تخفیف (تومان)" wire:model="reduction" />
         <x-admin.forms.input type="number" id="final_total" label="هزینه نهایی (تومان)" disabled wire:model.defer="final_total" />
-        
+
 
     </x-admin.modal-page>
 </div>

@@ -8,6 +8,7 @@ use App\Enums\QuizEnum;
 use App\Events\OrderEvent;
 use App\Http\Controllers\BaseComponent;
 use App\Http\Controllers\Cart\Facades\Cart;
+use App\Repositories\Interfaces\IncomingMethodRepositoryInterface;
 use App\Repositories\Interfaces\OrderDetailRepositoryInterface;
 use App\Repositories\Interfaces\OrderNoteRepositoryInterface;
 use App\Repositories\Interfaces\OrderRepositoryInterface;
@@ -34,6 +35,7 @@ class Verify extends BaseComponent
         $this->paymentReporitory = app(PaymentRepositoryInterface::class);
         $this->transcriptRepository = app(TranscriptRepositoryInterface::class);
         $this->orderNoteRepository = app(OrderNoteRepositoryInterface::class);
+        $this->incomingMethodRepository = app(IncomingMethodRepositoryInterface::class);
     }
 
     public function mount($gateway = null)
@@ -117,7 +119,10 @@ class Verify extends BaseComponent
         }
         foreach ($this->order->details as $detail) {
             $detail->status = OrderEnum::STATUS_COMPLETED;
+            if ($this->orderDetailRepository->paymentOfFeesIfCourseHasTeacherAndValidIncomingMethod($detail))
+                $detail->incoming_method_id = $detail->course->incoming_method_id;
             $this->orderDetailRepository->save($detail);
+
             if (!is_null($detail->course->quiz)) {
                 $quiz = $detail->course->quiz;
                 for ($i=0;$i<$quiz->enter_count;$i++) {
@@ -178,6 +183,7 @@ class Verify extends BaseComponent
             ],[['payment_token', $this->token]]);
         }
     }
+
 
     public function render()
     {

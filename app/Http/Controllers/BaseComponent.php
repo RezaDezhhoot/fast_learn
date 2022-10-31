@@ -18,7 +18,7 @@ class BaseComponent extends Component
     protected ?Filesystem $disk;
 
     protected $courseRepository , $tagRepository , $categoryRepository , $quizRepository , $teacherRepository , $settingRepository ,
-        $episodeRepository , $userRepository , $articleRepository , $certificateRepository , $commentRepository , $orderRepository,
+        $episodeRepository , $episodeTranscriptRepository , $userRepository , $articleRepository , $certificateRepository , $commentRepository , $orderRepository,
         $orderDetailRepository , $paymentReporitory , $questionRepository , $eventRepository , $notificationRepository , $transcriptRepository ,
         $choiceRepository , $reductionRepository , $reductionMetaRepository , $roleRepository , $permissionRepository , $ticketRepository ,
         $sendRepository , $userDetailRepository , $orderNoteRepository , $homeworkRepository , $contactUsRepository , $logRepository ,

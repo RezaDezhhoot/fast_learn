@@ -21,4 +21,5 @@ interface IncomingMethodRepositoryInterface
     public function getNewObject();
 
     public function getAll();
+
 }

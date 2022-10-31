@@ -170,7 +170,7 @@ class CreateOrder extends BaseComponent
             DB::beginTransaction();
             $order = $this->orderRepository->create($order);
             foreach ($this->details as $value) {
-                $this->orderDetailRepository->create([
+                $detail = $this->orderDetailRepository->create([
                     'course_id' => $value['course_id'],
                     'product_data' => json_encode(['id' => $value['course_id'], 'title' =>  $value['course_title']]),
                     'price' => $value['total_amount'],
@@ -181,6 +181,10 @@ class CreateOrder extends BaseComponent
                     'quantity' => 1,
                     'order_id' => $order->id,
                 ]);
+                if ($this->orderDetailRepository->paymentOfFeesIfCourseHasTeacherAndValidIncomingMethod($detail)) {
+                    $detail->incoming_method_id = $detail->course->incoming_method_id;
+                    $this->orderDetailRepository->save($detail);
+                }
             }
             DB::commit();
             if ($this->details->sum('wallet_amount') > 0)
@@ -197,7 +201,7 @@ class CreateOrder extends BaseComponent
         }
     }
 
-    public function newDetailsArray() 
+    public function newDetailsArray()
     {
         $this->details = collect([]);
     }

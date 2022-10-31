@@ -100,12 +100,13 @@
                 @endcan
                 @if(auth()->user()->hasAnyPermission('show_courses','show_episodes','show_new_courses'))
                     <x-admin.menu-group icon="fab fa-product-hunt" :active="request()->routeIs(
-                    ['admin.course','admin.store.course','admin.episode','admin.store.episode','admin.newCourse','admin.store.newCourse'])" label="دوره های اموزشی" >
+                    ['admin.course','admin.store.course','admin.episode','admin.store.episode','admin.newCourse','admin.store.newCourse','admin.episodeTranscript','admin.store.episodeTranscript'])" label="دوره های اموزشی" >
                         @can('show_courses')
                             <x-admin.menu-item href="{{route('admin.course')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['admin.course','admin.store.course'])" label="دروه ها  " />
                         @endcan
                         @can('show_episodes')
                             <x-admin.menu-item href="{{route('admin.episode')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['admin.episode','admin.store.episode'])" label="درس ها  " />
+                            <x-admin.menu-item href="{{route('admin.episodeTranscript')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['admin.episodeTranscript','admin.store.episodeTranscript'])" label="رونوشت های ارسالی ({{$episode_transcripts}})  " />
                         @endcan
                             {{-- v3-new-courses --}}
                             @can('show_new_courses')

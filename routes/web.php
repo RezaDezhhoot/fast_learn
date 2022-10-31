@@ -128,6 +128,8 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->group(function (){
     Route::get('/new-courses',App\Http\Controllers\Admin\NewCourses\IndexNewCourse::class)->name('admin.newCourse');
     Route::get('/new-courses/{action}/{id?}',App\Http\Controllers\Admin\NewCourses\StoreNewCourse::class)->name('admin.store.newCourse');
     Route::get('/settings/apply', App\Http\Controllers\Admin\Settings\Law::class)->name('admin.setting.apply');
+    Route::get('/episode-transcripts',App\Http\Controllers\Admin\EpisodeTranscripts\IndexEpisodeTranscript::class)->name('admin.episodeTranscript');
+    Route::get('/episode-transcripts/{action}/{id?}',App\Http\Controllers\Admin\EpisodeTranscripts\StoreEpisodeTranscript::class)->name('admin.store.episodeTranscript');
 });
 // v3-teachers
 Route::prefix('teacher')->name('teacher.')->middleware(['auth','role:teacher'])->group(function(){

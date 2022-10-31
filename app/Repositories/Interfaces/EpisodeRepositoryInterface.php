@@ -21,4 +21,8 @@ interface EpisodeRepositoryInterface
     public function findMany(array $ids);
 
     public function getAllAdmin($course = null,$search = null,$perPage = 10);
+
+    public function getAllTeacher($course , $search , $per_page);
+
+    public function findTeacherEpisode($id);
 }

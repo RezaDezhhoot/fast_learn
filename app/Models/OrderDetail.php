@@ -15,9 +15,13 @@ use Morilog\Jalali\Jalalian;
  * @property mixed id
  * @property mixed created_at
  * @property mixed $type
+ * @property mixed $course_id
+ * @property mixed $total_price
+ * @property mixed $course
  * @method static findOrFail($id)
  * @method static whereBetween(string $string, string[] $array)
  * @method static create(array $data)
+ * @method static where(array $where)
  */
 class OrderDetail extends Model
 {

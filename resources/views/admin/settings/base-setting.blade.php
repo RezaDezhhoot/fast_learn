@@ -34,33 +34,27 @@
             <x-admin.form-section  label="درگاه های بانکی">
                 <div class="border p-3">
                     <x-admin.forms.checkbox value="zarinpal" id="zarinpal" name="gateway" label="zarinpal" wire:model="gateway" />
-                    @if(in_array('zarinpal',$gateway))
-                        <div class="row">
+                        <div class="row {{!in_array('zarinpal',$gateway) ? 'd-none' : ''}}">
                             <x-admin.forms.input with="6" type="text" id="merchantId" placeholder="merchantId" label="شناسه درگاه" wire:model.defer="zarin_merchantId"/>
                             <x-admin.forms.dropdown with="6" id="zarin_mode" :data="['normal'=>'عادی','sandbox'=>'ازمایشی','zaringate'=> 'zaringate']" label="حالت" wire:model.defer="zarin_mode"/>
                             <x-admin.forms.dropdown help="برای درگاه zarinpal واحد تومان می باشد" id="zarin_unit" :data="['1'=> 'تومان','10'=> 'ریال']" label="واحد" wire:model.defer="zarin_unit"/>
                             <x-admin.forms.lfm-standalone id="zarin_logo" label="لوگو درگاه" :file="$zarin_logo" type="image"  wire:model="zarin_logo"/>
                         </div>
-                    @endif
                     <hr>
                     <x-admin.forms.checkbox value="payir" id="payid" name="gateway" label="pay.ir" wire:model="gateway" />
-                    @if(in_array('payir',$gateway))
-                        <div class="row">
+                        <div class="row {{!in_array('payir',$gateway) ? 'd-none' : ''}}">
                             <x-admin.forms.input type="text" id="payir_merchantId" placeholder="merchantId" label="شناسه درگاه" wire:model.defer="payir_merchantId"/>
                             <x-admin.forms.dropdown help="برای درگاه pay واحد تومان می باشد" id="payir_unit" :data="['1'=> 'تومان','10'=> 'ریال']" label="واحد" wire:model.defer="payir_unit"/>
                             <x-admin.forms.lfm-standalone id="payir_logo" label="لوگو درگاه" :file="$payir_logo" type="image"  wire:model="payir_logo"/>
                         </div>
-                    @endif
                     <hr>
                     <x-admin.forms.checkbox value="idpay" id="idpay" name="gateway" label="idpay" wire:model="gateway" />
-                    @if(in_array('idpay',$gateway))
-                        <div class="row">
+                        <div class="row {{!in_array('idpay',$gateway) ? 'd-none' : ''}}">
                             <x-admin.forms.input with="6" type="text" id="idpay_merchantId" placeholder="merchantId" label="شناسه درگاه" wire:model.defer="idpay_merchantId"/>
                             <x-admin.forms.dropdown with="6" id="idpay_sandbox" :data="['0'=>'خیر','1'=>'بعله']" label="درگاه ازمایشی" wire:model.defer="idpay_sandbox"/>
                             <x-admin.forms.lfm-standalone id="idpay_logo" label="لوگو درگاه" :file="$idpay_logo" type="image"  wire:model="idpay_logo"/>
                             <x-admin.forms.dropdown id="idpay_unit" help="برای درگاه ای دی پی واحد ریال می باشد" :data="['10'=>'ریال','1'=>'تومان']" label="واحد" wire:model.defer="idpay_unit"/>
                         </div>
-                    @endif
                 </div>
             </x-admin.form-section>
             <x-admin.form-section  label="روش ارسال کد تایید احراز هویت ">

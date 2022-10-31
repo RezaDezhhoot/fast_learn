@@ -3,11 +3,15 @@
 
 namespace App\Repositories\Classes;
 
+use App\Enums\NotificationEnum;
 use App\Enums\OrderEnum;
 use App\Enums\PaymentEnum;
 use App\Models\OrderDetail;
 use App\Models\Payment;
 use App\Repositories\Interfaces\OrderDetailRepositoryInterface;
+use App\Repositories\Interfaces\SendRepositoryInterface;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class OrderDetailRepository implements OrderDetailRepositoryInterface
 {
@@ -55,5 +59,35 @@ class OrderDetailRepository implements OrderDetailRepositoryInterface
                     return $q->where('id',$course_id);
                 });
             })->sum($sum);
+    }
+
+    public function getOrderDetailCount(array $where)
+    {
+        return OrderDetail::where($where)->count();
+    }
+
+
+    public function paymentOfFeesIfCourseHasTeacherAndValidIncomingMethod(OrderDetail $orderDetail): bool
+    {
+        if (!is_null($orderDetail->course->teacher) && !is_null($orderDetail->course->incoming_method)) {
+            $method = $orderDetail->course->incoming_method;
+            if (is_null($method->expire_limit) || ($method->expire_limit > Carbon::parse($orderDetail->course->created_at)->diffInDays(Carbon::now())) ) {
+                if (is_null($method->count_limit) || $this->getOrderDetailCount([['course_id',$orderDetail->course_id],['incoming_method_id',$method->id]]) <= $method->count_limit){
+                    $fee = $orderDetail->total_price*($method->value/100);
+                    if ($fee > 0) {
+                        $description = "واریز حق الزحمه بابت دوره اموزشی {$orderDetail->course->title}  به مبلغ ".(number_format($fee)).' تومان ';
+                        $orderDetail->course->teacher->user->deposit($fee, ['description' => $description, 'from_admin'=> true]);
+                        app(SendRepositoryInterface::class)->sendNOTIFICATION(
+                            $description,
+                            $orderDetail->course->teacher->user_id,
+                            NotificationEnum::TEACHER,
+                            $orderDetail->id,
+                        );
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }

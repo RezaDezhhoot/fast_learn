@@ -6,6 +6,7 @@ namespace App\Repositories\Classes;
 
 use App\Models\Episode;
 use App\Repositories\Interfaces\EpisodeRepositoryInterface;
+use Illuminate\Support\Facades\Auth;
 
 class EpisodeRepository implements EpisodeRepositoryInterface
 {
@@ -47,5 +48,27 @@ class EpisodeRepository implements EpisodeRepositoryInterface
                return $q->where('id',$course);
            });
         })->search($search)->paginate($perPage);
+    }
+
+    public function getAllTeacher($course, $search, $per_page)
+    {
+        return Episode::latest('id')->whereHas('course',function ($q) {
+            return $q->whereHas('teacher',function ($q){
+                return $q->where('user_id',Auth::id());
+            });
+        })->when($course,function ($q) use ($course){
+            return $q->whereHas('course',function ($q) use ($course) {
+                return $q->where('id',$course);
+            });
+        })->search($search)->paginate($per_page);
+    }
+
+    public function findTeacherEpisode($id)
+    {
+        return Episode::whereHas('course',function ($q){
+            return $q->whereHas('teacher',function ($q){
+                return $q->where('user_id',Auth::id());
+            });
+        })->findOrFail($id);
     }
 }

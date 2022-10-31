@@ -11,6 +11,7 @@ use App\Repositories\Classes\CommentRepository;
 use App\Repositories\Classes\ContactUsRepository;
 use App\Repositories\Classes\CourseRepository;
 use App\Repositories\Classes\EpisodeRepository;
+use App\Repositories\Classes\EpisodeTranscriptRepository;
 use App\Repositories\Classes\EventRepository;
 use App\Repositories\Classes\HomeworkRepository;
 use App\Repositories\Classes\IncomingMethodRepository;
@@ -53,6 +54,7 @@ use App\Repositories\Interfaces\CommentRepositoryInterface;
 use App\Repositories\Interfaces\ContactUsRepositoryInterface;
 use App\Repositories\Interfaces\CourseRepositoryInterface;
 use App\Repositories\Interfaces\EpisodeRepositoryInterface;
+use App\Repositories\Interfaces\EpisodeTranscriptRepositoryInterface;
 use App\Repositories\Interfaces\EventRepositoryInterface;
 use App\Repositories\Interfaces\HomeworkRepositoryInterface;
 use App\Repositories\Interfaces\IncomingMethodRepositoryInterface;
@@ -309,6 +311,11 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             NewCourseChatRepositoryInterface::class,
             NewCourseChatRepository::class,
+        );
+
+        $this->app->bind(
+            EpisodeTranscriptRepositoryInterface::class,
+            EpisodeTranscriptRepository::class,
         );
     }
 

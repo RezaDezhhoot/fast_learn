@@ -65,7 +65,7 @@ class Course extends Model
     protected function typeLabel(): Attribute
     {
         return Attribute::make(
-            get: fn() => in_array($this->type,array_keys(CourseEnum::getTypes())) ? 
+            get: fn() => in_array($this->type,array_keys(CourseEnum::getTypes())) ?
                 CourseEnum::getTypes()[$this->type] : ''
         );
     }
@@ -250,5 +250,10 @@ class Course extends Model
     public function samples()
     {
         return $this->hasMany(Sample::class);
+    }
+
+    public function incoming_method(): BelongsTo
+    {
+        return $this->belongsTo(IncomingMethod::class);
     }
 }

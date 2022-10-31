@@ -18,7 +18,7 @@ class StoreEpisode extends BaseComponent
 
     public  $header , $storage , $episode;
     public $title , $link , $time = '00:00:00' , $view = 0, $free = 0 , $api_bucket , $file_storage , $file ,$local_video ,
-        $video_storage , $allow_show_local_video = 0 , $course_id , $description , $can_homework = false , $homework_storage , 
+        $video_storage , $allow_show_local_video = 0 , $course_id , $description , $can_homework = false , $homework_storage ,
         $show_api_video = false , $downloadable_local_video = false;
 
     public $homework , $h_file , $h_description , $h_result , $h_storage , $h_score;
