@@ -154,11 +154,11 @@
                 @endcan
                 {{-- v3-teachers-checkouts --}}
                 @can('show_checkouts')
-                <x-admin.menu-item  href="{{route('admin.checkout')}}" icon="fmenu-icon fab fa-cc-amazon-pay" :active="request()->routeIs(['admin.checkout','admin.store.checkout'])" label="    تسویه حساب ها ({{$contacts}})" />
+                <x-admin.menu-item  href="{{route('admin.checkout')}}" icon="fmenu-icon fab fa-cc-amazon-pay" :active="request()->routeIs(['admin.checkout','admin.store.checkout'])" label="    تسویه حساب ها ({{$checkouts}})" />
                 @endcan
                 {{-- v3-teachers-bank-accounts --}}
                 @can('show_bank_accounts')
-                <x-admin.menu-item  href="{{route('admin.account')}}" icon="fa fa-piggy-bank" :active="request()->routeIs(['admin.account','admin.store.account'])" label="     حساب های بانکی ({{$contacts}})" />
+                <x-admin.menu-item  href="{{route('admin.account')}}" icon="fa fa-piggy-bank" :active="request()->routeIs(['admin.account','admin.store.account'])" label="     حساب های بانکی ({{$bank_accounts}})" />
                 @endcan
                 {{-- v3-teachers-incoming-methods --}}
                 @can('show_incoming_methods')

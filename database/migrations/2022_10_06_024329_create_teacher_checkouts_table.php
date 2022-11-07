@@ -17,11 +17,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->decimal('price',35);
-            $table->string('result')->nullable();
+            $table->text('result')->nullable();
             $table->string('status');
             $table->bigInteger('bank_account_id')->nullable();
             $table->text('bank_account_info');
-            $table->text('files')->nullable();
             $table->timestamps();
         });
     }

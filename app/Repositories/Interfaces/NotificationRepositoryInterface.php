@@ -15,4 +15,6 @@ interface NotificationRepositoryInterface
     public function delete(Notification $notification);
 
     public function find($id);
+
+    public function getByWhere(array $where,$from_date , $to_date);
 }

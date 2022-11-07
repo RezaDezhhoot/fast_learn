@@ -95,7 +95,10 @@
                             <td>{{$episode->allow_show_local_video ? 'بله' : 'خیر'}}</td>
                             <td>{{$episode->downloadable_local_video ? 'بله' : 'خیر'}}</td>
                             <td>{{$episode->can_homework ? 'بله' : 'خیر'}}</td>
-                            <td>{{$episode->homework_storage_label}}</td>
+                            <td>
+                                <x-admin.forms.dropdown id="homework_storage" :data="$data['storage']" label="  فضای ذخیره سازی تمرین"
+                                                        wire:model.defer="homework_storage" />
+                            </td>
                         </tr>
                         </tbody>
                     </table>

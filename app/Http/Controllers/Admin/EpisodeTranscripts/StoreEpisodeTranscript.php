@@ -6,10 +6,11 @@ use App\Enums\EpisodeEnum;
 use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\EpisodeRepositoryInterface;
 use App\Repositories\Interfaces\EpisodeTranscriptRepositoryInterface;
+use Illuminate\Validation\Rule;
 
 class StoreEpisodeTranscript extends BaseComponent
 {
-    public  $header  , $episode , $status , $message , $is_confirmed , $free , $description;
+    public  $header  , $episode , $status , $message , $is_confirmed , $free , $description , $homework_storage;
 
     public function __construct($id = null)
     {
@@ -23,6 +24,7 @@ class StoreEpisodeTranscript extends BaseComponent
         $this->authorizing('show_episodes');
         $this->set_mode($action);
         $this->data['status'] = EpisodeEnum::getStatus();
+        $this->data['storage'] = getAvailableStorages();
         if ($this->mode == self::UPDATE_MODE) {
             $this->episode = $this->episodeTranscriptRepository->findOrFail($id);
             $this->header = " درس {$this->episode->title} از {$this->episode->course->title} ";
@@ -30,6 +32,8 @@ class StoreEpisodeTranscript extends BaseComponent
             $this->message =  $this->episode->message;
             $this->is_confirmed =  $this->episode->is_confirmed;
             $this->description =  $this->episode->description;
+            $this->free =  @$this->episode->free ?? false;
+            $this->homework_storage = @$this->episode->homework_storage ?? '';
         } else abort(404);
     }
 
@@ -41,24 +45,27 @@ class StoreEpisodeTranscript extends BaseComponent
 
     private function saveInDataBase($model)
     {
+
         $this->validate([
             'status' => ['required','in:'.implode(',',array_keys(EpisodeEnum::getStatus()))],
             'message' => ['required','string','max:100000'],
             'free' => ['boolean'],
+            'homework_storage' => [Rule::requiredIf(fn() => $this->episode->can_homework) ,'in:'.implode(',',array_keys(getAvailableStorages())).','.null],
         ],[],[
             'status' => 'وضعیت',
             'message' => 'نتیجه نهایی',
             'free' => 'رایگان',
+            'homework_storage' => 'فضای ذخیره سازی تمرین',
         ]);
         $model->status = $this->status;
         $model->message = $this->message;
         $message = 'اطلاعات با موفقیت ذخیره شد';
+        $model->free = $this->free;
+        $model->homework_storage = $this->homework_storage;
         if ($model->isDirty('status') && $this->status == EpisodeEnum::CONFIRMED_STATUS && ! $this->is_confirmed) {
-            $model->free = $this->free;
-            $this->episode->free = $this->free;
             $episode = !is_null($this->episode->episode) ? $this->episode->episode : $this->episodeRepository->newEpisodeObject();
             $this->episodeRepository->save(
-                $this->episodeTranscriptRepository->confirmThisTranscript($this->episode , $episode)
+                $this->episodeTranscriptRepository->confirmThisTranscript($model , $episode)
             );
             $model->is_confirmed = true;
             $this->is_confirmed = true;

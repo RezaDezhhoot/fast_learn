@@ -18,10 +18,7 @@
                 </div>
                 <x-teacher.forms.checkbox value="1" id="can_homework" label="امکان بارگذاری تمرین "
                                         wire:model.defer="can_homework" />
-                <div class="col-12">
-                    <x-teacher.forms.dropdown id="homework_storage" :data="$data['storage']" label="  فضای ذخیره سازی تمرین"
-                                              wire:model.defer="homework_storage" />
-                </div>
+
                 <x-teacher.forms.text-area label="کد اشتراک گذاریapi " wire:model.defer="api_bucket" id="api_bucket" />
                 <x-teacher.forms.checkbox value="1" id="show_api_video"
                                         label="نمایش ویدئو " wire:model.defer="show_api_video" />

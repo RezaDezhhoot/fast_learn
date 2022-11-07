@@ -45,4 +45,9 @@ class NotificationRepository implements NotificationRepositoryInterface
     {
         return Notification::create($data);
     }
+
+    public function getByWhere(array $where,$from_date , $to_date)
+    {
+        return Notification::latest('id')->where($where)->whereBetween('created_at',[$from_date." 00:00:00", $to_date." 23:59:59"])->cursor();
+    }
 }

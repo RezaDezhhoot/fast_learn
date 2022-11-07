@@ -242,4 +242,15 @@ class User extends Authenticatable implements Wallet, Confirmable
     {
         return $this->hasMany(LastActivity::class)->latest();
     }
+
+    public function checkouts(): HasMany
+    {
+        return $this->hasMany(TeacherCheckout::class);
+    }
+
+    public function accounts(): HasMany
+    {
+        return $this->hasMany(BankAccount::class)->active();
+    }
+
 }

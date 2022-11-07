@@ -281,12 +281,12 @@
                                 </li>
                                 <x-teacher.menu-item href="{{route('fm.fm-button')}}" icon="flaticon2-file" :active="request()->routeIs('unisharp.lfm.show')" label="مدیریت رسانه ها" />
                                 <li class="menu-section">
-                                    <h4 class="menu-text">بخش ازمون و سوالات</h4>
+                                    <h4 class="menu-text"> بخش ازمون و سوالات (به زودی)</h4>
                                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                                 </li>
-                                <x-teacher.menu-item href="{{route('teacher.questions')}}" icon="far fa-question-circle" :active="request()->routeIs(['teacher.questions','teacher.store.questions'])" label="سوالات " />
-                                <x-teacher.menu-item href="{{route('teacher.quizzes')}}" icon="fas fa-pen-alt" :active="request()->routeIs(['teacher.quizzes','teacher.store.quizzes'])" label="ازمون ها " />
-                                <x-teacher.menu-item href="{{route('teacher.transcripts')}}" icon="flaticon2-paper" :active="request()->routeIs(['teacher.transcripts','teacher.store.transcripts'])" label="کارنامه ها" />
+{{--                                <x-teacher.menu-item href="{{route('teacher.questions')}}" icon="far fa-question-circle" :active="request()->routeIs(['teacher.questions','teacher.store.questions'])" label="سوالات " />--}}
+{{--                                <x-teacher.menu-item href="{{route('teacher.quizzes')}}" icon="fas fa-pen-alt" :active="request()->routeIs(['teacher.quizzes','teacher.store.quizzes'])" label="ازمون ها " />--}}
+{{--                                <x-teacher.menu-item href="{{route('teacher.transcripts')}}" icon="flaticon2-paper" :active="request()->routeIs(['teacher.transcripts','teacher.store.transcripts'])" label="کارنامه ها" />--}}
                                 <li class="menu-section">
                                     <h4 class="menu-text">بخش محتوا</h4>
                                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>

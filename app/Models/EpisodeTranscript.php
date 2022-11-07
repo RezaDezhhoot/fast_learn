@@ -88,11 +88,4 @@ class EpisodeTranscript extends Model
             get: fn () => in_array($this->video_storage , array_flip(getAvailableStorages()) ) ?  getAvailableStorages()[$this->video_storage] : ''
         );
     }
-
-    protected function homeworkStorageLabel(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => in_array($this->homework_storage , array_flip(getAvailableStorages()) ) ?  getAvailableStorages()[$this->homework_storage] : ''
-        );
-    }
 }

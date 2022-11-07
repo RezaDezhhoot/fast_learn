@@ -103,7 +103,6 @@ class StoreEpisode extends BaseComponent
             'view' => ['required','integer'],
             'file_storage' => [Rule::requiredIf(fn() => !empty($this->file)) ,'in:'.implode(',',array_keys(getAvailableStorages())).','.null],
             'video_storage' => [Rule::requiredIf(fn() => !empty($this->local_video)) ,'in:'.implode(',',array_keys(getAvailableStorages())).','.null],
-            'homework_storage' => [Rule::requiredIf(fn() => $this->can_homework ==true) ,'in:'.implode(',',array_keys(getAvailableStorages())).','.null],
             'can_homework' => ['boolean'],
             'downloadable_local_video' => [Rule::requiredIf(fn() => !empty($this->downloadable_local_video)) ,'boolean'],
             'show_api_video' => [Rule::requiredIf(fn() => !empty($this->api_bucket)) ,'boolean'],
@@ -117,7 +116,6 @@ class StoreEpisode extends BaseComponent
             'time' => 'زمان درس',
             'file_storage' => 'فضای ذخیره سازی فایل',
             'video_storage' => 'فضای ذخیره سازی ویدئو',
-            'homework_storage' => 'فضای ذخیره سازی تمرین',
             'view' => 'نمایش درس',
             'allow_show_local_video' => 'اجازه برای نمایش ویدئو',
             'course_id' => 'دوره اموزشی',
@@ -136,7 +134,6 @@ class StoreEpisode extends BaseComponent
         $episode->course_id =$this->course_id;
         $episode->episode_id = $this->mode == self::UPDATE_MODE ? $this->episode->id : null;
         $episode->file_storage = $this->file_storage ?? StorageEnum::PRIVATE;
-        $episode->homework_storage = $this->homework_storage ?? StorageEnum::PRIVATE;
         $episode->video_storage = $this->video_storage ?? StorageEnum::PRIVATE;
         $episode->allow_show_local_video = $this->allow_show_local_video;
         $episode->description = $this->description;
@@ -145,5 +142,65 @@ class StoreEpisode extends BaseComponent
         $episode->downloadable_local_video = $this->downloadable_local_video;
         $this->episodeTranscriptRepository->save($episode);
         return $this->emitNotify('رونوشت با موفقیت ثبت شد');
+    }
+
+
+
+    public function openHomework($id)
+    {
+        $this->resetHomework();
+        $this->homework = $this->homeworkRepository->get([['id',$id],['episode_id',$this->episode->id]]);
+        $this->h_file = $this->homework->file;
+        $this->h_description = $this->homework->description;
+        $this->h_result = $this->homework->result;
+        $this->h_score = $this->homework->score;
+        $this->h_storage = $this->homework->storage;
+        $this->emitShowModal('homework');
+    }
+
+    public function storeHomework()
+    {
+        $this->validate([
+            'h_result' => ['nullable','string','max:10000'],
+            'h_score' => ['required','integer','between:1,5']
+        ],[],[
+            'h_result' => 'توضیحات مدرس',
+            'h_score' => 'امتیاز'
+        ]);
+        $this->homework->result = $this->emptyToNull($this->h_result);
+        $this->homework->score = $this->h_score;
+        $this->homeworkRepository->save($this->homework);
+        $this->emitHideModal('homework');
+        $this->resetHomework();
+        return $this->emitNotify('اطلاعات با موفقیت ثبت شد');
+    }
+
+    public function resetHomework()
+    {
+        $this->reset(['homework','h_file','h_description','h_result','h_score','h_storage']);
+    }
+
+    public function deleteHFile()
+    {
+        if (!empty($this->h_storage) && !empty($this->homework) && !empty($this->h_file)) {
+            $disk = getDisk($this->h_storage);
+            if ($disk->exists($this->h_file))
+            {
+                $disk->delete($this->h_file);
+                $this->homework->file = null;
+                $this->h_file = null;
+                $this->homeworkRepository->save($this->homework);
+                $this->emitNotify('فایل با موفقیت حذف شد');
+            }
+        }
+    }
+
+    public function download()
+    {
+        if (!empty($this->h_storage) && !empty($this->homework) && !empty($this->h_file)) {
+            $disk = getDisk($this->h_storage);
+            if ($disk->exists($this->h_file))
+                return $disk->download($this->h_file);
+        }
     }
 }

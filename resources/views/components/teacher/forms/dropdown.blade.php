@@ -1,5 +1,5 @@
 @props(['id', 'label' , 'data' , 'required' => false , 'help' => false , 'value' => false,'with' => 12 ])
-<div class="form-group col-md-{{$with}} col-12 p-0">
+<div class="form-group col-md-{{$with}} col-12">
     <label for="{{$id}}"> {{$label}} </label>
     <select {{ $attributes }}  id="{{$id}}"  {!! $attributes->merge(['class'=> 'form-control']) !!}>
         <option value="">انتخاب</option>

@@ -34,7 +34,7 @@ return new class extends Migration
             $table->tinyInteger('downloadable_local_video')->default(1);
             $table->string('description');
             $table->integer('can_homework');
-            $table->string('homework_storage')->default(0);
+            $table->string('homework_storage')->nullable();
             $table->tinyInteger('is_confirmed')->default(0);
             $table->timestamps();
         });

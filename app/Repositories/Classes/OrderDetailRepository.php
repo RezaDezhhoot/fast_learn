@@ -75,12 +75,12 @@ class OrderDetailRepository implements OrderDetailRepositoryInterface
                 if (is_null($method->count_limit) || $this->getOrderDetailCount([['course_id',$orderDetail->course_id],['incoming_method_id',$method->id]]) <= $method->count_limit){
                     $fee = $orderDetail->total_price*($method->value/100);
                     if ($fee > 0) {
-                        $description = "واریز حق الزحمه بابت دوره اموزشی {$orderDetail->course->title}  به مبلغ ".(number_format($fee)).' تومان ';
+                        $description = "واریز حق التدرس بابت دوره اموزشی {$orderDetail->course->title}  به مبلغ ".(number_format($fee)).' تومان ';
                         $orderDetail->course->teacher->user->deposit($fee, ['description' => $description, 'from_admin'=> true]);
                         app(SendRepositoryInterface::class)->sendNOTIFICATION(
                             $description,
                             $orderDetail->course->teacher->user_id,
-                            NotificationEnum::TEACHER,
+                            NotificationEnum::FEE,
                             $orderDetail->id,
                         );
                         return true;

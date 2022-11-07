@@ -423,6 +423,36 @@
                         </tbody>
                     </table>
                 </div>
+
+                <div class="col-lg-12 table-responsive">
+                    <h4 class="card-label">
+                        <span class="d-block text-dark font-weight-bolder">اخرین واریزی های حق التدرسی</span>
+                    </h4>
+                    <table  class="table table-striped table-bordered" id="kt_datatable">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>مدرس</th>
+                            <th>واریزی</th>
+                            <th>تاریخ</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @forelse($fees as $item)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $item->user->name }}</td>
+                                <td>{{ $item->content }}</td>
+                                <td>{{ $item->created_at_format }}</td>
+                            </tr>
+                        @empty
+                            <td class="text-center" colspan="5">
+                                دیتایی جهت نمایش وجود ندارد
+                            </td>
+                        @endforelse
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

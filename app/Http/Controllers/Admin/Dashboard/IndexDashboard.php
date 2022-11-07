@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Admin\Dashboard;
 
+use App\Enums\NotificationEnum;
 use App\Enums\PaymentEnum;
 use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\ArticleRepositoryInterface;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\Interfaces\CertificateRepositoryInterface;
 use App\Repositories\Interfaces\CourseRepositoryInterface;
+use App\Repositories\Interfaces\NotificationRepositoryInterface;
 use App\Repositories\Interfaces\OrderDetailRepositoryInterface;
 use App\Repositories\Interfaces\OrderRepositoryInterface;
 use App\Repositories\Interfaces\PaymentRepositoryInterface;
@@ -40,6 +42,7 @@ class IndexDashboard extends BaseComponent
         $this->quizRepository = app(QuizRepositoryInterface::class);
         $this->certificateRepository = app(CertificateRepositoryInterface::class);
         $this->transcriptRepository = app(TranscriptRepositoryInterface::class);
+        $this->notificationRepository = app(NotificationRepositoryInterface::class);
     }
 
     public function mount()
@@ -47,11 +50,11 @@ class IndexDashboard extends BaseComponent
         if (
             !preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/",$this->to_date) ||
             !preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/",$this->from_date)
-            ) 
+            )
         {
             $this->reset(['to_date','from_date']);
         }
-        
+
         if (!isset($this->to_date)){
             $this->to_date =  Carbon::now()->format('Y-m-d');
         }
@@ -62,7 +65,6 @@ class IndexDashboard extends BaseComponent
         }
         $this->from_date_view = $this->dateConverter($this->from_date);
 
-        
 
 
         $this->getData();
@@ -131,8 +133,9 @@ class IndexDashboard extends BaseComponent
     public function render()
     {
         $most_sold = $this->courseRepository->getMostSoldCourses($this->from_date,$this->to_date);
+        $fess = $this->notificationRepository->getByWhere([['subject',NotificationEnum::FEE]],$this->from_date,$this->to_date);
 
-        return view('admin.dashboard.index-dashboard',['most_sold'=>$most_sold])
+        return view('admin.dashboard.index-dashboard',['most_sold'=>$most_sold,'fees'=>$fess])
             ->extends('admin.layouts.admin');
     }
 

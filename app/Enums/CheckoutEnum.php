@@ -4,14 +4,17 @@ namespace App\Enums;
 
 use BenSampo\Enum\Enum;
 
-/**
- * @method static static OptionOne()
- * @method static static OptionTwo()
- * @method static static OptionThree()
- */
+
 final class CheckoutEnum extends Enum
 {
-    const OptionOne =   0;
-    const OptionTwo =   1;
-    const OptionThree = 2;
+    const PENDING = 'pending' , DONE = 'done' , ERROR = 'error';
+
+    public static function getStatus()
+    {
+        return [
+            self::PENDING => 'در حال رسیدگی',
+            self::DONE => 'انجام شده',
+            self::ERROR => 'خظا در فرایند تسویه حساب'
+        ];
+    }
 }

@@ -9,8 +9,7 @@
     <title>{{ $site_title }}</title>
 
     <!-- Google fonts -->
-    <script src="https://cdn.plyr.io/3.6.12/plyr.js"></script>
-    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.12/plyr.css" />
+
     <link rel="preconnect" href="https://fonts.gstatic.com/" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet" />
 

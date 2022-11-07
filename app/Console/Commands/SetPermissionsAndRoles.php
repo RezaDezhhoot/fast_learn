@@ -153,7 +153,6 @@ class SetPermissionsAndRoles extends Command
 
             ['name' => 'show_checkouts' , 'guard_name'=> 'web'],
             ['name' => 'edit_checkouts', 'guard_name'=> 'web'],
-            ['name' => 'delete_checkouts', 'guard_name'=> 'web'],
 
             ['name' => 'show_bank_accounts' , 'guard_name'=> 'web'],
             ['name' => 'edit_bank_accounts', 'guard_name'=> 'web'],

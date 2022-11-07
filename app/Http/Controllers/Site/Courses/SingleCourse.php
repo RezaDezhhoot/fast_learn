@@ -241,7 +241,7 @@ class SingleCourse extends BaseComponent
     public function submit_homework()
     {
         if (Auth::check()) {
-            if ($rateKey = rateLimiter(value:Auth::id().'_homework_submit_'.$this->course->id,max_tries: 5))
+            if ($rateKey = rateLimiter(value:Auth::id().'_homework_submit_'.$this->course->id,max_tries: 50))
             {
                 $this->show_homework_form = false;
                 return $this->emitNotify('زیادی تلاش کردید. لطفا پس از مدتی دوباره تلاش کنید.','warning');
@@ -269,11 +269,11 @@ class SingleCourse extends BaseComponent
                         'storage' => $this->episode->homework_storage
                     ]);
                     $this->emit('resetReCaptcha');
+                    $this->reset(['homework_file','file_path']);
                     $this->emitNotify('تمرین شما با موفقیت ارسال شد');
                 } else $this->emitNotify('امکان بارگذاری مجدد تمرین موجود نمی باشد','warning');
             } else $this->emitNotify('شما هنوز این دوره را شروع نکرده اید','warning');
         }
-        $this->resetHomework();
     }
 
     private function uploader()
@@ -281,7 +281,6 @@ class SingleCourse extends BaseComponent
         $disk = getDisk($this->episode->homework_storage);
         if (!empty($this->homework_file)) {
             $this->file_path = $disk->put('homeworks',$this->homework_file);
-            $this->reset(['homework_file','file_path']);
         }
     }
 
