@@ -6,6 +6,7 @@ namespace App\Repositories\Classes;
 use App\Enums\SampleEnum;
 use App\Models\Sample;
 use App\Repositories\Interfaces\SampleRepositoryInterface;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class SampleRepository implements SampleRepositoryInterface
@@ -116,5 +117,25 @@ class SampleRepository implements SampleRepositoryInterface
                 })->take($take)->get();
         }
         return $samples;
+    }
+
+    public function getAllTeacher($search, $status, $course, $pagination)
+    {
+        return Sample::withoutGlobalScope('published')->latest('id')->whereHas('course',function ($q) use ($course){
+            return $q->whereHas('teacher',function ($q){
+               return $q->where('user_id',Auth::id());
+            })->when($course,function ($q) use ($course) {
+                return $q->where('id',$course);
+            });
+        })->search($search)->paginate($pagination);
+    }
+
+    public function findOrFailTeacher($id)
+    {
+        return Sample::withoutGlobalScope('published')->whereHas('course',function ($q) {
+            return $q->whereHas('teacher',function ($q){
+                return $q->where('user_id',Auth::id());
+            });
+        })->findOrFail($id);
     }
 }

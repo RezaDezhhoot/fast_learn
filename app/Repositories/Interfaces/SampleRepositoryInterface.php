@@ -27,4 +27,8 @@ interface SampleRepositoryInterface
     public function findBySlug($slug);
 
     public function getRelatedSamples(Sample $sample , $take = 3);
+
+    public function getAllTeacher($search, $status, $course, $pagination);
+
+    public function findOrFailTeacher($id);
 }

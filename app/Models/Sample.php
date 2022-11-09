@@ -8,7 +8,15 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\Admin\Searchable;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @method static latest(string $string)
+ * @method static withoutGlobalScope(string $string)
+ * @property mixed $course
+ * @property mixed $status
+ * @property mixed $type
+ */
 class Sample extends Model
 {
     use HasFactory , Searchable  , Sluggable;
@@ -26,7 +34,7 @@ class Sample extends Model
         ];
     }
 
-    public function course()
+    public function course(): BelongsTo
     {
         return $this->belongsTo(Course::class);
     }

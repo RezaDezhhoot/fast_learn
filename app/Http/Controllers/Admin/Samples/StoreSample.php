@@ -9,7 +9,7 @@ use App\Http\Controllers\BaseComponent;
 
 class StoreSample extends BaseComponent
 {
-    public $slug , $title , $driver , $status , $type , $course , $file , $description , $header , $sample , 
+    public $slug , $title , $driver , $status , $type , $course , $file , $description , $header , $sample ,
     $seo_keywords , $seo_description;
 
     public function __construct($id = null)
@@ -63,11 +63,11 @@ class StoreSample extends BaseComponent
         }
     }
 
-    public function saveInDateBase($model)
+    private function saveInDateBase($model)
     {
         $this->course = $this->emptyToNull($this->course);
         $fields = [
-            'title' => ['required','string','max:100'],
+            'title' => ['required','string','max:250','unique:samples,title,'.($this->sample->id ?? 0)],
             'status' => ['required','in:'.implode(',',array_keys(SampleEnum::getStatus()))],
             'type' => ['required','in:'.implode(',',array_keys(SampleEnum::getType()))],
             'driver' => ['required','in:'.implode(',',array_keys(getAvailableStorages()))],
@@ -101,7 +101,7 @@ class StoreSample extends BaseComponent
         $this->sampleRepository->save($model);
         return $this->emitNotify('اطلاعات با موفقیت ثبت شد');
     }
-    
+
 
     public function render()
     {
