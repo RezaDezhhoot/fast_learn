@@ -4,6 +4,7 @@
 namespace App\Repositories\Classes;
 
 
+use App\Enums\CommentEnum;
 use App\Models\Comment;
 use App\Repositories\Interfaces\CommentRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
@@ -74,5 +75,35 @@ class CommentRepository implements CommentRepositoryInterface
             })
             ->orWhere($where)
             ->get();
+    }
+
+    public function getAllTeacher($search, $status, $pagination, $case = null, $active = true)
+    {
+        return Comment::confirmed($active)
+            ->where('commentable_type',CommentEnum::COURSE)
+            ->latest('id')
+            ->with(['user'])
+            ->where(function ($q){
+                $courses_id = Auth::user()->teacher->courses->pluck('id')->toArray();
+                return $q->whereIn('commentable_id',$courses_id);
+            })
+            ->when($search,function ($query) use ($search){
+            return $query->whereHas('user',function ($query) use ($search){
+                return is_numeric($search) ?
+                    $query->where('phone',$search) : $query->where('name',$search);
+            });
+        })->when($status,function ($query) use ($status){
+            return $query->where('status',$status);
+        })->paginate($pagination);
+    }
+
+    public function findTeacher($id)
+    {
+        return Comment::where('commentable_type',CommentEnum::COURSE)
+            ->with(['user'])
+            ->where(function ($q){
+                $courses_id = Auth::user()->teacher->courses->pluck('id')->toArray();
+                return $q->whereIn('commentable_id',$courses_id);
+            })->findOrFail($id);
     }
 }

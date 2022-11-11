@@ -53,7 +53,7 @@
 
                 <div class="col-12">
                    <fieldset class="border p-4">
-                       <legend>شرح درخواست</legend>
+                       <legend class="font-size-h6">شرح درخواست</legend>
                        {!! $descriptions !!}
                    </fieldset>
                 </div>

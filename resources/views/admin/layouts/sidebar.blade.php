@@ -190,7 +190,7 @@
                 {{-- v2-storages --}}
                 @can('show_storages')
                     <x-admin.menu-group icon="far fa-hdd" :active="request()->routeIs(
-                    ['admin.storage','admin.storage.storage','admin.acl','admin.store.acl'])" label="فضا های ذخیره سازی" >
+                    ['admin.storage','admin.store.storage','admin.acl','admin.store.acl'])" label="فضا های ذخیره سازی" >
                         <x-admin.menu-item href="{{route('admin.storage')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['admin.storage','admin.store.storage'])" label="دیسک ها" />
                         <x-admin.menu-item href="{{route('admin.acl')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['admin.acl','admin.store.acl'])" label="قوانین و دسترسی ها" />
 

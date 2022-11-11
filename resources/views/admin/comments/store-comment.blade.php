@@ -29,6 +29,36 @@
                     </div>
                 </div>
             </x-admin.form-section>
+            <x-admin.form-section label="کامنت">
+                <div class="row">
+                    <div class="col-12">
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                            <tr>
+                                <td>دوره اموزشی</td>
+                                <td>وضعیت</td>
+                                <th> دیدگاه</th>
+                                <td>دیدگاه والد</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>{{ $case }}</td>
+                                <td>{{ $comment->status_label }}</td>
+                                <td>{{ is_null($comment->parent_id) ? 'دیدگاه اصلی' : 'ارسال پاسخ' }}</td>
+                                <td>
+                                    @if($comment->parent)
+                                        <a href="{{route('teacher.store.comments',['edit',$comment->parent->id])}}">مشاهده</a>
+                                    @else
+                                        ندارد
+                                    @endif
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </x-admin.form-section>
             <div class="row">
                 <x-admin.forms.input with="6" type="text" disabled id="case" label="مورد" wire:model.defer="case"/>
                 <x-admin.forms.dropdown with="6" id="status" :data="$data['status']" label="وضعیت*" wire:model.defer="status"/>

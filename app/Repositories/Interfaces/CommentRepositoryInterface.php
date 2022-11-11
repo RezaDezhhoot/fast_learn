@@ -12,6 +12,8 @@ interface CommentRepositoryInterface
 
     public function getAllAdminList($search , $status , $for , $pagination , $case = null , $active = true);
 
+    public function getAllTeacher($search , $status  , $pagination , $case = null , $active = true);
+
     public function getByConditionCount($col , $operator , $value , $active = true);
 
     public function find($id , $active = true);
@@ -25,4 +27,6 @@ interface CommentRepositoryInterface
     public function create(array $data);
 
     public function getUserComments($where = [],$active = true);
+
+    public function findTeacher($id);
 }
