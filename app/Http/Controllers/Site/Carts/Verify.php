@@ -119,8 +119,10 @@ class Verify extends BaseComponent
         }
         foreach ($this->order->details as $detail) {
             $detail->status = OrderEnum::STATUS_COMPLETED;
-            if ($this->orderDetailRepository->paymentOfFeesIfCourseHasTeacherAndValidIncomingMethod($detail))
+            if ($fee = $this->orderDetailRepository->paymentOfFeesIfCourseHasTeacherAndValidIncomingMethod($detail)) {
                 $detail->incoming_method_id = $detail->course->incoming_method_id;
+                $detail->teacher_amount = $fee;
+            }
             $this->orderDetailRepository->save($detail);
 
             if (!is_null($detail->course->quiz)) {

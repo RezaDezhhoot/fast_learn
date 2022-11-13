@@ -39,6 +39,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  * @method static whereIn($col, array $value)
  * @method static count()
  * @method static select(string[] $array)
+ * @method static whereHas(string $string, \Closure $param)
  */
 class Course extends Model
 {

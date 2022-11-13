@@ -233,11 +233,12 @@
                     </div>
                 </div>
                 <x-admin.forms.select2 id="course" :data="$data['courses']" label="فیلتر بر حسب دوره اموزشی" wire:model.defer="course"/>
-                <div class="col-md-3">
-                    <!--begin::Stats Widget 25-->
-                    <div class="card card-custom bg-light-success card-stretch gutter-b">
-                        <!--begin::Body-->
-                        <div class="card-body">
+                <div class="row p-0 m-0 w-100 d-flex justify-content-center">
+                    <div class="col-md-4">
+                        <!--begin::Stats Widget 25-->
+                        <div class="card card-custom bg-light-success card-stretch gutter-b">
+                            <!--begin::Body-->
+                            <div class="card-body">
                             <span class="svg-icon svg-icon-primary svg-icon-4x"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\legacy\metronic\theme\html\demo1\dist/../src/media/svg/icons\Cooking\Cutting board.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                     <rect x="0" y="0" width="24" height="24"/>
@@ -245,20 +246,20 @@
                                     <path d="M14.3890873,1.33273811 L22.1672619,9.1109127 C22.9483105,9.89196129 22.9483105,11.1582912 22.1672619,11.9393398 L12.9748737,21.131728 C12.1938252,21.9127766 10.9274952,21.9127766 10.1464466,21.131728 L2.36827202,13.3535534 C1.58722343,12.5725048 1.58722343,11.3061748 2.36827202,10.5251263 L11.5606602,1.33273811 C12.3417088,0.551689527 13.6080387,0.551689527 14.3890873,1.33273811 Z" fill="#000000"/>
                                 </g>
                             </svg><!--end::Svg Icon--></span>
-                            <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">
+                                <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">
                                 {{ $box['orders'] }}عدد
                             </span>
-                            <span class="font-weight-bold text-dark font-size-lg">سفارش های تکمیل شده</span>
+                                <span class="font-weight-bold text-dark font-size-lg">سفارش های تکمیل شده</span>
+                            </div>
+                            <!--end::Body-->
                         </div>
-                        <!--end::Body-->
+                        <!--end::Stats Widget 25-->
                     </div>
-                    <!--end::Stats Widget 25-->
-                </div>
-                <div class="col-md-3">
-                    <!--begin::Stats Widget 25-->
-                    <div class="card card-custom bg-light-success card-stretch gutter-b">
-                        <!--begin::Body-->
-                        <div class="card-body">
+                    <div class="col-md-4">
+                        <!--begin::Stats Widget 25-->
+                        <div class="card card-custom bg-light-success card-stretch gutter-b">
+                            <!--begin::Body-->
+                            <div class="card-body">
                             <span class="svg-icon svg-icon-primary svg-icon-4x"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\legacy\metronic\theme\html\demo1\dist/../src/media/svg/icons\Shopping\Money.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                     <rect x="0" y="0" width="24" height="24"/>
@@ -266,20 +267,20 @@
                                     <path d="M2,6 L21,6 C21.5522847,6 22,6.44771525 22,7 L22,17 C22,17.5522847 21.5522847,18 21,18 L2,18 C1.44771525,18 1,17.5522847 1,17 L1,7 C1,6.44771525 1.44771525,6 2,6 Z M11.5,16 C13.709139,16 15.5,14.209139 15.5,12 C15.5,9.790861 13.709139,8 11.5,8 C9.290861,8 7.5,9.790861 7.5,12 C7.5,14.209139 9.290861,16 11.5,16 Z M11.5,14 C12.6045695,14 13.5,13.1045695 13.5,12 C13.5,10.8954305 12.6045695,10 11.5,10 C10.3954305,10 9.5,10.8954305 9.5,12 C9.5,13.1045695 10.3954305,14 11.5,14 Z" fill="#000000"/>
                                 </g>
                             </svg><!--end::Svg Icon--></span>
-                            <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">
+                                <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">
                                 {{ number_format($box['payments']) }}تومان
                             </span>
-                            <span class="font-weight-bold text-dark font-size-lg">مبالغ پرداخت شده</span>
+                                <span class="font-weight-bold text-dark font-size-lg">مبالغ پرداخت شده</span>
+                            </div>
+                            <!--end::Body-->
                         </div>
-                        <!--end::Body-->
+                        <!--end::Stats Widget 25-->
                     </div>
-                    <!--end::Stats Widget 25-->
-                </div>
-                <div class="col-md-3">
-                    <!--begin::Stats Widget 25-->
-                    <div class="card card-custom bg-light-success card-stretch gutter-b">
-                        <!--begin::Body-->
-                        <div class="card-body">
+                    <div class="col-md-4">
+                        <!--begin::Stats Widget 25-->
+                        <div class="card card-custom bg-light-success card-stretch gutter-b">
+                            <!--begin::Body-->
+                            <div class="card-body">
                             <span class="svg-icon svg-icon-primary svg-icon-4x"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\legacy\metronic\theme\html\demo1\dist/../src/media/svg/icons\Shopping\Money.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                     <rect x="0" y="0" width="24" height="24"/>
@@ -287,20 +288,41 @@
                                     <path d="M2,6 L21,6 C21.5522847,6 22,6.44771525 22,7 L22,17 C22,17.5522847 21.5522847,18 21,18 L2,18 C1.44771525,18 1,17.5522847 1,17 L1,7 C1,6.44771525 1.44771525,6 2,6 Z M11.5,16 C13.709139,16 15.5,14.209139 15.5,12 C15.5,9.790861 13.709139,8 11.5,8 C9.290861,8 7.5,9.790861 7.5,12 C7.5,14.209139 9.290861,16 11.5,16 Z M11.5,14 C12.6045695,14 13.5,13.1045695 13.5,12 C13.5,10.8954305 12.6045695,10 11.5,10 C10.3954305,10 9.5,10.8954305 9.5,12 C9.5,13.1045695 10.3954305,14 11.5,14 Z" fill="#000000"/>
                                 </g>
                             </svg><!--end::Svg Icon--></span>
-                            <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">
+                                <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">
+                                {{ number_format($box['paymentsTeacher']) }}تومان
+                            </span>
+                                <span class="font-weight-bold text-dark font-size-lg">مبالغ حق التدریس </span>
+                            </div>
+                            <!--end::Body-->
+                        </div>
+                        <!--end::Stats Widget 25-->
+                    </div>
+                    <div class="col-md-6">
+                        <!--begin::Stats Widget 25-->
+                        <div class="card card-custom bg-light-success card-stretch gutter-b">
+                            <!--begin::Body-->
+                            <div class="card-body">
+                            <span class="svg-icon svg-icon-primary svg-icon-4x"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\legacy\metronic\theme\html\demo1\dist/../src/media/svg/icons\Shopping\Money.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <rect x="0" y="0" width="24" height="24"/>
+                                    <path d="M2,6 L21,6 C21.5522847,6 22,6.44771525 22,7 L22,17 C22,17.5522847 21.5522847,18 21,18 L2,18 C1.44771525,18 1,17.5522847 1,17 L1,7 C1,6.44771525 1.44771525,6 2,6 Z M11.5,16 C13.709139,16 15.5,14.209139 15.5,12 C15.5,9.790861 13.709139,8 11.5,8 C9.290861,8 7.5,9.790861 7.5,12 C7.5,14.209139 9.290861,16 11.5,16 Z" fill="#000000" opacity="0.3" transform="translate(11.500000, 12.000000) rotate(-345.000000) translate(-11.500000, -12.000000) "/>
+                                    <path d="M2,6 L21,6 C21.5522847,6 22,6.44771525 22,7 L22,17 C22,17.5522847 21.5522847,18 21,18 L2,18 C1.44771525,18 1,17.5522847 1,17 L1,7 C1,6.44771525 1.44771525,6 2,6 Z M11.5,16 C13.709139,16 15.5,14.209139 15.5,12 C15.5,9.790861 13.709139,8 11.5,8 C9.290861,8 7.5,9.790861 7.5,12 C7.5,14.209139 9.290861,16 11.5,16 Z M11.5,14 C12.6045695,14 13.5,13.1045695 13.5,12 C13.5,10.8954305 12.6045695,10 11.5,10 C10.3954305,10 9.5,10.8954305 9.5,12 C9.5,13.1045695 10.3954305,14 11.5,14 Z" fill="#000000"/>
+                                </g>
+                            </svg><!--end::Svg Icon--></span>
+                                <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">
                                 {{ number_format($box['paymentsReduction']) }}تومان
                             </span>
-                            <span class="font-weight-bold text-dark font-size-lg">مبالغ تخفیف خورده</span>
+                                <span class="font-weight-bold text-dark font-size-lg">مبالغ تخفیف خورده</span>
+                            </div>
+                            <!--end::Body-->
                         </div>
-                        <!--end::Body-->
+                        <!--end::Stats Widget 25-->
                     </div>
-                    <!--end::Stats Widget 25-->
-                </div>
-                <div class="col-md-3">
-                    <!--begin::Stats Widget 25-->
-                    <div class="card card-custom bg-light-success card-stretch gutter-b">
-                        <!--begin::Body-->
-                        <div class="card-body">
+                    <div class="col-md-6">
+                        <!--begin::Stats Widget 25-->
+                        <div class="card card-custom bg-light-success card-stretch gutter-b">
+                            <!--begin::Body-->
+                            <div class="card-body">
                             <span class="svg-icon svg-icon-primary svg-icon-4x"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\legacy\metronic\theme\html\demo1\dist/../src/media/svg/icons\Shopping\Money.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                     <rect x="0" y="0" width="24" height="24"/>
@@ -308,14 +330,15 @@
                                     <path d="M2,6 L21,6 C21.5522847,6 22,6.44771525 22,7 L22,17 C22,17.5522847 21.5522847,18 21,18 L2,18 C1.44771525,18 1,17.5522847 1,17 L1,7 C1,6.44771525 1.44771525,6 2,6 Z M11.5,16 C13.709139,16 15.5,14.209139 15.5,12 C15.5,9.790861 13.709139,8 11.5,8 C9.290861,8 7.5,9.790861 7.5,12 C7.5,14.209139 9.290861,16 11.5,16 Z M11.5,14 C12.6045695,14 13.5,13.1045695 13.5,12 C13.5,10.8954305 12.6045695,10 11.5,10 C10.3954305,10 9.5,10.8954305 9.5,12 C9.5,13.1045695 10.3954305,14 11.5,14 Z" fill="#000000"/>
                                 </g>
                             </svg><!--end::Svg Icon--></span>
-                            <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">
+                                <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">
                                 {{ number_format($box['paymentsWallet']) }}تومان
                             </span>
-                            <span class="font-weight-bold text-dark font-size-lg">مبالغ کیف پول</span>
+                                <span class="font-weight-bold text-dark font-size-lg">مبالغ کیف پول</span>
+                            </div>
+                            <!--end::Body-->
                         </div>
-                        <!--end::Body-->
+                        <!--end::Stats Widget 25-->
                     </div>
-                    <!--end::Stats Widget 25-->
                 </div>
             </div>
             <div class="row" wire:ignore>
@@ -470,13 +493,13 @@
             const options = {
                 series: [{
                     name: 'پرداختی ها',
-                    data: obj.payments
+                    data: <?php echo "obj.payments" ?>
                 }],
                 chart: {
                     type: 'line',
                     height: 350,
                     toolbar: {
-                        show: false
+                        show: true
                     }
                 },
                 fill: {

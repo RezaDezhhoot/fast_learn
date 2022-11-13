@@ -43,4 +43,6 @@ interface CourseRepositoryInterface
     public static function observe();
 
     public function increment(Course $course , int $int);
+
+    public function getTeachersCount($from_date , $to_date);
 }

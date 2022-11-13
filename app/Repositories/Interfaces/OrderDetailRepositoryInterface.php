@@ -18,9 +18,11 @@ interface OrderDetailRepositoryInterface
 
     public function getDashboardData($from_date, $to_date, $course_id = null);
 
-    public function getDashboardDataPayments($from_date, $to_date, $sum, $course_id = null);
+    public function getDashboardDataPayments($from_date, $to_date, $sum, $course_id = null, $teacher = false);
 
-    public function paymentOfFeesIfCourseHasTeacherAndValidIncomingMethod(OrderDetail $orderDetail): bool;
+    public function paymentOfFeesIfCourseHasTeacherAndValidIncomingMethod(OrderDetail $orderDetail): bool|int;
 
     public function getOrderDetailCount(array $where);
+
+    public function getTeacherStudents($from_date , $to_date);
 }

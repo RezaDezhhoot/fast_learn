@@ -25,6 +25,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static where(array $where)
  * @method static create(array $data)
  * @method static whereBetween(string $string, string[] $array)
+ * @method static withCount(string $string)
  */
 class Order extends Model
 {

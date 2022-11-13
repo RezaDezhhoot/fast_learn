@@ -181,8 +181,9 @@ class CreateOrder extends BaseComponent
                     'quantity' => 1,
                     'order_id' => $order->id,
                 ]);
-                if ($this->orderDetailRepository->paymentOfFeesIfCourseHasTeacherAndValidIncomingMethod($detail)) {
+                if ($fee = $this->orderDetailRepository->paymentOfFeesIfCourseHasTeacherAndValidIncomingMethod($detail)) {
                     $detail->incoming_method_id = $detail->course->incoming_method_id;
+                    $detail->teacher_amount = $fee;
                     $this->orderDetailRepository->save($detail);
                 }
             }

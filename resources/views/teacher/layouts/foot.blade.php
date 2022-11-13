@@ -11,6 +11,7 @@
 <script src="{{asset('teacher/plugins/custom/datepicker/persian-datepicker.min.js')}}"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="{{asset('/vendor/laravel-filemanager/js/stand-alone-button.js')}}"></script>
+<script src="{{asset('teacher/js/pages/crud/forms/widgets/bootstrap-datepicker.js') }}"></script>
 
 @livewireScripts
 

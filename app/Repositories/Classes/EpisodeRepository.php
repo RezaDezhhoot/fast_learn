@@ -71,4 +71,13 @@ class EpisodeRepository implements EpisodeRepositoryInterface
             });
         })->findOrFail($id);
     }
+
+    public function getTeachersCount($from_date , $to_date)
+    {
+        return Episode::whereBetween('created_at', [$from_date." 00:00:00", $to_date." 23:59:59"])->whereHas('course',function ($q){
+           return $q->whereHas('teacher',function ($q){
+              return $q->where('user_id',Auth::id());
+           });
+        })->count();
+    }
 }

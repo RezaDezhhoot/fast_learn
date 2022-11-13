@@ -23,4 +23,6 @@ interface NewCourseRepositoryInterface
     public static function getNewTeacher();
 
     public function getNewObject();
+
+    public function getTeachersCount();
 }

@@ -23,5 +23,4 @@ interface OrderRepositoryInterface
     public function destroy($id);
 
     public function getNameSpace(): string;
-
 }

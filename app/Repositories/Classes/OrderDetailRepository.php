@@ -11,6 +11,7 @@ use App\Models\Payment;
 use App\Repositories\Interfaces\OrderDetailRepositoryInterface;
 use App\Repositories\Interfaces\SendRepositoryInterface;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class OrderDetailRepository implements OrderDetailRepositoryInterface
@@ -46,14 +47,20 @@ class OrderDetailRepository implements OrderDetailRepositoryInterface
             })->count();
     }
 
-    public function getDashboardDataPayments($from_date , $to_date , $sum , $course_id = null)
+    public function getDashboardDataPayments($from_date , $to_date , $sum , $course_id = null , $teacher = false)
     {
         return $this->getDashboardDataQuery($from_date , $to_date , $sum , $course_id);
     }
 
-    public function getDashboardDataQuery($from_date , $to_date , $sum , $course_id = null)
+    public function getDashboardDataQuery($from_date , $to_date , $sum , $course_id = null , $teacher = false)
     {
-        return OrderDetail::whereBetween('created_at', [$from_date." 00:00:00", $to_date." 23:59:59"])->where('status',OrderEnum::STATUS_COMPLETED)
+        return OrderDetail::when($teacher,function ($q){
+            return $q->whereHas('course',function ($q){
+                return $q->wherehas('teacher',function ($q){
+                    return $q->where('user_id',Auth::id());
+                });
+            });
+        })->whereBetween('created_at', [$from_date." 00:00:00", $to_date." 23:59:59"])->where('status',OrderEnum::STATUS_COMPLETED)
             ->when($course_id , function ($q) use ($course_id){
                 return $q->wherehas('course',function ($q) use ($course_id) {
                     return $q->where('id',$course_id);
@@ -67,7 +74,7 @@ class OrderDetailRepository implements OrderDetailRepositoryInterface
     }
 
 
-    public function paymentOfFeesIfCourseHasTeacherAndValidIncomingMethod(OrderDetail $orderDetail): bool
+    public function paymentOfFeesIfCourseHasTeacherAndValidIncomingMethod(OrderDetail $orderDetail): bool|int
     {
         if (!is_null($orderDetail->course->teacher) && !is_null($orderDetail->course->incoming_method)) {
             $method = $orderDetail->course->incoming_method;
@@ -83,11 +90,20 @@ class OrderDetailRepository implements OrderDetailRepositoryInterface
                             NotificationEnum::FEE,
                             $orderDetail->id,
                         );
-                        return true;
+                        return $fee;
                     }
                 }
             }
         }
         return false;
+    }
+
+    public function getTeacherStudents($from_date , $to_date)
+    {
+        return OrderDetail::whereBetween('created_at', [$from_date." 00:00:00", $to_date." 23:59:59"])->whereHas('course',function ($q){
+            return $q->wherehas('teacher',function ($q){
+                return $q->where('user_id',Auth::id());
+            });
+        })->count();
     }
 }

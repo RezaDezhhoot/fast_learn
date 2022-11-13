@@ -25,4 +25,7 @@ interface EpisodeRepositoryInterface
     public function getAllTeacher($course , $search , $per_page);
 
     public function findTeacherEpisode($id);
+
+    public function getTeachersCount($from_date , $to_date);
+
 }

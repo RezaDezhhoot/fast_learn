@@ -62,4 +62,9 @@ class NewCourseRepository implements NewCourseRepositoryInterface
     {
         return new NewCourse();
     }
+
+    public function getTeachersCount()
+    {
+        return NewCourse::where('status',CourseEnum::NEW_COURSE_PENDING)->where('user_id',Auth::id())->count();
+    }
 }

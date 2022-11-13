@@ -97,6 +97,7 @@ class IndexDashboard extends BaseComponent
             'payments'=> $this->orderDetailRepository->getDashboardDataPayments($this->from_date,$this->to_date,'total_price',$this->course),
             'paymentsReduction'=> $this->orderDetailRepository->getDashboardDataPayments($this->from_date,$this->to_date,'reduction_amount',$this->course),
             'paymentsWallet'=> $this->orderDetailRepository->getDashboardDataPayments($this->from_date,$this->to_date,'wallet_amount',$this->course),
+            'paymentsTeacher'=> $this->orderDetailRepository->getDashboardDataPayments($this->from_date,$this->to_date,'teacher_amount',$this->course),
             'categories' => $this->categoryRepository->count(),
             'courses' => $this->courseRepository->count(),
             'articles' => $this->articleRepository->count(),

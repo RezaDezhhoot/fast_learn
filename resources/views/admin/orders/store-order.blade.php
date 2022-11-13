@@ -65,6 +65,7 @@
 
                                 <td>هزینه کل:</td>
                                 <td>کیف پول :</td>
+                                <td> هزینه مدرسین:</td>
                                 <td>هزینه پرداخت شده:</td>
                             </tr>
                             </thead>
@@ -72,6 +73,7 @@
                             <tr>
                                 <td>{{number_format($order->price)}}تومان </td>
                                 <td>{{number_format($order->wallet_pay)}}تومان </td>
+                                <td>{{number_format($order->details->sum('teacher_amount'))}}تومان </td>
                                 <td>{{number_format($order->total_price)}} تومان </td>
                             </tr>
                             </tbody>
@@ -131,11 +133,11 @@
                             <table class="table  table-bordered">
                                 <thead>
                                 <tr>
-                                    <td>نام محصول:</td>
-                                    <td>تعداد:</td>
+                                    <td>نام دوره:</td>
                                     <td>هزینه کل:</td>
                                     <td>تخفیف:</td>
                                     <td>کیف پول:</td>
+                                    <td> هزینه مدرس:</td>
                                     <td>هزینه پرداخت شده:</td>
                                     <td>وضعیت:</td>
                                     <td>عملیات:</td>
@@ -144,10 +146,10 @@
                                 <tbody>
                                 <tr>
                                     <td>{{ $detail->product_data['title'] }}</td>
-                                    <td>{{ $detail->quantity }}</td>
                                     <td>{{ number_format($detail->price) }}تومان  </td>
                                     <td>{{ number_format($detail->reduction_amount) }}تومان  </td>
                                     <td>{{ number_format($detail->wallet_amount) }}تومان  </td>
+                                    <td>{{ number_format($detail->teacher_amount) }}تومان  </td>
                                     <td>{{ number_format($detail->total_price) }}تومان  </td>
                                     <td>
                                         <div class="form-group">
