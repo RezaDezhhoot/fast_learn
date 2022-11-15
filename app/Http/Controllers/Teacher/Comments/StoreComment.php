@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Teacher\Comments;
 
 use App\Enums\CommentEnum;
+use App\Enums\LastActivitiesEnum;
 use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\CommentRepositoryInterface;
+use App\Repositories\Interfaces\LastActivityRepositoryInterface;
+use Illuminate\Support\Facades\Auth;
 
 class StoreComment extends BaseComponent
 {
@@ -14,6 +17,7 @@ class StoreComment extends BaseComponent
     {
         parent::__construct($id);
         $this->commentRepository = app(CommentRepositoryInterface::class);
+        $this->lastActivityRepository = app(LastActivityRepositoryInterface::class);
     }
 
     public function mount($action , $id)
@@ -44,7 +48,16 @@ class StoreComment extends BaseComponent
                 'parent_id' => $this->comment->id
             ];
             $comment = $this->commentRepository->create($comment);
+
+            $this->lastActivityRepository->register_activity([
+                'user_id' => Auth::id(),
+                'subject' => LastActivitiesEnum::appendTitle(LastActivitiesEnum::COMMENTS,'new',''),
+                'url' => route('teacher.store.comments',['edit',$this->comment->id]),
+                'icon' => LastActivitiesEnum::COMMENTS['icon']
+            ]);
+
             $this->emitNotify('اطلاعات با موفقیت ثبت شد');
+
             $this->reset(['answer']);
             $this->child->push($comment);
         }

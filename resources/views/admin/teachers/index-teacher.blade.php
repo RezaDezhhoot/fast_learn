@@ -15,6 +15,7 @@
                             <th>شماره همراه</th>
                             <th>ایمیل</th>
                             <th>نام</th>
+                            <th>وضعیت پنل</th>
                             <th>عملیات</th>
                         </tr>
                         </thead>
@@ -27,12 +28,13 @@
                                 <td>{{ $item->user->phone }}</td>
                                 <td>{{ $item->user->email }}</td>
                                 <td>{{ $item->user->name }}</td>
+                                <td>{{ $item->panel_status ? 'دردسترس' : 'مسدود' }}</td>
                                 <td>
                                     <x-admin.edit-btn href="{{ route('admin.store.teacher',['edit', $item->id]) }}" />
                                 </td>
                             </tr>
                         @empty
-                            <td class="text-center" colspan="7">
+                            <td class="text-center" colspan="9">
                                 دیتایی جهت نمایش وجود ندارد
                             </td>
                         @endforelse

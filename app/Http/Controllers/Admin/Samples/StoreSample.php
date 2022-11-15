@@ -40,6 +40,7 @@ class StoreSample extends BaseComponent
             $this->description = $this->sample->description;
             $this->seo_keywords = $this->sample->seo_keywords;
             $this->seo_description = $this->sample->seo_description;
+            $this->header = $this->sample->title;
         } elseif ($this->mode == self::CREATE_MODE) {
             $this->header = 'نمونه سوال جدید';
         } else abort(404);

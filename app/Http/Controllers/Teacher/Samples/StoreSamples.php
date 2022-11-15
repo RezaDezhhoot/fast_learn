@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Teacher\Samples;
 
+use App\Enums\LastActivitiesEnum;
 use App\Enums\SampleEnum;
 use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\CourseRepositoryInterface;
+use App\Repositories\Interfaces\LastActivityRepositoryInterface;
 use App\Repositories\Interfaces\SampleRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,6 +18,7 @@ class StoreSamples extends BaseComponent
         parent::__construct($id);
         $this->sampleRepository = app(SampleRepositoryInterface::class);
         $this->courseRepository = app(CourseRepositoryInterface::class);
+        $this->lastActivityRepository = app(LastActivityRepositoryInterface::class);
     }
 
     public function mount($action , $id = null)
@@ -34,6 +37,7 @@ class StoreSamples extends BaseComponent
             $this->course = $this->sample->course_id;
             $this->file = $this->sample->file;
             $this->description = $this->sample->description;
+            $this->header = $this->sample->title;
         } elseif ($this->mode == self::CREATE_MODE) {
             $this->header = 'نمونه سوال جدید';
         } else abort(404);
@@ -75,6 +79,9 @@ class StoreSamples extends BaseComponent
         $model->file = $this->file;
         if ($this->mode == self::CREATE_MODE) {
             $model->status = SampleEnum::DEMO;
+            $event = 'new';
+        } else {
+            $event = 'update';
         }
         $model->description = $this->description;
         $model = $this->sampleRepository->save($model);
@@ -82,6 +89,14 @@ class StoreSamples extends BaseComponent
             $model->status = SampleEnum::DEMO;
             $this->sampleRepository->save($model);
         }
+
+        $this->lastActivityRepository->register_activity([
+            'user_id' => Auth::id(),
+            'subject' => LastActivitiesEnum::appendTitle(LastActivitiesEnum::SAMPLES,$event,$model->title),
+            'url' => route('teacher.store.samples',['edit', $model->id]),
+            'icon' => LastActivitiesEnum::SAMPLES['icon']
+        ]);
+
         return $this->emitNotify('اطلاعات با موفقیت ثبت شد');
     }
 

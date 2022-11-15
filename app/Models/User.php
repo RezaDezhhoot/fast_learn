@@ -240,7 +240,7 @@ class User extends Authenticatable implements Wallet, Confirmable
 
     public function last_activities(): HasMany
     {
-        return $this->hasMany(LastActivity::class)->latest();
+        return $this->hasMany(LastActivity::class)->latest()->limit(45);
     }
 
     public function checkouts(): HasMany

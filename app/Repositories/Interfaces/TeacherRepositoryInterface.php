@@ -8,7 +8,7 @@ use App\Models\Teacher;
 
 interface TeacherRepositoryInterface
 {
-    public function getAllAdmin($search , $per_page);
+    public function getAllAdmin($search , $per_page , $panel_status = false);
 
     public function find($id);
 

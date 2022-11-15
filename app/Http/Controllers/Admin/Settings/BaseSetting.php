@@ -34,7 +34,7 @@ class BaseSetting extends BaseComponent
 
     public $public_storage_file_types , $public_max_file_size;
 
-
+    public $users_can_send_teacher_request = false;
 
     public function __construct($id = null)
     {
@@ -81,7 +81,7 @@ class BaseSetting extends BaseComponent
         $this->idpay_unit = $this->settingRepository->getRow('idpay_unit');
 
         $this->copyRight = $this->settingRepository->getRow('copyRight');
-    
+
         $this->logo = $this->settingRepository->getRow('logo');
         $this->title = $this->settingRepository->getRow('title');
         $this->name = $this->settingRepository->getRow('name');
@@ -98,6 +98,8 @@ class BaseSetting extends BaseComponent
 
         $this->public_storage_file_types = $this->settingRepository->getRow('public_storage_file_types');
         $this->public_max_file_size = $this->settingRepository->getRow('public_max_file_size');
+
+        $this->users_can_send_teacher_request = $this->settingRepository->getRow('users_can_send_teacher_request');
     }
 
     public function render()
@@ -136,7 +138,7 @@ class BaseSetting extends BaseComponent
                 'private_max_file_size' => ['nullable','integer','min:1024'],
                 'public_storage_file_types' => ['nullable','string','max:4000'],
                 'public_max_file_size' => ['nullable','integer','min:1024'],
-                
+
                 'faraz_apiKey' => [Rule::requiredIf(fn() => $this->auth_type == 'otp' || $this->send_type == 'sms'),'string','max:1000'],
                 'faraz_password' => [Rule::requiredIf(fn() => $this->auth_type == 'otp' || $this->send_type == 'sms'),'string','max:1000'],
                 'faraz_username' => [Rule::requiredIf(fn() => $this->auth_type == 'otp' || $this->send_type == 'sms'),'string','max:1000'],
@@ -153,6 +155,8 @@ class BaseSetting extends BaseComponent
 
                 'site_key' => ['required','max:2000'],
                 'secret_key' => ['required','max:2000'],
+
+                'users_can_send_teacher_request' => ['required','boolean']
             ] , [] ,
             [
                 'name' => 'نام سایت',
@@ -197,6 +201,8 @@ class BaseSetting extends BaseComponent
 
                 'site_key' => 'google recaptcha site key',
                 'secret_key' => 'google recaptcha secret key',
+
+                'users_can_send_teacher_request' => 'کاربران می توانند مدرس شوند'
             ]
         );
 
@@ -247,6 +253,9 @@ class BaseSetting extends BaseComponent
         $this->settingRepository::updateOrCreate(['name' => 'seoDescription'], ['value' => $this->seoDescription]);
         $this->settingRepository::updateOrCreate(['name' => 'seoKeyword'], ['value' => $this->seoKeyword]);
         $this->settingRepository::updateOrCreate(['name' => 'registerGift'], ['value' => $this->registerGift]);
+
+        $this->settingRepository::updateOrCreate(['name' => 'users_can_send_teacher_request'], ['value' => $this->users_can_send_teacher_request]);
+
         $this->emitNotify('اطلاعات با موفقیت ثبت شد');
     }
 

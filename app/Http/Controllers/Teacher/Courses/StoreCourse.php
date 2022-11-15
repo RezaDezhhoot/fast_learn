@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Teacher\Courses;
 
 use App\Enums\CourseEnum;
+use App\Enums\LastActivitiesEnum;
 use App\Enums\StorageEnum;
 use App\Http\Controllers\BaseComponent;
+use App\Repositories\Interfaces\LastActivityRepositoryInterface;
 use App\Repositories\Interfaces\NewCourseRepositoryInterface;
 use App\Traits\ChatPanel;
 use Illuminate\Support\Facades\Auth;
@@ -20,6 +22,7 @@ class StoreCourse extends BaseComponent
     {
         parent::__construct($id);
         $this->newCoursesRepository = app(NewCourseRepositoryInterface::class);
+        $this->lastActivityRepository = app(LastActivityRepositoryInterface::class);
         $this->disk = getDisk(StorageEnum::PRIVATE);
     }
 
@@ -73,6 +76,14 @@ class StoreCourse extends BaseComponent
         $mode->files = $this->uploadBaseFiles();
         $model = $this->newCoursesRepository->save($mode);
         $this->emitNotify('اطلاعات با موفیت ذخیره شد');
+
+        $this->lastActivityRepository->register_activity([
+            'user_id' => Auth::id(),
+            'subject' => LastActivitiesEnum::appendTitle(LastActivitiesEnum::COURSES,'new',$mode->title),
+            'url' => route('teacher.courses'),
+            'icon' => LastActivitiesEnum::COURSES['icon']
+        ]);
+
     }
 
     private function uploadBaseFiles()

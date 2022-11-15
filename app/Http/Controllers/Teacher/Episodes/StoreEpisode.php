@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Teacher\Episodes;
 
 use App\Enums\EpisodeEnum;
+use App\Enums\LastActivitiesEnum;
 use App\Enums\StorageEnum;
 use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\CourseRepositoryInterface;
 use App\Repositories\Interfaces\EpisodeRepositoryInterface;
 use App\Repositories\Interfaces\EpisodeTranscriptRepositoryInterface;
 use App\Repositories\Interfaces\HomeworkRepositoryInterface;
+use App\Repositories\Interfaces\LastActivityRepositoryInterface;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
 use App\Rules\TeacherCourse;
 use Illuminate\Support\Facades\Auth;
@@ -24,6 +26,7 @@ class StoreEpisode extends BaseComponent
         $this->episodeRepository = app(EpisodeRepositoryInterface::class);
         $this->episodeTranscriptRepository = app(EpisodeTranscriptRepositoryInterface::class);
         $this->homeworkRepository = app(HomeworkRepositoryInterface::class);
+        $this->lastActivityRepository = app(LastActivityRepositoryInterface::class);
     }
 
     public  $header , $storage , $episode;
@@ -140,7 +143,24 @@ class StoreEpisode extends BaseComponent
         $episode->can_homework = $this->can_homework;
         $episode->show_api_video = $this->show_api_video;
         $episode->downloadable_local_video = $this->downloadable_local_video;
-        $this->episodeTranscriptRepository->save($episode);
+        $episode = $this->episodeTranscriptRepository->save($episode);
+
+        if ($this->mode == self::UPDATE_MODE) {
+            $url = route('teacher.store.episodes',['edit', $this->episode->id]);
+            $event = 'update';
+        } else {
+            $url = route('teacher.episodes');
+            $event = 'new';
+        }
+
+        $this->lastActivityRepository->register_activity([
+            'user_id' => Auth::id(),
+            'subject' => LastActivitiesEnum::appendTitle(LastActivitiesEnum::EPISODES,$event,$episode->title),
+            'url' => $url,
+            'icon' => LastActivitiesEnum::EPISODES['icon']
+        ]);
+
+
         return $this->emitNotify('رونوشت با موفقیت ثبت شد');
     }
 

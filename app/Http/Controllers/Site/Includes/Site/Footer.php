@@ -7,7 +7,7 @@ use App\Http\Controllers\BaseComponent;
 
 class Footer extends BaseComponent
 {
-    public  $title , $footerText , $address , $email , $autographs , $tel , $search , $copyRight ;
+    public  $title , $footerText , $address , $email , $autographs , $tel , $search , $copyRight , $users_can_send_teacher_request;
 
     public function mount(SettingRepositoryInterface $settingRepository)
     {
@@ -18,6 +18,7 @@ class Footer extends BaseComponent
         $this->tel = $settingRepository->getRow('tel');
         $this->copyRight = $settingRepository->getRow('copyRight');
         $this->autographs = $settingRepository->getRow('autographs',[]);
+        $this->users_can_send_teacher_request = $settingRepository->getRow('users_can_send_teacher_request') ?? false;
     }
 
     public function render()

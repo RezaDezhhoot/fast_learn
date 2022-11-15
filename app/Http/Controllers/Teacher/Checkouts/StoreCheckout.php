@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Teacher\Checkouts;
 
 use App\Enums\CheckoutEnum;
+use App\Enums\LastActivitiesEnum;
 use App\Http\Controllers\BaseComponent;
+use App\Repositories\Interfaces\LastActivityRepositoryInterface;
 use App\Repositories\Interfaces\TeacherCheckoutRepositoryInterface;
 use Bavix\Wallet\Exceptions\BalanceIsEmpty;
 use Bavix\Wallet\Exceptions\InsufficientFunds;
@@ -17,6 +19,7 @@ class StoreCheckout extends BaseComponent
     {
         parent::__construct($id);
         $this->checkoutRepository = app(TeacherCheckoutRepositoryInterface::class);
+        $this->lastActivityRepository = app(LastActivityRepositoryInterface::class);
     }
 
     public function mount($action)
@@ -56,6 +59,14 @@ class StoreCheckout extends BaseComponent
             'sheba_number' => $account->sheba_number
         ];
         $this->checkoutRepository->save($model);
+
+        $this->lastActivityRepository->register_activity([
+            'user_id' => Auth::id(),
+            'subject' => LastActivitiesEnum::appendTitle(LastActivitiesEnum::BILLS,'new',"به شماره کارت {$account->card_number}"),
+            'url' => route('teacher.checkouts'),
+            'icon' => LastActivitiesEnum::BILLS['icon']
+        ]);
+
         $this->emitNotify('درخواست تسویه حساب با موفقیت ثبت شده');
         $this->reset(['price']);
     }

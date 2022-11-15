@@ -105,139 +105,28 @@
                     <h3 class="p-2 p-lg-3 my-1 my-lg-3">اخرین فعالیت ها</h3>
                     <!--begin::List-->
                     <div class="list list-hover">
-                        <!--begin::Item-->
-                        <div class="list-item hoverable p-2 p-lg-3 mb-2">
-                            <div class="d-flex align-items-center">
-                                <!--begin::Symbol-->
-                                <div class="symbol symbol-40 symbol-light mr-4">
+                        @forelse(auth()->user()->last_activities as $item)
+                            <a href="{{$item->url}}" class="d-block">
+                                <div class="list-item hoverable p-2 p-lg-3 mb-2">
+                                    <div class="d-flex align-items-center">
+                                        <!--begin::Symbol-->
+                                        <div class="symbol symbol-40 symbol-light mr-4">
 													<span class="symbol-label bg-hover-white">
-														<img src="assets/media/svg/misc/006-plurk.svg" class="h-50 align-self-center" />
+														<i class="{{$item->icon}} text-info"></i>
 													</span>
+                                        </div>
+                                        <!--end::Symbol-->
+                                        <!--begin::Text-->
+                                        <div class="d-flex flex-column flex-grow-1 mr-2">
+                                            <span class="text-dark-75 font-size-h6 mb-0">{{$item->subject}}</span>
+                                            <span class="text-muted text-hover-primary font-weight-bold">{{$item->created_at}}</span>
+                                        </div>
+                                        <!--begin::End-->
+                                    </div>
                                 </div>
-                                <!--end::Symbol-->
-                                <!--begin::Text-->
-                                <div class="d-flex flex-column flex-grow-1 mr-2">
-                                    <span class="text-dark-75 font-size-h6 mb-0">Bravio Application</span>
-                                    <a href="#" class="text-muted text-hover-primary font-weight-bold">By James</a>
-                                </div>
-                                <!--begin::End-->
-                            </div>
-                        </div>
-                        <!--end::Item-->
-                        <!--begin::Item-->
-                        <div class="list-item hoverable p-2 p-lg-3 mb-2">
-                            <div class="d-flex align-items-center">
-                                <!--begin::Symbol-->
-                                <div class="symbol symbol-40 symbol-light mr-4">
-													<span class="symbol-label bg-hover-white">
-														<img src="assets/media/svg/misc/010-vimeo.svg" class="h-50 align-self-center" />
-													</span>
-                                </div>
-                                <!--end::Symbol-->
-                                <!--begin::Text-->
-                                <div class="d-flex flex-column flex-grow-1 mr-2">
-                                    <span class="text-dark-75 font-size-h6 mb-0">Quick Reports</span>
-                                    <a href="#" class="text-muted text-hover-primary font-weight-bold">By Ana</a>
-                                </div>
-                                <!--begin::End-->
-                            </div>
-                        </div>
-                        <!--end::Item-->
-                        <!--begin::Item-->
-                        <div class="list-item hoverable p-2 p-lg-3 mb-2">
-                            <div class="d-flex align-items-center">
-                                <!--begin::Symbol-->
-                                <div class="symbol symbol-40 symbol-light mr-4">
-													<span class="symbol-label bg-hover-white">
-														<img src="assets/media/svg/misc/014-kickstarter.svg" class="h-50 align-self-center" />
-													</span>
-                                </div>
-                                <!--end::Symbol-->
-                                <!--begin::Text-->
-                                <div class="d-flex flex-column flex-grow-1 mr-2">
-                                    <span class="text-dark-75 font-size-h6 mb-0">CRM Reporting Tool</span>
-                                    <a href="#" class="text-muted text-hover-primary font-weight-bold">By Adam</a>
-                                </div>
-                                <!--begin::End-->
-                            </div>
-                        </div>
-                        <!--end::Item-->
-                        <!--begin::Item-->
-                        <div class="list-item hoverable p-2 p-lg-3 mb-2">
-                            <div class="d-flex align-items-center">
-                                <!--begin::Symbol-->
-                                <div class="symbol symbol-40 symbol-light mr-4">
-													<span class="symbol-label bg-hover-white">
-														<img src="assets/media/svg/misc/009-hot-air-balloon.svg" class="h-50 align-self-center" />
-													</span>
-                                </div>
-                                <!--end::Symbol-->
-                                <!--begin::Text-->
-                                <div class="d-flex flex-column flex-grow-1 mr-2">
-                                    <span class="text-dark-75 font-size-h6 mb-0">DB Management</span>
-                                    <a href="#" class="text-muted text-hover-primary font-weight-bold">By CRA Team</a>
-                                </div>
-                                <!--begin::End-->
-                            </div>
-                        </div>
-                        <!--end::Item-->
-                        <!--begin::Item-->
-                        <div class="list-item hoverable p-2 p-lg-3 mb-2">
-                            <div class="d-flex align-items-center">
-                                <!--begin::Symbol-->
-                                <div class="symbol symbol-40 symbol-light mr-4">
-													<span class="symbol-label bg-hover-white">
-														<img src="assets/media/svg/misc/008-infography.svg" class="h-50 align-self-center" />
-													</span>
-                                </div>
-                                <!--end::Symbol-->
-                                <!--begin::Text-->
-                                <div class="d-flex flex-column flex-grow-1 mr-2">
-                                    <span class="text-dark-75 font-size-h6 mb-0">Cloud Service</span>
-                                    <a href="#" class="text-muted text-hover-primary font-weight-bold">By iC Team</a>
-                                </div>
-                                <!--begin::End-->
-                            </div>
-                        </div>
-                        <!--end::Item-->
-                        <!--begin::Item-->
-                        <div class="list-item hoverable p-2 p-lg-3 mb-2">
-                            <div class="d-flex align-items-center">
-                                <!--begin::Symbol-->
-                                <div class="symbol symbol-40 symbol-light mr-4">
-													<span class="symbol-label bg-hover-white">
-														<img src="assets/media/svg/misc/007-disqus.svg" class="h-50 align-self-center" />
-													</span>
-                                </div>
-                                <!--end::Symbol-->
-                                <!--begin::Text-->
-                                <div class="d-flex flex-column flex-grow-1 mr-2">
-                                    <span class="text-dark-75 font-size-h6 mb-0">Disqus Project</span>
-                                    <a href="#" class="text-muted text-hover-primary font-weight-bold">By PV Inc.</a>
-                                </div>
-                                <!--begin::End-->
-                            </div>
-                        </div>
-                        <!--end::Item-->
-                        <!--begin::Item-->
-                        <div class="list-item hoverable p-2 p-lg-3 mb-2">
-                            <div class="d-flex align-items-center">
-                                <!--begin::Symbol-->
-                                <div class="symbol symbol-40 symbol-light mr-4">
-													<span class="symbol-label bg-hover-white">
-														<img src="assets/media/svg/misc/006-plurk.svg" class="h-50 align-self-center" />
-													</span>
-                                </div>
-                                <!--end::Symbol-->
-                                <!--begin::Text-->
-                                <div class="d-flex flex-column flex-grow-1 mr-2">
-                                    <span class="text-dark-75 font-size-h6 mb-0">Plurk Meeting</span>
-                                    <a href="#" class="text-muted text-hover-primary font-weight-bold">By Plurk Team.</a>
-                                </div>
-                                <!--begin::End-->
-                            </div>
-                        </div>
-                        <!--end::Item-->
+                            </a>
+                        @empty
+                        @endforelse
                     </div>
                     <!--end::List-->
                 </div>

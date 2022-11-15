@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Teacher\BankAccounts;
 
 use App\Enums\BankAccountEnum;
+use App\Enums\LastActivitiesEnum;
 use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\BankAccountRepositoryInterface;
+use App\Repositories\Interfaces\LastActivityRepositoryInterface;
 use App\Rules\ChekCardNumber;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,6 +17,7 @@ class StoreBankAccount extends BaseComponent
     {
         parent::__construct($id);
         $this->bankAccountsRepository = app(BankAccountRepositoryInterface::class);
+        $this->lastActivityRepository = app(LastActivityRepositoryInterface::class);
     }
 
     public function mount($action)
@@ -59,6 +62,14 @@ class StoreBankAccount extends BaseComponent
         $model->user_id = Auth::id();
         $model->status = BankAccountEnum::PENDING;
         $model = $this->bankAccountsRepository->save($model);
+
+        $this->lastActivityRepository->register_activity([
+            'user_id' => Auth::id(),
+            'subject' => LastActivitiesEnum::appendTitle(LastActivitiesEnum::BANk_ACCOUNTS,'new',$model->title),
+            'url' => route('teacher.bankAccounts'),
+            'icon' => LastActivitiesEnum::BANk_ACCOUNTS['icon']
+        ]);
+
         $this->emitNotify('اطلاعات با موفقیت ذخیره شده');
     }
 

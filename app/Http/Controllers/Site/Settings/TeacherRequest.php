@@ -30,6 +30,8 @@ class TeacherRequest extends BaseComponent
 
     public function mount(SettingRepositoryInterface $settingRepository)
     {
+        $this->settingRepository->getRow('users_can_send_teacher_request') || abort(404);
+
         SEOMeta::setTitle($settingRepository->getRow('title').'- مدرس شوید');
         SEOMeta::setDescription($settingRepository->getRow('seoDescription'));
         SEOMeta::addKeyword($settingRepository->getRow('seoKeyword',[]));

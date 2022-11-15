@@ -3,7 +3,7 @@
     <section class="team-member-area">
         <div class="container">
             <div class="row">
-                @foreach($teachers as $item)
+                @forelse($teachers as $item)
                     <div class="col-lg-3 responsive-column-half">
                         <div class="card card-item member-card text-center">
                             <div class="w-100 text-center">
@@ -17,7 +17,13 @@
                         </div>
                         <!-- end card -->
                     </div>
-                @endforeach
+                @empty
+                    <div class="text-center mx-auto mb-3">
+                        <img class="mx-auto d-block mt-5" src="{{ asset('site/svg/No-data-cuate.svg') }}"
+                             alt="">
+                        <h5 class="mt-3">ما هیچ  مدرسی پیدا نکردیم!</h5>
+                    </div>
+                @endforelse
             </div>
             <!-- end row -->
             <div class="load-more-btn-box pt-3 text-center">

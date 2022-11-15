@@ -9,6 +9,7 @@
         <div class="card-body">
             <div class="row">
                 <x-admin.forms.input type="text" id="sub_title" label="عنوان *" wire:model.defer="sub_title"/>
+                <x-admin.forms.checkbox help="در صورت غیرفعال بودن این گزینه مدرس به پنل خود دسترسی نخواهد داشت و در صفحه مدریسن نمایش داده نمی شود" value="1" id="panel_status" label="دسترسی به پنل " wire:model.defer="panel_status" />
                 <x-admin.forms.full-text-editor id="body" label="متن*" wire:model.defer="body"/>
             </div>
         </div>

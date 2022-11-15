@@ -36,7 +36,7 @@ class IndexTeacher extends BaseComponent
 
     public function render(TeacherRepositoryInterface $teacherRepository)
     {
-        $teachers = $teacherRepository->getAllAdmin(null,10);
+        $teachers = $teacherRepository->getAllAdmin(null,10,true);
         return view('site.teachers.index-teacher',['teachers'=>$teachers])->extends('site.layouts.site.site');
     }
 }

@@ -8,9 +8,11 @@ use App\Repositories\Interfaces\TeacherRepositoryInterface;
 
 class TeacherRepository implements TeacherRepositoryInterface
 {
-    public function getAllAdmin($search, $per_page)
+    public function getAllAdmin($search, $per_page , $panel_status = false)
     {
-        return Teacher::with('user')->when($search,function ($q) use ($search){
+        return Teacher::with('user')->when($panel_status,function ($q){
+            return $q->where('panel_status',true);
+        })->when($search,function ($q) use ($search){
             return $q->whereHas('user',function ($q) use ($search){
                 return is_numeric($search) ? $q->where('phone',$search) : $q->where('name',$search);
             });

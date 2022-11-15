@@ -132,7 +132,7 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->group(function (){
     Route::get('/episode-transcripts/{action}/{id?}',App\Http\Controllers\Admin\EpisodeTranscripts\StoreEpisodeTranscript::class)->name('admin.store.episodeTranscript');
 });
 // v3-teachers
-Route::prefix('teacher')->name('teacher.')->middleware(['auth','role:teacher'])->group(function(){
+Route::prefix('teacher')->name('teacher.')->middleware(['auth','role:teacher','teacher'])->group(function(){
     Route::get('/dashboard', App\Http\Controllers\Teacher\Dashboards\Dashboard::class)->name('dashboard');
     Route::get('/courses', App\Http\Controllers\Teacher\Courses\IndexCourse::class)->name('courses');
     Route::get('/courses/new/{action?}/{id?}', App\Http\Controllers\Teacher\Courses\StoreCourse::class)->name('new.courses');
