@@ -138,9 +138,11 @@ header .codes p b {
 
 .content .row table tr td b {
     font-size: 22px;
+    padding: 0 10px;
 }
 .content .row table tr td span{
-    font-family: initial;
+    /*font-family: initial;*/
+    padding-right: 5px;
 }
 .content .row table {
     width: 100%;
