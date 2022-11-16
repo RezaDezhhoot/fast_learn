@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Admin\Samples;
 
+use App\Enums\StorageEnum;
 use App\Repositories\Interfaces\CourseRepositoryInterface;
 use App\Repositories\Interfaces\SampleRepositoryInterface;
 use App\Enums\SampleEnum;
 use App\Http\Controllers\BaseComponent;
+use Illuminate\Support\Facades\Log;
 
 class StoreSample extends BaseComponent
 {
@@ -103,6 +105,15 @@ class StoreSample extends BaseComponent
         return $this->emitNotify('اطلاعات با موفقیت ثبت شد');
     }
 
+    public function download($file)
+    {
+        try {
+            return getDisk($this->driver)->download($file);
+        } catch (\Exception $e) {
+            $this->emitNotify('خظا در هنگام دانلود فایل','warning');
+            Log::error($e->getMessage());
+        }
+    }
 
     public function render()
     {

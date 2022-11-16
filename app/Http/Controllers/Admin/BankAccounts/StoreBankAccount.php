@@ -43,7 +43,7 @@ class StoreBankAccount extends BaseComponent
     {
         $this->validate([
             'status' => ['required','string','in:'.implode(',',array_keys(BankAccountEnum::getStatus()))],
-            'result' => ['string','max:250',Rule::requiredIf(fn() => $this->status == BankAccountEnum::SUSPENDED || $this->status == BankAccountEnum::REJECTED)],
+            'result' => ['max:250',Rule::requiredIf(fn() => $this->status == BankAccountEnum::SUSPENDED || $this->status == BankAccountEnum::REJECTED)],
         ],[],[
             'status' => 'وضعیت',
             'result' => 'علت',

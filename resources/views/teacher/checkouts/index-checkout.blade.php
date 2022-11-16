@@ -1,6 +1,6 @@
 <div>
     @section('title','تسویه حساب ها ')
-    <x-teacher.form-control link="{{ route('teacher.store.checkouts',['create'] ) }}" confirmContent="تعریف حساب جدید"  title=" تسویه حساب "/>
+    <x-teacher.form-control link="{{ route('teacher.store.checkouts',['create'] ) }}" confirmContent="تعریف درخواست جدید"  title=" تسویه حساب "/>
     <div class="card card-custom">
         <div class="card-body">
             <x-teacher.forms.dropdown id="status" :data="$data['status']" label="وضعیت" wire:model="status"/>

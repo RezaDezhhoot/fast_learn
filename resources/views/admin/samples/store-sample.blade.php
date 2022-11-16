@@ -13,8 +13,16 @@
                 <x-admin.forms.dropdown with="6" id="status" :data="$data['status']" label="وضعیت*" wire:model.defer="status"/>
                 <x-admin.forms.dropdown with="6" id="type" :data="$data['type']" label="نوع*" wire:model.defer="type"/>
                 <x-admin.forms.dropdown with="6" id="driver" :data="$data['storage']" label="فضای ذخیره سازی*" wire:model.defer="driver"/>
-                <x-admin.forms.lfm-standalone  id="file" label="فایل*" :file="$file"
-                                        type="image" required="true" wire:model="file" />
+                <div class="col-12">
+                    <fieldset class="border p-4">
+                        <legend>فایل </legend>
+                        <x-admin.forms.lfm-standalone  id="file" label="فایل*" :file="$file"
+                                                       type="image" required="true" wire:model="file" />
+                        <div class="form-group">
+                            <button class="btn btn-sm btn-success" wire:click="download('{{$file}}')">دانلود فایل</button>
+                        </div>
+                    </fieldset>
+                </div>
                 <x-admin.forms.select2 id="course" :data="$data['course']" label=" دوره اموزشی"
                 wire:model.defer="course" />
                 <x-admin.forms.text-area label="کلمات کلیدی*" help="کلمات را با کاما از هم جدا کنید" wire:model.defer="seo_keywords" id="seo_keywords" />

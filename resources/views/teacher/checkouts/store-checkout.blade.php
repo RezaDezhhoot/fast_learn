@@ -8,7 +8,7 @@
         <x-teacher.forms.validation-errors />
         <div class="card-body">
             <div class="row">
-                <x-teacher.forms.input type="number" id="price" label="ملبغ *" wire:model.defer="price" />
+                <x-teacher.forms.input type="number" id="price" label="مبلغ(تومان) *" wire:model.defer="price" />
                 <x-teacher.forms.dropdown id="account" :data="$data['account']" label="حساب بانکی*" wire:model="account"/>
             </div>
         </div>

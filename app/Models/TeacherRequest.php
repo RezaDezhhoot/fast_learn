@@ -52,7 +52,7 @@ class TeacherRequest extends Model
 
     public function getFilesAttribute($value)
     {
-        if (!is($value))
+        if (!is_null($value))
             return explode(',',$value);
 
         return null;

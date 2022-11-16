@@ -28,7 +28,7 @@ class StoreIncomingMethod extends BaseComponent
             $this->expire_limit = $this->method->expire_limit;
             $this->count_limit = $this->method->count_limit;
         } elseif ($this->mode == self::CREATE_MODE) {
-            $this->header = 'روش چدید';
+            $this->header = 'روش جدید';
         } else abort(404);
     }
 

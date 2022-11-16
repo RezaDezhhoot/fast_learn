@@ -35,7 +35,7 @@ class StoreTeacherRequest extends BaseComponent
             $this->header = " درخواست مدرس به شماره {$this->request->id}";
             $this->descriptions = $this->request->descriptions;
             $this->url = $this->request->url;
-            $this->files = $this->request->files;
+            $this->files = array_filter($this->request->files);
             $this->status = $this->request->status;
             $this->result = $this->request->result;
         } else abort(404);
