@@ -57,17 +57,14 @@
             <div id="{{$item['slug'].$item['id']}}" wire:ignore>
                 <div class="card card-item">
                     <div class="card-body">
-                        @if(!is_null($item->teacher))
-                            <p class="card-text pb-2">مدرس <a href="{{ route('teacher',$item->teacher->id) }}">{{ $item->teacher->user->name ?? '' }}</a></p>
-                        @endif
                         <h5 class="card-title pb-1"><a href="{{ route('course',$item['slug']) }}">{{ $item['title'] }}</a></h5>
+                        <hr>
                         <div class="d-flex align-items-center pb-1">
                             <h6 class="ribbon fs-14 mr-2">{{ $item->status_label }}</h6>
-                            <p class="text-success fs-14 font-weight-medium"><span class="font-weight-bold pl-1">{{ $item->updated_at->diffForHumans() }}</span> به روز <span class="font-weight-bold pl-1">شد</span></p>
+                            <small class="text-success font-weight-medium"><span class="font-weight-bold pl-1">{{ $item->updated_at->diffForHumans() }}</span> به روز <span class="font-weight-bold pl-1">شد</span></small>
                         </div>
                         <ul class="generic-list-item generic-list-item-bullet generic-list-item--bullet d-flex align-items-center fs-14">
                             <li>{{ $item->hours }} ساعت در کل</li>
-                            <li>همه مراحل</li>
                         </ul>
                         <p class="card-text pt-1 fs-14 lh-22">
                             {!! $item->short_body !!}

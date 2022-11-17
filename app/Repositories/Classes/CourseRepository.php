@@ -56,8 +56,8 @@ class CourseRepository implements CourseRepositoryInterface
             }
             return null;
         })->when($search,function ($q) use ($search) {
-            return $q->where('title',$search)->orWhere('slug',$search)->orWhereHas('tags',function ($q) use ($search){
-                return $q->where('name',$search);
+            return $q->where('title','LIKE','%'.$search.'%')->orWhere('slug','LIKE','%'.$search.'%')->orWhereHas('tags',function ($q) use ($search){
+                return $q->where('name','LIKE','%'.$search.'%');
             });
         })->when($teacher , function ($q) use ($teacher){
             return $q->where('teacher_id',base64_decode($teacher));
