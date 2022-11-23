@@ -399,12 +399,12 @@
                                         class="la la-shopping-cart fs-18 mr-1"></i> ثبت
                                     نام در این دوره</button>
                                     @endif
-                                    
+
                                     @else
                                     <button wire:click="addToCart()" type="button" class="btn theme-btn w-100 mb-2"><i
                                             class="la la-shopping-cart fs-18 mr-1"></i> به سبد خرید اضافه کنید</button>
                                     @endif
-                                    
+
                                 </div>
                                 <div class="preview-course-incentives">
                                     <h3 class="card-title fs-18 mt-2 pb-2">این دوره شامل</h3>
@@ -461,26 +461,26 @@
                                 @endif
                                 @if(sizeof($course->organizations) > 0)
                                     <li class="d-flex align-items-center justify-content-between">
-                                        <span><i class="la la-building mr-2 text-color"></i>سازمان ها</span>  
+                                        <span><i class="la la-building mr-2 text-color"></i>سازمان ها</span>
 
                                         <small>
-                                            {{ 
+                                            {{
                                             str()->limit(implode(" و ",$course->organizations->pluck('title','id')->toArray()),
-                                                $limit = 40 , $end = '...') 
+                                                $limit = 40 , $end = '...')
                                             }}
-                                           
+
                                         </small>
                                     </li>
                                 @endif
                                 @if(sizeof($course->executives) > 0)
                                     <li class="d-flex align-items-center justify-content-between">
-                                        <span><i class="la la-building mr-2 text-color"></i>دستگاه های اجرایی</span>  
+                                        <span><i class="la la-building mr-2 text-color"></i>دستگاه های اجرایی</span>
                                         <small>
-                                            {{ 
+                                            {{
                                             str()->limit(implode(" و ",$course->executives->pluck('title','id')->toArray()),
-                                                $limit = 40 , $end = '...') 
+                                                $limit = 40 , $end = '...')
                                             }}
-                                           
+
                                         </small>
                                     </li>
                                 @endif
@@ -488,6 +488,25 @@
                         </div>
                     </div>
                     <!-- end card -->
+                    @if($has_samples)
+                        <div class="card card-item">
+                            <div class="card-body">
+                                <h3 class="card-title fs-18 pb-2">نمونه سوالات</h3>
+                                <div class="divider"><span></span></div>
+
+                                @foreach($course->samples as $item)
+                                    <div wire:ignore>
+                                        @livewire('components.site.samples.sample-row', ['sample' => $item])
+                                    </div>
+                                @endforeach
+                                <!-- end media -->
+                                <div class="view-all-course-btn-box">
+                                    <a href="{{ route('samples') }}" class="btn theme-btn w-100">مشاهده همه  نمونه سوالات <i
+                                            class="la la-arrow-left icon ml-1"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                     <div class="card card-item">
                         <div class="card-body">
                             <h3 class="card-title fs-18 pb-2">دوره های مرتبط</h3>

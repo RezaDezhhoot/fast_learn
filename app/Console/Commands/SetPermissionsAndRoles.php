@@ -135,6 +135,11 @@ class SetPermissionsAndRoles extends Command
             ['name' => 'edit_contacts', 'guard_name'=> 'web'],
             ['name' => 'delete_contacts', 'guard_name'=> 'web'],
             ['name' => 'show_logs', 'guard_name'=> 'web'],
+
+
+            ['name' => 'show_samples' , 'guard_name'=> 'web'],
+            ['name' => 'edit_samples', 'guard_name'=> 'web'],
+            ['name' => 'delete_samples', 'guard_name'=> 'web'],
         ];
         $user = [
             'name'=> 'admin',
@@ -158,7 +163,7 @@ class SetPermissionsAndRoles extends Command
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
-            return $e->getMessage();
+            echo $e->getMessage();
         }
         return 0;
     }

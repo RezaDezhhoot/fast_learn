@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-lg-2 responsive-column-half">
                 <div class="footer-item">
-                    <h3 class="fs-20 font-weight-semi-bold pb-2">شرکت</h3>
+                    <h3 class="fs-20 font-weight-semi-bold pb-2">آموزشگاه</h3>
                     <div class="divider border-bottom-0"><span></span></div>
                     <ul class="generic-list-item">
                         <li><a href="{{ route('about') }}">درباره ما</a></li>
@@ -27,6 +27,7 @@
                         <li><a href="{{route('user.dashboard')}}">ناحیه کاربری</a></li>
                         <li><a href="{{route('cart')}}">سبد خرید </a></li>
                         <li><a href="{{route('checkout')}}">تکمیل خرید</a></li>
+                        <li><a href="{{ route('samples') }}">نمونه سوالات</a></li>
                     </ul>
                 </div>
                 <!-- end footer-item -->

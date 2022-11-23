@@ -32,7 +32,7 @@ class Profile extends BaseComponent
     public $code_id  , $father_name , $birthday , $province , $city ;
     public $file , $gateways = [] , $price , $gateway , $tab;
     public $token ;
-    public $isSuccessful, $message , $organization , $executive;
+    public $isSuccessful, $message , $organization , $executive , $postalCode;
 
     public $teacher , $teacher_title , $teacher_content;
 
@@ -91,6 +91,7 @@ class Profile extends BaseComponent
             $this->city = $this->user->details->city;
             $this->organization = $this->user->details->organization_id;
             $this->executive = $this->user->details->executive_id;
+            $this->postalCode = $this->user->details->postalCode;
         }
         $this->data['province'] = $this->settingRepository::getProvince();
         $gateways = $this->settingRepository->getRow('gateway',[]);
@@ -202,6 +203,7 @@ class Profile extends BaseComponent
             'city' => ['required','in:'.implode(',',array_keys($this->data['city']))],
             'organization' => ['nullable','in:'.implode(',', array_value_recursive('id',$this->data['organs'])  )],
             'executive' => ['nullable','in:'.implode(',', array_value_recursive('id',$this->data['executives'])  )],
+            'postalCode' => ['required','numeric','between:1111111111,9999999999']
         ];
         $messages = [
             'code_id' => 'کد ملی',
@@ -210,7 +212,8 @@ class Profile extends BaseComponent
             'province' => 'استان',
             'city' => 'شهر',
             'organization' => 'سازمان',
-            'executive' => 'دستگاه اجرایی'
+            'executive' => 'دستگاه اجرایی',
+            'postalCode' => 'کد پستی'
         ];
 
         $this->validate($fields,[],$messages);
@@ -223,6 +226,7 @@ class Profile extends BaseComponent
             'city' => $this->city,
             'organization_id' => $this->organization,
             'executive_id' => $this->executive,
+            'postalCode' => $this->postalCode
         ]);
 
         $this->emitNotify('اطلاعات با موفقیت ثبت شد');

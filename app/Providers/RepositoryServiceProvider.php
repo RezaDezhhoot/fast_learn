@@ -36,6 +36,7 @@ use App\Repositories\Classes\TicketRepository;
 use App\Repositories\Classes\TranscriptRepository;
 use App\Repositories\Classes\UserDetailRepository;
 use App\Repositories\Classes\UserRepository;
+use App\Repositories\Classes\SampleRepository;
 use App\Repositories\Classes\WalletRepository;
 use App\Repositories\Interfaces\ArticleRepositoryInterface;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
@@ -75,6 +76,7 @@ use App\Repositories\Interfaces\WalletRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
+use App\Repositories\Interfaces\SampleRepositoryInterface;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -261,6 +263,11 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             SurveyRepositoryInterface::class,
             SurveyRepository::class,
+        );
+
+        $this->app->bind(
+            SampleRepositoryInterface::class,
+            SampleRepository::class,
         );
     }
 

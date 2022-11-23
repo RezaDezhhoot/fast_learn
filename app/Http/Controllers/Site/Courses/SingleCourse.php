@@ -36,7 +36,7 @@ class SingleCourse extends BaseComponent
 
     public $homework , $file_path , $homework_file , $homework_description , $homework_recaptcha;
 
-    public $episode , $show_homework_form = false;
+    public $episode , $show_homework_form = false , $has_samples = false;
 
     public function __construct($id = null)
     {
@@ -70,12 +70,12 @@ class SingleCourse extends BaseComponent
         JsonLd::setDescription($this->course->seo_description);
         JsonLd::addImage(asset($this->settingRepository->getRow('logo')));
         $this->user = auth()->user();
-        
+        $this->has_samples = sizeof($this->course->samples) > 0;
     }
 
     public function loadCourse()
     {
-        
+
         $this->page_address = [
             'home' => ['link' => route('home') , 'label' => 'صفحه اصلی'],
             'courses' => ['link' => route('courses') , 'label' => 'دوره های اموزشی'],
@@ -103,7 +103,7 @@ class SingleCourse extends BaseComponent
             Cart::add($this->course);
             return redirect()->route('cart');
         }
-       
+
     }
 
     public function set_content($type,$id)
@@ -289,7 +289,7 @@ class SingleCourse extends BaseComponent
             }
         } else {
             return redirect()->route('auth');
-        }   
+        }
     }
 
     private function setOrder(): bool

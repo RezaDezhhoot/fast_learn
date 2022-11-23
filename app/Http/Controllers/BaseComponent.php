@@ -22,7 +22,7 @@ class BaseComponent extends Component
         $orderDetailRepository , $paymentReporitory , $questionRepository , $eventRepository , $notificationRepository , $transcriptRepository ,
         $choiceRepository , $reductionRepository , $reductionMetaRepository , $roleRepository , $permissionRepository , $ticketRepository ,
         $sendRepository , $userDetailRepository , $orderNoteRepository , $homeworkRepository , $contactUsRepository , $logRepository ,
-        $organizationRepository , $executiveRepository , $surverRepository;
+        $organizationRepository , $executiveRepository , $surverRepository , $sampleRepository;
 
     public  $mode = '' , $search = '';
 

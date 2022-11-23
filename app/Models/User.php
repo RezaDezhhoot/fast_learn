@@ -119,7 +119,7 @@ class User extends Authenticatable implements Wallet, Confirmable
         if (empty($value))
             return self::USER_DEFAULT_IMAGE;
 
-        return $value;  
+        return $value;
     }
 
     public function details(): HasOne
@@ -221,5 +221,10 @@ class User extends Authenticatable implements Wallet, Confirmable
     public function subject_logs(): MorphMany
     {
         return $this->morphMany(Activity::class,'subject');
+    }
+
+    public function samples(): HasMany
+    {
+        return $this->hasMany(Sample::class);
     }
 }

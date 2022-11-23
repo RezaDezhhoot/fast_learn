@@ -29,6 +29,9 @@ Route::get('/auth',App\Http\Controllers\Site\Auth\Auth::class)->name('auth');
 // Route::get('/teachers/{id}',App\Http\Controllers\Site\Teachers\SingleTeacher::class)->name('teacher');
 Route::get('/codes/{code}',App\Http\Controllers\CodeController::class)->name('codes');
 
+Route::get('/sample-questions',App\Http\Controllers\Site\Samples\IndexSample::class)->name('samples');
+Route::get('/sample-questions/{slug}',App\Http\Controllers\Site\Samples\SingleSample::class)->name('sample');
+
 Route::middleware(['auth'])->group(function (){
     Route::get('/checkout',App\Http\Controllers\Site\Carts\Checkout::class)->name('checkout');
     Route::get('/verify/{gateway?}',App\Http\Controllers\Site\Carts\Verify::class)->name('verify');
@@ -47,6 +50,7 @@ Route::prefix('client')->middleware(['auth'])->group(function (){
     Route::get('/certificates/{id}',App\Http\Controllers\Site\Client\Certificate::class)->name('user.certificate')->withoutMiddleware(['auth']);
     Route::get('/exam/{token}',App\Http\Controllers\Site\Client\Exam::class)->name('user.exam');
     // Route::get('/homeworks',App\Http\Controllers\Site\Client\Homeworks::class)->name('user.homeworks');
+    Route::get('/sample-questions',App\Http\Controllers\Site\Client\MySample::class)->name('user.sample');
 });
 Route::prefix('admin')->middleware(['auth','role:admin'])->group(function (){
     Route::get('/dashboard',App\Http\Controllers\Admin\Dashboard\IndexDashboard::class)->name('admin.dashboard');
@@ -107,7 +111,8 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->group(function (){
     Route::get('/surveys',App\Http\Controllers\Admin\Surveys\IndexSurvey::class)->name('admin.survey');
     Route::get('/surveys/{action}/{id?}',App\Http\Controllers\Admin\Surveys\StoreSurvey::class)->name('admin.store.survey');
 
-
+    Route::get('/samples',App\Http\Controllers\Admin\Samples\IndexSample::class)->name('admin.sample');
+    Route::get('/samples/{action}/{id?}',App\Http\Controllers\Admin\Samples\StoreSample::class)->name('admin.store.sample');
 });
 
 Route::middleware('guest')->get('auth',App\Http\Controllers\Site\Auth\Auth::class)->name('auth');

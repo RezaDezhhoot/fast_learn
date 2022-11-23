@@ -62,7 +62,7 @@
                         <!-- end media -->
                         <form wire:submit.prevent="storeProfile()" class="row pt-40px">
                             <div class="input-box col-lg-6">
-                                <label class="label-text">نام کامل</label>
+                                <label class="label-text">نام و نام خانوادگی</label>
                                 <div class="form-group">
                                     <input class="form-control form--control" type="text" name="text"
                                            wire:model.defer="name"/>
@@ -176,10 +176,21 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <x-admin.forms.group-dropdown 
-                                    id="organization" 
-                                    :data="$data['organs']" 
-                                    label="سازمان ها" 
+                                <div class="input-box col-lg-6">
+                                    <label class="label-text">کد پستی </label>
+                                    <div class="form-group">
+                                        <input class="form-control form--control" type="text" name="postalCode"
+                                               wire:model.defer="postalCode"/>
+                                        <span class="la la-address-card input-icon"></span>
+                                        @error('postalCode')
+                                        <small class="text-danger">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <x-admin.forms.group-dropdown
+                                    id="organization"
+                                    :data="$data['organs']"
+                                    label="سازمان ها"
                                     wire:model.defer="organization"
                                     child="child"
                                     parent_key="id"
@@ -188,10 +199,10 @@
                                     child_value="title"
                                     width="6"
                                 />
-                                <x-admin.forms.group-dropdown 
-                                    id="executive" 
-                                    :data="$data['executives']" 
-                                    label="دستگاه های اجرایی" 
+                                <x-admin.forms.group-dropdown
+                                    id="executive"
+                                    :data="$data['executives']"
+                                    label="دستگاه های اجرایی"
                                     wire:model.defer="executive"
                                     child="child"
                                     parent_key="id"

@@ -25,6 +25,8 @@ class StoreUser extends BaseComponent
     public $phone , $province , $city  , $status , $email , $actionWallet , $editWallet , $sendMessage , $subjectMessage,
         $statusMessage , $result , $walletMessage   , $userWallet , $father_name , $birthday , $password_lgh , $organization , $executive;
 
+    public $postalCode;
+
     public function __construct($id = null)
     {
         parent::__construct($id);
@@ -59,6 +61,7 @@ class StoreUser extends BaseComponent
             $this->birthday = $this->user->details->birthday ?? null;
             $this->organization = $this->user->details->organization_id ?? null;
             $this->executive = $this->user->details->executive_id ?? null;
+            $this->postalCode = $this->user->details->postalCode;
 
             $this->userRole = $this->user->roles()->pluck('name','id')->toArray();
             $this->userWallet = $this->userRepository->walletTransactions($this->user);
@@ -118,6 +121,7 @@ class StoreUser extends BaseComponent
             'avatar' => ['nullable','string','max:255'],
             'organization' => ['nullable','in:'.implode(',', array_value_recursive('id',$this->data['organs'])  )],
             'executive' => ['nullable','in:'.implode(',', array_value_recursive('id',$this->data['executives'])  )],
+            'postalCode' => ['required','numeric','between:1111111111,9999999999']
         ];
         $messages = [
             'name' => 'نام ',
@@ -132,7 +136,8 @@ class StoreUser extends BaseComponent
             'birthday' => 'بیوگرافی',
             'avatar' => 'تصویر رسمی',
             'organization' => 'سازمان',
-            'executive' => 'دستگاه اجرایی'
+            'executive' => 'دستگاه اجرایی',
+            'postalCode' => 'کد پستی'
         ];
 
         if ($this->mode == self::CREATE_MODE)
@@ -164,6 +169,7 @@ class StoreUser extends BaseComponent
             'birthday' => $this->birthday,
             'organization_id' => $this->organization,
             'executive_id' => $this->executive,
+            'postalCode' => $this->postalCode
         ]);
         if ((auth()->user()->hasRole('super_admin') && !$model->hasRole('administrator')) || auth()->user()->hasRole('administrator'))
         {
