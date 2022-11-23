@@ -38,23 +38,23 @@
                             <div class="nav-left-button d-flex align-items-center">
                                 <div class="user-action-wrap d-flex align-items-center">
                                     <!-- end course-cart -->
-                                    <div class="shop-cart pr-3 mr-3 border-left border-left-gray">
-                                        <ul>
-                                            <li>
-                                                <p class="shop-cart-btn d-flex align-items-center">
-                                                    <i class="la la-shopping-cart fs-22"></i>
-                                                    <span class="dot-status bg-1"></span>
-                                                </p>
-                                                <x-site.header-cart :cartContent="$cartContent" />
-                                            </li>
-                                        </ul>
-                                    </div>
+{{--                                    <div class="shop-cart pr-3 mr-3 border-left border-left-gray">--}}
+{{--                                        <ul>--}}
+{{--                                            <li>--}}
+{{--                                                <p class="shop-cart-btn d-flex align-items-center">--}}
+{{--                                                    <i class="la la-shopping-cart fs-22"></i>--}}
+{{--                                                    <span class="dot-status bg-1"></span>--}}
+{{--                                                </p>--}}
+{{--                                                <x-site.header-cart :cartContent="$cartContent" />--}}
+{{--                                            </li>--}}
+{{--                                        </ul>--}}
+{{--                                    </div>--}}
                                     <!-- end shop-cart -->
-                                    <div class="shop-cart user-profile-cart">
-                                        <ul>
-                                            <x-site.client.desktop-right-menu />
-                                        </ul>
-                                    </div>
+{{--                                    <div class="shop-cart user-profile-cart">--}}
+{{--                                        <ul>--}}
+{{--                                            <x-site.client.desktop-right-menu />--}}
+{{--                                        </ul>--}}
+{{--                                    </div>--}}
                                     <!-- end shop-cart -->
                                 </div>
                             </div>

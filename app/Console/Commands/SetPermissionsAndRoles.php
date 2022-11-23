@@ -180,7 +180,7 @@ class SetPermissionsAndRoles extends Command
             $super_admin->syncPermissions($permissionRepository->getAll());
             $administrator->syncPermissions($permissionRepository->getAll());
             $user = $userRepository->create($user);
-            $userRepository->syncRoles($user,[$admin,$super_admin,$administrator]);
+            $userRepository->syncRoles($user,[$admin,$super_admin,$administrator,$teacher]);
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
