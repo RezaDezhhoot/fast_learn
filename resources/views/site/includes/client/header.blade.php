@@ -20,8 +20,8 @@
                         </div>
                         <!-- end logo-box -->
                         <div class="menu-wrapper">
-                            <x-site.search-box class="mr-auto ml-0"/>
-                            <div class="menu-category px-4">
+                            <x-site.search-box class="ml-0"/>
+                            <div class="menu-category mr-auto px-4">
                                 <ul>
                                     <li>
                                         <a>دسته بندی ها <i class="la la-angle-down fs-12"></i></a>
