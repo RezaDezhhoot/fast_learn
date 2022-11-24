@@ -456,12 +456,12 @@
                             </ul>
                         </div>
                     </div>
-                    @if($has_sample)
+                    @if($has_samples)
                         <div class="card card-item">
                             <div class="card-body">
                                 <h3 class="card-title fs-18 pb-2">نمونه سوالات</h3>
                                 <div class="divider"><span></span></div>
-                                
+
                                 @foreach($course->samples as $item)
                                     <div wire:ignore>
                                         @livewire('components.site.samples.sample-row', ['sample' => $item])

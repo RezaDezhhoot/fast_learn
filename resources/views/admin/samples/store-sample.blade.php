@@ -18,9 +18,12 @@
                         <legend>فایل </legend>
                         <x-admin.forms.lfm-standalone  id="file" label="فایل*" :file="$file"
                                                        type="image" required="true" wire:model="file" />
-                        <div class="form-group">
-                            <button class="btn btn-sm btn-success" wire:click="download('{{$file}}')">دانلود فایل</button>
-                        </div>
+
+                        @if($mode == self::UPDATE_MODE)
+                            <div class="form-group">
+                                <button class="btn btn-sm btn-success" wire:click="download('{{$file}}')">دانلود فایل</button>
+                            </div>
+                        @endif
                     </fieldset>
                 </div>
                 <x-admin.forms.select2 id="course" :data="$data['course']" label=" دوره اموزشی"
