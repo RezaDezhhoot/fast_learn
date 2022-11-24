@@ -1,4 +1,5 @@
 <div>
+    <div class="dashboard-menu-toggler btn theme-btn theme-btn-sm lh-28 theme-btn-transparent mb-4 ml-3"><i class="la la-bars mr-1"></i> منو</div>
     <div class="container-fluid">
         <div class="breadcrumb-content d-flex flex-wrap align-items-center justify-content-between mb-3">
             <div class="media media-card align-items-center">
