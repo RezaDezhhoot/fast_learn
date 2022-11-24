@@ -24,4 +24,10 @@
 {{--    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">--}}
     <link rel="stylesheet" href="https://file-manager.webmai.ru/vendor/file-manager/css/file-manager.css">
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <style>
+        .table-responsive {
+            overflow-x:auto;
+        }
+    </style>
 </head>

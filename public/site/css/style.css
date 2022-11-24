@@ -10268,6 +10268,7 @@
 
      .logo-size {
          max-width: 4rem;
+         transform: scale(0.9);
      }
 
      .logo-footer {

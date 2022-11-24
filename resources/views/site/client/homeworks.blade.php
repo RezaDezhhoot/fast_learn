@@ -4,7 +4,7 @@
         <div class="dashboard-heading mb-5 d-flex align-items-center justify-content-between">
             <h3 class="fs-22 font-weight-semi-bold">تمرین های ارسالی </h3>
         </div>
-        <div class="dashboard-cards mb-5">
+        <div style="overflow-x:auto;" class="dashboard-cards mb-5">
             <table class="table table-striped table-bordered">
                 <thead>
                 <tr>

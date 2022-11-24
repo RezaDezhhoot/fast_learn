@@ -13,7 +13,7 @@
             <div class="row px-1">
                 <div class="col-md-12 col-12 bg-white">
                     <div class="row">
-                        <div class="table-responsive">
+                        <div  style="overflow-x:auto;"  class="table-responsive">
                             <table class="table table-striped table-bordered">
                                 <tbody>
                                 <tr>

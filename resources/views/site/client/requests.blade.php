@@ -6,7 +6,7 @@
                 درخواست های همکاری من
             </h3>
         </div>
-        <div class="dashboard-cards mb-5">
+        <div style="overflow-x:auto;" class="dashboard-cards mb-5">
             <table class="table table-striped table-bordered">
                 <thead>
                 <tr>

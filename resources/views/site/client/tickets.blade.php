@@ -5,7 +5,7 @@
             <h3 class="fs-22 font-weight-semi-bold">پشتیبانی </h3>
             <a href="{{ route('user.ticket',['create']) }}" class="btn btn-outline-primary ">درخواست جدید</a>
         </div>
-        <div class="dashboard-cards mb-5">
+        <div style="overflow-x:auto;" class="dashboard-cards mb-5">
             <table class="table table-striped table-bordered">
                 <thead>
                 <tr>
