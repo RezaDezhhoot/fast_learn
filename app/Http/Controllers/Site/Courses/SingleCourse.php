@@ -70,7 +70,8 @@ class SingleCourse extends BaseComponent
         JsonLd::setDescription($this->course->seo_description);
         JsonLd::addImage(asset($this->settingRepository->getRow('logo')));
         $this->user = auth()->user();
-        $this->has_samples = sizeof($this->course->samples) > 0;
+        if (!is_null($this->course->samples))
+            $this->has_samples = sizeof($this->course->samples) > 0;
     }
 
     public function loadCourse()
