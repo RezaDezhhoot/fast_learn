@@ -54,7 +54,7 @@ class IndexArticle extends BaseComponent
         $this->categories = $categories->toArray();
         $this->page_address = [
             'home' => ['link' => route('home') , 'label' => 'صفحه اصلی'],
-            'courses' => ['link' => '' , 'label' => 'مقالات اموزشی']
+            'articles' => ['link' => '' , 'label' => 'مقالات اموزشی']
         ];
     }
 

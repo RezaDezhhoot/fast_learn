@@ -17,6 +17,7 @@
                 <x-admin.forms.dropdown with="6" id="category" :data="$data['category']" label="دسته*" wire:model.defer="category"/>
                 <x-admin.forms.input with="6" type="number" id="const_price" label="قیمت ثابت" wire:model.defer="const_price"/>
                 <x-admin.forms.dropdown with="6" id="quiz" :data="$data['quiz']" label="ازمون" wire:model.defer="quiz"/>
+                <x-admin.forms.checkbox value="1" id="has_organization_certificate" label="گواهینامه فنی و حرفه ای" wire:model.defer="has_organization_certificate" />
                 <x-admin.forms.input with="6" type="number" min="0" id="reduction_value" label="مقدار تخفیف*" wire:model.defer="reduction_value"/>
                 <x-admin.forms.dropdown with="6" id="status" :data="$data['status']" label="وضعیت*" wire:model.defer="status"/>
                 <x-admin.forms.dropdown with="6" id="reduction_type" :data="$data['reduction']" label="نوع تخفیف" wire:model.defer="reduction_type"/>

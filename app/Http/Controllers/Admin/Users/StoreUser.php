@@ -61,7 +61,7 @@ class StoreUser extends BaseComponent
             $this->birthday = $this->user->details->birthday ?? null;
             $this->organization = $this->user->details->organization_id ?? null;
             $this->executive = $this->user->details->executive_id ?? null;
-            $this->postalCode = $this->user->details->postalCode;
+            $this->postalCode = $this->user->details->postalCode ?? null;
 
             $this->userRole = $this->user->roles()->pluck('name','id')->toArray();
             $this->userWallet = $this->userRepository->walletTransactions($this->user);

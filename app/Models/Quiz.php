@@ -62,6 +62,6 @@ class Quiz extends Model
     public function getMinimumScoreAttribute(): float|int
     {
         $total_score = $this->total_score;
-        return $this->accept_type == QuizEnum::PERCENT ? $total_score*($this->min_score/100) : $this->min_score->min_score;
+        return $this->accept_type == QuizEnum::PERCENT ? $total_score*($this->min_score/100) : $this->min_score;
     }
 }

@@ -25,7 +25,7 @@
             @endif
             <div class="rating-wrap d-flex align-items-center py-2">
                 <div class="review-stars">
-                    <span class="rating-number">{{ $item->score }}</span>
+{{--                    <span class="rating-number">{{ $item->score }}</span>--}}
                     @for($i=1; $i<=5;$i++) @if($i <=$item->score)
                         <span class="la la-star"></span>
                         @else
@@ -33,7 +33,7 @@
                         @endif
                     @endfor
                 </div>
-                <span class="rating-total pl-1">({{$item->sold_count}})</span>
+{{--                <span class="rating-total pl-1">({{$item->sold_count}})</span>--}}
             </div>
             <!-- end rating-wrap -->
             <div class="d-flex justify-content-between align-items-center">

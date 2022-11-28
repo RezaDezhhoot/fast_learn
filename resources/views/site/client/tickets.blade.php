@@ -2,7 +2,7 @@
     <div class="dashboard-menu-toggler btn theme-btn theme-btn-sm lh-28 theme-btn-transparent mb-4 ml-3"><i class="la la-bars mr-1"></i> منو</div>
     <div class="container-fluid">
         <div class="dashboard-heading mb-5 d-flex align-items-center justify-content-between">
-            <h3 class="fs-22 font-weight-semi-bold">پشتیبانی </h3>
+            <h3 class="fs-22 font-weight-semi-bold">ارسال مدارک </h3>
             <a href="{{ route('user.ticket',['create']) }}" class="btn btn-outline-primary ">درخواست جدید</a>
         </div>
         <div class="dashboard-cards mb-5">

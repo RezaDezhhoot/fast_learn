@@ -21,7 +21,7 @@ class StoreCourse extends BaseComponent
     use WithFileUploads;
     public  $header , $slug , $title , $short_body , $long_body , $image  , $category ,  $quiz , $seo_keywords , $seo_description,
     $teacher , $level , $const_price , $status ,$reduction_type ,$reduction_value = 0 , $start_at , $expire_at  , $tags = [];
-    public  $course , $sub_title , $storage , $type , $organizations = [] , $executives = [] , $standard_code;
+    public  $course , $sub_title , $storage , $type , $organizations = [] , $executives = [] , $standard_code , $has_organization_certificate = false;
 
     public function __construct($id = null)
     {
@@ -67,6 +67,7 @@ class StoreCourse extends BaseComponent
             $this->level = $this->course->level;
             $this->type = $this->course->type;
             $this->standard_code = $this->course->standard_code;
+            $this->has_organization_certificate = $this->course->has_organization_certificate;
         } elseif ($this->mode == self::CREATE_MODE) {
             $this->header = 'دوره جدید';
         } else abort(404);
@@ -108,7 +109,7 @@ class StoreCourse extends BaseComponent
         }
         elseif ($this->mode == self::CREATE_MODE){
             $this->saveInDataBase($this->courseRepository->newCourseObject());
-            $this->reset(['slug','sub_title','title','short_body','long_body','image','category','quiz','teacher',
+            $this->reset(['slug','sub_title','title','short_body','long_body','image','category','quiz','teacher','has_organization_certificate',
                 'status','level','standard_code','type','reduction_type','const_price','reduction_value','start_at','expire_at','tags','seo_keywords','seo_description']);
         }
     }
@@ -137,7 +138,8 @@ class StoreCourse extends BaseComponent
             'start_at' => ['nullable','date'],
             'expire_at' => ['nullable','date'],
             'level' => ['required','in:'.implode(',',array_keys(CourseEnum::getLevels()))],
-            'type' => ['required','in:'.implode(',',array_keys(CourseEnum::getTypes()))]
+            'type' => ['required','in:'.implode(',',array_keys(CourseEnum::getTypes()))],
+            'has_organization_certificate' => ['required','boolean']
         ],[],[
             'title' => 'عنوان',
             'standard_code' => 'استاندارد اموزشی',
@@ -158,6 +160,7 @@ class StoreCourse extends BaseComponent
             'expire_at' => 'پایان تخفیف',
             'level' => 'سطح دوره',
             'type' => 'نوع دوره',
+            'has_organization_certificate' => 'گواهینامه فنی و حرفه ای'
         ]);
         $model->title = $this->title;
         $model->sub_title = $this->sub_title;
@@ -178,6 +181,7 @@ class StoreCourse extends BaseComponent
         $model->seo_keywords = $this->seo_keywords;
         $model->seo_description = $this->seo_description;
         $model->standard_code = $this->standard_code;
+        $model->has_organization_certificate = $this->has_organization_certificate;
         $model = $this->courseRepository->save($model);
         $this->tags = array_filter($this->tags);
         $this->organizations = array_filter($this->organizations);

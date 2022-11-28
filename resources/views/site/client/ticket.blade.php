@@ -2,7 +2,7 @@
     <div class="dashboard-menu-toggler btn theme-btn theme-btn-sm lh-28 theme-btn-transparent mb-4 ml-3"><i class="la la-bars mr-1"></i> منو</div>
     <div class="container-fluid">
         <div class="dashboard-heading mb-5">
-            <h3 class="fs-22 font-weight-semi-bold"> پشتیبانی </h3>
+            <h3 class="fs-22 font-weight-semi-bold"> ارسال مدارک </h3>
         </div>
         <div class="dashboard-cards mb-5">
             <form wire:submit.prevent="store()">
@@ -202,6 +202,7 @@
                 @endif
                     <div class="input-box col-lg-12 py-2">
                         <button type="submit" class="btn theme-btn">ذخیره تغییرات</button>
+                        <a href="{{ route('user.tickets') }}" class="btn btn-primary">بازگشت <i class="la la-long-arrow-left"></i></a>
                     </div>
                 </div>
             </form>

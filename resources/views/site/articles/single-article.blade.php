@@ -154,11 +154,11 @@
                             <div class="divider"><span></span></div>
                             @foreach($related_posts as $item)
                             <div class="media media-card border-bottom border-bottom-gray pb-4 mb-4">
-                                <a href="{{ route('course',$item->slug) }}" class="media-img">
+                                <a href="{{ route('article',$item->slug) }}" class="media-img">
                                     <img class="mr-3" src="{{ asset($item->image) }}" alt="{{ $item->title }}" />
                                 </a>
                                 <div class="media-body">
-                                    <h5 class="fs-15"><a href="{{ route('course',$item->slug) }}">{{ $item->title }}</a>
+                                    <h5 class="fs-15"><a href="{{ route('article',$item->slug) }}">{{ $item->title }}</a>
                                     </h5>
                                     <span class="d-block lh-18 py-1 fs-14">{{ $item->user->name }}</span>
                                 </div>

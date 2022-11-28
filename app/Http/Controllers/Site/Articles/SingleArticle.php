@@ -57,7 +57,7 @@ class SingleArticle extends BaseComponent
         $this->page_address = [
             'home' => ['link' => route('home') , 'label' => 'صفحه اصلی'],
             'articles' => ['link' => route('articles') , 'label' => 'مقالات'],
-            'category' => ['link' => route('courses',['category' => $this->article->category_id]) ,'label' => $this->article->category->title],
+            'category' => ['link' => route('article',['category' => $this->article->category_id]) ,'label' => $this->article->category->title],
             'article' => ['link' => '' , 'label' => $this->article->title],
         ];
         $ids = array_value_recursive('id',$this->categoryRepository->find($this->article->category_id)->toArray());
@@ -89,12 +89,12 @@ class SingleArticle extends BaseComponent
         $status = CommentEnum::NOT_CONFIRMED;
         if ($this->article->user_id == auth()->id()) {
             $status = CommentEnum::CONFIRMED;
-        }    
+        }
         $data = [
             'user_id' => auth()->id(),
             'content' => $this->comment,
             'parent_id'=> $this->actionComment ?? null,
-            'status' => $status 
+            'status' => $status
         ];
 
         $comment = $this->articleRepository->newComment($this->article,$data);

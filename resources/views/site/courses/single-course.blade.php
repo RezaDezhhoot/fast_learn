@@ -434,7 +434,7 @@
                                 </li>
                                 <li class="d-flex align-items-center justify-content-between">
                                     <span><i class="la la-bolt mr-2 text-color"></i>امتحان</span> {{
-                                    !is_null($course->quiz) ? 'بعله' : 'خیر' }}
+                                    !is_null($course->quiz) ? 'بله' : 'خیر' }}
                                 </li>
                                 <li class="d-flex align-items-center justify-content-between">
                                     <span><i class="la la-eye mr-2 text-color"></i>درس ها</span> {{
@@ -449,8 +449,13 @@
                                     $course->type_label }}
                                 </li>
                                 <li class="d-flex align-items-center justify-content-between">
-                                    <span><i class="la la-certificate mr-2 text-color"></i>گواهی</span> {{
-                                    (!is_null($course->quiz) && !is_null($course->quiz->certificate)) ? 'بعله' : 'خیر'
+                                    <span><i class="la la-certificate mr-2 text-color"></i>گواهی اختصاصی آموزشگاه</span> {{
+                                    (!is_null($course->quiz) && !is_null($course->quiz->certificate)) ? 'بله' : 'خیر'
+                                    }}
+                                </li>
+                                <li class="d-flex align-items-center justify-content-between">
+                                    <span><i class="la la-certificate mr-2 text-color"></i>گواهی فنی و حرفه ای</span> {{
+                                    (!is_null($course->has_organization_certificate)) ? 'بله' : 'خیر'
                                     }}
                                 </li>
                                 @if (!empty($course->standard_code))

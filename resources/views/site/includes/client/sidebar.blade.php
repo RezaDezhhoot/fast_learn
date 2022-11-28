@@ -19,7 +19,7 @@
         <x-site.client.sidebar-link title="نمونه سوالات من" link="{{ route('user.sample') }}" icon="la la-question pr-2" :active="request()->routeIs(['user.sample'])" />
         {{-- <x-site.client.sidebar-link title=" تمرین های من" link="{{ route('user.homeworks') }}" icon="la la-file-archive pr-2" :active="request()->routeIs('user.homeworks')" /> --}}
         <x-site.client.sidebar-link title=" پیام ها" link="{{ route('user.notifications') }}" icon="la la-bell pr-2" :active="request()->routeIs('user.notifications')" />
-        <x-site.client.sidebar-link title="پشتیبانی" link="{{ route('user.tickets') }}" icon="la la-support pr-2" :active="request()->routeIs(['user.tickets','user.ticket'])" />
+        <x-site.client.sidebar-link title="ارسال مدارک" link="{{ route('user.tickets') }}" icon="la la-support pr-2" :active="request()->routeIs(['user.tickets','user.ticket'])" />
         <x-site.client.sidebar-link title="خروج" link="{{ route('logout') }}" icon="la la-power-off pr-2" :active="request()->routeIs('logout')" />
     </ul>
 </div>

@@ -53,8 +53,8 @@ class IndexCourse extends BaseComponent
         $this->orders = [
             'latest' => 'جدید ترین' ,
             'oldest' => 'قدیمی ترین' ,
-            'expensive' => 'گران ترین',
-            'inexpensive' => 'ارزان ترین',
+//            'expensive' => 'گران ترین',
+//            'inexpensive' => 'ارزان ترین',
             CourseEnum::HOLDING => 'در حال برگذاری' ,
             CourseEnum::FINISHED => 'تکمیل شده' ,
         ];
@@ -70,7 +70,7 @@ class IndexCourse extends BaseComponent
     {
         $courses = $courseRepository->getAllSite(
             $this->q ,$this->orderBy ,$this->type ,$this->category, $this->teacher,$this->property ,
-            $this->organs 
+            $this->organs
         );
         return view('site.courses.index-course',['courses' => $courses])->extends('site.layouts.site.site');
     }
