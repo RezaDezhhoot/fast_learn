@@ -26,7 +26,7 @@
                                 <td>{{ $item->name }}</td>
                                 <td>{{ $item->source }}</td>
                                 <td>{{ $item->difficulty_label }}</td>
-                                <td>{{ $item->category->title }}</td>
+                                <td>{{ $item->category->title ?? '' }}</td>
                                 <td>{{ $item->score }}</td>
                                 <td>
                                     <x-admin.edit-btn href="{{ route('admin.store.question',['edit', $item->id]) }}" />
