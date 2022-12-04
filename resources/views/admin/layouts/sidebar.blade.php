@@ -115,9 +115,9 @@
                     <h4 class="menu-text">بخش ارتباطی</h4>
                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                 </li>
-                {{-- @can('show_events')
+                 @can('show_events')
                     <x-admin.menu-item href="{{route('admin.event')}}" icon="fa fa-clock" :active="request()->routeIs(['admin.event','admin.store.event'])" label="رویداد ها " />
-                @endcan --}}
+                @endcan
                 @can('show_tickets')
                     <x-admin.menu-item href="{{route('admin.ticket')}}" icon="fas fa-ticket-alt" :active="request()->routeIs(['admin.ticket','admin.store.ticket'])" label="تیکت ها ({{$tickets}})" />
                 @endcan
