@@ -12,7 +12,7 @@
                 <x-admin.forms.input with="6" type="text" id="title" label="عنوان*" wire:model.defer="title"/>
                 <x-admin.forms.dropdown with="6" id="status" :data="$data['status']" label="وضعیت*" wire:model.defer="status"/>
                 <x-admin.forms.dropdown with="6" id="type" :data="$data['type']" label="نوع*" wire:model.defer="type"/>
-{{--                <x-admin.forms.dropdown with="6" id="driver" :data="$data['storage']" label="فضای ذخیره سازی*" wire:model.defer="driver"/>--}}
+                <x-admin.forms.dropdown with="6" id="driver" :data="$data['storage']" label="فضای ذخیره سازی*" wire:model.defer="driver"/>
                 <div class="col-12">
                     <fieldset class="border p-4">
                         <legend>فایل </legend>

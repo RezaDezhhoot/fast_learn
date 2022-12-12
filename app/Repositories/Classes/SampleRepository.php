@@ -53,6 +53,8 @@ class SampleRepository implements SampleRepositoryInterface
             if (!$item instanceof Sample)
                 $item = Sample::findOrFail($item);
 
+
+
             if ($disk = getDisk($item->driver)) {
                 if ($disk->exists($item->file)) {
                     if ($item->type == SampleEnum::PRIVATE_TYPE) {
