@@ -26,7 +26,7 @@ class StoreSample extends BaseComponent
 //        $this->driver = StorageEnum::PRIVATE;
         $this->authorizing('show_samples');
         $this->set_mode($action);
-        $this->data['storage'] = getAvailableStorages();
+        $this->data['storage'] = array_flip(getAvailableStorages());
         $this->data['course'] = $this->courseRepository->getAll()->pluck('title','id');
         $this->data['status'] = SampleEnum::getStatus();
         $this->data['type'] = SampleEnum::getType();
@@ -73,7 +73,7 @@ class StoreSample extends BaseComponent
             'title' => ['required','string','max:250','unique:samples,title,'.($this->sample->id ?? 0)],
             'status' => ['required','in:'.implode(',',array_keys(SampleEnum::getStatus()))],
             'type' => ['required','in:'.implode(',',array_keys(SampleEnum::getType()))],
-            'driver' => ['required','in:'.implode(',',array_keys(getAvailableStorages()))],
+            'driver' => ['required','in:'.implode(',',getAvailableStorages())],
             'course' => ['nullable','exists:courses,id'],
             'file' => ['required','string','max:32500'],
             'description' => ['nullable','string','max:154000'],
