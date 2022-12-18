@@ -14,10 +14,10 @@
     <link href="{{asset('admin/css/pages/wizard/wizard-2.rtl.css')}}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="{{asset('admin/plugins/custom/datepicker/persian-datepicker.min.css')}}"/>
     {{-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" /> --}}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <link rel="icon" type="image/png" href="{{ asset($logo) }}">
     <script src="{{asset('admin/js/alpine.min.js')}}" defer></script>
-    <script src="{{asset('admin/js/sweetalert2.js')}}" defer></script>
     <script src="{{asset('admin/js/jquery.min.js')}}" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     @livewireStyles
 

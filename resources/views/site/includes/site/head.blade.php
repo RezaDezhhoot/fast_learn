@@ -28,6 +28,7 @@
     <link rel="stylesheet" href="{{ asset('admin/css/jdate/persianDatepicker-default.css') }}" />
     <!-- end inject -->
     <script src="{{asset('site/js/alpine.min.js')}}" defer></script>
-    <script src="{{asset('site/js/sweetalert2.js')}}" defer></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{{--    <script src="{{asset('site/js/sweetalert2.js')}}" defer></script>--}}
 
 </head>

@@ -48,3 +48,23 @@
         </div>
     </div>
 </div>
+@push('scripts')
+    <script>
+        function deleteItem(id) {
+            Swal.fire({
+                title: 'حذف !',
+                text: 'آیا از حذف اطمینان دارید؟',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'خیر',
+                confirmButtonText: 'بله'
+            }).then((result) => {
+                if (result.value) {
+                @this.call('deleteItem', id)
+                }
+            })
+        }
+    </script>
+@endpush
