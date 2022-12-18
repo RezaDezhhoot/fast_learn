@@ -6,33 +6,33 @@
                 <img class="card-img-top" src="{{ asset($item['image']) }}" alt="{{ $item['title'] }}" />
             </a>
             <div class="course-badge-labels">
-                <div class="course-badge">{{ $item->status_label }}</div>
+                <div class="course-badge">{{ $item['status_label'] }}</div>
                 @if($item['has_reduction'] && $item['base_price'] > 0)
-                    <div class="course-badge blue">٪{{ $item->reduction_percent }}-</div>
+                    <div class="course-badge blue">٪{{ $item['reduction_percent'] }}-</div>
                 @endif
-                <div class="course-badge green">{{ $item->type_label }}</div>
+                <div class="course-badge green">{{ $item['type_label'] }}</div>
             </div>
         </div>
         <!-- end card-image -->
         <div class="card-body">
             <h6 class="ribbon ribbon-blue-bg fs-14 mb-3">
-                <a href="{{ route('courses',['category'=>$item->category->slug]) }}">{{ $item->category->title }}</a>
+                <a href="{{ route('courses',['category'=>$item['category']['slug']]) }}">{{ $item['category']['title'] }}</a>
             </h6>
             <h5 class="card-title"><a href="{{ route('course',$item['slug']) }}">{{ $item['title'] }}</a></h5>
-            @if(!is_null($item->teacher))
-            <p class="card-text"><a href="{{ route('teacher',$item->teacher->id) }}">{{ $item->teacher->user->name ?? '' }}</a></p>
+            @if(!is_null($item['teacher']))
+            <p class="card-text"><a href="{{ route('teacher',$item['teacher']['id']) }}">{{ $item['teacher']->user->name ?? '' }}</a></p>
             @endif
             <div class="rating-wrap d-flex align-items-center py-2">
                 <div class="review-stars">
-                    <span class="rating-number">{{ $item->score }}</span>
-                    @for($i=1; $i<=5;$i++) @if($i <=$item->score)
+                    <span class="rating-number">{{ $item['score'] }}</span>
+                    @for($i=1; $i<=5;$i++) @if($i <=$item['score'])
                         <span class="la la-star"></span>
                         @else
                         <span class="la la-star-o"></span>
                         @endif
                     @endfor
                 </div>
-                <span class="rating-total pl-1">({{$item->sold_count}})</span>
+                <span class="rating-total pl-1">({{$item['sold_count']}})</span>
             </div>
             <!-- end rating-wrap -->
             <div class="d-flex justify-content-between align-items-center">
@@ -60,14 +60,13 @@
                         <h5 class="card-title pb-1"><a href="{{ route('course',$item['slug']) }}">{{ $item['title'] }}</a></h5>
                         <hr>
                         <div class="d-flex align-items-center pb-1">
-                            <h6 class="ribbon fs-14 mr-2">{{ $item->status_label }}</h6>
-                            <small class="text-success font-weight-medium"><span class="font-weight-bold pl-1">{{ $item->updated_at->diffForHumans() }}</span> به روز <span class="font-weight-bold pl-1">شد</span></small>
+                            <h6 class="ribbon fs-14 mr-2">{{ $item['status_label'] }}</h6>
                         </div>
                         <ul class="generic-list-item generic-list-item-bullet generic-list-item--bullet d-flex align-items-center fs-14">
-                            <li>{{ $item->hours }} ساعت در کل</li>
+                            <li>{{ $item['hours'] }} ساعت در کل</li>
                         </ul>
                         <p class="card-text pt-1 fs-14 lh-22">
-                            {!! $item->short_body !!}
+                            {!! $item['short_body'] !!}
                         </p>
                     </div>
                 </div><!-- end card -->

@@ -1,4 +1,4 @@
-<div>
+<div  wire:init="loadMore">
     <x-site.articles.breadcrumbs :data="$page_address" :article="$article" />
 
     <section class="blog-area pt-100px pb-20px">
@@ -196,7 +196,6 @@
 
 </div>
 @push('scripts')
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 <script>
     function reCaptchaCallback(response) {
@@ -213,5 +212,17 @@
         Livewire.on('resetReCaptcha', () => {
             grecaptcha.reset();
         });
+
+    Livewire.on('loadRecaptcha', () => {
+        const script = document.createElement('script');
+
+        script.setAttribute('src', 'https://www.google.com/recaptcha/api.js');
+
+        const start = document.createElement('script');
+
+
+        document.body.appendChild(script);
+        document.body.appendChild(start);
+    });
 </script>
 @endpush

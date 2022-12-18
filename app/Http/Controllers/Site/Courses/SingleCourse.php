@@ -31,7 +31,7 @@ class SingleCourse extends BaseComponent
 {
     use WithFileUploads , AuthorizesRequests;
     public  $course;
-    public  $related_courses = [] , $comments = [] , $recaptcha , $episodes , $user , $commentCount = 10 , $actionComment  , $actionLabel = 'دیدگاه جدید';
+    public  $related_courses = [] , $comments = [] , $recaptcha , $episodes = [] , $user , $commentCount = 10 , $actionComment  , $actionLabel = 'دیدگاه جدید';
     public ?string $api_bucket = null , $local_video , $comment = null , $episode_title = null , $episode_id;
 
     public $homework , $file_path , $homework_file , $homework_description , $homework_recaptcha;
@@ -89,11 +89,13 @@ class SingleCourse extends BaseComponent
         $this->related_courses = $this->courseRepository->whereIn('category_id',$ids,3,true,[['id' , '!=' , $this->course->id]]);
         $this->comments = $this->course->comments;
         $this->courseRepository->increment($this->course,1);
+        $this->episodes = collect($this->course->episodes)->sortBy('view');
+        $this->emit('loadRecaptcha');
+
     }
 
     public function render()
     {
-        $this->episodes = collect($this->course->episodes)->sortBy('view');
 
         return view('site.courses.single-course')->extends('site.layouts.site.site');
     }
@@ -140,6 +142,7 @@ class SingleCourse extends BaseComponent
                         $this->episode_title = $episode->title;
                         $this->local_video = route('storage',[$episode->id,'video']);
                         $this->emit('setVideo',['title' => '1','src' => $this->local_video]);
+                        $this->emit('showVideo');
                     endif;
                     break;
                 case 'file':

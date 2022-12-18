@@ -69,6 +69,11 @@ class SingleArticle extends BaseComponent
         return view('site.articles.single-article')->extends('site.layouts.site.site');
     }
 
+    public function loadMore()
+    {
+        $this->emit('loadRecaptcha');
+    }
+
     public function updatedActionComment($value)
     {
         $this->actionLabel = $value != 'new' ? 'ارسال پاسخ' : 'دیدگاه جدید';
@@ -89,12 +94,12 @@ class SingleArticle extends BaseComponent
         $status = CommentEnum::NOT_CONFIRMED;
         if ($this->article->user_id == auth()->id()) {
             $status = CommentEnum::CONFIRMED;
-        }    
+        }
         $data = [
             'user_id' => auth()->id(),
             'content' => $this->comment,
             'parent_id'=> $this->actionComment ?? null,
-            'status' => $status 
+            'status' => $status
         ];
 
         $comment = $this->articleRepository->newComment($this->article,$data);
