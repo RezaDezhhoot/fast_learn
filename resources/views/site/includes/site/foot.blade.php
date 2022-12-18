@@ -19,11 +19,12 @@
 <script src="{{asset('bower_components/jquery.countdown/dist/jquery.countdown.js')}}"></script>
 <script>
     $(document).ready(function (){
-        $(".showVideo").click(function (){
+
+        Livewire.on('showVideo', data => {
             $('html, body').animate({
                 scrollTop: $("#videoContent").offset().top
             }, 1000);
-        });
+        })
         $(".goToCommentForm").click(function (){
             $('html, body').animate({
                 scrollTop: $("#commentForm").offset().top
@@ -61,6 +62,7 @@
                 }
             ]
         }
+        player.play();
     })
 </script>
 

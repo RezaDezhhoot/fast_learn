@@ -16,42 +16,63 @@ use Artesaos\SEOTools\Facades\TwitterCard;
 
 class Home extends BaseComponent
 {
-    public $content = [] , $starter = [] , $box = [];
+    public  $content , $starter = [] , $box = [] , $raw_content;
+
+    public function __construct($id = null)
+    {
+        parent::__construct($id);
+        $this->settingRepository = app(SettingRepositoryInterface::class);
+    }
+
     public function mount
     (
-        SettingRepositoryInterface $settingRepository ,
         UserRepositoryInterface $userRepository ,
         CertificateRepositoryInterface $certificateRepository ,
         TeacherRepositoryInterface $teacherRepository ,
         QuizRepositoryInterface $quizRepository
     )
     {
-        SEOMeta::setTitle($settingRepository->getRow('title'));
-        SEOMeta::setDescription($settingRepository->getRow('seoDescription'));
-        SEOMeta::addKeyword($settingRepository->getRow('seoKeyword',[]));
+        SEOMeta::setTitle($this->settingRepository->getRow('title'));
+        SEOMeta::setDescription($this->settingRepository->getRow('seoDescription'));
+        SEOMeta::addKeyword($this->settingRepository->getRow('seoKeyword',[]));
         OpenGraph::setUrl(url()->current());
-        OpenGraph::setTitle($settingRepository->getRow('title'));
-        OpenGraph::setDescription($settingRepository->getRow('seoDescription'));
-        TwitterCard::setTitle($settingRepository->getRow('title'));
-        TwitterCard::setDescription($settingRepository->getRow('seoDescription'));
-        JsonLd::setTitle($settingRepository->getRow('title'));
-        JsonLd::setDescription($settingRepository->getRow('seoDescription'));
-        JsonLd::addImage(asset($settingRepository->getRow('logo')));
-        $content = $settingRepository->getRow('homeContent',[]);
-        $this->box = $settingRepository->getRow('homeBox',[]);
+        OpenGraph::setTitle($this->settingRepository->getRow('title'));
+        OpenGraph::setDescription($this->settingRepository->getRow('seoDescription'));
+        TwitterCard::setTitle($this->settingRepository->getRow('title'));
+        TwitterCard::setDescription($this->settingRepository->getRow('seoDescription'));
+        JsonLd::setTitle($this->settingRepository->getRow('title'));
+        JsonLd::setDescription($this->settingRepository->getRow('seoDescription'));
+        JsonLd::addImage(asset($this->settingRepository->getRow('logo')));
+        $this->raw_content = $this->settingRepository->getRow('homeContent',[]);
+        $this->box = $this->settingRepository->getRow('homeBox',[]);
         $send = [];
-        $i = 0;
-        foreach ($content as  $value)
+
+        foreach ($this->raw_content as $key => $value)
         {
             if ($value['category'] <> 'banners')
             {
-                $model = $settingRepository::models()[$value['category']];
-                $send[$i] = $value;
-                $send[$i]['content'] = $model::findMany($value['contentCase']);
-
+                if ($value['type'] == 'slider')
+                {
+                    $model = $this->settingRepository::models()[$value['category']];
+                    $send[$key] = $value;
+                    $send[$key]['content'] = $model::findMany($value['contentCase']);
+                    $send[$key]['content']->each(function($model) use ($value) {
+                        switch ($value['category']) {
+                            case 'courses':
+                                $model->setAppends(['status_label','reduction_percent','hours','price','base_price','has_reduction','type_label','sold_count','score']);
+                                $value['teacher'] = $model->teacher->toArray();
+                                break;
+                            case 'articles':
+                                $model->setAppends(['updated_date','comments_count']);
+                                $value['user'] = $model->user->toArray();
+                                break;
+                        }
+                        $value['category'] = $model->category->toArray();
+                    });
+                } else
+                    $send[$key] = $value;
             } else
-                $send[$i] = $value;
-            $i++;
+                $send[$key] = $value;
         }
         $this->content = array_values(collect($send)->sortBy('view')->toArray());
 
@@ -61,6 +82,22 @@ class Home extends BaseComponent
             'quizzes' => $quizRepository->count(),
             'certificates' => $certificateRepository->count()
         ];
+    }
+
+    public function loadOthers()
+    {
+        foreach ($this->content as $key => $value)
+        {
+            if ($value['category'] <> 'banners')
+            {
+                if ($value['type'] == 'slider')
+                    continue;
+
+                $model = $this->settingRepository::models()[$value['category']];
+                $value['content'] = $model::findMany($value['contentCase']);
+                $this->content[$key] = $value;
+            }
+        }
     }
 
     public function render()

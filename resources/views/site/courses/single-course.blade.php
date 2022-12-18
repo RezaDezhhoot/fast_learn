@@ -52,16 +52,16 @@
                             </div>
                             <div class="curriculum-content">
 
-                                <div id="accordion" class="generic-accordion" wire:ignore>
+                                <div id="accordion" class="generic-accordion" wire:ignore.self>
                                     @if(sizeof($episodes) > 0)
                                     @foreach($episodes as $key => $item)
-                                    <div class="card">
+                                        <div class="card" wire:ignore>
                                         <div class="card-header" id="heading{{$item['id']}}">
                                             <button
                                                 class="btn btn-link d-flex align-items-center justify-content-between"
-                                                data-toggle="collapse" data-target="#collapse{{$item->id}}"
+                                                data-toggle="collapse" data-target="#collapse{{$item['id']}}"
                                                 aria-expanded="{{  $key == 0 ? 'true' : 'false' }}"
-                                                aria-controls="collapse{{$item->id}}">
+                                                aria-controls="collapse{{$item['id']}}">
                                                 <i class="la la-plus"></i>
                                                 <i class="la la-minus"></i>
                                                 <p>
@@ -86,16 +86,16 @@
                                         </div>
                                         <!-- end card-header -->
 
-                                        <div id="collapse{{$item->id}}" class="collapse {{  $key == 0 ? 'show' : '' }}"
-                                            aria-labelledby="heading{{$item->id}}" data-parent="#accordion">
+                                        <div id="collapse{{$item['id']}}" class="collapse {{  $key == 0 ? 'show' : '' }}"
+                                            aria-labelledby="heading{{$item['id']}}" data-parent="#accordion">
                                             @if(auth()->check())
                                             @if((($item['free'] || $course->price == 0) ||
                                             ($user->hasCourse($course->id))))
                                             <div class="card-body pt-2">
-                                                @if(!empty($item->description))
+                                                @if(!empty($item['description']))
                                                 <p class="px-0 text-black">
                                                     <i class="la la-star mr-1"></i>
-                                                    {{ $item->description }}
+                                                    {{ $item['description'] }}
                                                 </p>
                                                 @endif
                                                 <hr>
@@ -117,11 +117,11 @@
                                                     @elseif(!empty($item['local_video']))
                                                     @if($item['allow_show_local_video'])
                                                     <li>
-                                                        <a class="d-flex align-items-center justify-content-between"
+                                                        <a class="d-flex align-items-center justify-content-between showVideo"
                                                             data-toggle="modal" data-target="#previewModal">
                                                             <span
                                                                 wire:click="set_content('show_local_video','{{$item['id']}}')"
-                                                                class="cursor-pointers showVideo">
+                                                                class="cursor-pointers">
                                                                 <i class="la la-play-circle mr-1"></i>
                                                                 نمایش ویدئو
                                                             </span>
@@ -172,7 +172,7 @@
                                                         </a>
                                                     </li>
                                                     @endif
-                                                    @if($item->can_homework)
+                                                    @if($item['can_homework'])
                                                     <li data-toggle="modal" data-target="#homeworkModal">
                                                         <a class="d-flex align-items-center justify-content-between"
                                                             data-toggle="modal" data-target="#previewModal">
@@ -201,9 +201,9 @@
                                     </div>
                                     @endforeach
                                     @else
-                                    <p class="alert alert-info">
-                                        هنوز هیچ درسی منتشر نشده است.
-                                    </p>
+                                        <p class="alert alert-info">
+                                            هنوز هیچ درسی منتشر نشده است.
+                                        </p>
                                     @endif
                                 </div>
                                 <!-- end generic-accordion -->
@@ -570,7 +570,7 @@
                                     <small class="alert d-block p-1 alert-success">فایل ارسال شده است</small>
                                     @endif
                                     @error('homework_file')
-                                    <small class="text-danger">{{$message}}</small>
+                                    <small class="text-danger d-block">{{$message}}</small>
                                     @enderror
                                 </div>
                             </div>
@@ -682,7 +682,6 @@
 </div>
 </div>
 @push('scripts')
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 <script>
     function delete_homework() {

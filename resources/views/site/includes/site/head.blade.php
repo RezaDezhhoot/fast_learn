@@ -11,8 +11,6 @@
 {{--    <script src="https://cdn.plyr.io/3.6.12/plyr.js"></script>--}}
 {{--    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.12/plyr.css" />--}}
     <link rel="stylesheet" href="{{asset('site/library/plyr/plyr.css?v=1.0.1')}}">
-    <link rel="preconnect" href="https://fonts.gstatic.com/" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet" />
 
     <!-- Favicon -->
     <link rel="icon" sizes="16x16" href="{{asset($logo)}}" />
@@ -29,7 +27,7 @@
     <link rel="stylesheet" href="{{ asset('site/css/style.css') }}" />
     <link rel="stylesheet" href="{{ asset('admin/css/jdate/persianDatepicker-default.css') }}" />
     <!-- end inject -->
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+    <script src="{{asset('site/js/alpine.min.js')}}" defer></script>
+    <script src="{{asset('site/js/sweetalert2.js')}}" defer></script>
 
 </head>
