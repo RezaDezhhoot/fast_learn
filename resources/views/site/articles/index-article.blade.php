@@ -81,7 +81,7 @@
                     <div class="text-center mb-3">
                         <img class="mx-auto no-date d-block mt-5" src="{{ asset('site/svg/No-data-cuate.svg') }}"
                             alt="">
-                        <h5 class="mt-3">ما هیچ مقاله ای برای شما پیدا نکردیم!</h5>
+                        <h5 class="mt-3">ما هیچ {{\App\Enums\ArticleEnum::getType()[$type]}} ای برای شما پیدا نکردیم!</h5>
                     </div>
                     @endif
                     {{$articles->links('site.includes.paginate')}}
