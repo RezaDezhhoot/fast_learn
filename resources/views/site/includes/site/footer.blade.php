@@ -4,6 +4,7 @@
             <div class="col-lg-2 responsive-column-half">
                 <div class="footer-item">
                     <h3 class="fs-20 font-weight-semi-bold pb-2">آموزشگاه</h3>
+
                     <div class="divider border-bottom-0"><span></span></div>
                     <ul class="generic-list-item">
                         <li><a href="{{ route('about') }}">درباره ما</a></li>

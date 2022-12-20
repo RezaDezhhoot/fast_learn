@@ -18,8 +18,10 @@ Route::middleware(['auth'])->get('/storage/{episode}/{type}', App\Http\Controlle
 Route::get('/',App\Http\Controllers\Site\Homes\Home::class)->name('home');
 Route::get('/courses',App\Http\Controllers\Site\Courses\IndexCourse::class)->name('courses');
 Route::get('/courses/{slug}',App\Http\Controllers\Site\Courses\SingleCourse::class)->name('course');
+
 Route::get('/articles/{type}',App\Http\Controllers\Site\Articles\IndexArticle::class)->name('articles');
 Route::get('/article/{type}/{slug}',App\Http\Controllers\Site\Articles\SingleArticle::class)->name('article');
+
 Route::get('/contact-us',App\Http\Controllers\Site\Settings\Contact::class)->name('contact');
 Route::get('/about-us',App\Http\Controllers\Site\Settings\About::class)->name('about');
 Route::get('/fag',App\Http\Controllers\Site\Settings\Fag::class)->name('fag');
