@@ -10,7 +10,8 @@
                         <li><a href="{{ route('contact') }}">با ما تماس بگیرید</a></li>
                         <li><a href="{{ route('fag') }}">سوالات متداول</a></li>
                         <li><a href="{{ route('courses') }}">دوره های اموزشی</a></li>
-                        <li><a href="{{ route('articles') }}">مقالات</a></li>
+                        <li><a href="{{ route('articles',\App\Enums\ArticleEnum::ARTICLES) }}">مقالات</a></li>
+                        <li><a href="{{ route('articles',\App\Enums\ArticleEnum::NEWS) }}">اخبار</a></li>
                         {{-- <li><a href="{{ route('teachers') }}">مدریسن</a></li> --}}
                     </ul>
                 </div>

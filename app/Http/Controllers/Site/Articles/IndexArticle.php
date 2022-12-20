@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Site\Articles;
 
+use App\Enums\ArticleEnum;
 use App\Enums\CategoryEnum;
 use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\ArticleRepositoryInterface;
@@ -15,7 +16,7 @@ use Artesaos\SEOTools\Facades\TwitterCard;
 class IndexArticle extends BaseComponent
 {
     public array $categories = [];
-    public ?string $q = null , $category = null;
+    public ?string $q = null , $category = null , $type;
     protected $queryString = ['q','category'];
 
     public function __construct($id = null)
@@ -31,7 +32,7 @@ class IndexArticle extends BaseComponent
         //
     }
 
-    public function mount()
+    public function mount($type)
     {
         SEOMeta::setTitle($this->settingRepository->getRow('title').' مقلات ');
         SEOMeta::setDescription($this->settingRepository->getRow('seoDescription'));
@@ -54,13 +55,14 @@ class IndexArticle extends BaseComponent
         $this->categories = $categories->toArray();
         $this->page_address = [
             'home' => ['link' => route('home') , 'label' => 'صفحه اصلی'],
-            'articles' => ['link' => '' , 'label' => 'مقالات اموزشی']
+            'articles' => ['link' => '' , 'label' => ArticleEnum::getType()[$type]]
         ];
+        $this->type = $type;
     }
 
     public function render()
     {
-        $articles = $this->articleRepository->getAllSite($this->q,$this->category);
+        $articles = $this->articleRepository->getAllSite($this->q,$this->type,$this->category);
         return view('site.articles.index-article',['articles'=>$articles])->extends('site.layouts.site.site');
     }
 }

@@ -12,7 +12,7 @@ use App\Repositories\Interfaces\TagRepositoryInterface;
 class StoreArticle extends BaseComponent
 {
     public $header , $slug , $title , $body , $category , $status = '' , $image , $seo_keywords , $seo_description, $tags = [];
-    public $article;
+    public $article , $type;
     public array $categories = [];
 
     public function __construct($id = null)
@@ -38,12 +38,14 @@ class StoreArticle extends BaseComponent
             $this->seo_description = $this->article->seo_description;
             $this->status = $this->article->status;
             $this->category = $this->article->category_id;
+            $this->type = $this->article->type;
             $this->tags = $this->article->tags->pluck('id','id')->toArray();
         } elseif ($this->mode == self::CREATE_MODE) {
             $this->header = 'مقاله جدید';
         } else abort(404);
         $this->data['category'] = $this->categoryRepository->getAll(CategoryEnum::ARTICLE)->pluck('title','id');
         $this->data['status'] = ArticleEnum::getStatus();
+        $this->data['type'] = ArticleEnum::getType();
         $this->data['tags'] = $this->tagRepository->getAll()->pluck('name','id');
     }
     public function render()
@@ -66,7 +68,7 @@ class StoreArticle extends BaseComponent
             $this->saveInDateBase($this->article);
         elseif ($this->mode == self::CREATE_MODE) {
             $this->saveInDateBase( $this->articleRepository->getNewObject());
-            $this->reset(['slug','title','category','image','body','seo_keywords','seo_description','status']);
+            $this->reset(['slug','title','category','image','body','seo_keywords','seo_description','status','type']);
         }
     }
 
@@ -80,6 +82,7 @@ class StoreArticle extends BaseComponent
             'seo_keywords' => ['required','string','max:250'],
             'seo_description' => ['required','string','max:250'],
             'status' => ['required','in:'.implode(',',array_keys(ArticleEnum::getStatus()))],
+            'type' => ['required','in:'.implode(',',array_keys(ArticleEnum::getType()))],
         ];
         $messages = [
             'title' => 'عنوان',
@@ -89,6 +92,7 @@ class StoreArticle extends BaseComponent
             'seo_keywords' => 'کلمات کلیدی',
             'seo_description' => 'توضیحات سئو',
             'status' => 'وضعیت',
+            'type' => 'نوع',
         ];
         $this->validate($fields,[],$messages);
         $model->title = $this->title;
@@ -98,6 +102,7 @@ class StoreArticle extends BaseComponent
         $model->seo_keywords = $this->seo_keywords;
         $model->seo_description = $this->seo_description;
         $model->status = $this->status;
+        $model->type = $this->type;
         $model->user_id = auth()->id();
         $this->articleRepository->save($model);
         $this->tags = array_filter($this->tags);

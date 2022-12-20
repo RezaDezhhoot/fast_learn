@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\CategoryEnum;
 use App\Traits\Admin\Searchable;
 use Dyrynda\Database\Support\CascadeSoftDeletes;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
@@ -81,15 +82,28 @@ class Category extends Model
     public function getDataTypeAttribute(): array
     {
         return match ($this->type) {
-            CategoryEnum::ARTICLE => ['label' => 'مقاله' , 'count' => $this->article_count , 'route' => 'articles' ],
-            CategoryEnum::QUESTION => ['label' => 'سوال' , 'count' => $this->question_count , 'route' => '' ],
-            default => ['label' => 'دوره' , 'count' => $this->course_count , 'route' => 'courses' ],
+            CategoryEnum::ARTICLE => ['label' => 'مقاله' , 'count' => $this->article_count + $this->contentCount , 'route' => 'articles' ],
+            CategoryEnum::QUESTION => ['label' => 'سوال' , 'count' => $this->question_count + $this->contentCount , 'route' => '' ],
+            default => ['label' => 'دوره' , 'count' => $this->course_count + $this->contentCount , 'route' => 'courses' ],
         };
     }
 
     public function childrenRecursive(): HasMany
     {
         return $this->child()->with('childrenRecursive');
+    }
+
+    public function contentCount():Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                $rel = $this->type == CategoryEnum::COURSE ? 'courses' : 'articles';
+                return $this->childrenRecursive()
+                    ->select('id')
+                    ->withCount($rel)
+                    ->cursor()->sum("{$rel}_count");
+            }
+        );
     }
 
     public function courses(): HasMany

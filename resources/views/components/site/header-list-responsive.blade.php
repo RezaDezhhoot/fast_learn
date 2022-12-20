@@ -3,7 +3,7 @@
         <a href="{{ route('home') }}" class="logo mx-auto"><img class="logo-size" src="{{ asset($logo) }}" alt="لوگو" /></a>
     </div>
     <hr>
-    
+
     <ul class="generic-list-item off-canvas-menu-list pt-2 pb-2 border-bottom border-bottom-gray">
         <li>
             <a href="{{ route('home') }}">صفحه اصلی</a>
@@ -12,7 +12,10 @@
             <a href="{{ route('courses') }}">دوره های آموزشی</a>
         </li>
         <li>
-            <a href="{{route('articles')}}">مقالات </a>
+            <a href="{{route('articles',\App\Enums\ArticleEnum::ARTICLES)}}">مقالات </a>
+        </li>
+        <li>
+            <a href="{{route('articles',\App\Enums\ArticleEnum::NEWS)}}">اخبار </a>
         </li>
         <li>
             <a href="{{route('cart')}}">سبد خرید </a>

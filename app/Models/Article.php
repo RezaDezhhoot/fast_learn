@@ -7,6 +7,7 @@ use App\Enums\CategoryEnum;
 use App\Enums\CommentEnum;
 use App\Traits\Admin\Searchable;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,6 +20,7 @@ use Morilog\Jalali\Jalalian;
  * @property mixed created_at
  * @property mixed updated_at
  * @property mixed status
+ * @property mixed $type
  * @method static latest(string $string)
  * @method static published(bool $active)
  * @method static count()
@@ -86,5 +88,12 @@ class Article extends Model
             ->with(['childrenRecursive' => function($q) {
                 return $q->where('status',CommentEnum::CONFIRMED);
             }])->whereNull('parent_id');
+    }
+
+    public function typeLabel(): Attribute
+    {
+        return  Attribute::make(
+            get: fn() => ArticleEnum::getType()[$this->type]
+        );
     }
 }

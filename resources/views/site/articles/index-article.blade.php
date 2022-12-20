@@ -1,10 +1,10 @@
 <div>
-    <x-site.breadcrumbs :data="$page_address" title="مقالات اموزشی" />
+    <x-site.breadcrumbs :data="$page_address" title="{{\App\Enums\ArticleEnum::getType()[$type]}}" />
     <section class="course-area">
         <div class="container">
             <div class="filter-bar mb-4">
                 <div class="filter-bar-inner d-flex flex-wrap align-items-center justify-content-between">
-                    <p class="fs-14">ما <span class="text-black">{{ $articles->count() }}</span> مقاله برای شما پیدا
+                    <p class="fs-14">ما <span class="text-black">{{ $articles->count() }}</span> {{\App\Enums\ArticleEnum::getType()[$type]}} برای شما پیدا
                         کردیم</p>
                     <div class="d-flex flex-wrap align-items-center">
                     </div>

@@ -20,7 +20,7 @@ class SingleArticle extends BaseComponent
     public  $related_posts , $comments , $recaptcha , $commentCount = 10 ,  $actionComment  , $actionLabel = 'دیدگاه جدید' ;
     public ?string $comment = null;
     public object $article;
-
+    public $type;
     public ?string $q = null;
 
     public function __construct($id = null)
@@ -40,7 +40,7 @@ class SingleArticle extends BaseComponent
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function mount($slug)
+    public function mount($type,$slug)
     {
         $this->article = $this->articleRepository->get([['slug',$slug]],true);
         SEOMeta::setTitle($this->article->title);
@@ -56,13 +56,14 @@ class SingleArticle extends BaseComponent
         JsonLd::addImage(asset($this->settingRepository->getRow('logo')));
         $this->page_address = [
             'home' => ['link' => route('home') , 'label' => 'صفحه اصلی'],
-            'articles' => ['link' => route('articles') , 'label' => 'مقالات'],
-            'category' => ['link' => route('article',['category' => $this->article->category_id]) ,'label' => $this->article->category->title],
+            'articles' => ['link' => route('articles',$type) , 'label' => 'مقالات'],
+            'category' => ['link' => route('articles',[$type,'category' => $this->article->category_id] ) ,'label' => $this->article->category->title],
             'article' => ['link' => '' , 'label' => $this->article->title],
         ];
         $ids = array_value_recursive('id',$this->categoryRepository->find($this->article->category_id)->toArray());
         $this->related_posts = $this->articleRepository->whereIn('category_id',$ids,3,true,[['id' , '!=' , $this->article->id]]);
         $this->comments = $this->article->comments;
+        $this->type = $type;
     }
     public function render()
     {

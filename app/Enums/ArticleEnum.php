@@ -13,6 +13,16 @@ final class ArticleEnum extends Enum
     const DRAFT = 'draft';
     const PUBLISHED = 'published';
 
+    const NEWS = 'news' , ARTICLES = 'articles';
+
+    public static function getType()
+    {
+        return [
+            self::ARTICLES => 'مقالات',
+            self::NEWS => 'اخبار'
+        ];
+    }
+
     public static function getStatus()
     {
         return [

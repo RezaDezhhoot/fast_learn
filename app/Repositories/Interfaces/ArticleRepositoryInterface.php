@@ -8,9 +8,9 @@ use App\Models\Article;
 
 interface ArticleRepositoryInterface
 {
-    public function getAllAdmin($search , $status, $pagination);
+    public function getAllAdmin($search , $status , $type, $pagination);
 
-    public function getAllSite($search = null,$category =null);
+    public function getAllSite($search = null , $type = null,$category =null);
 
     public function delete(Article $article);
 

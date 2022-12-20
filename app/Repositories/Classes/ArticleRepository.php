@@ -9,9 +9,11 @@ use App\Repositories\Interfaces\CategoryRepositoryInterface;
 
 class ArticleRepository  implements ArticleRepositoryInterface
 {
-    public function getAllAdmin($search, $status, $pagination)
+    public function getAllAdmin($search, $status, $type , $pagination)
     {
-        return Article::latest('id')->when($status,function ($query) use ($status){
+        return Article::query()->latest('id')->when($type,function ($q) use ($type) {
+            return $q->where('type',$type);
+        })->when($status,function ($query) use ($status){
             return $query->where('status',$status);
         })->search($search)->paginate($pagination);
     }
@@ -62,9 +64,11 @@ class ArticleRepository  implements ArticleRepositoryInterface
         $article->tags()->sync($tags);
     }
 
-    public function getAllSite($search = null, $category = null)
+    public function getAllSite($search = null, $type = null, $category = null)
     {
-        return Article::published(true)->with('category')->when($category,function ($q) use ($category){
+        return Article::published(true)->with('category')->when($type,function ($q) use ($type) {
+            return $q->where('type',$type);
+        })->when($category,function ($q) use ($category){
             $categoryRepository = app(CategoryRepositoryInterface::class);
             if ($categories = $categoryRepository->get([['slug',$category]],'first')) {
                 $ids = array_value_recursive('id',$categories->toArray());
