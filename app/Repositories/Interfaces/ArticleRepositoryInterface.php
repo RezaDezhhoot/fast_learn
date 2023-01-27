@@ -37,4 +37,6 @@ interface ArticleRepositoryInterface
     public function count();
 
     public function getAll();
+
+    public function download($id);
 }

@@ -8,6 +8,13 @@
                     <div class="card card-item">
                         <div class="card-body">
                             {!! $article->body !!}
+                            @if(!empty($article->file))
+                                <div class="section-block"></div>
+                                <div class="d-flex flex-wrap justify-content-between align-items-center pt-3">
+                                    <h3 class="fs-18 font-weight-semi-bold">دانلود فایل</h3>
+                                    <div wire:click="download()" class="icon-element icon-element-sm shadow-sm cursor-pointer text-success"><i class="la la-download"></i></div>
+                                </div>
+                            @endif
                         </div>
                         <!-- end card-body -->
                     </div>

@@ -86,40 +86,6 @@
                                 <!-- end custom-control -->
                             </div>
                         </div>
-                        <div class="card card-item">
-                            <div class="card-body">
-                                <h3 class="card-title fs-18 pb-2">بر اساس سازمان ها</h3>
-                                <div class="divider"><span></span></div>
-                                @foreach($data['organs'] as $key => $item)
-                                <div class="custom-control custom-checkbox mb-1 fs-15">
-                                    <input type="radio" name="organs" class="custom-control-input"
-                                        wire:model="organs" value="{{$item['id']}}" id="{{$item['id']}}_organs" required="" />
-                                    <label class="custom-control-label custom--control-label text-black"
-                                        for="{{$item['id']}}_organs"> {{$item['title']}} </label>
-                                    @if(!empty($item['child']))
-                                        @foreach($item['child'] as $key => $value)
-                                            <div class="custom-control custom-checkbox mb-1 fs-15">
-                                                <input type="radio" name="organs" wire:model="organs" value="{{ $value['id'] }}"
-                                                    class="custom-control-input" id="{{$value['id']}}_organs" required="" />
-                                                <label class="custom-control-label custom--control-label text-black"
-                                                    for="{{$value['id']}}_organs"> <span
-                                                        class="text-gray">{{$value['title']}}</span>
-                                                </label>
-                                            </div>
-                                        @endforeach
-                                    @endif
-                                </div>
-                                @endforeach
-                                <div class="custom-control custom-checkbox mb-1 fs-15">
-                                    <input type="radio" name="organs" class="custom-control-input"
-                                        wire:model="organs" value="" id="all_organs" required="" />
-                                    <label class="custom-control-label custom--control-label text-black"
-                                        for="all_organs"> همه </label>
-                                </div>
-                                <!-- end custom-control -->
-                            </div>
-                        </div>
-                        
                         <!-- end card -->
                     </div>
                     <!-- end sidebar -->

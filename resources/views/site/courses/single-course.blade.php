@@ -449,9 +449,7 @@
                                     $course->type_label }}
                                 </li>
                                 <li class="d-flex align-items-center justify-content-between">
-                                    <span><i class="la la-certificate mr-2 text-color"></i>گواهی اختصاصی آموزشگاه</span> {{
-                                    (!is_null($course->quiz) && !is_null($course->quiz->certificate)) ? 'بله' : 'خیر'
-                                    }}
+                                    <span><i class="la la-certificate mr-2 text-color"></i>گواهی اختصاصی آموزشگاه</span> بله
                                 </li>
                                 <li class="d-flex align-items-center justify-content-between">
                                     <span><i class="la la-certificate mr-2 text-color"></i>گواهی فنی و حرفه ای</span> {{

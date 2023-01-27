@@ -108,4 +108,9 @@ class SingleArticle extends BaseComponent
     {
         $this->commentCount = $this->commentCount + 10;
     }
+
+    public function download()
+    {
+        return $this->articleRepository->download($this->article);
+    }
 }

@@ -19,6 +19,22 @@
             <x-admin.forms.full-text-editor id="body" label="محتوا*" wire:model.defer="body"/>
             <x-admin.forms.text-area label="کلمات کلیدی*" help="کلمات را با کاما از هم جدا کنید" wire:model.defer="seo_keywords" id="seo_keywords" />
             <x-admin.forms.text-area label="توضیحات سئو*" wire:model.defer="seo_description" id="seo_description" />
+            <x-admin.form-section class="col-12" label="فایل">
+                <table class=" table table-bordered">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <x-admin.forms.dropdown id="driver" :data="$data['storage']"
+                                                    label="  فضای ذخیره سازی فایل" wire:model.defer="driver" />
+                        </td>
+                        <td>
+                            <x-admin.forms.lfm-standalone id="file" label="فایل" :file="$file" type="image"
+                                                          required="true" wire:model="file" />
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </x-admin.form-section>
             <x-admin.form-section label="تگ ها">
                 <div class="row">
                     @foreach($data['tags'] as $key => $value)

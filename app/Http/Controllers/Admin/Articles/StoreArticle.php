@@ -8,11 +8,12 @@ use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\Interfaces\ArticleRepositoryInterface;
 use App\Repositories\Interfaces\TagRepositoryInterface;
+use Illuminate\Validation\Rule;
 
 class StoreArticle extends BaseComponent
 {
     public $header , $slug , $title , $body , $category , $status = '' , $image , $seo_keywords , $seo_description, $tags = [];
-    public $article , $type;
+    public $article , $type , $file , $driver;
     public array $categories = [];
 
     public function __construct($id = null)
@@ -40,6 +41,8 @@ class StoreArticle extends BaseComponent
             $this->category = $this->article->category_id;
             $this->type = $this->article->type;
             $this->tags = $this->article->tags->pluck('id','id')->toArray();
+            $this->file = $this->article->file;
+            $this->driver = $this->article->driver;
         } elseif ($this->mode == self::CREATE_MODE) {
             $this->header = 'مقاله جدید';
         } else abort(404);
@@ -47,6 +50,7 @@ class StoreArticle extends BaseComponent
         $this->data['status'] = ArticleEnum::getStatus();
         $this->data['type'] = ArticleEnum::getType();
         $this->data['tags'] = $this->tagRepository->getAll()->pluck('name','id');
+        $this->data['storage'] = array_flip(getAvailableStorages());
     }
     public function render()
     {
@@ -68,7 +72,7 @@ class StoreArticle extends BaseComponent
             $this->saveInDateBase($this->article);
         elseif ($this->mode == self::CREATE_MODE) {
             $this->saveInDateBase( $this->articleRepository->getNewObject());
-            $this->reset(['slug','title','category','image','body','seo_keywords','seo_description','status','type']);
+            $this->reset(['slug','title','category','image','body','seo_keywords','seo_description','status','type','file','driver']);
         }
     }
 
@@ -83,6 +87,8 @@ class StoreArticle extends BaseComponent
             'seo_description' => ['required','string','max:250'],
             'status' => ['required','in:'.implode(',',array_keys(ArticleEnum::getStatus()))],
             'type' => ['required','in:'.implode(',',array_keys(ArticleEnum::getType()))],
+            'file' => ['nullable','max:9000'],
+            'driver' => ['nullable',Rule::in(getAvailableStorages())]
         ];
         $messages = [
             'title' => 'عنوان',
@@ -93,6 +99,8 @@ class StoreArticle extends BaseComponent
             'seo_description' => 'توضیحات سئو',
             'status' => 'وضعیت',
             'type' => 'نوع',
+            'file' => 'فایل',
+            'driver' => 'فضای ذخیره سازی'
         ];
         $this->validate($fields,[],$messages);
         $model->title = $this->title;
@@ -103,6 +111,8 @@ class StoreArticle extends BaseComponent
         $model->seo_description = $this->seo_description;
         $model->status = $this->status;
         $model->type = $this->type;
+        $model->file = $this->file;
+        $model->driver = $this->driver;
         $model->user_id = auth()->id();
         $this->articleRepository->save($model);
         $this->tags = array_filter($this->tags);

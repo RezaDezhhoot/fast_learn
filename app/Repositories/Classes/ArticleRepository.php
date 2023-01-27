@@ -6,6 +6,7 @@ namespace App\Repositories\Classes;
 use App\Models\Article;
 use App\Repositories\Interfaces\ArticleRepositoryInterface;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
+use Illuminate\Support\Facades\Log;
 
 class ArticleRepository  implements ArticleRepositoryInterface
 {
@@ -101,5 +102,23 @@ class ArticleRepository  implements ArticleRepositoryInterface
     public function count()
     {
         return Article::count();
+    }
+
+    public function download($item)
+    {
+        try {
+            if (!$item instanceof Article)
+                $item = Article::findOrFail($item);
+
+            if ($disk = getDisk($item->driver)) {
+                if ($disk->exists($item->file)) {
+                    return $disk->download($item->file);
+                }
+            }
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+        }
+
+        return false;
     }
 }
