@@ -33,10 +33,13 @@ class Checkout extends BaseComponent
     public $address , $user , $phone , $name , $gateway , $gateways = [] ;
     public $description ;
     public $useWallet = false;
-    public $walletAmount = 0;
+    private $walletAmount = 0;
     public $useVoucher = false;
     public $voucherCode;
-    public $voucherAmount = 0;
+    private $voucherAmount = 0;
+
+    public $voucherAmountShow = 0;
+    public $walletAmountShow = 0;
 
     public function __construct($id = null)
     {
@@ -85,6 +88,8 @@ class Checkout extends BaseComponent
 
     public function render()
     {
+        $this->walletAmountShow = $this->walletAmount;
+        $this->voucherAmountShow = $this->voucherAmount;
         $cartContent = Cart::content();
         return view('site.carts.checkout',['cartContent'=>$cartContent])->extends('site.layouts.site.site');
     }

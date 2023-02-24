@@ -169,7 +169,7 @@ class Auth extends BaseComponent
         return false;
     }
 
-    public function sendOTP($property,$user,$code , $action)
+    private function sendOTP($property,$user,$code , $action)
     {
         $this->resetErrorBag();
         $sendRepository =  $this->sendRepository;

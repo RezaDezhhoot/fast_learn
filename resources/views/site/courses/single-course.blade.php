@@ -538,7 +538,7 @@
                     </button>
                 </div>
                 <div>
-                    @if(!is_null($homework) && empty($homework->result))
+                    @if(!is_null($homework_show) && empty($homework_show->result))
                     <button class="btn btn-sm btn-outline-danger" onclick="delete_homework()"><i
                             class="la la-trash"></i> حذف این تمرین</button>
                     @endif
@@ -557,7 +557,7 @@
                                     x-on:livewire-upload-error="isUploading = false"
                                     x-on:livewire-upload-progress="progress = $event.detail.progress"
                                     class="custom-file my-4">
-                                    <input {{ !is_null($homework) ? 'disabled' : '' }} type="file"
+                                    <input {{ !is_null($homework_show) ? 'disabled' : '' }} type="file"
                                         class="custom-file-input" wire:model="homework_file" id="homework_file">
                                     <label class="custom-file-label" for="homework_file">انتخاب فایل</label>
                                     <div class="mt-2" x-show="isUploading">
@@ -566,7 +566,7 @@
                                     </div>
                                     <small class="text-info">حداقل حجم مجاز : 2 مگابایت</small>
                                     <small class="text-info">jpg,jpeg,png,pdf,zip,rar</small>
-                                    @if(!is_null($homework) && !is_null($homework->file))
+                                    @if(!is_null($homework_show) && !is_null($homework_show->file))
                                     <small class="alert d-block p-1 alert-success">فایل ارسال شده است</small>
                                     @endif
                                     @error('homework_file')
@@ -578,7 +578,7 @@
                         <div class="input-box col-lg-12">
                             <label class="label-text">توضیحات</label>
                             <div class="form-group">
-                                <textarea {{ !is_null($homework) ? 'disabled' : '' }}
+                                <textarea {{ !is_null($homework_show) ? 'disabled' : '' }}
                                     wire:model.defer="homework_description" class="form-control form--control pl-3"
                                     name="homework_description" placeholder="توضیحات" rows="5"></textarea>
                             </div>
@@ -594,15 +594,15 @@
                             @error('homework_recaptcha')<span class="invalid-feedback d-block">{{ $message
                                 }}</span>@enderror
                         </div>
-                        <div class="btn-box col-lg-12 {{ !is_null($homework) ? 'd-none' : '' }}">
-                            <button {{ !is_null($homework) ? 'disabled' : '' }} class="btn theme-btn"
+                        <div class="btn-box col-lg-12 {{ !is_null($homework_show) ? 'd-none' : '' }}">
+                            <button {{ !is_null($homework_show) ? 'disabled' : '' }} class="btn theme-btn"
                                 type="submit">ارسال تمرین</button>
                         </div>
-                        @if(!is_null($homework) && !is_null($homework->result))
+                        @if(!is_null($homework_show) && !is_null($homework_show->result))
                         <div class="col-12">
                             <h6>نتیجه :</h6>
                             <small>
-                                @for($i=1; $i<=5; $i++) @if($i <=$homework->score)
+                                @for($i=1; $i<=5; $i++) @if($i <=$homework_show->score)
                                     <span class="la la-star"></span>
                                     @else
                                     <span class="la la-star-o"></span>
@@ -610,7 +610,7 @@
                                     @endfor
                             </small>
                             <p class="mr-1">
-                                {!! $homework->result !!}
+                                {!! $homework_show->result !!}
                             </p>
                         </div>
                         @endif

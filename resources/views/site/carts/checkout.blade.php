@@ -15,15 +15,15 @@
                                 </li>
                                 <li class="d-flex align-items-center justify-content-between font-weight-semi-bold">
                                     <span class="text-black">کد تخفیف : </span>
-                                    <span>{{ number_format($voucherAmount) }} تومان</span>
+                                    <span>{{ number_format($voucherAmountShow) }} تومان</span>
                                 </li>
                                 <li class="d-flex align-items-center justify-content-between font-weight-semi-bold">
                                     <span class="text-black">کیف پول : </span>
-                                    <span>{{ number_format($walletAmount) }} تومان</span>
+                                    <span>{{ number_format($walletAmountShow) }} تومان</span>
                                 </li>
                                 <li class="d-flex align-items-center justify-content-between font-weight-bold">
                                     <span class="text-black">مجموع: </span>
-                                    <span>{{number_format(App\Http\Controllers\Cart\Facades\Cart::total($walletAmount,$voucherAmount,0))}} تومان</span>
+                                    <span>{{number_format(App\Http\Controllers\Cart\Facades\Cart::total($walletAmountShow,$voucherAmountShow,0))}} تومان</span>
                                 </li>
                             </ul>
                             <div class="btn-box border-top border-top-gray pt-3">
