@@ -62,7 +62,7 @@
 {{--                            </div>--}}
                             <!-- end input-box -->
                             <div class="btn-box">
-                                @if($auth_type != 'none')
+                                @if($auth_type != \App\Enums\NotificationEnum::NONE_METHOD)
                                     @if(!$sent)
                                         <p wire:click="sendVerificationCode" class=" mt-2 cursor-pointers font-12 vazir">ارسال رمز یکبار مصرف</p>
                                     @else

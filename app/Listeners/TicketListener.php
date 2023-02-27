@@ -3,12 +3,12 @@
 namespace App\Listeners;
 
 use App\Enums\NotificationEnum;
-use App\Events\AuthenticationEvent;
+use App\Enums\TicketEnum;
+use App\Events\TicketEvent;
 use App\Repositories\Interfaces\NotificationRepositoryInterface;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
 
-
-class SendAuthenticationNotify
+class TicketListener
 {
     /**
      * Create the event listener.
@@ -23,21 +23,25 @@ class SendAuthenticationNotify
     /**
      * Handle the event.
      *
-     * @param AuthenticationEvent $event
+     * @param  \App\Events\TicketEvent  $event
      * @return void
      */
-    public function handle(AuthenticationEvent $event)
+    public function handle(TicketEvent $event)
     {
         $SettingRepository = app(SettingRepositoryInterface::class);
-        $raw_text =  $SettingRepository->getRow('auth_login');
+        $raw_text = match ($event->ticket->status){
+            TicketEnum::ADMIN_SENT => $SettingRepository->getRow('ticket_new'),
+            TicketEnum::ANSWERED => $SettingRepository->getRow('ticket_answer'),
+            default => null
+        };
         if (!empty($raw_text))
         {
-            $text = custom_text('auth',$raw_text,[
-                $event->user->name,$event->user->status_label
+            $text = custom_text('tickets',$raw_text,[
+                $event->ticket->subject,$event->ticket->priority_label,$event->ticket->user->name
             ]);
-            $subject_label ='ورود به ناحیه کاربری';
+            $subject_label = 'پشتیبانی';
             app(NotificationRepositoryInterface::class)
-                ->send($event->user, NotificationEnum::AUTH, $subject_label, $text, 'emails.login', $event->user->id,
+                ->send($event->ticket->user, NotificationEnum::TICKET, $subject_label, $text, 'emails.ticket', $event->ticket->user->id,
                     [
                         'text' => $text,
                         'name' => $SettingRepository->getRow('name'),

@@ -5,12 +5,14 @@ namespace App\Models;
 use App\Enums\ReductionEnum;
 use App\Enums\StorageEnum;
 use App\Traits\Admin\Searchable;
+use Dyrynda\Database\Support\CascadeSoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property mixed course
@@ -26,7 +28,9 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  */
 class Episode extends Model
 {
-    use HasFactory , Searchable;
+    use HasFactory , Searchable , SoftDeletes , CascadeSoftDeletes;
+
+    protected $cascadeDeletes = ['homeworks','transcripts'];
 
     protected $guarded = ['id'];
 

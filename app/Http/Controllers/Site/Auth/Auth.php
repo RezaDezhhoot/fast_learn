@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Site\Auth;
 
+use App\Enums\NotificationEnum;
 use App\Enums\UserEnum;
 use App\Events\AuthenticationEvent;
+use App\Events\OTPEvent;
 use App\Events\RegisterEvent;
 use App\Repositories\Interfaces\OtpRepositoryInterface;
 use App\Repositories\Interfaces\SendRepositoryInterface;
@@ -19,7 +21,6 @@ use Exception;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\BaseComponent;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Auth as Authentication;
 use App\Mail\AuthenticationMail as AuthMailer;
@@ -148,7 +149,7 @@ class Auth extends BaseComponent
         if ($this->sent && $this->checkTimer())
             return $this->addError($property,'رمز یکبار مصرف قبلا برای شما ارسال شده است.');
 
-        if (rateLimiter(value:$this->{$property}."_{$action}_code",max_tries: 45))
+        if (rateLimiter(value:$this->{$property}."_{$action}_code",max_tries: 5))
         {
             $this->resetInputs();
             return
@@ -174,26 +175,21 @@ class Auth extends BaseComponent
         $this->resetErrorBag();
         $sendRepository =  $this->sendRepository;
         $ok = false;
-        if ($this->auth_type == 'otp' ){
-            try {
+        try {
+            if ($this->auth_type == NotificationEnum::SMS_METHOD){
                 $sendRepository->sendCode($code,$this->phone);
                 $this->passwordLabel = 'رمز ارسال شده را وارد نماید';
                 $ok = true;
-            } catch (Exception $e) {
-                Log::error($e->getMessage());
-                $this->addError("$property",'خطا در هنگام ارسال رمز');
-            }
-        } elseif ($this->auth_type == 'email') {
-            try {
-                Mail::to($user->email)->send(new AuthMailer($user,$code,UserEnum::AUTHENTICATE_EVENT));
+            } elseif ($this->auth_type == NotificationEnum::EMAIL_METHOD) {
+                $sendRepository->sendEmail(new AuthMailer($user,$code),$user->email);
                 $this->passwordLabel = 'رمز ایمیل شده را وارد نماید';
                 $ok = true;
-            } catch (\Exception $e) {
-                Log::error($e->getMessage());
-                $this->addError("$property",'خطا در هنگام ارسال رمز');
+            } else {
+                return false;
             }
-        } else {
-            return false;
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            $this->addError("$property",'خطا در هنگام ارسال رمز');
         }
 
         if ($ok) {

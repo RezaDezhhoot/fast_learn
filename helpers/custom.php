@@ -50,3 +50,13 @@ function emptyToNull($value)
 
     return $value;
 }
+
+function custom_text($key , $raw_text = '' ,$values = [])
+{
+    $SettingRepository = app(SettingRepositoryInterface::class);
+
+    return str_replace(array_keys($SettingRepository::variables()[$key]),
+        $values,
+        $raw_text
+    );
+}

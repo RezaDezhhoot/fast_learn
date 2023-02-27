@@ -43,7 +43,7 @@ class ContactSetting extends BaseComponent
         $this->authorizing('edit_settings_contactUs');
         $this->validate(
             [
-                'googleMap' => ['nullable', 'string','max:10000'],
+                'googleMap' => ['nullable', 'string','max:1000000'],
                 'contactText' => ['nullable','string','max:10000'],
                 'tel' => ['required','string','max:40'],
                 'address' => ['required','string','max:250'],

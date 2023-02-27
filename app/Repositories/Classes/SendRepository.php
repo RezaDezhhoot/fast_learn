@@ -10,7 +10,9 @@ use App\Repositories\Interfaces\SettingRepositoryInterface;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Contracts\Mail\Mailable as MailableContract;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class SendRepository implements SendRepositoryInterface
 {
@@ -92,5 +94,10 @@ class SendRepository implements SendRepositoryInterface
         } catch (GuzzleException|Exception  $e) {
             return "ERROR";
         }
+    }
+
+    public function sendEmail(MailableContract $mailable, $email)
+    {
+        Mail::to($email)->send($mailable);
     }
 }

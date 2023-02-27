@@ -9,10 +9,8 @@
             <x-admin.forms.dropdown id="status" :data="$data['status']" label="وضعیت" wire:model="status"/>
             @include('admin.layouts.advance-table')
             <div class="col-12 py-4">
-                <button wire:loading.attr="disabled" wire:click="retry_jobs" class="btn btn-outline-info"> اماده سازی مجدد رویداد های ناموفق همه رویداد ها</button>
                 <button wire:loading.attr="disabled" onclick="deleteGroup('jobs')" class="btn btn-outline-danger">پاک سازی رویداد های اماده همه رویداد ها</button>
                 <button wire:loading.attr="disabled" onclick="deleteGroup('failed_jobs')" class="btn btn-outline-danger">پاک سازی رویداد های ناموفق رویداد همه ها</button>
-                
             </div>
             <div class="col-12 py-2">
                 <span class="text-primary">رویداد های اماده : {{ $jobs }}</span>

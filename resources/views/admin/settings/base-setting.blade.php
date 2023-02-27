@@ -63,20 +63,28 @@
             <x-admin.form-section  label="روش ارسال کد تایید احراز هویت ">
                 <div class="border p-3">
                     <div class="row">
-                        <x-admin.forms.radio help="توجه داشته باشید سرویس OTP باید روی پنل پیامکی شما فعال باشد" name="auth_type" value="otp" id="otp"  label="ارسال اس ام اس (سرویس OTP)" wire:model="auth_type" />
-                        <x-admin.forms.radio help="ارسال ایمیل با استفاده از سرویس SMTP انجام می شود" name="auth_type" value="email" id="email"  label="ارسال ایمیل" wire:model="auth_type" />
-                        <x-admin.forms.radio help="عدم ارسال اعلان احراز هویت" name="auth_type" value="none" id="none"  label="غیر فعال" wire:model="auth_type" />
+                        <x-admin.forms.radio help="توجه داشته باشید سرویس OTP باید روی پنل پیامکی شما فعال باشد" name="auth_type" value="{{\App\Enums\NotificationEnum::SMS_METHOD}}" id="otp"  label="ارسال اس ام اس (سرویس OTP)" wire:model="auth_type" />
+                        <x-admin.forms.radio help="ارسال ایمیل با استفاده از سرویس SMTP انجام می شود" name="auth_type" value="{{\App\Enums\NotificationEnum::EMAIL_METHOD}}" id="email"  label="ارسال ایمیل" wire:model="auth_type" />
+                        <x-admin.forms.radio help="عدم ارسال اعلان احراز هویت" name="auth_type" value="{{\App\Enums\NotificationEnum::NONE_METHOD}}" id="none"  label="غیر فعال" wire:model="auth_type" />
                     </div>
                 </div>
             </x-admin.form-section>
-
             <x-admin.form-section  label="روش ارسال کلیه اعلان ها ">
                 <div class="border p-3">
                     <div class="row">
-                        <x-admin.forms.radio name="send_type" value="sms" id="send_otp"  label="ارسال اس ام اس " wire:model.defer="send_type" />
-                        <x-admin.forms.radio help="ارسال ایمیل با استفاده از سرویس SMTP انجام می شود" name="send_type" value="email" id="send_email"  label="ارسال ایمیل" wire:model.defer="send_type" />
-                        <x-admin.forms.radio help=" اعلان ها به صورت پیشفرض به وسیله نوتیفیکشن های داخلی ارسال می شوند" name="send_type" value="none" id="send_none"  label="غیر فعال" wire:model="send_type" />
+                        <x-admin.forms.radio name="send_type" value="{{\App\Enums\NotificationEnum::SMS_METHOD}}" id="send_otp"  label="ارسال اس ام اس " wire:model.defer="send_type" />
+                        <x-admin.forms.radio help="ارسال ایمیل با استفاده از سرویس SMTP انجام می شود" name="send_type" value="{{\App\Enums\NotificationEnum::EMAIL_METHOD}}" id="send_email"  label="ارسال ایمیل" wire:model.defer="send_type" />
+                        <x-admin.forms.radio  name="send_type" value="{{\App\Enums\NotificationEnum::BOTH_METHODS}}" id="send_both"  label="ارسال همزمان ایمیل و sms" wire:model.defer="send_type" />
+                        <x-admin.forms.radio help=" اعلان ها به صورت پیشفرض به وسیله نوتیفیکشن های داخلی ارسال می شوند" name="send_type" value="{{\App\Enums\NotificationEnum::NONE_METHOD}}" id="send_none"  label="غیر فعال" wire:model="send_type" />
 
+                    </div>
+                </div>
+            </x-admin.form-section>
+            <x-admin.form-section  label="زمان ارسال اعلان ها">
+                <div class="border p-3">
+                    <div class="row">
+                        <x-admin.forms.radio name="notify_should_be_queueable" help="توجه : این قابلیت روی هاست اشتراکی پشتیبانی نمی شود" value="1" id="notify_should_be_queueable"  label="اعلان ها در صف ارسال قرار بگیرند" wire:model.defer="notify_should_be_queueable" />
+                        <x-admin.forms.radio  name="notify_should_be_queueable" value="0" id="notify_send_now"  label="ارسال آنی اعلان" wire:model.defer="notify_should_be_queueable" />
                     </div>
                 </div>
             </x-admin.form-section>

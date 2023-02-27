@@ -20,11 +20,10 @@ class AuthenticationMail extends Mailable
      * @return void
      */
     public $user , $text , $event;
-    public function __construct($user,$text,$event)
+    public function __construct($user,$text)
     {
         $this->user = $user;
         $this->text = $text;
-        $this->event = $event;
     }
 
     /**
@@ -40,23 +39,9 @@ class AuthenticationMail extends Mailable
             'user'=> $this->user,
             'name' => $SettingRepository->getRow('name')
         ];
-        $email = $this->from($SettingRepository->getRow('email_username'),$data['name']);
-
-        try {
-            return match ($this->event) {
-                UserEnum::LOGIN_EVENT => $email->subject('ورود به ناحیه کاربری')
-                    ->view('emails.login', $data),
-
-                UserEnum::AUTHENTICATE_EVENT => $email->subject('احراز هویت')
-                    ->view('emails.authentication',$data),
-
-                UserEnum::REGISTER_EVENT => $email->subject('ثبت نام')
-                    ->view('emails.register',$data)
-            };
-        } catch (\Exception $e)
-        {
-            Log::error($e->getMessage());
-            return false;
-        }
+        return $this->from($SettingRepository
+            ->getRow('email_username'),$data['name'])
+            ->subject('احراز هویت')
+            ->view('emails.authentication',$data);
     }
 }

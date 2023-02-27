@@ -15,7 +15,7 @@
                                 <div class="d-flex flex-wrap align-items-center justify-content-between pb-1">
                                     <h5>{{ $item->user->id == auth()->id() ? 'شما' : $item->user->name }}</h5>
                                     <small>
-                                        <a href="{{ route($item->model,$item->commentable->slug) }}">{{ $item->for_label.' '.$item->commentable->title }}</a>
+                                        <a>{{ $item->for_label.' '.($item->commentable_data['title'] ?? '') }}</a>
                                     </small>
                                 </div>
                                 <span class="d-block lh-18 pb-2">{{ $item->created_at->diffForHumans() }}</span>

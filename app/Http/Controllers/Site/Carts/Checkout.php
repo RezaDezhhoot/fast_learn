@@ -294,6 +294,9 @@ class Checkout extends BaseComponent
      */
     public function payment(): bool|Redirector|string|Application|RedirectResponse|MessageBag
     {
+        $this->calculatePrice();
+        $this->checkVoucherCode();
+
         $this->description = ($this->description == '') ? null : $this->description;
 
         if (sizeof(Cart::content()) == 0)

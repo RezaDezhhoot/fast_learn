@@ -29,4 +29,6 @@ interface CommentRepositoryInterface
     public function getUserComments($where = [],$active = true);
 
     public function findTeacher($id);
+
+    public static function observe();
 }

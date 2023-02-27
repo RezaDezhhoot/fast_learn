@@ -60,7 +60,8 @@ class Home extends BaseComponent
                         switch ($value['category']) {
                             case 'courses':
                                 $model->setAppends(['status_label','reduction_percent','hours','price','base_price','has_reduction','type_label','sold_count','score']);
-                                $value['teacher'] = $model->teacher->toArray();
+                                if (!is_null($model->teacher))
+                                    $value['teacher'] = $model->teacher->toArray();
                                 break;
                             case 'articles':
                                 $model->setAppends(['updated_date','comments_count']);
