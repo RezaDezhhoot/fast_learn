@@ -83,7 +83,7 @@
             <x-admin.form-section  label="زمان ارسال اعلان ها">
                 <div class="border p-3">
                     <div class="row">
-                        <x-admin.forms.radio name="notify_should_be_queueable" help="توجه : این قابلیت روی هاست اشتراکی پشتیبانی نمی شود" value="1" id="notify_should_be_queueable"  label="اعلان ها در صف ارسال قرار بگیرند" wire:model.defer="notify_should_be_queueable" />
+                        <x-admin.forms.radio name="notify_should_be_queueable" help="توجه : این قابلیت روی هاست اشتراکی توصیه نمی شود" value="1" id="notify_should_be_queueable"  label="اعلان ها در صف ارسال قرار بگیرند" wire:model.defer="notify_should_be_queueable" />
                         <x-admin.forms.radio  name="notify_should_be_queueable" value="0" id="notify_send_now"  label="ارسال آنی اعلان" wire:model.defer="notify_should_be_queueable" />
                     </div>
                 </div>
@@ -91,8 +91,8 @@
             <x-admin.form-section  label="زمان پردازش ازمون ها">
                 <div class="border p-3">
                     <div class="row">
-                        <x-admin.forms.radio name="exam_should_be_queueable" help="توجه : این قابلیت روی هاست اشتراکی پشتیبانی نمی شود" value="1" id="exam_should_be_queueable"  label="ازمون ها در صف پردازش قرار بگیرند" wire:model.defer="exam_should_be_queueable" />
-                        <x-admin.forms.radio  name="exam_should_be_queueable" value="0" id="notify_send_now"  label="پردازش آنی ازمون" wire:model.defer="exam_should_be_queueable" />
+                        <x-admin.forms.radio name="exam_should_be_queueable" help="توجه : این قابلیت روی هاست اشتراکی توصیه نمی شود" value="1" id="exam_should_be_queueable"  label="ازمون ها در صف پردازش قرار بگیرند" wire:model.defer="exam_should_be_queueable" />
+                        <x-admin.forms.radio  name="exam_should_be_queueable" value="0" id="exam_now"  label="پردازش آنی ازمون" wire:model.defer="exam_should_be_queueable" />
                     </div>
                 </div>
             </x-admin.form-section>
