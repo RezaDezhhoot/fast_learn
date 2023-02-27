@@ -10,6 +10,7 @@ final class JobEnum extends Enum
     const EMAIL = 'email';
     const START_EVENT = 'event';
     const DEFAULT = 'default';
+    const EXAM = 'exam';
 
     public static function getMainJobCategories(): array
     {

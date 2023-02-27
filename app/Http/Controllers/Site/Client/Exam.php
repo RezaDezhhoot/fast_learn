@@ -27,7 +27,7 @@ use Morilog\Jalali\Jalalian;
 class Exam extends BaseComponent
 {
     use WithPagination;
-    public $transcript , $change_choice = 12 , $question_count;
+    public $transcript , $change_choice = 0 , $question_count;
     public array $answers = [];
     public mixed $user;
 
@@ -57,9 +57,19 @@ class Exam extends BaseComponent
         JsonLd::setTitle($this->settingRepository->getRow('title').'-'.$this->transcript->quiz->name);
         JsonLd::setDescription($this->settingRepository->getRow('seoDescription'));
         JsonLd::addImage(asset($this->settingRepository->getRow('logo')));
-        if (!$this->checkTimer()) abort(404);
 
-        $this->getAnswers();
+        $this->change_choice = QuizEnum::CHANGE_CHOICE;
+
+        if (!in_array($this->transcript->result,[
+            QuizEnum::PENDING,QuizEnum::SUSPENDED
+        ])) abort(404);
+
+        if (!$this->checkTimer()) {
+            $this->getAnswers();
+            $this->quizRepository->process($this->answers , $this->transcript);
+            abort(404);
+        }
+
     }
     public function render()
     {
@@ -70,13 +80,13 @@ class Exam extends BaseComponent
     private function control_requests($key): bool
     {
         $counts = (int)Session::get("question{$this->transcript->id}{$key}",0);
-        if ($counts <= $this->change_choice)
+        if ($counts <= QuizEnum::CHANGE_CHOICE)
         {
             Session::put("question{$this->transcript->id}{$key}",++$counts);
             Session::save();
         }
 
-        return $counts > $this->change_choice;
+        return $counts > QuizEnum::CHANGE_CHOICE;
     }
 
     public function updatedAnswers($value,$name)
@@ -122,47 +132,7 @@ class Exam extends BaseComponent
     public function finish()
     {
         $this->getAnswers();
-        $quiz = $this->transcript->quiz;
-        $min_score = $quiz->minimum_score;
-        $user_score = 0;
-        foreach ($this->answers as $key => $item) {
-            $question = $this->questionRepository->findByPK($key);
-            if ($question->true_choice->id == $item)
-                $user_score = $user_score + $question->score;
-            else {
-                $choice_percent = $question->choices->where('id',$item)->first()->score;
-                $user_score = $user_score + $question->score * ($choice_percent/100);
-            }
-
-            Session::forget("question{$this->transcript->id}{$question->id}");
-        }
-        $this->transcript->score = $user_score;
-        try {
-            DB::beginTransaction();
-            if ($user_score >= $min_score) {
-                $this->transcript->result = QuizEnum::PASSED;
-                $certificate_id = !empty($quiz->certificate) ?
-                    $quiz->certificate->id : null;
-                if (!is_null($certificate_id)) {
-                    $this->userRepository->submit_certificate($this->transcript->user,$certificate_id,$this->transcript->id);
-                    $this->transcript->certificate_date = Jalalian::now()->format('Y/m/d');
-                    $this->transcript->certificate_code = Auth::id().$this->transcript->id.rand(1234,56789);
-                }
-            } else
-                $this->transcript->result = QuizEnum::REJECTED;
-
-            $this->transcriptRepository->save($this->transcript);
-            DB::commit();
-        } catch (Exception $e) {
-            DB::rollBack();
-            $this->emitNotify('خطا در هنگام ثبت ازمون','warning');
-        }
-        try {
-            ExamEvent::dispatch($this->transcript);
-        } catch (\Exception $e) {
-            Log::error($e->getMessage());
-        }
-
+        $this->quizRepository->process($this->answers , $this->transcript);
         redirect()->route('user.quiz',$this->transcript->id);
     }
 

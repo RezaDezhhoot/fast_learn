@@ -88,6 +88,14 @@
                     </div>
                 </div>
             </x-admin.form-section>
+            <x-admin.form-section  label="زمان پردازش ازمون ها">
+                <div class="border p-3">
+                    <div class="row">
+                        <x-admin.forms.radio name="exam_should_be_queueable" help="توجه : این قابلیت روی هاست اشتراکی پشتیبانی نمی شود" value="1" id="exam_should_be_queueable"  label="ازمون ها در صف پردازش قرار بگیرند" wire:model.defer="exam_should_be_queueable" />
+                        <x-admin.forms.radio  name="exam_should_be_queueable" value="0" id="notify_send_now"  label="پردازش آنی ازمون" wire:model.defer="exam_should_be_queueable" />
+                    </div>
+                </div>
+            </x-admin.form-section>
             <x-admin.form-section  label="مشخصات پنل پیامکی <a href='https://farazsms.com/'>فراز اس ام اس (پکیج اقتصادی)</a>">
                 <div class="border p-3">
                     <div class="row">

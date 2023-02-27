@@ -8,6 +8,7 @@ use App\Repositories\Interfaces\CourseRepositoryInterface;
 use App\Repositories\Interfaces\QuizRepositoryInterface;
 use App\Repositories\Interfaces\TranscriptRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -15,7 +16,7 @@ use Morilog\Jalali\Jalalian;
 
 class StoreTranscript extends BaseComponent
 {
-    public  $header , $result , $user , $quiz , $score , $course , $certificate_code , $certificate_date;
+    public  $header , $result , $user , $quiz , $score , $course , $certificate_code , $certificate_date , $extra_time = null;
     public object $transcript;
 
     public function __construct($id = null)
@@ -57,12 +58,14 @@ class StoreTranscript extends BaseComponent
                'result' => ['required','in:'.implode(',',array_keys(QuizEnum::getResult()))],
                'score' => ['nullable','numeric'],
                'certificate_date' => ['nullable'],
-               'certificate_code' => ['nullable','unique:transcripts,certificate_code,'.($this->transcript->id)]
+               'certificate_code' => ['nullable','unique:transcripts,certificate_code,'.($this->transcript->id)],
+               'extra_time' => ['nullable','integer','between:1,100000000']
            ],['date_format' => 'تاریخ صدرو باید از الگو 0000/00/00 پیروی کند'],[
                'result' => 'نتیجه ازمون',
                'score' => 'نمره',
                'certificate_date' => 'تاریخ صدور',
-               'certificate_code' => 'شماره گواهینامه'
+               'certificate_code' => 'شماره گواهینامه',
+               'extra_time' => 'زمان اضافه'
            ]);
            $this->saveInDataBase();
        } elseif ($this->mode == self::CREATE_MODE) {
@@ -105,6 +108,10 @@ class StoreTranscript extends BaseComponent
         $certificate_id = $quiz_has_certificate ? $this->transcript->quiz->certificate->id : null;
         $this->transcript->certificate_date = $this->certificate_date;
         $this->transcript->certificate_code = $this->certificate_code;
+        if ($this->extra_time && $this->extra_time > 1) {
+            $this->transcript->timer = Carbon::make($this->transcript->timer)->addMinutes($this->extra_time);
+            $this->reset(['extra_time']);
+        }
         try {
             DB::beginTransaction();
             switch ($this->result){
@@ -114,7 +121,7 @@ class StoreTranscript extends BaseComponent
                         $this->userRepository->submit_certificate($this->transcript->user,$certificate_id,$this->transcript->id);
                     }
                     break;
-                case QuizEnum::REJECTED || QuizEnum::SUSPENDED || QuizEnum::PENDING:
+                case QuizEnum::REJECTED || QuizEnum::SUSPENDED || QuizEnum::PENDING || QuizEnum::ON_QUEUE || QuizEnum::ON_PROCESSING || QuizEnum::ERROR:
                     if ($quiz_has_certificate and
                         $this->userRepository->has_certificate($this->transcript->user,$certificate_id,$this->transcript->id)) {
                         $this->userRepository->reclaiming_certificate($this->transcript->user,$certificate_id,$this->transcript->id);

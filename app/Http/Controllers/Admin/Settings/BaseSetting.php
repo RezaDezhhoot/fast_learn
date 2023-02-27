@@ -12,7 +12,7 @@ use App\Enums\StorageEnum;
 class BaseSetting extends BaseComponent
 {
     public $header , $name , $logo , $status , $title  , $copyRight  ;
-    public   $i = 1 , $registerGift , $notification  , $seoDescription , $seoKeyword , $footerText , $notify_should_be_queueable = false ;
+    public   $i = 1 , $registerGift , $notification  , $seoDescription , $seoKeyword , $footerText , $notify_should_be_queueable = false , $exam_should_be_queueable = false;
 
     public $faraz_apiKey = '' , $faraz_password = '' , $faraz_username = '', $faraz_line = '' , $faraz_pattern = '' , $faraz_var = '';
 
@@ -103,6 +103,7 @@ class BaseSetting extends BaseComponent
         $this->users_can_send_teacher_request = $this->settingRepository->getRow('users_can_send_teacher_request');
 
         $this->notify_should_be_queueable = $this->settingRepository->getRow('notify_should_be_queueable');
+        $this->exam_should_be_queueable = $this->settingRepository->getRow('exam_should_be_queueable');
     }
 
     public function render()
@@ -160,7 +161,8 @@ class BaseSetting extends BaseComponent
                 'secret_key' => ['required','max:2000'],
 
                 'users_can_send_teacher_request' => ['required','boolean'],
-                'notify_should_be_queueable' => ['required','boolean']
+                'notify_should_be_queueable' => ['required','boolean'],
+                'exam_should_be_queueable' => ['required','boolean'],
             ] , [] ,
             [
                 'name' => 'نام سایت',
@@ -207,7 +209,8 @@ class BaseSetting extends BaseComponent
                 'secret_key' => 'google recaptcha secret key',
 
                 'users_can_send_teacher_request' => 'کاربران می توانند مدرس شوند',
-                'notify_should_be_queueable' => 'زمان ارسال اعلان ها'
+                'notify_should_be_queueable' => 'زمان ارسال اعلان ها',
+                'exam_should_be_queueable' => 'زمان پردازش ازمون ها',
             ]
         );
 
@@ -262,6 +265,7 @@ class BaseSetting extends BaseComponent
         $this->settingRepository::updateOrCreate(['name' => 'users_can_send_teacher_request'], ['value' => $this->users_can_send_teacher_request]);
 
         $this->settingRepository::updateOrCreate(['name' => 'notify_should_be_queueable'], ['value' => $this->notify_should_be_queueable]);
+        $this->settingRepository::updateOrCreate(['name' => 'exam_should_be_queueable'], ['value' => $this->exam_should_be_queueable]);
 
         $this->emitNotify('اطلاعات با موفقیت ثبت شد');
     }

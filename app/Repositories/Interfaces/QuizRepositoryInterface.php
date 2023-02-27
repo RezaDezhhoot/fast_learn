@@ -29,4 +29,6 @@ interface QuizRepositoryInterface
     public function startQuiz(Quiz $quiz , int $seed = 0);
 
     public function count();
+
+    public function process($answers , $transcript);
 }
