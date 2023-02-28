@@ -8,9 +8,15 @@
                 <div class="title">
                     <h1>گواهینامه </h1>
                     <h5 class="pt-1">
+                        @if($status == \App\Enums\CertificateEnum::DEMO)
                         <span>
-                            (</span><span  class="text-red">{{$certificate->transcript->course->category->title ?? 'دسته بندی'}}</span><span>)
+                            (</span><span  class="text-red">{{'دسته بندی'}}</span><span>)
                         </span>
+                        @elseif($certificate->transcript->course)
+                            <span>
+                                (</span><span  class="text-red">{{$certificate->transcript->course->category->title}}</span><span>)
+                            </span>
+                        @endif
                     </h5>
                 </div>
                 <div class="codes">
@@ -90,7 +96,7 @@
                                         <tr>
                                             <td>
                                                 <b>دوره اموزشی</b>
-                                                <span>{{ $certificate->transcript->course->title ?? 'نام دوره اموزشی' }}</span>
+                                                <span>{{ $certificate->transcript->course_data['title'] ?? 'نام دوره اموزشی' }}</span>
                                             </td>
                                         </tr>
                                     </table>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Events;
 
 use App\Enums\EventEnum;
+use App\Enums\JobEnum;
 use App\Enums\StorageEnum;
 use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\EventRepositoryInterface;
@@ -31,30 +32,23 @@ class IndexEvent extends BaseComponent
 
     public function start()
     {
-        if (!app()->environment('local')) 
+        if (!app()->environment('local'))
         {
-            if (DB::table('jobs')->where('queue','start')->exists())
-                return Artisan::call("queue:work --queue=start --timeout=45 --stop-when-empty");
+            if (DB::table('jobs')->where('queue',JobEnum::START_EVENT)->exists())
+                return Artisan::call("queue:work --queue=".JobEnum::START_EVENT." --timeout=45 --stop-when-empty");
         }
     }
-    
+
 
     public function render()
     {
         $this->authorizing('show_events');
         $events = $this->eventRepository->getAllAdmin($this->status , $this->search , $this->per_page);
-        $failed_jobs = DB::table('failed_jobs')->where('queue','!=','start')->count();
-        $jobs = DB::table('jobs')->where('queue','!=','start')->count();
+        $failed_jobs = DB::table('failed_jobs')->whereNotIn('queue',JobEnum::getMainJobCategories())->count();
+        $jobs = DB::table('jobs')->whereNotIn('queue',JobEnum::getMainJobCategories())->count();
 
-        return view('admin.events.index-event',['events'=>$events , 'failed_jobs' => $failed_jobs ,'jobs'=>$jobs])
+        return view('admin.events.index-event',['events' => $events , 'failed_jobs' => $failed_jobs ,'jobs' => $jobs])
             ->extends('admin.layouts.admin');
-    }
-
-    public function retry_jobs()
-    {
-        $this->authorizing('edit_events');
-        Artisan::call('queue:retry all');
-        $this->emitNotify('رویداد ها اماده اجرا');
     }
 
     public function downloadsError($id): BinaryFileResponse
@@ -78,11 +72,11 @@ class IndexEvent extends BaseComponent
     {
         $this->authorizing('delete_events');
         if ($status == 'jobs') {
-            DB::table('jobs')->delete();
+            DB::table('jobs')->whereNotIn('queue',JobEnum::getMainJobCategories())->delete();
             $this->emitNotify('رویداد های اماده با موفقیت پاک سازی شد');
         } elseif ($status == 'failed_jobs')
         {
-            DB::table('failed_jobs')->delete();
+            DB::table('failed_jobs')->whereNotIn('queue',JobEnum::getMainJobCategories())->delete();
             $this->emitNotify('رویداد های ناموفق با موفقیت پاک سازی شد');
         }
     }

@@ -22,7 +22,7 @@
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $item->transcript->certificate_code }}</td>
                         <td>{{ $item->certificate->name }}</td>
-                        <td>{{ $item->transcript->course->title }}</td>
+                        <td>{{ $item->transcript->course_data['title'] }}</td>
                         <td>{{ $item->transcript->quiz->name }}</td>
                         <td><a href="{{ route('user.certificate',[$item->id,'status' => 'original']) }}"> مشاهده </a></td>
                     </tr>

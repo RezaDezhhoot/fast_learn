@@ -43,4 +43,6 @@ final class NotificationEnum extends Enum
             self::PUBLIC => 'عمومی',
         ];
     }
+
+    const EMAIL_METHOD = 'email_method' , SMS_METHOD = 'sms_method' , BOTH_METHODS = 'both_methods' , NONE_METHOD = 'none_method';
 }

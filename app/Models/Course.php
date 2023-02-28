@@ -9,12 +9,14 @@ use App\Enums\ReductionEnum;
 use App\Traits\Admin\Searchable;
 use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Dyrynda\Database\Support\CascadeSoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 use Morilog\Jalali\Jalalian;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -43,7 +45,9 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  */
 class Course extends Model
 {
-    use HasFactory , Searchable   , Sluggable;
+    use HasFactory , Searchable , Sluggable , SoftDeletes , CascadeSoftDeletes;
+
+    protected $cascadeDeletes = ['comments','episodes','tags'];
 
     protected $guarded = ['id'];
 
@@ -248,7 +252,7 @@ class Course extends Model
         return $query->whereNotNull('category_id');
     }
 
-    public function samples()
+    public function samples(): HasMany
     {
         return $this->hasMany(Sample::class);
     }

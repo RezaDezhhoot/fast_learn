@@ -27,7 +27,7 @@ class StoreComment extends BaseComponent
             $this->comment = $this->commentRepository->findTeacher($id);
             $this->header = $this->comment->user->name;
             $this->child = $this->comment->childrenRecursive;
-            $this->case = $this->comment->commentable->title;
+            $this->case = $this->comment->commentable_data['title'] ?? '';
         } else abort(404);
     }
 

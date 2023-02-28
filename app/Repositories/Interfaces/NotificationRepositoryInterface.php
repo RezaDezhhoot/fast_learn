@@ -17,4 +17,6 @@ interface NotificationRepositoryInterface
     public function find($id);
 
     public function getByWhere(array $where,$from_date , $to_date);
+
+    public function send($user , $subject , $subject_label , $text ,$view , $model_id = null , $data = []);
 }

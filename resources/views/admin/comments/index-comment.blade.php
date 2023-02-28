@@ -39,7 +39,7 @@
                                 <td>{{ $item->user->email  }}</td>
                                 <td>{{ $item->status_label }}</td>
                                 <td>{{ $item->for_label }}</td>
-                                <td>{{ $item->commentable->title}}</td>
+                                <td>{{ $item->commentable_data['title'] ?? '-'}}</td>
                                 <td style="width: 40%;">{!!  $item->content !!}</td>
                                 <td>
                                     <x-admin.ok-btn wire:click="confirm({{$item->id}})" />

@@ -30,7 +30,7 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ is_null($item->parent_id) ? 'دیدگاه اصلی' : 'ارسال پاسخ' }}</td>
                                 <td>{{ $item->status_label }}</td>
-                                <td>{{ $item->commentable->title}}</td>
+                                <td>{{ $item->commentable_data['title'] ?? '' }}</td>
                                 <td style="width: 40%;">{!!  $item->content !!}</td>
                                 <td>
                                     <x-teacher.edit-btn href="{{ route('teacher.store.comments',['edit', $item->id]) }}" />

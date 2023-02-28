@@ -129,6 +129,7 @@
                             <div class="row">
                                 <x-admin.forms.input with="6" type="text" id="certificate_code" label="کد گواهینامه" wire:model.defer="certificate_code"/>
                                 <x-admin.forms.jdate-picker sign="/" with="6" with="6" id="certificate_date" label="تاریخ صدور" wire:model.defer="certificate_date"/>
+                                <x-admin.forms.input type="number" id="extra_time" help="برحسب دقیقه" label="زمان اضافه" wire:model.defer="extra_time"/>
                             </div>
                         @endif
                     </div>
@@ -140,6 +141,16 @@
                         <x-admin.forms.dropdown with="6" id="result" :data="$data['result']" label="نتیجه*" wire:model.defer="result"/>
                     </div>
                 </div>
+                    @if($transcript->result == \App\Enums\QuizEnum::ERROR)
+                        <div class="col-12 p-4">
+                            <fieldset class="border p-4 ">
+                                <legend class="font-size-h6">خطای سیستم : </legend>
+                                <p class="text-danger">
+                                    {{ $transcript->error_message}} }}
+                                </p>
+                            </fieldset>
+                        </div>
+                    @endif
                 <!-- end: Invoice action-->
                 <!--end::Invoice-->
             </div>

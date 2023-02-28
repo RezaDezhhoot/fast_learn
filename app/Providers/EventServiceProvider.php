@@ -10,6 +10,7 @@ use App\Events\NewCourseEvent;
 use App\Events\OrderEvent;
 use App\Events\RegisterEvent;
 use App\Events\TeacherEvent;
+use App\Events\TicketEvent;
 use App\Listeners\ContactUsListener;
 use App\Listeners\NewCourseListener;
 use App\Listeners\SendAuthenticationNotify;
@@ -17,7 +18,9 @@ use App\Listeners\SendExamNotify;
 use App\Listeners\SendOrderNotify;
 use App\Listeners\SendRegisterNotify;
 use App\Listeners\TeacherListener;
+use App\Listeners\TicketListener;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
+use App\Repositories\Interfaces\CommentRepositoryInterface;
 use App\Repositories\Interfaces\CourseRepositoryInterface;
 use App\Repositories\Interfaces\EventRepositoryInterface;
 use App\Repositories\Interfaces\HomeworkRepositoryInterface;
@@ -86,6 +89,11 @@ class EventServiceProvider extends ServiceProvider
             [NewCourseListener::class, 'handle']
         );
 
+        Event::listen(
+            TicketEvent::class,
+            [TicketListener::class, 'handle']
+        );
+
 
 
         $storage_repository = app(StorageRepositoryInterface::class);
@@ -98,6 +106,8 @@ class EventServiceProvider extends ServiceProvider
         app(HomeworkRepositoryInterface::class)::observe();
         app(EventRepositoryInterface::class)::observe();
         app(IncomingMethodRepositoryInterface::class)::observe();
+        app(CommentRepositoryInterface::class)::observe();
+
         $storage_repository::observe();
 
 
@@ -136,7 +146,8 @@ class EventServiceProvider extends ServiceProvider
         );
 
 
-        \Event::listen('Alexusmai\LaravelFileManager\Events\Rename',
+        Event::listen(
+            'Alexusmai\LaravelFileManager\Events\Rename',
             function ($event) use ($storage_repository,$storage_permission_repository) {
                 if (!in_array($event->disk(), StorageEnum::getStorages())) {
                     $storage = $storage_repository->first([['name', $event->disk()]]);

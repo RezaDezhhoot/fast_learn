@@ -3,6 +3,7 @@
 
 namespace App\Repositories\Classes;
 
+use App\Enums\CertificateEnum;
 use App\Models\User;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use Alexusmai\LaravelFileManager\Services\ConfigService\ConfigRepository;
@@ -129,7 +130,7 @@ class UserRepository implements UserRepositoryInterface, ConfigRepository , ACLR
 
     public function findCertificate(User $user, $id, $status)
     {
-        return $status == 'demo' ?
+        return $status == CertificateEnum::DEMO ?
             $user->certificates()->findOrFail($id) :
             $user->certificates()->where('transcript_id', '!=', 0)->findOrFail($id);
     }

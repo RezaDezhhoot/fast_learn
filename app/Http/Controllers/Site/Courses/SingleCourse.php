@@ -34,7 +34,9 @@ class SingleCourse extends BaseComponent
     public  $related_courses = [] , $comments = [] , $recaptcha , $episodes = [] , $user , $commentCount = 10 , $actionComment  , $actionLabel = 'دیدگاه جدید';
     public ?string $api_bucket = null , $local_video , $comment = null , $episode_title = null , $episode_id;
 
-    public $homework , $file_path , $homework_file , $homework_description , $homework_recaptcha;
+    public $file_path , $homework_file , $homework_description , $homework_recaptcha , $homework_show;
+
+    private $homework;
 
     public $episode , $show_homework_form = false , $has_samples = false;
 
@@ -96,7 +98,7 @@ class SingleCourse extends BaseComponent
 
     public function render()
     {
-
+        $this->homework_show = $this->homework;
         return view('site.courses.single-course')->extends('site.layouts.site.site');
     }
 
@@ -220,6 +222,7 @@ class SingleCourse extends BaseComponent
                         ['user_id',auth()->id()],
                         ['episode_id',$this->episode->id]
                     ]);
+                    $this->homework_show = $this->homework;
                 }
                 if (!is_null($this->homework)) {
                     $this->file_path = $this->homework->file;
@@ -273,6 +276,7 @@ class SingleCourse extends BaseComponent
                         'episode_title' => $this->episode->title,
                         'storage' => $this->episode->homework_storage
                     ]);
+                    $this->homework_show = $this->homework;
                     $this->emit('resetReCaptcha');
                     $this->reset(['homework_file','file_path']);
                     $this->emitNotify('تمرین شما با موفقیت ارسال شد');
@@ -296,7 +300,7 @@ class SingleCourse extends BaseComponent
 
     public function resetHomework()
     {
-        $this->reset(['homework','homework_file','homework_description','file_path']);
+        $this->reset(['homework_show','homework_file','homework_description','file_path']);
     }
 
     public function getFreeOrder() {

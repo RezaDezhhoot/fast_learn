@@ -16,9 +16,17 @@ final class QuizEnum extends Enum
     const PERCENT = 'percent';
     const CONST = 'const';
 
-    const PASSED = 'accepted' , REJECTED = 'rejected' , SUSPENDED = 'suspended' , PENDING = 'pending';
+    // results :
+    const PASSED = 'accepted' , REJECTED = 'rejected' , SUSPENDED = 'suspended' ,
+        PENDING = 'pending' , ON_QUEUE = 'on_queue' , ON_PROCESSING = 'on_processing' , ERROR = 'error';
 
+    // show questions :
     const SHOW_SIDE_BY_SIDE = 'show_side_by_side' , SHOW_BELOW  = 'show_below';
+
+    const PROCESS_NOW = 'process_now' , PROCESS_ON_QUEUE = 'process_on_queue';
+
+    const CHANGE_CHOICE = 12;
+
 
     public static function getViews()
     {
@@ -43,6 +51,10 @@ final class QuizEnum extends Enum
             self::REJECTED => 'رد',
             self::SUSPENDED => 'معلق',
             self::PENDING => 'جدید',
+            self::ON_PROCESSING => 'در حال تصحیح ازمون',
+            self::ON_QUEUE => 'در صف انتظار',
+            self::ERROR => 'خظا در هنگام پردازش'
         ];
     }
+
 }

@@ -6,6 +6,7 @@ namespace App\Repositories\Classes;
 
 use App\Enums\CommentEnum;
 use App\Models\Comment;
+use App\Observers\CommentObserver;
 use App\Repositories\Interfaces\CommentRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 
@@ -69,6 +70,7 @@ class CommentRepository implements CommentRepositoryInterface
     public function getUserComments($where = [],$active = true)
     {
         return Comment::confirmed($active)
+            ->latest()
             ->with(['childrenRecursive'])
             ->whereHas('childrenRecursive',function ($q) {
                 return $q->where('user_id',Auth::id());
@@ -105,5 +107,10 @@ class CommentRepository implements CommentRepositoryInterface
                 $courses_id = Auth::user()->teacher->courses->pluck('id')->toArray();
                 return $q->whereIn('commentable_id',$courses_id);
             })->findOrFail($id);
+    }
+
+    public static function observe()
+    {
+        Comment::observe(CommentObserver::class);
     }
 }

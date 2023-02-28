@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Settings;
 
+use App\Enums\NotificationEnum;
 use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
 use Exception;
@@ -11,7 +12,7 @@ use App\Enums\StorageEnum;
 class BaseSetting extends BaseComponent
 {
     public $header , $name , $logo , $status , $title  , $copyRight  ;
-    public   $i = 1 , $registerGift , $notification  , $seoDescription , $seoKeyword , $footerText ;
+    public   $i = 1 , $registerGift , $notification  , $seoDescription , $seoKeyword , $footerText , $notify_should_be_queueable = false , $exam_should_be_queueable = false;
 
     public $faraz_apiKey = '' , $faraz_password = '' , $faraz_username = '', $faraz_line = '' , $faraz_pattern = '' , $faraz_var = '';
 
@@ -100,6 +101,9 @@ class BaseSetting extends BaseComponent
         $this->public_max_file_size = $this->settingRepository->getRow('public_max_file_size');
 
         $this->users_can_send_teacher_request = $this->settingRepository->getRow('users_can_send_teacher_request');
+
+        $this->notify_should_be_queueable = $this->settingRepository->getRow('notify_should_be_queueable');
+        $this->exam_should_be_queueable = $this->settingRepository->getRow('exam_should_be_queueable');
     }
 
     public function render()
@@ -139,24 +143,26 @@ class BaseSetting extends BaseComponent
                 'public_storage_file_types' => ['nullable','string','max:4000'],
                 'public_max_file_size' => ['nullable','integer','min:1024'],
 
-                'faraz_apiKey' => [Rule::requiredIf(fn() => $this->auth_type == 'otp' || $this->send_type == 'sms'),'string','max:1000'],
-                'faraz_password' => [Rule::requiredIf(fn() => $this->auth_type == 'otp' || $this->send_type == 'sms'),'string','max:1000'],
-                'faraz_username' => [Rule::requiredIf(fn() => $this->auth_type == 'otp' || $this->send_type == 'sms'),'string','max:1000'],
-                'faraz_line' => [Rule::requiredIf(fn() => $this->auth_type == 'otp' || $this->send_type == 'sms'),'string','max:1000'],
-                'faraz_pattern' => [Rule::requiredIf(fn() => $this->auth_type == 'otp'),'string','max:1000'],
-                'faraz_var' => [Rule::requiredIf(fn() => $this->auth_type == 'otp'),'string','max:1000'],
+                'faraz_apiKey' => [Rule::requiredIf(fn() => $this->auth_type == NotificationEnum::SMS_METHOD || $this->send_type == NotificationEnum::SMS_METHOD),'string','max:1000'],
+                'faraz_password' => [Rule::requiredIf(fn() => $this->auth_type == NotificationEnum::SMS_METHOD || $this->send_type == NotificationEnum::SMS_METHOD),'string','max:1000'],
+                'faraz_username' => [Rule::requiredIf(fn() => $this->auth_type == NotificationEnum::SMS_METHOD || $this->send_type == NotificationEnum::SMS_METHOD),'string','max:1000'],
+                'faraz_line' => [Rule::requiredIf(fn() => $this->auth_type == NotificationEnum::SMS_METHOD || $this->send_type == NotificationEnum::SMS_METHOD),'string','max:1000'],
+                'faraz_pattern' => [Rule::requiredIf(fn() => $this->auth_type == NotificationEnum::SMS_METHOD),'string','max:1000'],
+                'faraz_var' => [Rule::requiredIf(fn() => $this->auth_type == NotificationEnum::SMS_METHOD),'string','max:1000'],
 
-                'email_host' => [Rule::requiredIf(fn() => $this->auth_type == 'email' || $this->send_type == 'email'),'string','max:1000'],
-                'email_username' => [Rule::requiredIf(fn() => $this->auth_type == 'email' || $this->send_type == 'email'),'string','max:1000'],
-                'email_password' => [Rule::requiredIf(fn() => $this->auth_type == 'email' || $this->send_type == 'email'),'string','max:1000'],
+                'email_host' => [Rule::requiredIf(fn() => $this->auth_type == NotificationEnum::EMAIL_METHOD || $this->send_type == NotificationEnum::EMAIL_METHOD),'string','max:1000'],
+                'email_username' => [Rule::requiredIf(fn() => $this->auth_type == NotificationEnum::EMAIL_METHOD || $this->send_type == NotificationEnum::EMAIL_METHOD),'string','max:1000'],
+                'email_password' => [Rule::requiredIf(fn() => $this->auth_type == NotificationEnum::EMAIL_METHOD || $this->send_type == NotificationEnum::EMAIL_METHOD),'string','max:1000'],
 
-                'auth_type' => ['required','in:otp,email,none'],
-                'send_type' => ['required','in:sms,email,none'],
+                'auth_type' => ['required',Rule::in([NotificationEnum::SMS_METHOD,NotificationEnum::EMAIL_METHOD,NotificationEnum::NONE_METHOD])],
+                'send_type' => ['required',Rule::in([NotificationEnum::SMS_METHOD,NotificationEnum::EMAIL_METHOD,NotificationEnum::NONE_METHOD,NotificationEnum::BOTH_METHODS])],
 
                 'site_key' => ['required','max:2000'],
                 'secret_key' => ['required','max:2000'],
 
-                'users_can_send_teacher_request' => ['required','boolean']
+                'users_can_send_teacher_request' => ['required','boolean'],
+                'notify_should_be_queueable' => ['required','boolean'],
+                'exam_should_be_queueable' => ['required','boolean'],
             ] , [] ,
             [
                 'name' => 'نام سایت',
@@ -202,7 +208,9 @@ class BaseSetting extends BaseComponent
                 'site_key' => 'google recaptcha site key',
                 'secret_key' => 'google recaptcha secret key',
 
-                'users_can_send_teacher_request' => 'کاربران می توانند مدرس شوند'
+                'users_can_send_teacher_request' => 'کاربران می توانند مدرس شوند',
+                'notify_should_be_queueable' => 'زمان ارسال اعلان ها',
+                'exam_should_be_queueable' => 'زمان پردازش ازمون ها',
             ]
         );
 
@@ -255,6 +263,9 @@ class BaseSetting extends BaseComponent
         $this->settingRepository::updateOrCreate(['name' => 'registerGift'], ['value' => $this->registerGift]);
 
         $this->settingRepository::updateOrCreate(['name' => 'users_can_send_teacher_request'], ['value' => $this->users_can_send_teacher_request]);
+
+        $this->settingRepository::updateOrCreate(['name' => 'notify_should_be_queueable'], ['value' => $this->notify_should_be_queueable]);
+        $this->settingRepository::updateOrCreate(['name' => 'exam_should_be_queueable'], ['value' => $this->exam_should_be_queueable]);
 
         $this->emitNotify('اطلاعات با موفقیت ثبت شد');
     }

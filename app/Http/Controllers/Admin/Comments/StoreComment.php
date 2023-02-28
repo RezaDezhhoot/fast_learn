@@ -27,7 +27,7 @@ class StoreComment extends BaseComponent
             $this->status = $this->comment->status;
             $this->content = $this->comment->content;
             $this->child = $this->comment->childrenRecursive;
-            $this->case = $this->comment->commentable->title;
+            $this->case = $this->comment->commentable_data['title'] ?? '-';
         } else abort(404);
 
         $this->data['type'] = CommentEnum::getFor();
