@@ -14,17 +14,11 @@
 <script src="{{ asset('site/js/emojionearea.min.js') }}"></script>
 <script src="{{ asset('site/js/tooltipster.bundle.min.js') }}"></script>
 <script src="{{ asset('site/js/main.js') }}"></script>
-<script src="{{asset('site/library/plyr/plyr.polyfilled.js?v=1.0.1')}}"></script>
 <script src="{{asset('admin/js/jdate/persianDatepicker.min.js')}}"></script>
 <script src="{{asset('bower_components/jquery.countdown/dist/jquery.countdown.js')}}"></script>
+<script src="{{asset('site/js/plyr.js')}}"></script>
 <script>
     $(document).ready(function (){
-
-        Livewire.on('showVideo', data => {
-            $('html, body').animate({
-                scrollTop: $("#videoContent").offset().top
-            }, 1000);
-        })
         $(".goToCommentForm").click(function (){
             $('html, body').animate({
                 scrollTop: $("#commentForm").offset().top
@@ -45,24 +39,6 @@
                 }
             })
         })
-    })
-    Livewire.on('setVideo', data => {
-        const player = new Plyr('#player',{
-            title: data.title,
-        });
-        player.source = {
-            type: 'video',
-            title: data.title,
-            download: false,
-            sources: [
-                {
-                    src: data.src,
-                    type: 'video/mp4',
-                    size: 720,
-                }
-            ]
-        }
-        player.play();
     })
 </script>
 

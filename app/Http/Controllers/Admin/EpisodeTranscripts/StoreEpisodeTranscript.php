@@ -27,7 +27,7 @@ class StoreEpisodeTranscript extends BaseComponent
         $this->data['storage'] = getAvailableStorages();
         if ($this->mode == self::UPDATE_MODE) {
             $this->episode = $this->episodeTranscriptRepository->findOrFail($id);
-            $this->header = " درس {$this->episode->title} از {$this->episode->course->title} ";
+            $this->header = " {$this->episode->chapter->course->title} - {$this->episode->chapter->title} - {$this->episode->title}";
             $this->status =  $this->episode->status;
             $this->message =  $this->episode->message;
             $this->is_confirmed =  $this->episode->is_confirmed;
@@ -45,7 +45,6 @@ class StoreEpisodeTranscript extends BaseComponent
 
     private function saveInDataBase($model)
     {
-
         $this->validate([
             'status' => ['required','in:'.implode(',',array_keys(EpisodeEnum::getStatus()))],
             'message' => ['required','string','max:100000'],

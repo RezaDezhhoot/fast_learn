@@ -253,4 +253,14 @@ class User extends Authenticatable implements Wallet, Confirmable
         return $this->hasMany(BankAccount::class)->active();
     }
 
+    public function likes(): HasMany
+    {
+        return $this->hasMany(EpisodeLike::class);
+    }
+
+    public function hasLiked($episode)
+    {
+        return $this->likes()->where('episode_id',$episode->id)->first();
+    }
+
 }

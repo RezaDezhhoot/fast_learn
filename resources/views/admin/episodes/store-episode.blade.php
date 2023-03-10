@@ -13,7 +13,10 @@
                 <x-admin.forms.input with="6" type="text" id="time" label="زمان *" wire:model.defer="time" />
                 <x-admin.forms.input with="6" type="number" id="view" label="نمایش *" wire:model.defer="view" />
                 <x-admin.forms.select2 id="course_id" :data="$data['course']" label=" دوره اموزشی"
-                    wire:model.defer="course_id" />
+                    wire:model="course_id" />
+
+                <x-admin.forms.dropdown id="chapter_id" :data="$data['chapter']" label=" فصل"
+                                        wire:model.defer="chapter_id" />
                 <x-admin.forms.checkbox value="1" id="free" label="رایگان " wire:model.defer="free" />
                 <x-admin.forms.checkbox value="1" id="can_homework" label="امکان بارگذاری تمرین "
                     wire:model.defer="can_homework" />
@@ -22,7 +25,8 @@
                 <x-admin.forms.text-area label="کد اشتراک گذاریapi " wire:model.defer="api_bucket" id="api_bucket" />
                 <x-admin.forms.checkbox value="1" id="show_api_video"
                                         label="نمایش ویدئو " wire:model.defer="show_api_video" />
-                <x-admin.forms.text-area label="توضیحات" wire:model.defer="description" id="description" />
+                <x-admin.forms.full-text-editor id="description" label="توضیحات" wire:model.defer="description"/>
+
                 <x-admin.form-section class="col-12" label="فایل">
                     <table class=" table table-bordered">
                         <tbody>

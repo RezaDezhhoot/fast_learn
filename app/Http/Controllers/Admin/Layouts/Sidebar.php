@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Layouts;
 
 use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\BankAccountRepositoryInterface;
+use App\Repositories\Interfaces\ChapterTranscriptRepositoryInterface;
 use App\Repositories\Interfaces\CommentRepositoryInterface;
 use App\Repositories\Interfaces\ContactUsRepositoryInterface;
 use App\Repositories\Interfaces\EpisodeTranscriptRepositoryInterface;
@@ -22,7 +23,7 @@ class Sidebar extends BaseComponent
         UserRepositoryInterface $userRepository , SettingRepositoryInterface $settingRepository ,
         ContactUsRepositoryInterface $contactUsRepository , TeacherRequestRepositoryInterface $teacherRequestRepository,
         NewCourseRepositoryInterface $newCourseRepository , EpisodeTranscriptRepositoryInterface $episodeTranscriptRepository,
-        BankAccountRepositoryInterface $bankAccountRepository , TeacherCheckoutRepositoryInterface $checkoutRepository
+        BankAccountRepositoryInterface $bankAccountRepository , TeacherCheckoutRepositoryInterface $checkoutRepository , ChapterTranscriptRepositoryInterface $chapterTranscriptRepository
     )
     {
         $data = [
@@ -33,6 +34,7 @@ class Sidebar extends BaseComponent
             'new_teachers' => $teacherRequestRepository::getNew(),
             'new_courses' => $newCourseRepository::getNew(),
             'episode_transcripts' => $episodeTranscriptRepository::getNew(),
+            'chapter_transcripts' => $chapterTranscriptRepository::getNew(),
             'bank_accounts' => $bankAccountRepository::getNew(),
             'checkouts' => $checkoutRepository::getNew()
         ];

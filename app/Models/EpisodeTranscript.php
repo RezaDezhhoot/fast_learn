@@ -27,6 +27,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property mixed $description
  * @property mixed $can_homework
  * @property mixed $homework_storage
+ * @property mixed $chapter_id
  * @method static create(array $data)
  * @method static latest(string $string)
  * @method static find($id)
@@ -48,9 +49,9 @@ class EpisodeTranscript extends Model
 
     protected array $searchAbleColumns = ['title'];
 
-    public function course(): BelongsTo
+    public function chapter(): BelongsTo
     {
-        return $this->belongsTo(Course::class);
+        return $this->belongsTo(Chapter::class);
     }
 
     public function episode(): BelongsTo

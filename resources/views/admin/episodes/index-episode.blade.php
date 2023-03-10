@@ -4,6 +4,7 @@
     <div class="card card-custom">
         <div class="card-body">
             <x-admin.forms.select2 id="course" :data="$data['course']" label="فیلتر بر حسب دوره اموزشی" wire:model.defer="course"/>
+            <x-admin.forms.select2 id="chapter" :data="$data['chapter']" label="فیلتر بر حسب فصل " wire:model.defer="chapter"/>
             @include('admin.layouts.advance-table')
             <div class="row">
                 <div class="col-lg-12 table-responsive">
@@ -13,6 +14,7 @@
                             <th>#</th>
                             <th>عنوان درس</th>
                             <th>عنوان دوره</th>
+                            <th>عنوان فصل</th>
                             <th>تاریخ انتشار</th>
                             <th>اخرین اپدیت</th>
                             <th>فضای ذخیره سازی فایل</th>
@@ -29,9 +31,10 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->title }}</td>
                                 <td>
-                                    <a href="{{ route('admin.store.course',['edit',$item->course->id]) }}">
-                                        {{ $item->course->title }}
-                                    </a>
+                                    {{ $item->chapter->course->title ?? '' }}
+                                </td>
+                                <td>
+                                    {{ $item->chapter->title ?? '' }}
                                 </td>
                                 <td>{{ $item->created_at->diffForHumans() }}</td>
                                 <td>{{ $item->updated_at->diffForHumans() }}</td>
@@ -45,7 +48,7 @@
                                 </td>
                             </tr>
                         @empty
-                            <td class="text-center" colspan="11">
+                            <td class="text-center" colspan="12">
                                 دیتایی جهت نمایش وجود ندارد
                             </td>
                         @endforelse

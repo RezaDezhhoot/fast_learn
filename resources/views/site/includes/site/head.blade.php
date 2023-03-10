@@ -26,9 +26,11 @@
     <link rel="stylesheet" href="{{ asset('site/css/animated-headline.css') }}" />
     <link rel="stylesheet" href="{{ asset('site/css/style.css') }}" />
     <link rel="stylesheet" href="{{ asset('admin/css/jdate/persianDatepicker-default.css') }}" />
+    <link rel="stylesheet" href="{{asset('site/css/plyr.css')}}" />
     <!-- end inject -->
     <script src="{{asset('site/js/alpine.min.js')}}" defer></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 {{--    <script src="{{asset('site/js/sweetalert2.js')}}" defer></script>--}}
+    <link rel="stylesheet" href="{{asset('site/css/jquery-te-1.4.0.css')}}" />
 
 </head>

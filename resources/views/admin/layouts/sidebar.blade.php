@@ -98,15 +98,21 @@
                 @can('show_tags')
                     <x-admin.menu-item href="{{route('admin.tag')}}" icon="fas fa-tag" :active="request()->routeIs(['admin.tag','admin.store.tag'])" label="تگ ها" />
                 @endcan
-                @if(auth()->user()->hasAnyPermission('show_courses','show_episodes','show_new_courses'))
+                @if(auth()->user()->hasAnyPermission('show_courses','show_episodes','show_new_courses','show_chapters'))
                     <x-admin.menu-group icon="fab fa-product-hunt" :active="request()->routeIs(
-                    ['admin.course','admin.store.course','admin.episode','admin.store.episode','admin.newCourse','admin.store.newCourse','admin.episodeTranscript','admin.store.episodeTranscript'])" label="دوره های اموزشی" >
+                    ['admin.course','admin.store.course','admin.episode','admin.store.episode',
+                    'admin.newCourse','admin.store.newCourse','admin.episodeTranscript',
+                    'admin.store.episodeTranscript','admin.chapter','admin.store.chapter','admin.chapterTranscript','admin.store.chapterTranscript'])" label="دوره های اموزشی" >
                         @can('show_courses')
                             <x-admin.menu-item href="{{route('admin.course')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['admin.course','admin.store.course'])" label="دروه ها  " />
                         @endcan
+                            @can('show_chapters')
+                                <x-admin.menu-item href="{{route('admin.chapter')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['admin.chapter','admin.store.chapter'])" label="فصل ها  " />
+                                <x-admin.menu-item href="{{route('admin.chapterTranscript')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['admin.chapterTranscript','admin.store.chapterTranscript'])" label=" رونوشت های ارسالی فصل ها ({{$chapter_transcripts}})  " />
+                            @endcan
                         @can('show_episodes')
                             <x-admin.menu-item href="{{route('admin.episode')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['admin.episode','admin.store.episode'])" label="درس ها  " />
-                            <x-admin.menu-item href="{{route('admin.episodeTranscript')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['admin.episodeTranscript','admin.store.episodeTranscript'])" label="رونوشت های ارسالی ({{$episode_transcripts}})  " />
+                            <x-admin.menu-item href="{{route('admin.episodeTranscript')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['admin.episodeTranscript','admin.store.episodeTranscript'])" label=" رونوشت های ارسالی درس ها ({{$episode_transcripts}})  " />
                         @endcan
                             {{-- v3-new-courses --}}
                             @can('show_new_courses')

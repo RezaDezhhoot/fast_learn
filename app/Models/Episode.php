@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use App\Enums\CommentEnum;
 use App\Enums\ReductionEnum;
 use App\Enums\StorageEnum;
 use App\Traits\Admin\Searchable;
+use Carbon\Carbon;
+use Cviebrock\EloquentSluggable\Sluggable;
 use Dyrynda\Database\Support\CascadeSoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -30,7 +34,7 @@ class Episode extends Model
 {
     use HasFactory , Searchable , SoftDeletes , CascadeSoftDeletes;
 
-    protected $cascadeDeletes = ['homeworks','transcripts'];
+    protected $cascadeDeletes = ['homeworks','transcripts','comments','likes'];
 
     protected $guarded = ['id'];
 
@@ -42,9 +46,28 @@ class Episode extends Model
         'homework_storage' => 'string',
     ];
 
-    public function course(): BelongsTo
+    protected $appends = [
+        'time_label'
+    ];
+
+    public function comments(): MorphMany
     {
-        return $this->belongsTo(Course::class);
+        return $this->morphMany(Comment::class, 'commentable')->latest('id')->where('status',CommentEnum::CONFIRMED)
+            ->with(['childrenRecursive' => function($q) {
+                return $q->where('status',CommentEnum::CONFIRMED);
+            }])->whereNull('parent_id');
+    }
+
+    public function timeLabel(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => Carbon::make($this->time)->format('H:i') != '00:00' ? Carbon::make($this->time)->format('H:i') : ''
+        );
+    }
+
+    public function chapter(): BelongsTo
+    {
+        return $this->belongsTo(Chapter::class);
     }
 
     public function setFileAttribute($value)
@@ -93,5 +116,10 @@ class Episode extends Model
     public function transcripts(): HasMany
     {
         return $this->hasMany(EpisodeTranscript::class);
+    }
+
+    public function likes(): HasMany
+    {
+        return $this->hasMany(EpisodeLike::class);
     }
 }

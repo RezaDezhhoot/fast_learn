@@ -15,7 +15,7 @@ final class CommentEnum extends Enum
     const CONFIRMED = 'confirmed';
     const NOT_CONFIRMED =  'not_confirmed';
 
-    const ARTICLE = 'App\Models\Article' , COURSE = 'App\Models\Course';
+    const ARTICLE = 'App\Models\Article' , COURSE = 'App\Models\Course' , EPISODE = 'App\Models\Episode';
 
     public static function getStatus()
     {
@@ -30,6 +30,7 @@ final class CommentEnum extends Enum
         return [
             self::ARTICLE => 'مقالات اموزشی',
             self::COURSE => 'دوره اموزشی',
+            self::EPISODE => 'درس ها'
         ];
     }
 
@@ -38,6 +39,7 @@ final class CommentEnum extends Enum
         return [
             self::ARTICLE => 'article',
             self::COURSE => 'course',
+            self::EPISODE => 'course',
         ];
     }
 }

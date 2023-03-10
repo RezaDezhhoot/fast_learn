@@ -34,8 +34,10 @@ class EpisodeTranscriptRepository implements EpisodeTranscriptRepositoryInterfac
     public function getAllAdmin($search, $status, $course, $per_page)
     {
         return EpisodeTranscript::latest('id')->when($course,function ($q) use ($course) {
-            return $q->whereHas('course',function ($q) use ($course) {
-               return $q->where('id',$course);
+            return $q->whereHas('chapter',function ($q) use ($course) {
+                return $q->whereHas('course',function ($q) use ($course) {
+                    return $q->where('id',$course);
+                });
             });
         })->when($status,function ($q) use ($status) {
             return $q->where('status',$status);
@@ -44,13 +46,17 @@ class EpisodeTranscriptRepository implements EpisodeTranscriptRepositoryInterfac
 
     public function getAllTeacher($search, $status, $course, $per_page)
     {
-        return EpisodeTranscript::latest('id')->whereHas('course',function ($q){
-            return $q->whereHas('teacher',function ($q){
-                return $q->where('user_id',Auth::id());
+        return EpisodeTranscript::latest('id')->whereHas('chapter',function ($q) {
+            return $q->whereHas('course',function ($q){
+                return $q->whereHas('teacher',function ($q){
+                    return $q->where('user_id',Auth::id());
+                });
             });
         })->when($course,function ($q) use ($course) {
-            return $q->whereHas('course',function ($q) use ($course) {
-                return $q->where('id',$course);
+            return $q->whereHas('chapter',function ($q) use ($course) {
+                return $q->whereHas('course',function ($q) use ($course) {
+                    return $q->where('id',$course);
+                });
             });
         })->when($status,function ($q) use ($status) {
             return $q->where('status',$status);
@@ -76,7 +82,7 @@ class EpisodeTranscriptRepository implements EpisodeTranscriptRepositoryInterfac
         $episode->allow_show_local_video = $episodeTranscript->allow_show_local_video;
         $episode->time = $episodeTranscript->time;
         $episode->view = $episodeTranscript->view;
-        $episode->course_id  = $episodeTranscript->course_id;
+        $episode->chapter_id  = $episodeTranscript->chapter_id;
         $episode->free  = $episodeTranscript->free;
         $episode->file_storage  = $episodeTranscript->file_storage;
         $episode->video_storage  = $episodeTranscript->video_storage;
@@ -90,9 +96,11 @@ class EpisodeTranscriptRepository implements EpisodeTranscriptRepositoryInterfac
 
     public function findTeacherEpisode($id)
     {
-        return EpisodeTranscript::whereHas('course',function ($q){
-            return $q->whereHas('teacher',function ($q){
-                return $q->where('user_id',Auth::id());
+        return EpisodeTranscript::whereHas('chapter',function ($q) {
+            return $q->whereHas('course',function ($q){
+                return $q->whereHas('teacher',function ($q){
+                    return $q->where('user_id',Auth::id());
+                });
             });
         })->findOrFail($id);
     }

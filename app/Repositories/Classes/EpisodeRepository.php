@@ -5,6 +5,7 @@ namespace App\Repositories\Classes;
 
 
 use App\Models\Episode;
+use App\Models\EpisodeLike;
 use App\Repositories\Interfaces\EpisodeRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 
@@ -41,43 +42,102 @@ class EpisodeRepository implements EpisodeRepositoryInterface
         return Episode::findMany($ids);
     }
 
-    public function getAllAdmin($course = null, $search = null, $perPage = 10)
+    public function getAllAdmin($course = null , $chapter = null, $search = null, $perPage = 10)
     {
-        return Episode::latest('id')->with('course')->when($course,function ($q) use ($course){
-           return $q->wherehas('course',function ($q) use ($course){
-               return $q->where('id',$course);
+        return Episode::latest('id')->with(['chapter','chapter.course'])->when($course,function ($q) use ($course){
+           return $q->whereHas('chapter',function ($q) use ($course) {
+               return $q->wherehas('course',function ($q) use ($course){
+                   return $q->where('id',$course);
+               });
            });
+        })->when($chapter,function ($q) use ($chapter) {
+            return $q->whereHas('chapter',function ($q) use ($chapter) {
+                return $q->where('id',$chapter);
+            });
         })->search($search)->paginate($perPage);
     }
 
     public function getAllTeacher($course, $search, $per_page)
     {
-        return Episode::latest('id')->whereHas('course',function ($q) {
-            return $q->whereHas('teacher',function ($q){
-                return $q->where('user_id',Auth::id());
+        return Episode::latest('id')->whereHas('chapter',function ($q) {
+            return $q->whereHas('course',function ($q) {
+                return $q->whereHas('teacher',function ($q){
+                    return $q->where('user_id',Auth::id());
+                });
             });
         })->when($course,function ($q) use ($course){
-            return $q->whereHas('course',function ($q) use ($course) {
-                return $q->where('id',$course);
+            return $q->whereHas('chapter',function ($q) use ($course) {
+                return $q->whereHas('course',function ($q) use ($course) {
+                    return $q->where('id',$course);
+                });
             });
         })->search($search)->paginate($per_page);
     }
 
     public function findTeacherEpisode($id)
     {
-        return Episode::whereHas('course',function ($q){
-            return $q->whereHas('teacher',function ($q){
-                return $q->where('user_id',Auth::id());
+        return Episode::query()->whereHas('chapter',function ($q) {
+            return $q->whereHas('course',function ($q){
+                return $q->whereHas('teacher',function ($q){
+                    return $q->where('user_id',Auth::id());
+                });
             });
         })->findOrFail($id);
     }
 
     public function getTeachersCount($from_date , $to_date)
     {
-        return Episode::whereBetween('created_at', [$from_date." 00:00:00", $to_date." 23:59:59"])->whereHas('course',function ($q){
-           return $q->whereHas('teacher',function ($q){
-              return $q->where('user_id',Auth::id());
-           });
+        return Episode::whereBetween('created_at', [$from_date." 00:00:00", $to_date." 23:59:59"])->whereHas('chapter',function ($q) {
+            return $q->whereHas('course',function ($q){
+                return $q->whereHas('teacher',function ($q){
+                    return $q->where('user_id',Auth::id());
+                });
+            });
         })->count();
+    }
+
+    public function newComment(Episode $episode, array $data)
+    {
+        return $episode->comments()->create($data);
+    }
+
+    public function hasLiked($episode)
+    {
+        $hasLikedWithIP = $episode->likes()->where('user_ip',request()->ip())->exists();
+        if (\auth()->check()) {
+            if (!\auth()->user()->hasLiked($episode) && !$hasLikedWithIP) {
+                return false;
+            }
+        } elseif (! $hasLikedWithIP) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function like($episode) {
+        if (\auth()->check()) {
+            if (! $this->hasLiked($episode)) {
+                \auth()->user()->likes()->create([
+                    'episode_id' => $episode->id,
+                    'user_ip' => request()->ip()
+                ]);
+            }
+        } elseif (! $this->hasLiked($episode)) {
+            $episode->likes()->create([
+                'user_ip' => request()->ip()
+            ]);
+        }
+    }
+
+    public function unLike($episode)
+    {
+        if (\auth()->check()) {
+            if ($this->hasLiked($episode)) {
+                return \auth()->user()->likes()->where('episode_id',$episode->id)->delete();
+            }
+        } elseif ($this->hasLiked($episode)) {
+            return $episode->likes()->where('user_ip',request()->ip())->delete();
+        }
     }
 }

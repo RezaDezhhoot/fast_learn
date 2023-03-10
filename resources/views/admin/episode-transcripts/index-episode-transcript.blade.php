@@ -13,6 +13,7 @@
                         <tr>
                             <th>#</th>
                             <th>عنوان درس</th>
+                            <th>عنوان فصل</th>
                             <th>عنوان دوره</th>
                             <th>مدرس</th>
                             <th>تاریخ انتشار</th>
@@ -30,12 +31,15 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->title }}</td>
+                                <td>{{ $item->chapter->title ?? '' }}</td>
                                 <td>
-                                    <a href="{{ route('admin.store.course',['edit',$item->course->id]) }}">
-                                        {{ $item->course->title }}
+                                    @isset($item->chapter->course)
+                                    <a href="{{ route('admin.store.course',['edit',$item->chapter->course->id]) }}">
+                                        {{ $item->chapter->course->title }}
                                     </a>
+                                    @endisset
                                 </td>
-                                <td>{{ $item->course->teacher->user->name }}</td>
+                                <td>{{ $item->chapter->course->teacher->user->name ?? '' }}</td>
                                 <td>{{ $item->created_at->diffForHumans() }}</td>
                                 <td>{{ $item->file_storage_label }}</td>
                                 <td>{{ $item->video_storage_label }}</td>
@@ -48,7 +52,7 @@
                                 </td>
                             </tr>
                         @empty
-                            <td class="text-center" colspan="12">
+                            <td class="text-center" colspan="13">
                                 دیتایی جهت نمایش وجود ندارد
                             </td>
                         @endforelse

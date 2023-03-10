@@ -13,6 +13,7 @@
                         <thead>
                         <tr>
                             <th>عنوان درس</th>
+                            <th>عنوان فصل</th>
                             <th>عنوان دوره</th>
                             <th>لینک</th>
                             <th>فایل</th>
@@ -23,7 +24,8 @@
                         <tbody>
                         <tr>
                             <td>{{ $episode->title }}</td>
-                            <td>{{ $episode->course->title }}</td>
+                            <td>{{ $episode->chapter->title }}</td>
+                            <td>{{ $episode->chapter->course->title }}</td>
                             <td>
                                 @if(!empty($episode->link))
                                     <a target="_blank" href="{{$episode->link}}">مشاهده</a>
@@ -103,8 +105,13 @@
                         </tbody>
                     </table>
                 </div>
-                <x-admin.forms.text-area disabled label=" توضیحات مدرس"  wire:model.defer="description" id="description" />
                 <x-admin.forms.checkbox value="1" id="free" label="رایگان " wire:model.defer="free" />
+                <div class="col-12 my-2">
+                    <fieldset class="border p-4">
+                        <legend class="font-size-h6">توضیحات مدرس</legend>
+                        {!! $description !!}
+                    </fieldset>
+                </div>
                 <x-admin.forms.dropdown  id="status" :data="$data['status']" label="وضعیت*" wire:model.defer="status"/>
                 <x-admin.forms.full-text-editor id="message" label="نتیجه نهایی*" wire:model.defer="message"/>
             </div>

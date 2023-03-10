@@ -6,32 +6,8 @@
                 <div class="col-lg-8 pb-5">
                     <div class="course-dashboard-column w-100 pt-5">
                         <div class="lecture-viewer-container col-12 p-0">
-                            <div class="lecture-video-item col-12  p-0" id="videoContent">
-                                @if(!is_null($api_bucket))
-                                <div class="col-12 p-0">
-                                    {!! $api_bucket !!}
-                                </div>
-                                <div class="mt-2">
-                                    <button class="btn btn-outline-primary"
-                                        onclick="back_to_episode('heading{{$episode_id}}')">بازگشت به درس</button>
-                                </div>
-                                @elseif(!is_null($local_video))
-                                <div
-                                    class="plyr plyr--full-ui plyr--video plyr--html5 plyr--fullscreen-enabled plyr--paused">
-                                    <video id="player" class="player" playsinline controls
-                                        data-poster="{{asset($course->image)}}">
-
-                                    </video>
-                                </div>
-
-                                <div class="mt-2">
-                                    <button class="btn btn-outline-primary"
-                                        onclick="back_to_episode('heading{{$episode_id}}')">بازگشت به درس</button>
-                                </div>
-                                @else
+                            <div class="lecture-video-item col-12  p-0">
                                 <img src="{{asset($course->image)}}" class="col-12  p-0" alt="{{ $course->title }}">
-                                @endif
-                                <p class="text-info" wire:loading> در حال دریافت... </p>
                             </div>
                         </div>
                     </div>
@@ -40,174 +16,17 @@
                         {!! $course->long_body !!}
                         <div class="course-overview-card">
                             <div class="curriculum-header d-flex align-items-center justify-content-between pb-4">
-                                <h3 class="fs-24 font-weight-semi-bold">محتوای دوره</h3>
+                                <h3 class="fs-24 font-weight-semi-bold">لیست محتوای دوره</h3>
                                 <div class="curriculum-duration fs-15">
                                     <span class="curriculum-total__text mr-2"><strong
                                             class="text-black font-weight-semi-bold">مجموع:</strong> {{
-                                        $course->episodes->count() }} مبحث </span>
+                                        $course->chapters->count() }} مبحث </span>
                                     <span class="curriculum-total__hours"><strong
                                             class="text-black font-weight-semi-bold">کل ساعت:</strong> {{ $course->time
                                         }}</span>
                                 </div>
                             </div>
-                            <div class="curriculum-content">
-
-                                <div id="accordion" class="generic-accordion" wire:ignore.self>
-                                    @if(sizeof($episodes) > 0)
-                                    @foreach($episodes as $key => $item)
-                                        <div class="card" wire:ignore>
-                                        <div class="card-header" id="heading{{$item['id']}}">
-                                            <button
-                                                class="btn btn-link d-flex align-items-center justify-content-between"
-                                                data-toggle="collapse" data-target="#collapse{{$item['id']}}"
-                                                aria-expanded="{{  $key == 0 ? 'true' : 'false' }}"
-                                                aria-controls="collapse{{$item['id']}}">
-                                                <i class="la la-plus"></i>
-                                                <i class="la la-minus"></i>
-                                                <p>
-                                                    <small class="episode_counter">{{ $loop->iteration }}</small>
-                                                    {{ $item['title'] }}
-                                                </p>
-
-                                                @if($item['free'] || $course->price == 0)
-                                                <small class="text-success">رایگان <i class="la la-lock-open">
-                                                    </i></small>
-                                                @elseif(auth()->check() && $user->hasCourse($course->id))
-                                                <small class="text-success">خریداری شده <i class="la la-lock-open">
-                                                    </i></small>
-                                                @elseif(!auth()->check() || (auth()->check() &&
-                                                !$user->hasCourse($course->id)))
-                                                <div class="text-left">
-                                                    <small class="text-danger">نقدی <i class="la la-lock">
-                                                        </i></small>
-                                                </div>
-                                                @endif
-                                            </button>
-                                        </div>
-                                        <!-- end card-header -->
-
-                                        <div id="collapse{{$item['id']}}" class="collapse {{  $key == 0 ? 'show' : '' }}"
-                                            aria-labelledby="heading{{$item['id']}}" data-parent="#accordion">
-                                            @if(auth()->check())
-                                            @if((($item['free'] || $course->price == 0) ||
-                                            ($user->hasCourse($course->id))))
-                                            <div class="card-body pt-2">
-                                                @if(!empty($item['description']))
-                                                <p class="px-0 text-black">
-                                                    <i class="la la-star mr-1"></i>
-                                                    {{ $item['description'] }}
-                                                </p>
-                                                @endif
-                                                <hr>
-                                                <ul class="generic-list-item">
-                                                    @if(!empty($item['api_bucket']) && $item['show_api_video'] )
-                                                    <li>
-                                                        <a class="d-flex align-items-center justify-content-between"
-                                                            data-toggle="modal" data-target="#previewModal">
-                                                            <span
-                                                                wire:click="set_content('api_bucket','{{$item['id']}}')"
-                                                                class="cursor-pointers showVideo">
-                                                                <i class="la la-play-circle mr-1"></i>
-                                                                نمایش ویدئو
-                                                            </span>
-                                                            <span>{{ $item['time'] }}</span>
-                                                        </a>
-                                                    </li>
-
-                                                    @elseif(!empty($item['local_video']))
-                                                    @if($item['allow_show_local_video'])
-                                                    <li>
-                                                        <a class="d-flex align-items-center justify-content-between showVideo"
-                                                            data-toggle="modal" data-target="#previewModal">
-                                                            <span
-                                                                wire:click="set_content('show_local_video','{{$item['id']}}')"
-                                                                class="cursor-pointers">
-                                                                <i class="la la-play-circle mr-1"></i>
-                                                                نمایش ویدئو
-                                                            </span>
-                                                            <span>{{ $item['time'] }}</span>
-                                                        </a>
-                                                    </li>
-                                                    @endif
-
-                                                    @if ($item['downloadable_local_video'])
-                                                    <li>
-                                                        <a class="d-flex align-items-center justify-content-between"
-                                                            data-toggle="modal" data-target="#previewModal">
-                                                            <span
-                                                                wire:click="set_content('local_video','{{$item['id']}}')"
-                                                                class="cursor-pointers">
-                                                                <i class="la la-download mr-1"></i>
-                                                                دانلود ویدئو
-                                                            </span>
-                                                        </a>
-                                                    </li>
-
-                                                    @endif
-
-                                                    @endif
-                                                    @if(!empty($item['file']))
-                                                    <li>
-                                                        <a class="d-flex align-items-center justify-content-between"
-                                                            data-toggle="modal" data-target="#previewModal">
-                                                            <span wire:click="set_content('file','{{$item['id']}}')"
-                                                                class="cursor-pointers">
-                                                                <i class="la la-file mr-1"></i>
-                                                                دانلود فایل
-                                                            </span>
-
-                                                        </a>
-                                                    </li>
-                                                    @endif
-                                                    @if(!empty($item['link']) )
-                                                    <li>
-                                                        <a class="d-flex align-items-center justify-content-between"
-                                                            data-toggle="modal" data-target="#previewModal">
-                                                            <span wire:click="set_content('link','{{$item['id']}}')"
-                                                                class="cursor-pointers">
-                                                                <i class="la la-link mr-1"></i>
-                                                                لینک
-                                                            </span>
-
-                                                        </a>
-                                                    </li>
-                                                    @endif
-                                                    @if($item['can_homework'])
-                                                    <li data-toggle="modal" data-target="#homeworkModal">
-                                                        <a class="d-flex align-items-center justify-content-between"
-                                                            data-toggle="modal" data-target="#previewModal">
-                                                            <span wire:click="homework('{{$item['id']}}')"
-                                                                class="cursor-pointers">
-                                                                <i class="la la-file-import mr-1"></i>
-                                                                ارسال تمرین
-                                                            </span>
-
-                                                        </a>
-                                                    </li>
-                                                    @endif
-                                                    <small class="text-info" wire:loading>
-                                                        در حال دریافت ...
-                                                    </small>
-                                                </ul>
-                                            </div>
-                                            @else
-                                            <p class="alert alert-danger">دوره خریداری نشده است.</p>
-                                            @endif
-                                            @else
-                                            <p class="alert alert-info">دسترسی به این بخش نیاز به ثبت نام دارد.</p>
-                                            @endif
-                                        </div>
-                                        <!-- end collapse -->
-                                    </div>
-                                    @endforeach
-                                    @else
-                                        <p class="alert alert-info">
-                                            هنوز هیچ درسی منتشر نشده است.
-                                        </p>
-                                    @endif
-                                </div>
-                                <!-- end generic-accordion -->
-                            </div>
+                            @include('site.courses.chapters')
                             <!-- end curriculum-content -->
                         </div>
                         <!-- end course-overview-card -->
@@ -526,111 +345,6 @@
 <!-- end container -->
 </section>
 
-<div wire:ignore.self class="modal fade modal-container" id="homeworkModal" tabindex="-1" role="dialog"
-    aria-labelledby="homeworkModalTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header border-bottom-gray d-flex justify-content-between align-items-center">
-                <div class="d-flex align-items-center">
-                    <h5 class="modal-title fs-19 font-weight-semi-bold" id="shareModalTitle">ارسال تمرین</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="نزدیک">
-                        <span aria-hidden="true" class="la la-times"></span>
-                    </button>
-                </div>
-                <div>
-                    @if(!is_null($homework_show) && empty($homework_show->result))
-                    <button class="btn btn-sm btn-outline-danger" onclick="delete_homework()"><i
-                            class="la la-trash"></i> حذف این تمرین</button>
-                    @endif
-                </div>
-            </div>
-            <div class="modal-body">
-                @if($show_homework_form)
-                <form wire:submit.prevent="submit_homework()">
-                    <div class="row">
-                        @auth
-                        <div class="input-box col-12">
-                            <div class="form-group">
-                                <div x-data="{ isUploading: false, progress: 0 }"
-                                    x-on:livewire-upload-start="isUploading = true"
-                                    x-on:livewire-upload-finish="isUploading = false"
-                                    x-on:livewire-upload-error="isUploading = false"
-                                    x-on:livewire-upload-progress="progress = $event.detail.progress"
-                                    class="custom-file my-4">
-                                    <input {{ !is_null($homework_show) ? 'disabled' : '' }} type="file"
-                                        class="custom-file-input" wire:model="homework_file" id="homework_file">
-                                    <label class="custom-file-label" for="homework_file">انتخاب فایل</label>
-                                    <div class="mt-2" x-show="isUploading">
-                                        در حال اپلود فایل...
-                                        <progress max="100" x-bind:value="progress"></progress>
-                                    </div>
-                                    <small class="text-info">حداقل حجم مجاز : 2 مگابایت</small>
-                                    <small class="text-info">jpg,jpeg,png,pdf,zip,rar</small>
-                                    @if(!is_null($homework_show) && !is_null($homework_show->file))
-                                    <small class="alert d-block p-1 alert-success">فایل ارسال شده است</small>
-                                    @endif
-                                    @error('homework_file')
-                                    <small class="text-danger d-block">{{$message}}</small>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-                        <div class="input-box col-lg-12">
-                            <label class="label-text">توضیحات</label>
-                            <div class="form-group">
-                                <textarea {{ !is_null($homework_show) ? 'disabled' : '' }}
-                                    wire:model.defer="homework_description" class="form-control form--control pl-3"
-                                    name="homework_description" placeholder="توضیحات" rows="5"></textarea>
-                            </div>
-                            @error('homework_description')
-                            <span class="invalid-feedback d-block">{{$message}}</span>
-                            @enderror
-                        </div>
-                        <div
-                            class="input-box col-lg-12 text-right overflow-hidden mb-3">
-                            <div class="g-recaptcha d-inline-block"
-                                data-sitekey="{{ config('services.recaptcha.site_key') }}"
-                                data-callback="homeworkReCaptchaCallback" wire:ignore></div>
-                            @error('homework_recaptcha')<span class="invalid-feedback d-block">{{ $message
-                                }}</span>@enderror
-                        </div>
-                        <div class="btn-box col-lg-12 {{ !is_null($homework_show) ? 'd-none' : '' }}">
-                            <button {{ !is_null($homework_show) ? 'disabled' : '' }} class="btn theme-btn"
-                                type="submit">ارسال تمرین</button>
-                        </div>
-                        @if(!is_null($homework_show) && !is_null($homework_show->result))
-                        <div class="col-12">
-                            <h6>نتیجه :</h6>
-                            <small>
-                                @for($i=1; $i<=5; $i++) @if($i <=$homework_show->score)
-                                    <span class="la la-star"></span>
-                                    @else
-                                    <span class="la la-star-o"></span>
-                                    @endif
-                                    @endfor
-                            </small>
-                            <p class="mr-1">
-                                {!! $homework_show->result !!}
-                            </p>
-                        </div>
-                        @endif
-                        @else
-                        <p class="text-info">
-                            برای ارسال تمرین ابتدا ثبت نام کنید
-                        </p>
-                        @endif
-                    </div>
-                </form>
-                @else
-                <p class="alert alert-danger">شما به این بخش دسترسی ندارید.</p>
-                @endif
-            </div>
-            <div class="modal-footer justify-content-center border-top-gray">
-
-            </div>
-        </div>
-    </div>
-</div>
 <div class="modal fade modal-container" id="shareModal" tabindex="-1" role="dialog" aria-labelledby="shareModalTitle"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -684,26 +398,6 @@
 @push('scripts')
 
 <script>
-    function delete_homework() {
-            Swal.fire({
-                title: 'حذف تمرین!',
-                text: 'آیا از حذف این تمرین اطمینان دارید؟',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                cancelButtonText: 'خیر',
-                confirmButtonText: 'بله'
-            }).then((result) => {
-                if (result.value) {
-                    @this.call('delete_homework')
-                }
-            })
-        }
-        function homeworkReCaptchaCallback(response) {
-            @this.set('homework_recaptcha', response);
-        }
-
         function reCaptchaCallback(response) {
             @this.set('recaptcha', response);
         }

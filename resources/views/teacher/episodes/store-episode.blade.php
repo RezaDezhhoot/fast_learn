@@ -15,6 +15,8 @@
                 <div class="col-12">
                     <x-teacher.forms.select2 id="course_id" :data="$data['course']" label=" دوره اموزشی"
                                              wire:model.defer="course_id" />
+                    <x-teacher.forms.dropdown id="chapter_id" :data="$data['chapter']" label=" فصل*"
+                                            wire:model.defer="chapter_id" />
                 </div>
                 <x-teacher.forms.checkbox value="1" id="can_homework" label="امکان بارگذاری تمرین "
                                         wire:model.defer="can_homework" />

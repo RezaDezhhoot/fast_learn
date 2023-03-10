@@ -34,4 +34,6 @@ Route::prefix('teacher')->name('teacher.')->middleware(['auth','role:teacher','t
     Route::get('/transcripts/{action}/{id?}', App\Http\Controllers\Teacher\Transcripts\StoreTranscript::class)->name('store.transcripts');
     Route::get('/samples', App\Http\Controllers\Teacher\Samples\IndexSamples::class)->name('samples');
     Route::get('/samples/{action}/{id?}', App\Http\Controllers\Teacher\Samples\StoreSamples::class)->name('store.samples');
+    Route::get('/chapters',App\Http\Controllers\Teacher\Chapters\IndexChapter::class)->name('chapters');
+    Route::get('/chapters/{action}/{id?}',App\Http\Controllers\Teacher\Chapters\StoreChapter::class)->name('store.chapters');
 });

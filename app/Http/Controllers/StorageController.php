@@ -20,9 +20,15 @@ class StorageController extends Controller
     public function __invoke($episode,$type): \Illuminate\Http\Response
     {
         $episode = $this->episodeRepository->findOrFail($episode);
-        if (((!$episode->free && !$episode->course->price == 0) &&
-                !Auth::user()->hasCourse($episode->course->id)) && !Auth::user()->hasPermissionTo('edit_courses'))
-            abort(404);
+        if (!$episode->free && !$episode->chapter->course->price == 0) {
+            if (\auth()->check()) {
+                if ( !auth()->user()->hasCourse($episode->chapter->course->id) && !Auth::user()->hasPermissionTo('edit_courses'))
+                    abort(404);
+            } else {
+                abort(404);
+            }
+        }
+
 
         return match ($type) {
             'video' => $this->getFile($episode->local_video , getDisk($episode->video_storage) ),

@@ -7,6 +7,7 @@ use App\Enums\CourseEnum;
 use App\Enums\OrderEnum;
 use App\Enums\SampleEnum;
 use App\Models\Course;
+use App\Models\Order;
 use App\Observers\CourseObserver;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\Interfaces\CourseRepositoryInterface;
@@ -14,6 +15,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CourseRepository implements CourseRepositoryInterface
 {
@@ -105,10 +108,10 @@ class CourseRepository implements CourseRepositoryInterface
     public function get($col, $value , $published = false)
     {
         return $published ?
-        Course::published()->with(['episodes','comments','samples' => function($q){
+        Course::published()->with(['chapters','comments','samples' => function($q){
             return $q->where('type',SampleEnum::PUBLIC_TYPE);
         }])->where($col,$value)->firstOrfail() :
-        Course::where($col,$value)->with(['episodes','comments','samples'=> function($q){
+        Course::where($col,$value)->with(['chapters','chapters.episodes','comments','samples' => function($q){
             return $q->where('type',SampleEnum::PUBLIC_TYPE);
         }])->firstOrfail();
     }
@@ -172,6 +175,43 @@ class CourseRepository implements CourseRepositoryInterface
         return Course::whereBetween('created_at', [$from_date." 00:00:00", $to_date." 23:59:59"])->whereHas('teacher',function ($q){
             return $q->where('id',Auth::id());
         })->count();
+    }
+
+    public function setCourseToOrder($course)
+    {
+        if (\auth()->check()) {
+            $order = [
+                'user_id' => auth()->id(),
+                'user_ip' => request()->ip(),
+                'price'=> $course->base_price,
+                'total_price' => 0,
+                'reduction_code' =>  null,
+                'reductions_value' => $course->reduction_amount,
+                'wallet_pay'=>0,
+                'discount' => 0,
+                'transactionId' => null,
+            ];
+            try {
+                DB::beginTransaction();
+                $order = Order::query()->create($order);
+                $order->details()->create([
+                    'course_id' => $course->id,
+                    'product_data' => json_encode(['id' => $course->id, 'title' => $course->title]),
+                    'price' => $course->base_price,
+                    'total_price' => 0,
+                    'status' => OrderEnum::STATUS_COMPLETED,
+                    'reduction_amount' => $course->reduction_amount,
+                    'wallet_amount' => 0,
+                    'quantity' => 1,
+                ]);
+                DB::commit();
+                return true;
+            } catch (\Exception $e) {
+                DB::rollBack();
+                Log::error($e->getMessage());
+                return false;
+            }
+        }
     }
 
 }

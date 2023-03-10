@@ -6,6 +6,8 @@ use App\Repositories\Classes\ArticleRepository;
 use App\Repositories\Classes\BankAccountRepository;
 use App\Repositories\Classes\CategoryRepository;
 use App\Repositories\Classes\CertificateRepository;
+use App\Repositories\Classes\ChapterRepository;
+use App\Repositories\Classes\ChapterTranscriptRepository;
 use App\Repositories\Classes\ChoiceRepository;
 use App\Repositories\Classes\CommentRepository;
 use App\Repositories\Classes\ContactUsRepository;
@@ -49,6 +51,8 @@ use App\Repositories\Interfaces\ArticleRepositoryInterface;
 use App\Repositories\Interfaces\BankAccountRepositoryInterface;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\Interfaces\CertificateRepositoryInterface;
+use App\Repositories\Interfaces\ChapterRepositoryInterface;
+use App\Repositories\Interfaces\ChapterTranscriptRepositoryInterface;
 use App\Repositories\Interfaces\ChoiceRepositoryInterface;
 use App\Repositories\Interfaces\CommentRepositoryInterface;
 use App\Repositories\Interfaces\ContactUsRepositoryInterface;
@@ -103,219 +107,229 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         $this->app->bind(
             ArticleRepositoryInterface::class,
-            ArticleRepository::class,
+            ArticleRepository::class
         );
 
         $this->app->bind(
             CategoryRepositoryInterface::class,
-            CategoryRepository::class,
+            CategoryRepository::class
         );
 
         $this->app->bind(
             CertificateRepositoryInterface::class,
-            CertificateRepository::class,
+            CertificateRepository::class
         );
 
         $this->app->bind(
             ChoiceRepositoryInterface::class,
-            ChoiceRepository::class,
+            ChoiceRepository::class
         );
 
         $this->app->bind(
             CommentRepositoryInterface::class,
-            CommentRepository::class,
+            CommentRepository::class
         );
 
         $this->app->bind(
             CourseRepositoryInterface::class,
-            CourseRepository::class,
+            CourseRepository::class
         );
 
         $this->app->bind(
             EpisodeRepositoryInterface::class,
-            EpisodeRepository::class,
+            EpisodeRepository::class
         );
 
         $this->app->bind(
             EventRepositoryInterface::class,
-            EventRepository::class,
+            EventRepository::class
         );
 
         $this->app->bind(
             HomeworkRepositoryInterface::class,
-            HomeworkRepository::class,
+            HomeworkRepository::class
         );
 
 
         $this->app->bind(
             NotificationRepositoryInterface::class,
-            NotificationRepository::class,
+            NotificationRepository::class
         );
 
         $this->app->bind(
             OrderRepositoryInterface::class,
-            OrderRepository::class,
+            OrderRepository::class
         );
 
         $this->app->bind(
             OrderDetailRepositoryInterface::class,
-            OrderDetailRepository::class,
+            OrderDetailRepository::class
         );
 
         $this->app->bind(
             OrderNoteRepositoryInterface::class,
-            OrderNoteRepository::class,
+            OrderNoteRepository::class
         );
 
 
         $this->app->bind(
             OtpRepositoryInterface::class,
-            OtpRepository::class,
+            OtpRepository::class
         );
 
         $this->app->bind(
             PaymentRepositoryInterface::class,
-            PaymentRepository::class,
+            PaymentRepository::class
         );
 
         $this->app->bind(
             PermissionRepositoryInterface::class,
-            PermissionRepository::class,
+            PermissionRepository::class
         );
 
         $this->app->bind(
             QuestionRepositoryInterface::class,
-            QuestionRepository::class,
+            QuestionRepository::class
         );
 
         $this->app->bind(
             QuizRepositoryInterface::class,
-            QuizRepository::class,
+            QuizRepository::class
         );
 
         $this->app->bind(
             ReductionRepositoryInterface::class,
-            ReductionRepository::class,
+            ReductionRepository::class
         );
 
         $this->app->bind(
             ReductionMetaRepositoryInterface::class,
-            ReductionMetaRepository::class,
+            ReductionMetaRepository::class
         );
 
         $this->app->bind(
             RoleRepositoryInterface::class,
-            RoleRepository::class,
+            RoleRepository::class
         );
 
         $this->app->bind(
             SendRepositoryInterface::class,
-            SendRepository::class,
+            SendRepository::class
         );
 
         $this->app->bind(
             SettingRepositoryInterface::class,
-            SettingRepository::class,
+            SettingRepository::class
         );
 
         $this->app->bind(
             TagRepositoryInterface::class,
-            TagRepository::class,
+            TagRepository::class
         );
 
         $this->app->bind(
             TeacherRepositoryInterface::class,
-            TeacherRepository::class,
+            TeacherRepository::class
         );
 
         $this->app->bind(
             TicketRepositoryInterface::class,
-            TicketRepository::class,
+            TicketRepository::class
         );
 
         $this->app->bind(
             TranscriptRepositoryInterface::class,
-            TranscriptRepository::class,
+            TranscriptRepository::class
         );
 
         $this->app->bind(
             UserDetailRepositoryInterface::class,
-            UserDetailRepository::class,
+            UserDetailRepository::class
         );
 
         $this->app->bind(
             UserRepositoryInterface::class,
-            UserRepository::class,
+            UserRepository::class
         );
 
         $this->app->bind(
             WalletRepositoryInterface::class,
-            WalletRepository::class,
+            WalletRepository::class
         );
 
         $this->app->bind(
             ContactUsRepositoryInterface::class,
-            ContactUsRepository::class,
+            ContactUsRepository::class
         );
 
         $this->app->bind(
             LogRepositoryInterface::class,
-            LogRepository::class,
+            LogRepository::class
         );
 
         $this->app->bind(
             SampleRepositoryInterface::class,
-            SampleRepository::class,
+            SampleRepository::class
         );
 
         $this->app->bind(
             StorageRepositoryInterface::class,
-            StorageRepository::class,
+            StorageRepository::class
         );
 
         $this->app->bind(
             BankAccountRepositoryInterface::class,
-            BankAccountRepository::class,
+            BankAccountRepository::class
         );
 
         $this->app->bind(
             IncomingMethodRepositoryInterface::class,
-            IncomingMethodRepository::class,
+            IncomingMethodRepository::class
         );
 
         $this->app->bind(
             NewCourseRepositoryInterface::class,
-            NewCourseRepository::class,
+            NewCourseRepository::class
         );
 
         $this->app->bind(
             TeacherCheckoutRepositoryInterface::class,
-            TeacherCheckoutRepository::class,
+            TeacherCheckoutRepository::class
         );
 
         $this->app->bind(
             TeacherRequestRepositoryInterface::class,
-            TeacherRequestRepository::class,
+            TeacherRequestRepository::class
         );
 
         $this->app->bind(
             StoragePermissionRepositoryInterface::class,
-            StoragePermissionRepository::class,
+            StoragePermissionRepository::class
         );
 
         $this->app->bind(
             LastActivityRepositoryInterface::class,
-            LastActivityRepository::class,
+            LastActivityRepository::class
         );
 
         $this->app->bind(
             NewCourseChatRepositoryInterface::class,
-            NewCourseChatRepository::class,
+            NewCourseChatRepository::class
         );
 
         $this->app->bind(
             EpisodeTranscriptRepositoryInterface::class,
-            EpisodeTranscriptRepository::class,
+            EpisodeTranscriptRepository::class
+        );
+
+        $this->app->bind(
+            ChapterRepositoryInterface::class,
+            ChapterRepository::class
+        );
+
+        $this->app->bind(
+            ChapterTranscriptRepositoryInterface::class,
+            ChapterTranscriptRepository::class
         );
     }
 

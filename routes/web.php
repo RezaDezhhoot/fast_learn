@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::middleware(['auth'])->get('/storage/{episode}/{type}', App\Http\Controllers\StorageController::class)->name('storage');
+Route::get('/storage/{episode}/{type}', App\Http\Controllers\StorageController::class)->name('storage');
 Route::get('/',App\Http\Controllers\Site\Homes\Home::class)->name('home');
 Route::get('/courses',App\Http\Controllers\Site\Courses\IndexCourse::class)->name('courses');
 Route::get('/courses/{slug?}',App\Http\Controllers\Site\Courses\SingleCourse::class)->name('course');
@@ -27,6 +27,7 @@ Route::get('/auth',App\Http\Controllers\Site\Auth\Auth::class)->name('auth');
 Route::get('/teachers',App\Http\Controllers\Site\Teachers\IndexTeacher::class)->name('teachers');
 Route::get('/teachers/{id}',App\Http\Controllers\Site\Teachers\SingleTeacher::class)->name('teacher');
 Route::get('/codes/{code}',App\Http\Controllers\CodeController::class)->name('codes');
+Route::get('/episodes/{course}/{chapter}/{episode}/{title}',\App\Http\Controllers\Site\Episodes\SingleEpisode::class)->name('episode');
 // v2-samples
 Route::get('/sample-questions',App\Http\Controllers\Site\Samples\IndexSample::class)->name('samples');
 Route::get('/sample-questions/{slug}',App\Http\Controllers\Site\Samples\SingleSample::class)->name('sample');

@@ -9,7 +9,7 @@
                 @endforeach
             </x-teacher.nav-tabs-list>
             @if($tab == self::EPISODES)
-                <x-teacher.forms.dropdown id="course" :data="$data['course']" label="فیلتر بر حسب دوره اموزشی" wire:model.defer="course"/>
+                <x-teacher.forms.dropdown id="course" :data="$data['course']" label="فیلتر بر حسب دوره اموزشی" wire:model="course"/>
                 @include('teacher.layouts.advance-table')
                 <div class="row">
                     <div class="col-lg-12 table-responsive">
@@ -18,6 +18,7 @@
                             <tr>
                                 <th>#</th>
                                 <th>عنوان درس</th>
+                                <th>عنوان فصل</th>
                                 <th>عنوان دوره</th>
                                 <th>تاریخ انتشار</th>
                                 <th>اخرین اپدیت</th>
@@ -32,7 +33,8 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $item->title }}</td>
-                                   <td> {{ $item->course->title }}</td>
+                                   <td> {{ $item->chapter->title ?? '' }}</td>
+                                   <td> {{ $item->chapter->course->title ?? '' }}</td>
                                     <td>{{ $item->created_at->diffForHumans() }}</td>
                                     <td>{{ $item->updated_at->diffForHumans() }}</td>
                                     <td>{{ $item->can_homework ? 'دارد' : 'ندارد' }}</td>
@@ -43,7 +45,7 @@
                                     </td>
                                 </tr>
                             @empty
-                                <td class="text-center" colspan="13">
+                                <td class="text-center" colspan="14">
                                     دیتایی جهت نمایش وجود ندارد
                                 </td>
                             @endforelse
@@ -60,6 +62,7 @@
                             <tr>
                                 <th>#</th>
                                 <th>عنوان درس</th>
+                                <th>عنوان فصل</th>
                                 <th>عنوان دوره</th>
                                 <th>تاریخ انتشار</th>
                                 <th>وضعیت</th>
@@ -71,7 +74,8 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $item->title }}</td>
-                                    <td> {{ $item->course->title }}</td>
+                                    <td> {{ $item->chapter->title ?? '' }}</td>
+                                    <td> {{ $item->chapter->course->title ?? '' }}</td>
                                     <td>{{ $item->created_at->diffForHumans() }}</td>
                                     <td>{{ $item->status_label }}</td>
                                     <td>

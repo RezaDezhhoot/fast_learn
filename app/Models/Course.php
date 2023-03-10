@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -47,7 +48,7 @@ class Course extends Model
 {
     use HasFactory , Searchable , Sluggable , SoftDeletes , CascadeSoftDeletes;
 
-    protected $cascadeDeletes = ['comments','episodes','tags'];
+    protected $cascadeDeletes = ['comments','chapters','tags'];
 
     protected $guarded = ['id'];
 
@@ -187,9 +188,14 @@ class Course extends Model
         return $this->belongsTo(Quiz::class,'quiz_id');
     }
 
-    public function episodes(): HasMany
+    public function episodes(): HasManyThrough
     {
-        return $this->hasMany(Episode::class)->orderBy('view');
+        return $this->hasManyThrough(Episode::class,Chapter::class)->orderBy('view');
+    }
+
+    public function chapters(): HasMany
+    {
+        return $this->hasMany(Chapter::class)->orderBy('view');
     }
 
     public function transcripts(): HasMany

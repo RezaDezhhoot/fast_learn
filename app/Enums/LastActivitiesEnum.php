@@ -12,6 +12,12 @@ final class LastActivitiesEnum extends Enum
        'new_title' => 'تعریف دوره جدید '
    ];
 
+    const CHAPTERS = [
+        'icon' => 'flaticon2-open-text-book',
+        'update_title' => 'بروزرسانی فصل ها ',
+        'new_title' => 'تعریف درس جدید '
+    ];
+
    const EPISODES = [
        'icon' => 'flaticon2-open-text-book',
        'update_title' => 'بروزرسانی درس ',

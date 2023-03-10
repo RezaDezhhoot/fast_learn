@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Episodes;
 
 use App\Enums\StorageEnum;
 use App\Http\Controllers\BaseComponent;
+use App\Repositories\Interfaces\ChapterRepositoryInterface;
 use App\Repositories\Interfaces\CourseRepositoryInterface;
 use App\Repositories\Interfaces\EpisodeRepositoryInterface;
 use App\Repositories\Interfaces\HomeworkRepositoryInterface;
@@ -19,7 +20,7 @@ class StoreEpisode extends BaseComponent
     public  $header , $storage , $episode;
     public $title , $link , $time = '00:00:00' , $view = 0, $free = 0 , $api_bucket , $file_storage , $file ,$local_video ,
         $video_storage , $allow_show_local_video = 0 , $course_id , $description , $can_homework = false , $homework_storage ,
-        $show_api_video = false , $downloadable_local_video = false;
+        $show_api_video = false , $downloadable_local_video = false , $chapter_id;
 
     public $homework , $h_file , $h_description , $h_result , $h_storage , $h_score;
 
@@ -27,6 +28,7 @@ class StoreEpisode extends BaseComponent
     {
         parent::__construct($id);
         $this->courseRepository = app(CourseRepositoryInterface::class);
+        $this->chapterRepository = app(ChapterRepositoryInterface::class);
         $this->settingRepository = app(SettingRepositoryInterface::class);
         $this->episodeRepository = app(EpisodeRepositoryInterface::class);
         $this->homeworkRepository = app(HomeworkRepositoryInterface::class);
@@ -38,16 +40,18 @@ class StoreEpisode extends BaseComponent
         $this->set_mode($action);
         $this->data['storage'] = getAvailableStorages();
         $this->data['course'] = $this->courseRepository->getAll()->pluck('title','id');
+        $this->data['chapter'] = [];
         if ($this->mode == self::UPDATE_MODE) {
             $this->episode = $this->episodeRepository->findOrFail($id);
-            $this->header = " درس {$this->episode->title} از {$this->episode->course->title} ";
+            $this->header = " {$this->episode->chapter->course->title} - {$this->episode->chapter->title} - {$this->episode->title}";
             $this->title = $this->episode->title;
             $this->file = $this->episode->file;
             $this->link = $this->episode->link;
             $this->local_video = $this->episode->local_video;
             $this->api_bucket = $this->episode->api_bucket;
             $this->time = $this->episode->time;
-            $this->course_id = $this->episode->course_id;
+            $this->course_id = $this->episode->chapter->course_id ?? null;
+            $this->chapter_id = $this->episode->chapter_id;
             $this->view = $this->episode->view;
             $this->description = $this->episode->description;
             $this->can_homework = $this->episode->can_homework;
@@ -58,6 +62,8 @@ class StoreEpisode extends BaseComponent
             $this->allow_show_local_video = $this->episode->allow_show_local_video;
             $this->show_api_video = $this->episode->show_api_video;
             $this->downloadable_local_video = $this->episode->downloadable_local_video;
+            $this->updateChapters($this->course_id);
+
         } elseif ($this->mode == self::CREATE_MODE) {
             $this->header = 'درس جدید';
         } else abort(404);
@@ -81,13 +87,13 @@ class StoreEpisode extends BaseComponent
         $this->video_storage = $this->emptyToNull($this->video_storage);
         $this->validate([
             'title' => ['required','string','max:255'],
-            'description' => ['required','string','max:70'],
+            'description' => ['required','string','max:1000000'],
             'file' => ['nullable','string','max:10000'],
             'local_video' => ['nullable','max:255'],
             'api_bucket' => ['nullable','max:35000'],
             'time' => ['required','date_format:H:i:s','max:255'],
             'allow_show_local_video' => ['required','boolean'],
-            'course_id' => ['required','exists:courses,id'],
+            'chapter_id' => ['required','exists:chapters,id'],
             'view' => ['required','integer'],
             'file_storage' => [Rule::requiredIf(fn() => !empty($this->file)) ,'in:'.implode(',',array_keys(getAvailableStorages())).','.null],
             'video_storage' => [Rule::requiredIf(fn() => !empty($this->local_video)) ,'in:'.implode(',',array_keys(getAvailableStorages())).','.null],
@@ -109,7 +115,7 @@ class StoreEpisode extends BaseComponent
             'homework_storage' => 'فضای ذخیره سازی تمرین',
             'view' => 'نمایش درس',
             'allow_show_local_video' => 'اجازه برای نمایش ویدئو',
-            'course_id' => 'دوره اموزشی',
+            'chapter_id' => 'فصل',
             'free' => 'رایگان',
             'can_homework' => 'فیلد تمرین',
             'downloadable_local_video' => 'امکان دانلود ویدئو',
@@ -123,7 +129,7 @@ class StoreEpisode extends BaseComponent
         $episode->api_bucket = $this->api_bucket;
         $episode->view =$this->view;
         $episode->time = $this->time;
-        $episode->course_id =$this->course_id;
+        $episode->chapter_id = $this->chapter_id;
         $episode->free =$this->free;
         $episode->file_storage = $this->file_storage ?? StorageEnum::PRIVATE;
         $episode->homework_storage = $this->homework_storage ?? StorageEnum::PRIVATE;
@@ -150,7 +156,7 @@ class StoreEpisode extends BaseComponent
     {
         $this->reset([
             'file_storage','api_bucket','title','file','link','local_video','time','view',
-            'free','allow_show_local_video' , 'homework_storage' ,
+            'free','allow_show_local_video' , 'homework_storage' ,'chapter_id',
             'video_storage' , 'course_id' ,'description' ,'can_homework','downloadable_local_video','show_api_video'
         ]);
     }
@@ -201,6 +207,16 @@ class StoreEpisode extends BaseComponent
     public function resetHomework()
     {
         $this->reset(['homework','h_file','h_description','h_result','h_score','h_storage']);
+    }
+
+    public function updatedCourseId($value)
+    {
+        $this->updateChapters($value);
+    }
+
+    public function updateChapters($value)
+    {
+        $this->data['chapter'] = $this->chapterRepository->alL('course',$value,'id')->pluck('title','id');
     }
 
     public function deleteHFile()
