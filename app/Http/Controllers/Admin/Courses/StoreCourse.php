@@ -13,6 +13,7 @@ use App\Repositories\Interfaces\QuizRepositoryInterface;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
 use App\Repositories\Interfaces\TagRepositoryInterface;
 use App\Repositories\Interfaces\TeacherRepositoryInterface;
+use Illuminate\Validation\Rule;
 use Livewire\WithFileUploads;
 
 class StoreCourse extends BaseComponent
@@ -20,7 +21,7 @@ class StoreCourse extends BaseComponent
     use WithFileUploads;
     public  $header , $slug , $title , $short_body , $long_body , $image  , $category ,  $quiz , $seo_keywords , $seo_description,
     $teacher , $level , $const_price , $status ,$reduction_type ,$reduction_value = 0 , $start_at , $expire_at  , $tags = [];
-    public  $course , $sub_title , $storage , $type , $incomingMethod;
+    public  $course , $sub_title , $storage , $type , $incomingMethod , $province , $city;
 
     public function __construct($id = null)
     {
@@ -63,6 +64,8 @@ class StoreCourse extends BaseComponent
             $this->level = $this->course->level;
             $this->type = $this->course->type;
             $this->incomingMethod = $this->course->incoming_method_id;
+            $this->province = $this->course->province;
+            $this->city = $this->course->city;
         } elseif ($this->mode == self::CREATE_MODE) {
             $this->header = 'دوره جدید';
         } else abort(404);
@@ -83,11 +86,15 @@ class StoreCourse extends BaseComponent
         $this->data['type'] = CourseEnum::getTypes();
         $this->data['quiz'] = $this->quizRepository->getAll()->pluck('name','id');
         $this->data['incoming'] = $this->incomingMethodRepository->getAll()->pluck('title','id');
-
+        $this->data['province'] = $this->settingRepository::getProvince();
     }
 
     public function render()
     {
+        $this->data['city'] = [];
+        if (isset($this->province) && in_array($this->province,array_keys($this->data['province'])))
+            $this->data['city'] = $this->settingRepository::getCity($this->province);
+
         return view('admin.courses.store-course')->extends('admin.layouts.admin');
     }
 
@@ -103,7 +110,7 @@ class StoreCourse extends BaseComponent
             $this->saveInDataBase($this->courseRepository->newCourseObject());
             $this->reset(['slug','sub_title','title','short_body','long_body','image','category','quiz','teacher',
                 'status','level','type','reduction_type','const_price','reduction_value','start_at','expire_at',
-                'tags','seo_keywords','seo_description','incomingMethod']);
+                'tags','seo_keywords','seo_description','incomingMethod','province','city']);
         }
     }
 
@@ -131,7 +138,9 @@ class StoreCourse extends BaseComponent
             'expire_at' => ['nullable','date'],
             'level' => ['required','in:'.implode(',',array_keys(CourseEnum::getLevels()))],
             'type' => ['required','in:'.implode(',',array_keys(CourseEnum::getTypes()))],
-            'incomingMethod' => ['nullable','exists:incoming_methods,id']
+            'incomingMethod' => ['nullable','exists:incoming_methods,id'],
+            'province' => ['nullable',Rule::in(array_keys($this->data['province']))],
+            'city' => ['nullable',Rule::in(array_keys($this->data['city']))]
         ],[],[
             'title' => 'عنوان',
             'sub_title' => 'عنوان فرعی',
@@ -151,7 +160,9 @@ class StoreCourse extends BaseComponent
             'expire_at' => 'پایان تخفیف',
             'level' => 'سطح دوره',
             'type' => 'نوع دوره',
-            'incomingMethod' => 'روش محاسبه درامد'
+            'incomingMethod' => 'روش محاسبه درامد',
+            'province' => 'استان',
+            'city' => 'شهر',
         ]);
         $model->title = $this->title;
         $model->sub_title = $this->sub_title;
@@ -171,6 +182,8 @@ class StoreCourse extends BaseComponent
         $model->expire_at = $this->expire_at;
         $model->seo_keywords = $this->seo_keywords;
         $model->seo_description = $this->seo_description;
+        $model->province = $this->province;
+        $model->city = $this->city;
         $model->incoming_method_id = emptyToNull($this->incomingMethod);
         $model = $this->courseRepository->save($model);
         $this->tags = array_filter($this->tags);
