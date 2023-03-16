@@ -33,6 +33,18 @@
                     @endforeach
                 </div>
             </x-admin.form-section>
+            <x-admin.form-section label="لینک های اضافی">
+                <div class="border p-3">
+                    <x-admin.button class="btn btn-light-primary font-weight-bolder btn-sm" content="افزودن لینک" wire:click="addLink()" />
+                    @foreach($links as $key => $item)
+                        <div class="form-group d-flex align-items-center col-12">
+                            <input class="form-control col-5" id="{{ $key }}link-title" type="text" placeholder="عنوان" wire:model.defer="links.{{$key}}.title">
+                            <input class="form-control col-5" id="{{ $key }}link" type="text" placeholder="لینک" wire:model.defer="links.{{$key}}.link">
+                            <div><button class="btn btn-light-danger font-weight-bolder btn-sm" wire:click="deleteLink({{ $key }})">حذف</button></div>
+                        </div>
+                    @endforeach
+                </div>
+            </x-admin.form-section>
         </div>
     </div>
 </div>

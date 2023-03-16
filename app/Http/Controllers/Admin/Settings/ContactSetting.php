@@ -7,7 +7,7 @@ use App\Repositories\Interfaces\SettingRepositoryInterface;
 
 class ContactSetting extends BaseComponent
 {
-    public $header , $googleMap  , $contactText , $tel, $subject = [] , $email, $address;
+    public $header , $googleMap  , $contactText , $tel, $subject = [] , $links = [] , $email, $address;
     public $instagram , $twitter , $youtube , $telegram;
 
     public function __construct($id = null)
@@ -30,6 +30,7 @@ class ContactSetting extends BaseComponent
         $this->youtube = $this->settingRepository->getRow('youtube');
         $this->telegram = $this->settingRepository->getRow('telegram');
         $this->subject = $this->settingRepository->getRow('subject',[]);
+        $this->links = $this->settingRepository->getRow('links',[]);
     }
 
     public function render()
@@ -54,6 +55,9 @@ class ContactSetting extends BaseComponent
                 'telegram' => ['nullable','string','max:400'],
                 'subject' => ['nullable','array'],
                 'subject.*' => ['required','string','max:70'],
+                'links' => ['nullable','array'],
+                'links.*.link' => ['required','string','max:1000'],
+                'links.*.title' => ['required','string','max:1000'],
             ] , [] , [
                 'googleMap' => 'شناسه گوگل مپ',
                 'contactText' => 'متن',
@@ -66,6 +70,9 @@ class ContactSetting extends BaseComponent
                 'telegram' => 'تلگرام',
                 'subject' => 'موضوع ها',
                 'subject.*' => 'موضوع ها',
+                'links' => 'لینک های دانلود',
+                'links.*.link' => 'لینک های دانلود',
+                'links.*.title' => 'لینک های دانلود',
             ]
         );
         $this->settingRepository::updateOrCreate(['name' => 'googleMap'],['value' => $this->googleMap]);
@@ -78,6 +85,7 @@ class ContactSetting extends BaseComponent
         $this->settingRepository::updateOrCreate(['name' => 'email'], ['value' => $this->email]);
         $this->settingRepository::updateOrCreate(['name' => 'address'], ['value' => $this->address]);
         $this->settingRepository::updateOrCreate(['name' => 'subject'], ['value' => json_encode($this->subject)]);
+        $this->settingRepository::updateOrCreate(['name' => 'links'], ['value' => json_encode($this->links)]);
 
         $this->emitNotify('اطلاعات با موفقیت ثبت شد');
     }
@@ -90,5 +98,15 @@ class ContactSetting extends BaseComponent
     public function addSubject()
     {
         $this->subject[] = '';
+    }
+
+    public function deleteLink($key)
+    {
+        unset($this->links[$key]);
+    }
+
+    public function addLink()
+    {
+        $this->links[] = '';
     }
 }

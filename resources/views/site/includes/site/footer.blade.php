@@ -84,7 +84,17 @@
                         <p class="copy-desc">{{$copyRight}}</p>
                     </div>
                 </div>
-
+                @if(sizeof($links) > 0)
+                    <div class="col-lg-6">
+                        <div class="d-flex flex-wrap align-items-center justify-content-end">
+                            <ul class="generic-list-item d-flex flex-wrap align-items-center fs-14">
+                                @foreach($links as $link)
+                                    <li class="mr-3"><a href="{{$link['link']}}">{{$link['title']}}</a></li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                @endif
             </div>
             <!-- end row -->
         </div>
