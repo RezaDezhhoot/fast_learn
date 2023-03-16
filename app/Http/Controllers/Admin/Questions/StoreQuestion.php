@@ -8,10 +8,11 @@ use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\Interfaces\ChoiceRepositoryInterface;
 use App\Repositories\Interfaces\QuestionRepositoryInterface;
+use Illuminate\Validation\Rule;
 
 class StoreQuestion extends BaseComponent
 {
-    public $header , $name , $text , $score , $source , $difficulty  , $category ,  $choices = [];
+    public $header , $name , $text , $score , $source , $difficulty  , $category ,  $choices = [] , $type , $can_upload_file = false , $max_file_count = 0;
     public object $question;
 
     public function __construct($id = null)
@@ -35,11 +36,14 @@ class StoreQuestion extends BaseComponent
             $this->source = $this->question->source;
             $this->difficulty = $this->question->difficulty;
             $this->category = $this->question->category_id;
+            $this->type = $this->question->type;
+            $this->can_upload_file = $this->question->can_upload_file;
+            $this->max_file_count = $this->question->max_file_count;
             $this->choices = $this->question->choices->toArray() ?? [];
         } elseif ($this->mode == self::CREATE_MODE) {
             $this->header = 'طراحی سوال جدید';
         } else abort(404);
-
+        $this->data['type'] = QuestionEnum::getType();
         $this->data['categories'] = $this->categoryRepository->getAll(CategoryEnum::QUESTION)->pluck('title','id');
         $this->data['difficulty'] = QuestionEnum::getDifficulty();
     }
@@ -62,10 +66,13 @@ class StoreQuestion extends BaseComponent
             'source' => ['nullable','string','max:60'],
             'difficulty' => ['required','in:'.implode(',',array_keys(QuestionEnum::getDifficulty()))],
             'category' => ['required','exists:categories,id'],
-            'choices' => ['array','min:1'],
+            'choices' => ['array',Rule::requiredIf(fn() => $this->type == QuestionEnum::TEST)],
             'choices.*.title' => ['required','string','max:75'],
             'choices.*.is_true' => ['boolean'],
             'choices.*.score' => ['required','integer','between:-100,100'],
+            'type' => ['required',Rule::in(array_keys(QuestionEnum::getType()))],
+            'can_upload_file' => ['boolean'],
+            'max_file_count' => ['integer','between:0,9']
         ],[],[
             'name' => 'نام سوال',
             'text' => 'متن سوال',
@@ -77,13 +84,19 @@ class StoreQuestion extends BaseComponent
             'choices.*.title' => 'عنوان گزینه',
             'choices.*.is_true' => 'صحت گزینه',
             'choices.*.score' => 'درصد نمره',
+            'type' => 'نوع سوال',
+            'can_upload_file' => 'ازمون دهندگان می توانند فایل ارسال کنند',
+            'max_file_count' => 'حداکثر تعداد اپلود فایل توسط ازمون دهندگان'
         ]);
-        $check_choice = @array_count_values(array_column($this->choices,'is_true'))[1];
 
-        if ($check_choice > 1)
-            return $this->addError('choices.*.is_true','گزینه صحیح نمی تواند بیشتر از یک مورد باشد');
-        elseif ($check_choice < 1)
-            return $this->addError('choices.*.is_true','انتخاب گزینه صحیح اجباری می باشد');
+        if ($this->type == QuestionEnum::TEST) {
+            $check_choice = @array_count_values(array_column($this->choices,'is_true'))[1];
+
+            if ($check_choice > 1)
+                return $this->addError('choices.*.is_true','گزینه صحیح نمی تواند بیشتر از یک مورد باشد');
+            elseif ($check_choice < 1)
+                return $this->addError('choices.*.is_true','انتخاب گزینه صحیح اجباری می باشد');
+        }
 
         $model->name = $this->name;
         $model->text = $this->text;
@@ -91,17 +104,24 @@ class StoreQuestion extends BaseComponent
         $model->source = $this->source;
         $model->difficulty = $this->difficulty;
         $model->category_id = $this->category;
+        $model->type = $this->type;
+        $model->can_upload_file = $this->can_upload_file;
+        $model->max_file_count = $this->max_file_count;
         $question = $this->questionRepository->save($model);
-        foreach ($this->choices as $item) {
-            $choice =  $item['id'] <> 0 ? $this->choiceRepository->find($item['id']) : $this->choiceRepository->newChoiceObject();
-            $choice->title = $item['title'];
-            $choice->question_id = $question->id;
-            $choice->is_true = $item['is_true'] ?? false;
-            $choice->score = (isset($item['is_true']) && $item['is_true']) ? 100 : $item['score'];
-            $this->choiceRepository->save($choice);
+
+        if ($this->type == QuestionEnum::TEST) {
+            foreach ($this->choices as $item) {
+                $choice =  $item['id'] <> 0 ? $this->choiceRepository->find($item['id']) : $this->choiceRepository->newChoiceObject();
+                $choice->title = $item['title'];
+                $choice->question_id = $question->id;
+                $choice->is_true = $item['is_true'] ?? false;
+                $choice->score = (isset($item['is_true']) && $item['is_true']) ? 100 : $item['score'];
+                $this->choiceRepository->save($choice);
+            }
         }
+
         if ($this->mode == self::CREATE_MODE)
-            $this->reset(['name','choices','text','score','source','difficulty','category']);
+            $this->reset(['name','choices','text','score','source','difficulty','category','type','max_file_count','can_upload_file']);
         return $this->emitNotify('اطلاعات با موفقیت ثبت شد');
     }
 

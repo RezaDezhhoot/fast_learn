@@ -4,6 +4,7 @@
     <div class="card card-custom">
         <div class="card-body">
             <x-admin.forms.dropdown id="category" :data="$data['categories']" label="دسته بندی" wire:model="category"/>
+            <x-admin.forms.dropdown id="type" :data="$data['type']" label="نوع سوال" wire:model="type"/>
             @include('admin.layouts.advance-table')
             <div class="row">
                 <div class="col-lg-12 table-responsive">
@@ -14,6 +15,7 @@
                             <th>نام </th>
                             <th>منبع</th>
                             <th>سطح</th>
+                            <th>نوع سوال</th>
                             <th>دسته</th>
                             <th>نمره</th>
                             <th>عملیات</th>
@@ -26,6 +28,7 @@
                                 <td>{{ $item->name }}</td>
                                 <td>{{ $item->source }}</td>
                                 <td>{{ $item->difficulty_label }}</td>
+                                <td>{{ $item->type_label }}</td>
                                 <td>{{ $item->category->title ?? '' }}</td>
                                 <td>{{ $item->score }}</td>
                                 <td>

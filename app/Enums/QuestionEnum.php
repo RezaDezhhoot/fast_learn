@@ -23,4 +23,14 @@ final class QuestionEnum extends Enum
             self::EASY => 'اسان',
         ];
     }
+
+    const TEST = 'test' , DESCRIPTIVE = 'descriptive';
+
+    public static function getType()
+    {
+        return [
+            self::TEST => 'سوال تستی',
+            self::DESCRIPTIVE => 'سوال تشریحی'
+        ];
+    }
 }

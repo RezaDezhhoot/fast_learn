@@ -9,13 +9,14 @@ use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\Interfaces\CertificateRepositoryInterface;
 use App\Repositories\Interfaces\QuestionRepositoryInterface;
 use App\Repositories\Interfaces\QuizRepositoryInterface;
+use Illuminate\Validation\Rule;
 
 class StoreQuiz extends BaseComponent
 {
     public object $quiz;
-    public $header ,  $name  , $image , $descriptions , $time , $certificate , $accept_type , $min_score , $rand = true, $show_choices_type,
+    public $header ,  $name  , $image , $descriptions , $time , $certificate , $accept_type , $min_score , $rand = true, $show_choices_type, $needs_teacher,
         $enter_count , $selected_questions , $category , $questions = [] , $selected_questions_id = [] , $total_score = 0 ,
-        $selected_questions_list = [];
+        $selected_questions_list = [] , $storage;
 
     public function __construct($id = null)
     {
@@ -27,6 +28,7 @@ class StoreQuiz extends BaseComponent
 
     public function mount($action , $id = null)
     {
+        $this->data['storage'] = getAvailableStorages();
         $this->authorizing('show_quizzes');
         $this->set_mode($action);
         if ($this->mode == self::UPDATE_MODE) {
@@ -41,6 +43,8 @@ class StoreQuiz extends BaseComponent
             $this->min_score = $this->quiz->min_score;
             $this->rand = $this->quiz->rand;
             $this->enter_count = $this->quiz->enter_count;
+            $this->storage = $this->quiz->storage;
+            $this->needs_teacher = $this->quiz->needs_teacher;
             $this->show_choices_type = $this->quiz->show_choices_type;
             $this->selected_questions = $this->quiz->questions->pluck('id','id')->toArray();
             $this->updatedSelectedQuestions();
@@ -75,7 +79,7 @@ class StoreQuiz extends BaseComponent
             $this->saveInDataBase($this->quiz);
         elseif ($this->mode == self::CREATE_MODE) {
             $this->saveInDataBase($this->quizRepository->newQuizObject());
-            $this->reset(['name','show_choices_type','image','descriptions','time','certificate','accept_type','min_score','rand','enter_count','selected_questions']);
+            $this->reset(['name','show_choices_type','image','descriptions','needs_teacher','time','certificate','accept_type','min_score','rand','enter_count','selected_questions']);
         }
     }
 
@@ -90,9 +94,11 @@ class StoreQuiz extends BaseComponent
             'accept_type' => ['required','in:'.implode(',',array_keys(QuizEnum::getType()))],
             'min_score' => ['required','numeric','between:0,99999999999999.9999999'],
             'rand' => ['boolean'],
+            'needs_teacher' => ['boolean'],
             'enter_count' => ['required','integer','between:1,99999999999999999'],
             'selected_questions' => ['array','min:1'],
-            'show_choices_type' => ['required','in:'.implode(',',array_keys(QuizEnum::getViews()))]
+            'show_choices_type' => ['required','in:'.implode(',',array_keys(QuizEnum::getViews()))],
+            'storage' => ['nullable',Rule::in(array_keys(getAvailableStorages()))]
         ] , [], [
             'name' => 'نام ازمون',
             'image' => 'تصویر ازمون',
@@ -104,7 +110,9 @@ class StoreQuiz extends BaseComponent
             'rand' => 'نمایش رندم سوالات',
             'enter_count' => 'تعداد دفعات مجاز ورود به ازمون',
             'selected_questions' => 'سوالات',
-            'show_choices_type' => 'نمایش گزینه ها'
+            'show_choices_type' => 'نمایش گزینه ها',
+            'storage' => 'فضای ذخیره سازی فایل های ارسالی ازمون دهنگان',
+            'needs_teacher' => 'بررسی توسط مدرس قبل از اعلام نتیجه'
         ]);
 
         $model->name = $this->name;
@@ -117,6 +125,8 @@ class StoreQuiz extends BaseComponent
         $model->rand = $this->rand;
         $model->enter_count = $this->enter_count;
         $model->show_choices_type = $this->show_choices_type;
+        $model->storage = $this->storage;
+        $model->needs_teacher = $this->needs_teacher;
         $model = $this->quizRepository->save($model);
         if ($this->mode == self::CREATE_MODE)
             $this->quizRepository->attachQuestions($model,$this->selected_questions_id);

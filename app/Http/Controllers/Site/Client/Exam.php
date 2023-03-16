@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Site\Client;
 
+use App\Enums\QuestionEnum;
 use App\Enums\QuizEnum;
 use App\Events\ExamEvent;
 use App\Http\Controllers\BaseComponent;
@@ -59,13 +60,12 @@ class Exam extends BaseComponent
         JsonLd::addImage(asset($this->settingRepository->getRow('logo')));
 
         $this->change_choice = QuizEnum::CHANGE_CHOICE;
-
         if (!in_array($this->transcript->result,[
             QuizEnum::PENDING,QuizEnum::SUSPENDED
         ])) abort(404);
 
+        $this->getAnswers();
         if (!$this->checkTimer()) {
-            $this->getAnswers();
             $this->quizRepository->process($this->answers , $this->transcript);
             abort(404);
         }
@@ -89,6 +89,14 @@ class Exam extends BaseComponent
         return $counts > QuizEnum::CHANGE_CHOICE;
     }
 
+    public function saveAnswer($id)
+    {
+        if (isset($this->answers[$id])) {
+            $this->updatedAnswers($this->answers[$id],$id);
+        }
+    }
+
+
     public function updatedAnswers($value,$name)
     {
        if ($this->control_requests(key:$name))
@@ -97,17 +105,29 @@ class Exam extends BaseComponent
         if (!empty($value)){
             if ($this->checkTimer()) {
                 $question = $this->questionRepository->find($name);
-                $choice = $question->choices->where('id',$value)->first();
-                $this->transcriptRepository->attachAnswer($this->transcript,$question->id ,
-                    [
-                        'choice_value' => $choice->title ,
-                        'true_choice_value' => $question->true_choice->title,
-                        'question_score' => $question->score,
-                        'score_received' => $question->score * ($choice->score/100),
-                        'choice_id' => $value,
-                        'question_text' => $question->text,
-                    ]
-                );
+                if ($question->type == QuestionEnum::DESCRIPTIVE) {
+                    $this->transcriptRepository->attachAnswer($this->transcript,$question->id ,
+                        [
+                            'question_score' => $question->score,
+                            'question_text' => $question->text,
+                            'user_answer' => $value,
+                            'storage' => $this->transcript->quiz->storage,
+                            'type' => $question->type
+                        ]
+                    );
+                } else {
+                    $choice = $question->choices->where('id',$value)->first();
+                    $this->transcriptRepository->attachAnswer($this->transcript,$question->id ,
+                        [
+                            'choice_value' => $choice->title ,
+                            'true_choice_value' => $question->true_choice->title,
+                            'question_score' => $question->score,
+                            'score_received' => $question->score * ($choice->score/100),
+                            'choice_id' => $value,
+                            'question_text' => $question->text,
+                        ]
+                    );
+                }
 
             } else $this->emitNotify('ازمون به اتمام رسیده است','warning');
         }
@@ -132,7 +152,7 @@ class Exam extends BaseComponent
     public function finish()
     {
         $this->getAnswers();
-        $this->quizRepository->process($this->answers , $this->transcript);
+        $this->quizRepository->process($this->transcript,false,$this->transcript->quiz->needs_teacher);
         redirect()->route('user.quiz',$this->transcript->id);
     }
 
@@ -147,6 +167,12 @@ class Exam extends BaseComponent
 
     private function getAnswers()
     {
-        $this->answers = $this->transcript->answers->pluck('choice_id','question_id')->toArray();
+        foreach ($this->transcript->answers as $answer) {
+            if ($answer->question->type == QuestionEnum::TEST) {
+                $this->answers[$answer->question_id] = $answer->choice_id;
+            } else {
+                $this->answers[$answer->question_id] = $answer->user_answer;
+            }
+        }
     }
 }

@@ -31,12 +31,14 @@ class QuestionRepository implements QuestionRepositoryInterface
         return $question->delete();
     }
 
-    public function getAllAdmin($search, $category, $per_page)
+    public function getAllAdmin($search, $category , $type, $per_page)
     {
         return Question::latest('id')->when($category,function ($query) use ($category){
             return $query->whereHas('category',function ($query) use ($category){
                return $query->where('id',$category);
             });
+        })->when($type,function ($q) use ($type) {
+            return $q->where('type',$type);
         })->search($search)->paginate($per_page);
     }
 

@@ -1,5 +1,5 @@
 @props(['id', 'label'])
-<div>
+<div class="w-100">
     <div class="form-group">
         <div wire:ignore>
             @if(!empty($label))

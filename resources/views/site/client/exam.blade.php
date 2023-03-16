@@ -75,17 +75,24 @@
                             @foreach($question as $item)
                                 <div class="col-12">
                                     <div class="row m-0 px-1">
-                                        @foreach($item->choices as $choice)
-                                            <div class="custom-control custom-checkbox mb-1 p-1 {{ $transcript->quiz->show_choices_type == App\Enums\QuizEnum::SHOW_SIDE_BY_SIDE ? 'col-6 col-sm-3' : 'col-12' }}  ">
-                                                <input  wire:model="answers.{{$item->id}}" type="radio" id="{{ $choice->id }}" name="{{ $item->id }}" value="{{ $choice->id }}" class="custom-control-input" />
-                                                <label class="custom-control-label custom--control-label" for="{{ $choice->id }}">
-                                                    {{ $choice->title }}
-                                                </label>
-                                            </div>
-                                        @endforeach
+                                        @if($item->type == \App\Enums\QuestionEnum::DESCRIPTIVE)
+                                            <x-teacher.forms.text-area id="answer{{$item->id}}" class="p-0 m-0" label="متن جواب" wire:model.defer="answers.{{$item->id}}"/>
+                                        @else
+                                            @foreach($item->choices as $choice)
+                                                <div class="custom-control custom-checkbox mb-1 p-1 {{ $transcript->quiz->show_choices_type == App\Enums\QuizEnum::SHOW_SIDE_BY_SIDE ? 'col-6 col-sm-3' : 'col-12' }}  ">
+                                                    <input  wire:model="answers.{{$item->id}}" type="radio" id="{{ $choice->id }}" name="{{ $item->id }}" value="{{ $choice->id }}" class="custom-control-input" />
+                                                    <label class="custom-control-label custom--control-label" for="{{ $choice->id }}">
+                                                        {{ $choice->title }}
+                                                    </label>
+                                                </div>
+                                            @endforeach
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="py-3">
+                                    @if($item->type == \App\Enums\QuestionEnum::DESCRIPTIVE)
+                                        <button wire:loading.attr="disabled" wire:click="saveAnswer({{ $item->id }})" class="btn btn-outline-success btn-sm">ذخیره جواب</button>
+                                    @endif
                                     <button wire:loading.attr="disabled" wire:click="undo({{ $item->id }})" class="btn btn-outline-danger btn-sm">پاک کردن جواب</button>
                                 </div>
                             @endforeach

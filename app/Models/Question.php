@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\QuestionEnum;
 use App\Traits\Admin\Searchable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -48,4 +49,13 @@ class Question extends Model
     {
         return QuestionEnum::getDifficulty()[$this->difficulty];
     }
+
+    public function typeLabel(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => in_array($this->type,array_keys(QuestionEnum::getType())) ?
+                QuestionEnum::getType()[$this->type] : ''
+        );
+    }
+
 }

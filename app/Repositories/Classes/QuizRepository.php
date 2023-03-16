@@ -62,23 +62,20 @@ class QuizRepository implements QuizRepositoryInterface
     {
         return $quiz->questions()->inRandomOrder($seed)->paginate(1);
     }
+
     public function count()
     {
         return Quiz::count();
     }
 
-    public function process($answers, $transcript)
+    public function process( $transcript , $force_process = false , $needs_teacher = false)
     {
-        if (app(SettingRepositoryInterface::class)->getRow('exam_should_be_queueable')) {
-            ExamJob::dispatch($transcript , $answers)->onQueue(JobEnum::EXAM);
-            $transcript->update([
-                'result' => QuizEnum::ON_QUEUE
-            ]);
+        if (app(SettingRepositoryInterface::class)->getRow('exam_should_be_queueable') && ! $force_process) {
+            $transcript->update(['result' => QuizEnum::ON_QUEUE]);
+            ExamJob::dispatch($transcript ,$needs_teacher)->onQueue(JobEnum::EXAM);
         } else {
-            $transcript->update([
-                'result' => QuizEnum::ON_PROCESSING
-            ]);
-            ExamJob::dispatchSync($transcript,$answers);
+            // exam will process by system
+            ExamJob::dispatchSync($transcript,$needs_teacher);
         }
     }
 }

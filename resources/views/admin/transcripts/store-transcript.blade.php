@@ -66,20 +66,38 @@
                                         <thead>
                                         <tr>
                                             <td >متن سوال :</td>
+                                            <td >نوع سوال :</td>
                                             <td >نمره سوال :</td>
-                                            <td >نمره دریافت شد :</td>
+                                            <td >نمره دریافتی :</td>
                                             <td >جواب درست :</td>
                                             <td >جواب :</td>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @foreach($transcript->answers as $item)
+                                        @foreach($answers as $key => $item)
                                             <tr>
-                                                <td >{!! str()->limit($item->question_text,$limit = 180, $end = '...') !!}</td>
-                                                <td >{{ $item->question_score }}</td>
-                                                <td >{{ $item->score_received }}</td>
-                                                <td >{{ $item->true_choice_value }}</td>
-                                                <td >{{ $item->choice_value }}</td>
+                                                <td style="max-width: 300px" >
+                                                    {!! str()->limit(strip_tags($item['question_text']),$limit = 100, $end = '...') !!}
+                                                    <button wire:click="downloadText('{{$item['id']}}','question_text')" class="btn btn-sm btn-link">دانلود کل سوال </button>
+                                                </td>
+                                                <td >{{ $item['type_label'] }}</td>
+                                                <td >{{ $item['question_score'] }}</td>
+                                                <td >
+                                                    @if($item['type'] == \App\Enums\QuestionEnum::TEST)
+                                                    {{ $item['score_received'] }}
+                                                    @else
+                                                        <x-admin.forms.input type="number" id="answer{{$key}}" label="نمره کسب شده را وارد نمایید" wire:model.defer="answers.{{$key}}.score_received"/>
+                                                    @endif
+                                                </td>
+                                                <td >{{ $item['type'] == \App\Enums\QuestionEnum::TEST ? $item['true_choice_value'] : '-' }}</td>
+                                                <td >
+                                                    @if($item['type'] == \App\Enums\QuestionEnum::DESCRIPTIVE)
+                                                        {!! str()->limit($item['user_answer'],$limit = 100, $end = '...') !!}
+                                                        <button wire:click="downloadText('{{$item['id']}}','user_answer')" class="btn btn-sm btn-link">دانلود کل جواب </button>
+                                                    @else
+                                                        {{$item['choice_value']}}
+                                                    @endif
+                                                </td>
                                             </tr>
                                         @endforeach
                                         </tbody>
@@ -101,6 +119,10 @@
                                             <td>{{  $transcript->quiz->certificate->title ?? 'ندارد' }}</td>
                                         </tr>
                                         <tr class="font-size-lg font-weight-bolder h-65px">
+                                            <td >حداقل نمره قبولی :</td>
+                                            <td >{{ $transcript->quiz->min_score }}</td>
+                                        </tr>
+                                        <tr class="font-size-lg font-weight-bolder h-65px">
                                             <td >نمره نهایی :</td>
                                             <td >{{ $transcript->score }}</td>
                                         </tr>
@@ -116,13 +138,20 @@
                     </div>
                     <!--end:Table-->
                 </div>
+                    @if($result != \App\Enums\QuizEnum::PASSED)
+                        <div class="container py-4">
+                            <button wire:click="startProcess" class="btn btn-outline-info">شروع عملیات تصحیح توسط سیستم</button>
+                            <x-admin.loader wire:target="startProcess" text="در حال تحصحیح" />
+                        </div>
+                    @endif
                 @endif
+
                     <div class="container py-4">
                         @if($mode == self::CREATE_MODE)
                             <div class="row">
                                 <x-admin.forms.dropdown with="6" id="quiz" :data="$data['quiz']" label="ازمون*" wire:model.defer="quiz"/>
                                 <x-admin.forms.input with="6" type="text" id="user" label="شماره همراه کاربر*" wire:model.defer="user"/>
-                                <x-admin.forms.dropdown id="course" :data="$data['course']" label="دوره*" wire:model.defer="course"/>
+                                <x-admin.forms.select2 id="course" :data="$data['course']" label="دوره*" wire:model.defer="course"/>
                             </div>
                         @endif
                         @if($mode == self::UPDATE_MODE)
@@ -141,7 +170,7 @@
                         <x-admin.forms.dropdown with="6" id="result" :data="$data['result']" label="نتیجه*" wire:model.defer="result"/>
                     </div>
                 </div>
-                    @if($transcript->result == \App\Enums\QuizEnum::ERROR)
+                    @if(isset($transcript) && $transcript->result == \App\Enums\QuizEnum::ERROR)
                         <div class="col-12 p-4">
                             <fieldset class="border p-4 ">
                                 <legend class="font-size-h6">خطای سیستم : </legend>

@@ -13,9 +13,11 @@
                 <x-admin.forms.input with="6" type="text" id="source" label="منبع سوال" wire:model.defer="source"/>
                 <x-admin.forms.dropdown with="6" id="difficulty" :data="$data['difficulty']" label="سطح*" wire:model.defer="difficulty"/>
                 <x-admin.forms.dropdown id="category" :data="$data['categories']" label="دسته*" wire:model.defer="category"/>
+                <x-admin.forms.dropdown id="type" :data="$data['type']" label="نوع*" wire:model="type"/>
             </div>
             <hr>
             <x-admin.forms.full-text-editor id="text" label="متن سوال*" wire:model.defer="text"/>
+            @if($type == \App\Enums\QuestionEnum::TEST)
             <hr>
             <x-admin.form-section label="گزینه ها">
                 <x-admin.button class="btn btn-light-primary font-weight-bolder btn-sm" content="افزودن گزینه" wire:click="addChoice()" />
@@ -48,6 +50,10 @@
                     </tbody>
                 </table>
             </x-admin.form-section>
+            @else
+{{--                <x-admin.forms.checkbox value="1" id="can_upload_file" name="can_upload_file" label="ازمون دهندگان می توانند فایل ارسال کنند" wire:model.defer="can_upload_file" />--}}
+{{--                <x-admin.forms.input with="12" type="number" id="max_file_count" label="حداکثر تعداد اپلود فایل توسط ازمون دهندگان" wire:model.defer="max_file_count"/>--}}
+            @endif
         </div>
     </div>
 </div>

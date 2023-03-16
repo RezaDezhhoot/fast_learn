@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Questions;
 
 use App\Enums\CategoryEnum;
+use App\Enums\QuestionEnum;
 use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\Interfaces\QuestionRepositoryInterface;
@@ -11,8 +12,8 @@ use Livewire\WithPagination;
 class IndexQuestion extends BaseComponent
 {
     use WithPagination;
-    protected $queryString = ['category'];
-    public ?string $category = null , $placeholder = 'نام سوال';
+    protected $queryString = ['category' ,'type'];
+    public ?string $category = null , $type =null , $placeholder = 'نام سوال';
 
     public function __construct($id = null)
     {
@@ -23,13 +24,14 @@ class IndexQuestion extends BaseComponent
 
     public function mount()
     {
+        $this->data['type'] = QuestionEnum::getType();
         $this->data['categories'] =  $this->categoryRepository->getAll(CategoryEnum::QUESTION)->pluck('title','id');
     }
 
     public function render()
     {
         $this->authorizing('show_questions');
-        $questions = $this->questionRepository->getAllAdmin($this->search,$this->category,$this->per_page);
+        $questions = $this->questionRepository->getAllAdmin($this->search,$this->category , $this->type,$this->per_page);
         return view('admin.questions.index-question',['questions' => $questions])
             ->extends('admin.layouts.admin');
     }

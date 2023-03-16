@@ -15,6 +15,9 @@
                 <x-admin.forms.input with="6" type="number" id="enter_count" label="تعداد دفعات مجاز ورود به ازمون*" wire:model.defer="enter_count"/>
                 <x-admin.forms.dropdown with="6" id="certificate" :data="$data['certificate']" label="گواهینامه" wire:model.defer="certificate"/>
                 <x-admin.forms.dropdown  id="show_choices_type" :data="$data['show_choices_type']" label="نحوه نمایش گزینه ها*" wire:model.defer="show_choices_type"/>
+{{--                <x-admin.forms.dropdown id="storage" :data="$data['storage']" label="فضای ذخیره سازی فایل های ارسالی ازمون دهنگان" wire:model.defer="storage" />--}}
+                <x-admin.forms.checkbox value="1" id="needs_teacher" label="بررسی توسط مدرس قبل از اعلام نتیجه" wire:model.defer="needs_teacher" />
+
             </div>
             <hr>
             <x-admin.forms.full-text-editor id="descriptions" label="توضیحات*" wire:model.defer="descriptions"/>

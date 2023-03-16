@@ -30,5 +30,5 @@ interface QuizRepositoryInterface
 
     public function count();
 
-    public function process($answers , $transcript);
+    public function process($transcript, $force_process = false , $needs_teacher = false);
 }

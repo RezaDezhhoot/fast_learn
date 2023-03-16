@@ -14,7 +14,7 @@ interface QuestionRepositoryInterface
 
     public function delete(Question $question);
 
-    public function getAllAdmin($search , $category , $per_page);
+    public function getAllAdmin($search , $category , $type , $per_page);
 
     public function newQuestionObject();
 

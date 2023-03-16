@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Enums\QuestionEnum;
 use App\Enums\QuizEnum;
 use App\Events\ExamEvent;
 use App\Repositories\Interfaces\QuestionRepositoryInterface;
@@ -27,12 +28,13 @@ class ExamJob implements ShouldQueue
      *
      * @return void
      */
-    public $transcript , $answers , $transcriptRepository;
-    public function __construct($transcript , $answers = [])
+    public $transcript , $transcriptRepository , $needs_teacher , $userRepository;
+    public function __construct($transcript , $needs_teacher = false)
     {
         $this->transcript = $transcript;
-        $this->answers = $answers;
+        $this->needs_teacher = $needs_teacher;
         $this->transcriptRepository = app(TranscriptRepositoryInterface::class);
+        $this->userRepository = app(UserRepositoryInterface::class);
     }
 
     protected function start()
@@ -41,6 +43,11 @@ class ExamJob implements ShouldQueue
         $this->transcriptRepository->save($this->transcript);
     }
 
+    public function needsTeacher()
+    {
+        $this->transcript->result = QuizEnum::PROCESS_BY_TEACHER;
+        $this->transcriptRepository->save($this->transcript);
+    }
     /**
      * Execute the job.
      *
@@ -53,40 +60,45 @@ class ExamJob implements ShouldQueue
         $quiz = $this->transcript->quiz;
         $min_score = $quiz->minimum_score;
         $user_score = 0;
-        foreach ($this->answers as $key => $item) {
-            $question = app(QuestionRepositoryInterface::class)->findByPK($key);
-            if ($question->true_choice->id == $item)
-                $user_score = $user_score + $question->score;
-            else {
-                $choice_percent = $question->choices->where('id',$item)->first()->score;
-                $user_score = $user_score + $question->score * ($choice_percent/100);
+        if (! $this->needs_teacher) {
+            foreach ($this->transcript->answers as $item) {
+                $user_score = $user_score + ($item->score_received ?? 0);
+                Session::forget("question{$this->transcript->id}{$item->question_id}");
             }
-            Session::forget("question{$this->transcript->id}{$question->id}");
-        }
-        $this->transcript->score = $user_score;
-        try {
-            DB::beginTransaction();
-            if ($user_score >= $min_score) {
-                $this->transcript->result = QuizEnum::PASSED;
+            $this->transcript->score = $user_score;
+            try {
+                DB::beginTransaction();
                 $certificate_id = !empty($quiz->certificate) ?
                     $quiz->certificate->id : null;
-                if (!is_null($certificate_id)) {
-                    app(UserRepositoryInterface::class)->submit_certificate($this->transcript->user,$certificate_id,$this->transcript->id);
-                    $this->transcript->certificate_date = Jalalian::now()->format('Y/m/d');
-                    $this->transcript->certificate_code = Auth::id().$this->transcript->id.rand(1234,56789);
+                if ($user_score >= $min_score) {
+                    $this->transcript->result = QuizEnum::PASSED;
+                    if (!is_null($certificate_id)) {
+                        app(UserRepositoryInterface::class)->submit_certificate($this->transcript->user,$certificate_id,$this->transcript->id);
+                        $this->transcript->certificate_date = Jalalian::now()->format('Y/m/d');
+                        $this->transcript->certificate_code = Auth::id().$this->transcript->id.rand(1234,56789);
+                    }
+                } else {
+                    if (!is_null($certificate_id) and
+                        $this->userRepository->has_certificate($this->transcript->user,$certificate_id,$this->transcript->id)) {
+                        $this->userRepository->reclaiming_certificate($this->transcript->user,$certificate_id,$this->transcript->id);
+                        $this->transcript->certificate_date = null;
+                        $this->transcript->certificate_code = null;
+                    }
+                    $this->transcript->result = QuizEnum::REJECTED;
                 }
-            } else
-                $this->transcript->result = QuizEnum::REJECTED;
 
-            $this->transcriptRepository->save($this->transcript);
-            ExamEvent::dispatch($this->transcript);
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollBack();
-            Log::error($e->getMessage());
-            $this->transcript->result = QuizEnum::ERROR;
-            $this->transcript->error_message = $e->getMessage();
-            $this->transcriptRepository->save($this->transcript);
+                $this->transcriptRepository->save($this->transcript);
+                ExamEvent::dispatch($this->transcript);
+                DB::commit();
+            } catch (\Exception $e) {
+                DB::rollBack();
+                Log::error($e->getMessage());
+                $this->transcript->result = QuizEnum::ERROR;
+                $this->transcript->error_message = $e->getMessage();
+                $this->transcriptRepository->save($this->transcript);
+            }
+        } else {
+            $this->needsTeacher();
         }
     }
 }

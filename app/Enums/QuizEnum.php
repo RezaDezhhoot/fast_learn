@@ -18,7 +18,7 @@ final class QuizEnum extends Enum
 
     // results :
     const PASSED = 'accepted' , REJECTED = 'rejected' , SUSPENDED = 'suspended' ,
-        PENDING = 'pending' , ON_QUEUE = 'on_queue' , ON_PROCESSING = 'on_processing' , ERROR = 'error';
+        PENDING = 'pending' , ON_QUEUE = 'on_queue' , ON_PROCESSING = 'on_processing' , PROCESS_BY_TEACHER = 'process_by_teacher' , ERROR = 'error';
 
     // show questions :
     const SHOW_SIDE_BY_SIDE = 'show_side_by_side' , SHOW_BELOW  = 'show_below';
@@ -51,7 +51,8 @@ final class QuizEnum extends Enum
             self::REJECTED => 'رد',
             self::SUSPENDED => 'معلق',
             self::PENDING => 'جدید',
-            self::ON_PROCESSING => 'در حال تصحیح ازمون',
+            self::ON_PROCESSING => ' در حال تصحیح ازمون توسط سیستم',
+            self::PROCESS_BY_TEACHER => 'در انتظار تصحیح توسط مدرس',
             self::ON_QUEUE => 'در صف انتظار',
             self::ERROR => 'خظا در هنگام پردازش'
         ];

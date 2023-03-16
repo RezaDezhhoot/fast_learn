@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\QuizEnum;
+use App\Enums\StorageEnum;
 use App\Traits\Admin\Searchable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -26,6 +27,10 @@ class Quiz extends Model
     protected $guarded = ['id'];
 
     protected array $searchAbleColumns = ['name'];
+
+    public $casts = [
+      'storage' => 'string'
+    ];
 
     public function setImageAttribute($value): array|string
     {
@@ -63,5 +68,12 @@ class Quiz extends Model
     {
         $total_score = $this->total_score;
         return $this->accept_type == QuizEnum::PERCENT ? $total_score*($this->min_score/100) : $this->min_score;
+    }
+
+    public function storage(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => !is_null($value) ? $value: StorageEnum::PUBLIC
+        );
     }
 }
