@@ -54,6 +54,8 @@ class Course extends Model
 
     protected array $searchAbleColumns = ['title','slug','short_body'];
 
+    public $appends = ['short_code'];
+
     public function scopePublished($query)
     {
         return $query->where('status','!=',CourseEnum::DRAFT);

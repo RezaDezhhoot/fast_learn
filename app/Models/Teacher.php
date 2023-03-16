@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -20,6 +21,8 @@ class Teacher extends Model
 
     protected $guarded = ['id'];
 
+    public $appends = ['short_code','username'];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -28,5 +31,17 @@ class Teacher extends Model
     public function courses(): HasMany
     {
         return $this->hasMany(Course::class);
+    }
+
+    public function getShortCodeAttribute(): string
+    {
+        return base64_encode($this->id);
+    }
+
+    public function username(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->user->name
+        );
     }
 }

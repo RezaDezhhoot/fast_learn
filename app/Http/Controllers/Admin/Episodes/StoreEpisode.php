@@ -43,7 +43,7 @@ class StoreEpisode extends BaseComponent
         $this->data['chapter'] = [];
         if ($this->mode == self::UPDATE_MODE) {
             $this->episode = $this->episodeRepository->findOrFail($id);
-            $this->header = " {$this->episode->chapter->course->title} - {$this->episode->chapter->title} - {$this->episode->title}";
+            $this->header = @$this->episode->chapter->course->title." - ".@$this->episode->chapter->title." - ".@$this->episode->title;
             $this->title = $this->episode->title;
             $this->file = $this->episode->file;
             $this->link = $this->episode->link;

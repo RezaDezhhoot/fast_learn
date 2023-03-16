@@ -33,7 +33,7 @@ class CourseRepository implements CourseRepositoryInterface
         })->search($search)->paginate($per_page);
     }
 
-    public function getAllSite($search = null, $orderBy = null, $type = null, $category = null , $teacher = null, $property = null)
+    public function getAllSite($search = null, $orderBy = null, $type = null, $category = null , $teacher = null, $property = null,$province = null , $city = null)
     {
         return Course::published()->when($type, function($q) use ($type) {
             return match ($type) {
@@ -66,6 +66,10 @@ class CourseRepository implements CourseRepositoryInterface
             return $q->where('teacher_id',base64_decode($teacher));
         })->when($property , function ($q) use ($property){
             return $q->where('type',$property);
+        })->when($province,function ($q) use ($province) {
+            return $q->where('province',$province);
+        })->when($city , function ($q) use ($city) {
+            return $q->where('city' , $city);
         })->hasCategory()->paginate(9);
     }
 

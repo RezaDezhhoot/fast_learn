@@ -8,6 +8,7 @@ use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\Interfaces\CourseRepositoryInterface;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
+use App\Repositories\Interfaces\TeacherRepositoryInterface;
 use Artesaos\SEOTools\Facades\JsonLd;
 use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\SEOMeta;
@@ -18,46 +19,63 @@ class IndexCourse extends BaseComponent
 {
     use WithPagination;
     protected $queryString = ['q','category','type','orderBy','teacher','property'];
-    public ?string $q = null , $category = null  , $orderBy = null , $type = null , $property = null , $teacher =null;
+    public ?string $q = null , $category = null  , $orderBy = null , $type = null , $property = null , $teacher =null , $province = null , $city = null;
     public array $categories = [] , $types = [] , $orders = [] ;
+
+    public function __construct()
+    {
+        $this->settingRepository = app(SettingRepositoryInterface::class);
+        $this->teacherRepository = app(TeacherRepositoryInterface::class);
+    }
 
     public function mount(
         CategoryRepositoryInterface $categoryRepository ,
-        SettingRepositoryInterface $settingRepository,
     )
     {
-        SEOMeta::setTitle($settingRepository->getRow('title').' دوره های اموزشی ');
-        SEOMeta::setDescription($settingRepository->getRow('seoDescription'));
-        SEOMeta::addKeyword($settingRepository->getRow('seoKeyword',[]));
+        SEOMeta::setTitle($this->settingRepository->getRow('title').' دوره های اموزشی ');
+        SEOMeta::setDescription($this->settingRepository->getRow('seoDescription'));
+        SEOMeta::addKeyword($this->settingRepository->getRow('seoKeyword',[]));
         OpenGraph::setUrl(url()->current());
-        OpenGraph::setTitle($settingRepository->getRow('title').' دوره های اموزشی ');
-        OpenGraph::setDescription($settingRepository->getRow('seoDescription'));
-        TwitterCard::setTitle($settingRepository->getRow('title').' دوره های اموزشی ');
-        TwitterCard::setDescription($settingRepository->getRow('seoDescription'));
-        JsonLd::setTitle($settingRepository->getRow('title').' دوره های اموزشی ');
-        JsonLd::setDescription($settingRepository->getRow('seoDescription'));
-        JsonLd::addImage(asset($settingRepository->getRow('logo')));
+        OpenGraph::setTitle($this->settingRepository->getRow('title').' دوره های اموزشی ');
+        OpenGraph::setDescription($this->settingRepository->getRow('seoDescription'));
+        TwitterCard::setTitle($this->settingRepository->getRow('title').' دوره های اموزشی ');
+        TwitterCard::setDescription($this->settingRepository->getRow('seoDescription'));
+        JsonLd::setTitle($this->settingRepository->getRow('title').' دوره های اموزشی ');
+        JsonLd::setDescription($this->settingRepository->getRow('seoDescription'));
+        JsonLd::addImage(asset($this->settingRepository->getRow('logo')));
 
         $this->categories = $categoryRepository->getCategoriesWithTheirSubCategories(CategoryEnum::COURSE,[['parent_id',null]]);
-        $this->types = ['free' => 'رایگان' , 'cash' => 'نقدی'];
+        $this->types = ['free' => 'دوره های اموزشی رایگان' , 'cash' => 'دوره های اموزشی نقدی'];
         $this->data['types'] = CourseEnum::getTypes();
         $this->orders = [
-            'latest' => 'جدید ترین' ,
-            'oldest' => 'قدیمی ترین' ,
-            'expensive' => 'گران ترین',
-            'inexpensive' => 'ارزان ترین',
-            CourseEnum::HOLDING => 'در حال برگذاری' ,
-            CourseEnum::FINISHED => 'تکمیل شده' ,
+            'latest' => 'جدید ترین دوره های اموزشی' ,
+            'oldest' => 'قدیمی ترین دوره های اموزشی' ,
+            'expensive' => 'گران ترین دوره های اموزشی',
+            'inexpensive' => 'ارزان ترین دوره های اموزشی',
+            CourseEnum::HOLDING => 'دوره های اموزشی در حال برگذاری' ,
+            CourseEnum::FINISHED => 'دوره های اموزشی تکمیل شده' ,
         ];
         $this->page_address = [
             'home' => ['link' => route('home') , 'label' => 'صفحه اصلی'],
             'courses' => ['link' => '' , 'label' => 'دوره های اموزشی']
         ];
+        $this->data['province'] = $this->settingRepository::getProvince();
+        $this->data['teachers'] = $this->teacherRepository->getAll()->pluck('user_name','short_code')->toArray();
     }
 
     public function render(CourseRepositoryInterface $courseRepository)
     {
-        $courses = $courseRepository->getAllSite($this->q ,$this->orderBy ,$this->type ,$this->category, $this->teacher,$this->property);
+        $this->data['city'] = [];
+        if (isset($this->province) && in_array($this->province,array_keys($this->data['province'])))
+            $this->data['city'] = $this->settingRepository::getCity($this->province);
+        else {
+            $this->data['city'] = $this->settingRepository::getCity(array_keys($this->data['province'])[0]);
+        }
+
+        $courses = $courseRepository->getAllSite(
+            $this->q ,$this->orderBy ,$this->type ,
+            $this->category, $this->teacher,$this->property,$this->province , $this->city
+        );
         return view('site.courses.index-course',['courses' => $courses])->extends('site.layouts.site.site');
     }
 }

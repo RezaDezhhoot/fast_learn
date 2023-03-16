@@ -8,15 +8,94 @@
                     <p class="fs-14">ما <span class="text-black">{{ $courses->count() }}</span> دوره برای شما پیدا کردیم
                     </p>
                     <div class="d-flex flex-wrap align-items-center">
-                        <div class="select-container select--container">
-                            <select class="select-container-select form-control" wire:model="orderBy">
-                                <option value="">مرتب سازی</option>
-                                @foreach($orders as $key => $value)
-                                <option value="{{ $key }}">{{ $value }}</option>
+                        <a class="btn theme-btn theme-btn-sm theme-btn-white lh-28 collapse-btn" data-toggle="collapse" href="#collapseFilter" role="button" aria-expanded="false" aria-controls="collapseFilter">
+                            فیلترها <i class="la la-angle-down ml-1 collapse-btn-hide"></i>
+                            <i class="la la-angle-up ml-1 collapse-btn-show"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="collapse pt-4" id="collapseFilter" wire:ignore.self>
+                    <div class="row">
+                        <div class="col-lg-3 col-6">
+                            <div class="widget-panel">
+                                <h3 class="fs-18 font-weight-semi-bold pb-3">فیلتر بر اساس نوع دوره اموزشی</h3>
+                                @foreach($data['types'] as $key => $item)
+                                    <div class="custom-control custom-checkbox mb-1 fs-15">
+                                        <input type="radio" name="property" class="custom-control-input" wire:model="property"
+                                               value="{{$key}}" id="{{$key}}_property"  required="" />
+                                        <label class="custom-control-label custom--control-label text-black"
+                                               for="{{$key}}_property"> {{$item}} </label>
+                                    </div>
                                 @endforeach
-                            </select>
+                                <div class="custom-control custom-checkbox mb-1 fs-15">
+                                    <input type="radio" class="custom-control-input" wire:model="property"
+                                           value="" id="all_property"  required="" />
+                                    <label class="custom-control-label custom--control-label text-black"
+                                           for="all_property"> همه </label>
+                                </div>
+                            </div>
+                            <!-- end widget-panel -->
+                        </div>
+                        <div class="col-lg-3 col-6">
+                            <div class="widget-panel">
+                                <h3 class="fs-18 font-weight-semi-bold pb-3">فیلتر بر اساس هزینه</h3>
+                                @foreach($types as $key => $item)
+                                    <div class="custom-control custom-checkbox mb-1 fs-15">
+                                        <input type="radio" class="custom-control-input" wire:model="type"
+                                               value="{{$key}}" id="type{{$key}}"  required="" />
+                                            <label class="custom-control-label custom--control-label text-black" for="type{{$key}}">
+                                                {{$item}} </label>
+                                    </div>
+                                @endforeach
+                                <div class="custom-control custom-checkbox mb-1 fs-15">
+                                    <input type="radio" class="custom-control-input" wire:model="type"
+                                           value="" id="all_types"  required="" />
+                                    <label class="custom-control-label custom--control-label text-black"
+                                           for="all_types"> همه </label>
+                                </div>
+                            </div>
+                            <!-- end widget-panel -->
+                        </div>
+                        <div class="col-lg-3 col-6">
+                            <div class="widget-panel">
+                                <h3 class="fs-18 font-weight-semi-bold pb-3">مرتب سازی بر اساس</h3>
+                                <div class="select-container select--container px-2 m-0">
+                                    <select class="select-container-select mb-2 form-control" wire:model="orderBy">
+                                        <option value="">مرتب سازی</option>
+                                        @foreach($orders as $key => $value)
+                                            <option value="{{ $key }}">{{ $value }}</option>
+                                        @endforeach
+                                    </select>
+                                    <select class="select-container-select mb-2 form-control" wire:model="province">
+                                        <option value="">استان</option>
+                                        @foreach($data['province'] as $key => $value)
+                                            <option value="{{ $key }}">{{ $value }}</option>
+                                        @endforeach
+                                    </select>
+                                    <select class="select-container-select mb-2 form-control" wire:model="city">
+                                        <option value="">شهر</option>
+                                        @foreach($data['city'] as $key => $value)
+                                            <option value="{{ $key }}">{{ $value }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-6">
+                            <div class="widget-panel">
+                                <h3 class="fs-18 font-weight-semi-bold pb-3">فیلتر بر اساس مدرس</h3>
+                                <div class="select-container select--container px-2 m-0">
+                                    <select class="select-container-select mb-2 form-control" wire:model="teacher">
+                                        <option value="">مدرس</option>
+                                        @foreach($data['teachers'] as $key => $value)
+                                            <option value="{{ $key }}">{{ $value }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    <!-- end row -->
                 </div>
                 <!-- end filter-bar-inner -->
             </div>
@@ -24,49 +103,6 @@
             <div class="row">
                 <div class="col-lg-3" wire:ignore>
                     <div class="sidebar mb-5">
-                        <div class="card card-item">
-                            <div class="card-body">
-                                <h3 class="card-title fs-18 pb-2">بر اساس هزینه</h3>
-                                <div class="divider"><span></span></div>
-                                @foreach($types as $key => $item)
-                                <div class="custom-control custom-checkbox mb-1 fs-15">
-                                    <input type="radio" name="type" class="custom-control-input" wire:model="type"
-                                        value="{{$key}}" id="{{$key}}" required="" />
-                                    <label class="custom-control-label custom--control-label text-black" for="{{$key}}">
-                                        {{$item}} </label>
-                                </div>
-                                @endforeach
-                                <div class="custom-control custom-checkbox mb-1 fs-15">
-                                    <input type="radio" name="type" class="custom-control-input" wire:model="type"
-                                        value="" id="all_types" required="" />
-                                    <label class="custom-control-label custom--control-label text-black"
-                                        for="all_types"> همه </label>
-                                </div>
-                                <!-- end custom-control -->
-                            </div>
-                        </div>
-                        <div class="card card-item">
-                            <div class="card-body">
-                                <h3 class="card-title fs-18 pb-2">بر اساس نوع دوره اموزشی</h3>
-                                <div class="divider"><span></span></div>
-                                @foreach($data['types'] as $key => $item)
-                                <div class="custom-control custom-checkbox mb-1 fs-15">
-                                    <input type="radio" name="property" class="custom-control-input"
-                                        wire:model="property" value="{{$key}}" id="{{$key}}_property" required="" />
-                                    <label class="custom-control-label custom--control-label text-black"
-                                        for="{{$key}}_property"> {{$item}} </label>
-                                </div>
-                                @endforeach
-                                <div class="custom-control custom-checkbox mb-1 fs-15">
-                                    <input type="radio" name="property" class="custom-control-input"
-                                        wire:model="property" value="" id="all_property" required="" />
-                                    <label class="custom-control-label custom--control-label text-black"
-                                        for="all_property"> همه </label>
-                                </div>
-                                <!-- end custom-control -->
-                            </div>
-                        </div>
-                        <!-- end card -->
                         <div class="card card-item">
                             <div class="card-body">
                                 <h3 class="card-title fs-18 pb-2">دسته بندی ها</h3>
