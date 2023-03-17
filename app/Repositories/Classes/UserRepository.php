@@ -155,7 +155,6 @@ class UserRepository implements UserRepositoryInterface, ConfigRepository , ACLR
 
     public function getUsersForEvent(string $orderBy, int $count ,Event $event)
     {
-        $period = EventEnum::getPriods()[$count];
         $query = User::query()->select(['id','email', 'phone','name']);
         switch ($event->category) {
             case EventEnum::TARGET_TEACHERS:
@@ -169,19 +168,15 @@ class UserRepository implements UserRepositoryInterface, ConfigRepository , ACLR
                 });
                 break;
         }
-        if ($period != EventEnum::ALL) {
-            $counts = ceil(User::count() / $period[0]);
-            $skip = $counts * $period[1];
-            $query = $query->skip($skip)->take($counts);
-        }
         $category = $event->category ?? EventEnum::TARGET_USERS;
         $query->orderBy('id', $orderBy)->chunk(20,function ($users) use ($event , $category) {
             foreach ($users as $user) {
                 ProcessEvent::dispatch($event,$user
-                    , event_custom_text($category, nl2br($event->body), match ($category) {
-                        EventEnum::TARGET_COURSES => [$user->name,$event->course->title,$event->course->price,$event->course_id],
-                        default => [$user->name],
-                }))->onQueue($event->id);
+                    , event_custom_text($category, nl2br($event->body),
+                        match ($category) {
+                            EventEnum::TARGET_COURSES => [$user->name,$event->course->title,$event->course->price,$event->course_id],
+                            default => [$user->name],
+                        }))->onQueue($event->id);
             }
         });
     }
