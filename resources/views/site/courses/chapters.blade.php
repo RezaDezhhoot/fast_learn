@@ -42,11 +42,7 @@
                                     <ul class="generic-list-item">
                                         @foreach($item['episode_title_list'] as $episode)
                                             <li>
-                                                @if(($episode['free'] || $course->price == 0 || (auth()->check() && $user->hasCourse($course->id))))
                                                     <a href="{{route('episode',[$course['slug'],$item['slug'],$episode['id'],$episode['title']])}}" class="d-flex align-items-center justify-content-between">
-                                                    @else
-                                                            <a class="d-flex align-items-center justify-content-between">
-                                                  @endif
                                                                 <span>
                                                                     <i class="la la-book-open mr-1"></i>
                                                                     {{$episode['title']}}

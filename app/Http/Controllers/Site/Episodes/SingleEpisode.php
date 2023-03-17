@@ -52,9 +52,9 @@ class SingleEpisode extends BaseComponent
         $this->user = auth()->user();
         $this->course_data = $this->courseRepository->get('slug',$course,true);
         $this->loadData($chapter , $episode);
-        if (
-            !$this->episode_data->free && $this->course_data->price > 0 && ( (\auth()->check() && !$this->user->hasCourse($this->course_data->id)) || !\auth()->check()) )
-            abort(404);
+//        if (
+//            !$this->episode_data->free && $this->course_data->price > 0 && ( (\auth()->check() && !$this->user->hasCourse($this->course_data->id)) || !\auth()->check()) )
+//            abort(404);
 
 
         SEOMeta::setTitle($this->course_data->title);

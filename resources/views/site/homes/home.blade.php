@@ -48,8 +48,8 @@
             @endswitch
         </div>
         @endforeach
-        <div class="col-12">
-            <x-site.counter :data="$starter" />
-        </div>
+{{--        <div class="col-12">--}}
+{{--            <x-site.counter :data="$starter" />--}}
+{{--        </div>--}}
     </div>
 </div>

@@ -248,11 +248,11 @@
                                     <span><i class="la la-clock mr-2 text-color"></i>مدت زمان</span> {{ $course->time }}
                                 </li>
                                 <li class="d-flex align-items-center justify-content-between">
-                                    <span><i class="la la-circle mr-2 text-color"></i>وضعیت </span> {{
-                                    $course->status_label }}
+                                    <span><i class="la la-circle mr-2 text-color"></i>پشتیبانی استاد </span> {{
+                                    $course->has_support ? 'بله' : 'خیر' }}
                                 </li>
                                 <li class="d-flex align-items-center justify-content-between">
-                                    <span><i class="la la-bolt mr-2 text-color"></i>امتحان</span> {{
+                                    <span><i class="la la-bolt mr-2 text-color"></i>آزمون</span> {{
                                     !is_null($course->quiz) ? 'بعله' : 'خیر' }}
                                 </li>
                                 <li class="d-flex align-items-center justify-content-between">

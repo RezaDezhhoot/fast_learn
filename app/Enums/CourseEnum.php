@@ -48,7 +48,7 @@ final class CourseEnum extends Enum
     public static function getTypes(): array
     {
         return [
-            self::OFFLINE => 'دوره های اموزشی افلاین',
+            self::OFFLINE => 'وبینار',
             self::IN_PERSON => 'دوره های اموزشی حضوری',
             self::ONLINE => 'دوره های اموزشی انلاین',
         ];

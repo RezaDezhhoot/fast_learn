@@ -21,6 +21,8 @@
                 <x-admin.forms.dropdown with="6" id="reduction_type" :data="$data['reduction']" label="نوع تخفیف" wire:model.defer="reduction_type"/>
                 <x-admin.forms.jdate-picker with="6" id="start_at" label="شروع تخفیف" wire:model.defer="start_at"/>
                 <x-admin.forms.jdate-picker with="6" id="expire_at" label="پایان تخفیف" wire:model.defer="expire_at"/>
+                <x-admin.forms.checkbox value="1" id="has_support"
+                                        label="پشتیبانی استاد " wire:model.defer="has_support" />
             </div>
             <hr>
             <x-admin.forms.select2 id="incomingMethod" :data="$data['incoming']" label="روش محاسبه درامد مدرس" wire:model.defer="incomingMethod"/>

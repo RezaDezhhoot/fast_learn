@@ -43,11 +43,11 @@ class Contents extends BaseComponent
     {
         $this->chapter_data = $this->course_data->chapters->where('id',$chapter)->first();
         $episode = $this->chapter_data->episodes->where('id',$episode)->first();
-        if ((\auth()->check() && ($this->user->hasCourse($this->course_data->id))) || $episode->free) {
+//        if ((\auth()->check() && ($this->user->hasCourse($this->course_data->id))) || $episode->free) {
             return redirect()->route('episode',[
                 $this->course_data->slug , $this->chapter_data->slug , $episode , $episode->title
             ]);
-        }
+//        }
     }
 
     public function loadEpisode($episode)
