@@ -50,6 +50,11 @@ class Episode extends Model
         'time_label'
     ];
 
+    public function reports(): HasMany
+    {
+        return $this->hasMany(ViolationReport::class);
+    }
+    
     public function comments(): MorphMany
     {
         return $this->morphMany(Comment::class, 'commentable')->latest('id')->where('status',CommentEnum::CONFIRMED)

@@ -36,4 +36,8 @@ interface EpisodeRepositoryInterface
     public function like($episode);
 
     public function unLike($episode);
+
+    public function submitReport(Episode $episode , $subject);
+
+    public function hasReported(Episode $episode);
 }

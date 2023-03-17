@@ -14,6 +14,7 @@ use App\Repositories\Interfaces\TeacherCheckoutRepositoryInterface;
 use App\Repositories\Interfaces\TeacherRequestRepositoryInterface;
 use App\Repositories\Interfaces\TicketRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
+use App\Repositories\Interfaces\ViolationReportRepositoryInterface;
 
 class Sidebar extends BaseComponent
 {
@@ -23,7 +24,8 @@ class Sidebar extends BaseComponent
         UserRepositoryInterface $userRepository , SettingRepositoryInterface $settingRepository ,
         ContactUsRepositoryInterface $contactUsRepository , TeacherRequestRepositoryInterface $teacherRequestRepository,
         NewCourseRepositoryInterface $newCourseRepository , EpisodeTranscriptRepositoryInterface $episodeTranscriptRepository,
-        BankAccountRepositoryInterface $bankAccountRepository , TeacherCheckoutRepositoryInterface $checkoutRepository , ChapterTranscriptRepositoryInterface $chapterTranscriptRepository
+        BankAccountRepositoryInterface $bankAccountRepository , TeacherCheckoutRepositoryInterface $checkoutRepository , ChapterTranscriptRepositoryInterface $chapterTranscriptRepository ,
+        ViolationReportRepositoryInterface $violationReportRepository
     )
     {
         $data = [
@@ -36,7 +38,8 @@ class Sidebar extends BaseComponent
             'episode_transcripts' => $episodeTranscriptRepository::getNew(),
             'chapter_transcripts' => $chapterTranscriptRepository::getNew(),
             'bank_accounts' => $bankAccountRepository::getNew(),
-            'checkouts' => $checkoutRepository::getNew()
+            'checkouts' => $checkoutRepository::getNew(),
+            'violations' => $violationReportRepository::getNew()
         ];
         return view('admin.layouts.sidebar',$data);
     }

@@ -94,4 +94,6 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->as('admin.')->group(f
 
     Route::get('/chapter-transcripts',App\Http\Controllers\Admin\ChapterTranscripts\IndexChapterTranscript::class)->name('chapterTranscript');
     Route::get('/chapter-transcripts/{action}/{id?}',App\Http\Controllers\Admin\ChapterTranscripts\StoreChapterTranscript::class)->name('store.chapterTranscript');
+
+    Route::get('/reports/violations' , App\Http\Controllers\Admin\Reports\IndexViolation::class)->name('report.violation');
 });

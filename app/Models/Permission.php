@@ -62,7 +62,9 @@ class Permission extends \Spatie\Permission\Models\Permission
             'checkouts' => 'تسویه حساب های مدرسین',
             'bank_accounts' => 'حساب های بانکی',
             'incoming_methods' => 'روش های محاسبه درامد',
-            'jobs' => 'صف پردازش ها'
+            'jobs' => 'صف پردازش ها',
+            'chapters' => 'فصل ها',
+            'violations' => 'گزارش های تخلف'
         ];
     }
 

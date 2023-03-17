@@ -152,6 +152,10 @@ class PermissionSeeder extends Seeder
 
             ['name' => 'show_jobs' , 'guard_name'=> 'web'],
             ['name' => 'edit_jobs', 'guard_name'=> 'web'],
+
+            ['name' => 'show_violations' , 'guard_name' => 'web'],
+            ['name' => 'edit_violations' , 'guard_name' => 'web'],
+            ['name' => 'delete_violations' , 'guard_name' => 'web'],
         ];
 
         foreach ($permissions as $permission) {

@@ -260,7 +260,7 @@ class User extends Authenticatable implements Wallet, Confirmable
 
     public function hasLiked($episode)
     {
-        return $this->likes()->where('episode_id',$episode->id)->first();
+        return $this->likes()->where('episode_id',$episode->id)->exists();
     }
 
 }

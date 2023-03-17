@@ -140,4 +140,40 @@ class EpisodeRepository implements EpisodeRepositoryInterface
             return $episode->likes()->where('user_ip',request()->ip())->delete();
         }
     }
+
+    public function hasReported(Episode $episode)
+    {
+        $hasReportedWithIP = $episode->reports()->where('user_ip',request()->ip())->exists();
+        if (\auth()->check()) {
+            if (!$episode->reports()->where('user_id',\auth()->id())->exists() && !$hasReportedWithIP) {
+                return false;
+            }
+        } elseif (! $hasReportedWithIP) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function submitReport(Episode $episode,$subject)
+    {
+        if (\auth()->check()) {
+            if (! $this->hasReported($episode)) {
+                $episode->reports()->create([
+                    'user_ip' => request()->ip(),
+                    'user_id' => \auth()->id(),
+                    'subject' => $subject,
+                ]);
+                return true;
+            }
+        } elseif (! $this->hasReported($episode)) {
+            $episode->reports()->create([
+                'user_ip' => request()->ip(),
+                'subject' => $subject
+            ]);
+            return true;
+        }
+
+        return false;
+    }
 }

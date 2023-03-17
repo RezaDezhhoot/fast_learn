@@ -7,7 +7,7 @@ use App\Repositories\Interfaces\SettingRepositoryInterface;
 
 class ContactSetting extends BaseComponent
 {
-    public $header , $googleMap  , $contactText , $tel, $subject = [] , $links = [] , $email, $address;
+    public $header , $googleMap  , $contactText , $tel, $subject = [] , $links = [] , $violations = [] , $email, $address;
     public $instagram , $twitter , $youtube , $telegram;
 
     public function __construct($id = null)
@@ -31,6 +31,7 @@ class ContactSetting extends BaseComponent
         $this->telegram = $this->settingRepository->getRow('telegram');
         $this->subject = $this->settingRepository->getRow('subject',[]);
         $this->links = $this->settingRepository->getRow('links',[]);
+        $this->violations = $this->settingRepository->getRow('violations',[]);
     }
 
     public function render()
@@ -44,7 +45,7 @@ class ContactSetting extends BaseComponent
         $this->authorizing('edit_settings_contactUs');
         $this->validate(
             [
-                'googleMap' => ['nullable', 'string','max:1000000'],
+                'googleMap' => ['nullable', 'string','max:100000000'],
                 'contactText' => ['nullable','string','max:10000'],
                 'tel' => ['required','string','max:40'],
                 'address' => ['required','string','max:250'],
@@ -58,8 +59,10 @@ class ContactSetting extends BaseComponent
                 'links' => ['nullable','array'],
                 'links.*.link' => ['required','string','max:1000'],
                 'links.*.title' => ['required','string','max:1000'],
+                'violations' => ['nullable','array'],
+                'violations.*' => ['required','string','max:100'],
             ] , [] , [
-                'googleMap' => 'شناسه گوگل مپ',
+                'googleMap' => 'iframe نقشه',
                 'contactText' => 'متن',
                 'tel' => 'تلفن',
                 'address' => 'ادرس',
@@ -73,6 +76,7 @@ class ContactSetting extends BaseComponent
                 'links' => 'لینک های دانلود',
                 'links.*.link' => 'لینک های دانلود',
                 'links.*.title' => 'لینک های دانلود',
+                'violations' => 'موضوعات گزارش تخلف'
             ]
         );
         $this->settingRepository::updateOrCreate(['name' => 'googleMap'],['value' => $this->googleMap]);
@@ -86,6 +90,7 @@ class ContactSetting extends BaseComponent
         $this->settingRepository::updateOrCreate(['name' => 'address'], ['value' => $this->address]);
         $this->settingRepository::updateOrCreate(['name' => 'subject'], ['value' => json_encode($this->subject)]);
         $this->settingRepository::updateOrCreate(['name' => 'links'], ['value' => json_encode($this->links)]);
+        $this->settingRepository::updateOrCreate(['name' => 'violations'], ['value' => json_encode($this->violations)]);
 
         $this->emitNotify('اطلاعات با موفقیت ثبت شد');
     }
@@ -108,5 +113,15 @@ class ContactSetting extends BaseComponent
     public function addLink()
     {
         $this->links[] = '';
+    }
+
+    public function deleteViolation($key)
+    {
+        unset($this->violations[$key]);
+    }
+
+    public function addViolation()
+    {
+        $this->violations[] = '';
     }
 }

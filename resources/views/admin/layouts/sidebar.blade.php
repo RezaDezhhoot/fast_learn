@@ -147,8 +147,11 @@
                 @can('show_contacts')
                     <x-admin.menu-item  href="{{route('admin.contact')}}" icon="flaticon-email" :active="request()->routeIs(['admin.contact','admin.store.contact'])" label=" ارتباط با ما ({{$contacts}})" />
                 @endcan
+                @can('show_contacts')
+                    <x-admin.menu-item  href="{{route('admin.report.violation')}}" icon="flaticon-warning" :active="request()->routeIs(['admin.report.violation'])" label="گزارش تخلفات ({{$violations}})" />
+                @endcan
 
-                <li class="menu-section">
+                <li class="menu-section ">
                     <h4 class="menu-text">بخش مالی</h4>
                     <i class="menu-icon ki ki-bold-more-hor icon-md  "></i>
                 </li>

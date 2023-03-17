@@ -46,6 +46,7 @@ use App\Repositories\Classes\TicketRepository;
 use App\Repositories\Classes\TranscriptRepository;
 use App\Repositories\Classes\UserDetailRepository;
 use App\Repositories\Classes\UserRepository;
+use App\Repositories\Classes\ViolationReportRepository;
 use App\Repositories\Classes\WalletRepository;
 use App\Repositories\Interfaces\ArticleRepositoryInterface;
 use App\Repositories\Interfaces\BankAccountRepositoryInterface;
@@ -91,6 +92,7 @@ use App\Repositories\Interfaces\TicketRepositoryInterface;
 use App\Repositories\Interfaces\TranscriptRepositoryInterface;
 use App\Repositories\Interfaces\UserDetailRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
+use App\Repositories\Interfaces\ViolationReportRepositoryInterface;
 use App\Repositories\Interfaces\WalletRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 use RecursiveDirectoryIterator;
@@ -330,6 +332,11 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             ChapterTranscriptRepositoryInterface::class,
             ChapterTranscriptRepository::class
+        );
+
+        $this->app->bind(
+            ViolationReportRepositoryInterface::class,
+            ViolationReportRepository::class
         );
     }
 

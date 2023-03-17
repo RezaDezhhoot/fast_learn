@@ -11,7 +11,7 @@
                 <x-admin.forms.input type="text" id="tel" label="تلفن*" wire:model.defer="tel"/>
                 <x-admin.forms.input type="email" id="email" label="ایمیل*" wire:model.defer="email"/>
                 <x-admin.forms.input type="text" id="address" label="ادرس*" wire:model.defer="address"/>
-                <x-admin.forms.input type="text" id="googleMap" label="شناسه گوگل مپ" wire:model.defer="googleMap"/>
+                <x-admin.forms.input type="text" id="googleMap" label="iframe نقشه" wire:model.defer="googleMap"/>
                 <x-admin.forms.full-text-editor type="text" id="contactText" label="متن" wire:model.defer="contactText"/>
             </div>
             <x-admin.form-section label="لینک های ارتباطی">
@@ -41,6 +41,17 @@
                             <input class="form-control col-5" id="{{ $key }}link-title" type="text" placeholder="عنوان" wire:model.defer="links.{{$key}}.title">
                             <input class="form-control col-5" id="{{ $key }}link" type="text" placeholder="لینک" wire:model.defer="links.{{$key}}.link">
                             <div><button class="btn btn-light-danger font-weight-bolder btn-sm" wire:click="deleteLink({{ $key }})">حذف</button></div>
+                        </div>
+                    @endforeach
+                </div>
+            </x-admin.form-section>
+            <x-admin.form-section label="موضوعات برای گزارش تخلف دروس">
+                <div class="border p-3">
+                    <x-admin.button class="btn btn-light-primary font-weight-bolder btn-sm" content="افزودن موضوع" wire:click="addViolation()" />
+                    @foreach($violations as $key => $item)
+                        <div class="form-group d-flex align-items-center col-12">
+                            <input class="form-control col-11" id="{{ $key }}subject" type="text" placeholder="عنوان" wire:model.defer="violations.{{$key}}">
+                            <div><button class="btn btn-light-danger font-weight-bolder btn-sm" wire:click="deleteViolation({{ $key }})">حذف</button></div>
                         </div>
                     @endforeach
                 </div>
