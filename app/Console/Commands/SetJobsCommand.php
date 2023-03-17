@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Enums\JobEnum;
 use Illuminate\Console\Command;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Repositories\Interfaces\EventRepositoryInterface;
@@ -35,12 +36,12 @@ class SetJobsCommand extends Command
     {
         parent::__construct();
         $this->eventRepository = $eventRepository;
-    } 
+    }
 
     public function handle()
     {
         $event = $this->eventRepository->find($this->argument('event'));
-        ProcessJob::dispatch($event,$this->option('orderBy'),$this->option('count'))->onQueue('start');
+        ProcessJob::dispatch($event,$this->option('orderBy'),$this->option('count'))->onQueue(JobEnum::START_EVENT);
         return 0;
     }
 }

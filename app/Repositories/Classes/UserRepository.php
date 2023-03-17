@@ -4,9 +4,12 @@
 namespace App\Repositories\Classes;
 
 use App\Enums\CertificateEnum;
+use App\Jobs\ProcessEvent;
+use App\Models\Event;
 use App\Models\User;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use Alexusmai\LaravelFileManager\Services\ConfigService\ConfigRepository;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Auth;
 use App\Enums\StorageEnum;
 use App\Enums\EventEnum;
@@ -150,19 +153,37 @@ class UserRepository implements UserRepositoryInterface, ConfigRepository , ACLR
         return User::count();
     }
 
-    public function getUsersForEvent(string $orderBy, int $count)
+    public function getUsersForEvent(string $orderBy, int $count ,Event $event)
     {
-        $priod = EventEnum::getPriods()[$count];
-
-        if ($priod != EventEnum::ALL) {
-            $counts = ceil(User::count() / $priod[0]);
-            $skip = $counts * $priod[1];
-            return User::select('email', 'phone')->skip($skip)->take($counts)
-                ->orderBy('id', $orderBy)->cursor();
-        } else {
-            return User::select('email', 'phone')
-                ->orderBy('id', $orderBy)->cursor();
+        $period = EventEnum::getPriods()[$count];
+        $query = User::query()->select(['id','email', 'phone','name']);
+        switch ($event->category) {
+            case EventEnum::TARGET_TEACHERS:
+                $query = $query->whereHas('teacher');
+                break;
+            case EventEnum::TARGET_COURSES:
+                $query = $query->whereHas('orders',function ($q) use ($event) {
+                    return $q->whereHas('details',function ($q) use ($event) {
+                        return $q->where('course_id',$event->course_id);
+                    });
+                });
+                break;
         }
+        if ($period != EventEnum::ALL) {
+            $counts = ceil(User::count() / $period[0]);
+            $skip = $counts * $period[1];
+            $query = $query->skip($skip)->take($counts);
+        }
+        $category = $event->category ?? EventEnum::TARGET_USERS;
+        $query->orderBy('id', $orderBy)->chunk(20,function ($users) use ($event , $category) {
+            foreach ($users as $user) {
+                ProcessEvent::dispatch($event,$user
+                    , event_custom_text($category, nl2br($event->body), match ($category) {
+                        EventEnum::TARGET_COURSES => [$user->name,$event->course->title,$event->course->price,$event->course_id],
+                        default => [$user->name],
+                }))->onQueue($event->id);
+            }
+        });
     }
 
     /**

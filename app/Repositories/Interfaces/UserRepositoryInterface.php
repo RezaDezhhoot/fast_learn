@@ -4,6 +4,7 @@
 namespace App\Repositories\Interfaces;
 
 
+use App\Models\Event;
 use App\Models\User;
 
 interface UserRepositoryInterface
@@ -48,7 +49,7 @@ interface UserRepositoryInterface
 
     public function count();
 
-    public function getUsersForEvent(string $orderBy , int $count);
+    public function getUsersForEvent(string $orderBy , int $count ,Event $event);
 
     public function getModelNamespace(): string;
 }

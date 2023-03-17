@@ -37,23 +37,20 @@ class SendRepository implements SendRepositoryInterface
 
     /**
      * @throws Exception
+     * @throws GuzzleException
      */
     public function sendSMS($message, $number)
     {
-        try {
-            $client = new Client();
-            $query = ['from' => $this->lineNumber, 'to' => $number, 'msg' => $message,
-                'uname' => $this->username, 'pass' => $this->password];
-            $result = $client->get('http://ippanel.com/class/sms/webservice/send_url.php', [
-                'query' => $query,
-            ]);
-            $data =  json_decode($result->getBody(), true);
-            if ($data[0] != 0){
-                Log::info($data[1]);
-                throw new Exception($data[1]);
-            }
-        } catch (GuzzleException|Exception  $e) {
-            return "ERROR";
+        $client = new Client();
+        $query = ['from' => $this->lineNumber, 'to' => $number, 'msg' => $message,
+            'uname' => $this->username, 'pass' => $this->password];
+        $result = $client->get('http://ippanel.com/class/sms/webservice/send_url.php', [
+            'query' => $query,
+        ]);
+        $data =  json_decode($result->getBody(), true);
+        if ($data[0] != 0){
+            Log::info($data[1]);
+            throw new Exception($data[1]);
         }
     }
 
