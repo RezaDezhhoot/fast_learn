@@ -56,16 +56,16 @@ class SingleEpisode extends BaseComponent
             !$this->episode_data->free && $this->course_data->price > 0 && ( (\auth()->check() && !$this->user->hasCourse($this->course_data->id)) || !\auth()->check()) )
             abort(404);
 
-
-        SEOMeta::setTitle($this->course_data->title);
+        $title = $this->course_data->title.' | '.$this->episode_data->title;
+        SEOMeta::setTitle($title);
         SEOMeta::setDescription($this->course_data->seo_description);
         SEOMeta::addKeyword($this->course_data->seo_keywords);
         OpenGraph::setUrl(url()->current());
-        OpenGraph::setTitle($this->course_data->title);
+        OpenGraph::setTitle($title);
         OpenGraph::setDescription($this->course_data->seo_description);
-        TwitterCard::setTitle($this->course_data->title);
+        TwitterCard::setTitle($title);
         TwitterCard::setDescription($this->course_data->seo_description);
-        JsonLd::setTitle($this->course_data->title);
+        JsonLd::setTitle($title);
         JsonLd::setDescription($this->course_data->seo_description);
         JsonLd::addImage(asset($this->settingRepository->getRow('logo')));
 
