@@ -50,7 +50,9 @@ class RoleRepository implements RoleRepositoryInterface
     public function create(array $data)
     {
         // TODO: Implement create() method.
-        return Role::create($data);
+        return Role::query()->updateOrCreate($data,[
+            'guard_name' => 'web'
+        ]);
     }
 
     public function getByName($name)
