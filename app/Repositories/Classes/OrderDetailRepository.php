@@ -6,6 +6,7 @@ namespace App\Repositories\Classes;
 use App\Enums\NotificationEnum;
 use App\Enums\OrderEnum;
 use App\Enums\PaymentEnum;
+use App\Models\Course;
 use App\Models\OrderDetail;
 use App\Models\Payment;
 use App\Repositories\Interfaces\OrderDetailRepositoryInterface;
@@ -105,5 +106,16 @@ class OrderDetailRepository implements OrderDetailRepositoryInterface
                 return $q->where('user_id',Auth::id());
             });
         })->count();
+    }
+
+    public function getAllByCourse(Course $course , $user_search , $perPage=10)
+    {
+        return $course->details()->when($user_search,function ($q) use ($user_search) {
+            return $q->whereHas('order',function ($q) use ($user_search) {
+               return $q->whereHas('user',function ($q) use ($user_search){
+                   return $q->search($user_search);
+               });
+            });
+        })->paginate($perPage);
     }
 }

@@ -54,7 +54,7 @@ class Episode extends Model
     {
         return $this->hasMany(ViolationReport::class);
     }
-    
+
     public function comments(): MorphMany
     {
         return $this->morphMany(Comment::class, 'commentable')->latest('id')->where('status',CommentEnum::CONFIRMED)
@@ -126,5 +126,10 @@ class Episode extends Model
     public function likes(): HasMany
     {
         return $this->hasMany(EpisodeLike::class);
+    }
+
+    public function rollCalls(): HasMany
+    {
+        return $this->hasMany(RollCall::class);
     }
 }

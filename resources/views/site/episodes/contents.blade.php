@@ -116,7 +116,6 @@
             const player = new Plyr('#player',{
                 title: data.title,
             });
-            console.log(data.src)
             player.source = {
                 type: 'video',
                 title: data.title,

@@ -269,4 +269,9 @@ class Course extends Model
     {
         return $this->belongsTo(IncomingMethod::class);
     }
+
+    public function rollCalls(): HasManyThrough
+    {
+        return $this->hasManyThrough(RollCall::class,OrderDetail::class);
+    }
 }

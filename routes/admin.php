@@ -96,4 +96,7 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->as('admin.')->group(f
     Route::get('/chapter-transcripts/{action}/{id?}',App\Http\Controllers\Admin\ChapterTranscripts\StoreChapterTranscript::class)->name('store.chapterTranscript');
 
     Route::get('/reports/violations' , App\Http\Controllers\Admin\Reports\IndexViolation::class)->name('report.violation');
+
+    Route::get('/roll-calls',App\Http\Controllers\Admin\RollCalls\IndexRollCall::class)->name('rollCall');
+    Route::get('/roll-calls/{id}',App\Http\Controllers\Admin\RollCalls\StoreRollCall::class)->name('store.rollCall');
 });

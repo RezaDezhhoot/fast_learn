@@ -47,4 +47,6 @@ interface CourseRepositoryInterface
     public function getTeachersCount($from_date , $to_date);
 
     public function setCourseToOrder($course);
+
+    public function findTeacher($id);
 }
