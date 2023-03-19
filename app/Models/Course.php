@@ -10,6 +10,7 @@ use App\Traits\Admin\Searchable;
 use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Dyrynda\Database\Support\CascadeSoftDeletes;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -68,6 +69,16 @@ class Course extends Model
                 'source' => 'title'
             ]
         ];
+    }
+
+    public function scopeFindSimilarSlugs(Builder $query, string $attribute, array $config, string $slug): Builder
+    {
+        $separator = $config['separator'];
+
+        return $query->where(function(Builder $q) use ($attribute, $slug, $separator) {
+            $q->where($attribute, '=', $slug)
+                ->orWhere($attribute, 'LIKE', $slug . $separator . '%');
+        })->withoutGlobalScopes();
     }
 
     protected function typeLabel(): Attribute
