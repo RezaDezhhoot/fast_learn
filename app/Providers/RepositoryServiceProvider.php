@@ -15,6 +15,7 @@ use App\Repositories\Classes\CourseRepository;
 use App\Repositories\Classes\EpisodeRepository;
 use App\Repositories\Classes\EpisodeTranscriptRepository;
 use App\Repositories\Classes\EventRepository;
+use App\Repositories\Classes\FormRepository;
 use App\Repositories\Classes\HomeworkRepository;
 use App\Repositories\Classes\IncomingMethodRepository;
 use App\Repositories\Classes\LastActivityRepository;
@@ -61,6 +62,7 @@ use App\Repositories\Interfaces\CourseRepositoryInterface;
 use App\Repositories\Interfaces\EpisodeRepositoryInterface;
 use App\Repositories\Interfaces\EpisodeTranscriptRepositoryInterface;
 use App\Repositories\Interfaces\EventRepositoryInterface;
+use App\Repositories\Interfaces\FormRepositoryInterface;
 use App\Repositories\Interfaces\HomeworkRepositoryInterface;
 use App\Repositories\Interfaces\IncomingMethodRepositoryInterface;
 use App\Repositories\Interfaces\LastActivityRepositoryInterface;
@@ -337,6 +339,11 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             ViolationReportRepositoryInterface::class,
             ViolationReportRepository::class
+        );
+
+        $this->app->bind(
+            FormRepositoryInterface::class,
+            FormRepository::class
         );
     }
 

@@ -99,4 +99,7 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->as('admin.')->group(f
 
     Route::get('/roll-calls',App\Http\Controllers\Admin\RollCalls\IndexRollCall::class)->name('rollCall');
     Route::get('/roll-calls/{id}',App\Http\Controllers\Admin\RollCalls\StoreRollCall::class)->name('store.rollCall');
+
+    Route::get('/forms',App\Http\Controllers\Admin\Forms\IndexForm::class)->name('form');
+    Route::get('/forms/{action}/{id?}',App\Http\Controllers\Admin\Forms\StoreForm::class)->name('store.form');
 });

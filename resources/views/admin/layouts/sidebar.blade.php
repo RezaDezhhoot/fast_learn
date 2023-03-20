@@ -204,6 +204,9 @@
                 @can('show_reductions')
                     <x-admin.menu-item href="{{route('admin.reduction')}}" icon="fas fa-percent" :active="request()->routeIs(['admin.reduction','admin.store.reduction'])" label="کد های تخفیف ها " />
                 @endcan
+                @can('show_forms')
+                    <x-admin.menu-item href="{{route('admin.form')}}" icon="flaticon2-writing" :active="request()->routeIs(['admin.form','admin.store.form'])" label="فرم ها" />
+                @endcan
                 {{-- v2-storages --}}
                 @can('show_storages')
                     <x-admin.menu-group icon="far fa-hdd" :active="request()->routeIs(

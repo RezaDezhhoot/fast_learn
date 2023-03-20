@@ -18,14 +18,4 @@ return new class extends Migration
             '--force' => true
         ]);
     }
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        //
-    }
 };
