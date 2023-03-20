@@ -59,7 +59,7 @@ class Form extends BaseComponent
         ],[],[
             'recaptcha' => 'کلید امنیتی'
         ]);
-        if ($rateKey = rateLimiter(value:request()->ip().'_form_request',max_tries: 5))
+        if ($rateKey = rateLimiter(value:request()->ip().'_form_request',max_tries: 50))
         {
             return  $this->emitNotify('زیادی تلاش کردید. لطفا پس از مدتی دوباره تلاش کنید.','warning');
         }
@@ -83,9 +83,9 @@ class Form extends BaseComponent
             return;
         }
 
-        if ($rateKey = rateLimiter(value: request()->ip().'_form', decalSeconds: 24 * 60 * 60, max_tries: 2))
+        if ($rateKey = rateLimiter(value: request()->ip().'_form', decalSeconds: 24 * 60 * 60, max_tries: 3))
         {
-            return  $this->emitNotify('زیادی تلاش کردید. لطفا پس از مدتی دوباره تلاش کنید.');
+            return  $this->emitNotify('زیادی تلاش کردید. لطفا پس از مدتی دوباره تلاش کنید.','warning');
         }
 
         $form = collect($this->form);
