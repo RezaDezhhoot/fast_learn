@@ -150,7 +150,9 @@
                 @can('show_contacts')
                     <x-admin.menu-item  href="{{route('admin.report.violation')}}" icon="flaticon-warning" :active="request()->routeIs(['admin.report.violation'])" label="گزارش تخلفات ({{$violations}})" />
                 @endcan
-
+                @can('show_forms')
+                    <x-admin.menu-item href="{{route('admin.answer')}}" icon="flaticon2-writing" :active="request()->routeIs(['admin.answer','admin.store.answer'])" label="فرم های ارسالی ({{$forms}})" />
+                @endcan
                 <li class="menu-section ">
                     <h4 class="menu-text">بخش مالی</h4>
                     <i class="menu-icon ki ki-bold-more-hor icon-md  "></i>
@@ -174,6 +176,20 @@
                 <x-admin.menu-item  href="{{route('admin.incoming')}}" icon="fa fa-percent" :active="request()->routeIs(['admin.incoming','admin.store.incoming'])" label="روش های محاسبه درامد" />
                 @endcan
                 <li class="menu-section">
+                    <h4 class="menu-text">بخش گزارشات</h4>
+                    <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                </li>
+                @can('show_logs')
+                    <x-admin.menu-item href="{{route('admin.log')}}" icon="flaticon2-list-1" :active="request()->routeIs(['admin.log'])" label=" لاگ های کاربر" />
+                @endif
+                @can('show_roll_calls')
+                    <x-admin.menu-item href="{{route('admin.rollCall')}}" icon="flaticon2-list-1" :active="request()->routeIs(['admin.rollCall','admin.store.rollCall'])" label=" دفتر حضور غیاب" />
+                @endif
+                @role('administrator')
+                <x-admin.menu-item href="{{route('log-viewer::dashboard')}}" icon="flaticon-book" :active="request()->routeIs(['telescope'])" label=" گزارش های سیستم logger" />
+                <x-admin.menu-item href="{{route('telescope')}}" icon="flaticon-search" :active="request()->routeIs(['telescope'])" label=" گزارش های سیستم telescope" />
+                @endif
+                <li class="menu-section">
                     <h4 class="menu-text">بخش کاربر</h4>
                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                 </li>
@@ -190,12 +206,9 @@
                 @can('show_reductions')
                     <x-admin.menu-item href="{{route('admin.reduction')}}" icon="fas fa-percent" :active="request()->routeIs(['admin.reduction','admin.store.reduction'])" label="کد های تخفیف ها " />
                 @endcan
-                @can('show_logs')
-                    <x-admin.menu-item href="{{route('admin.log')}}" icon="flaticon2-list-1" :active="request()->routeIs(['admin.log'])" label=" لاگ های کاربر" />
-                @endif
-                @role('administrator')
-                    <x-admin.menu-item href="{{route('telescope')}}" icon="flaticon-search" :active="request()->routeIs(['telescope'])" label=" گزارش های فنی سیستم" />
-                @endif
+                @can('show_forms')
+                    <x-admin.menu-item href="{{route('admin.form')}}" icon="flaticon2-writing" :active="request()->routeIs(['admin.form','admin.store.form'])" label="فرم ها" />
+                @endcan
                 {{-- v2-storages --}}
                 @can('show_storages')
                     <x-admin.menu-group icon="far fa-hdd" :active="request()->routeIs(

@@ -6,6 +6,7 @@ namespace App\Repositories\Classes;
 
 use App\Models\Episode;
 use App\Models\EpisodeLike;
+use App\Models\RollCall;
 use App\Repositories\Interfaces\EpisodeRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 
@@ -44,34 +45,44 @@ class EpisodeRepository implements EpisodeRepositoryInterface
 
     public function getAllAdmin($course = null , $chapter = null, $search = null, $perPage = 10)
     {
-        return Episode::latest('id')->with(['chapter','chapter.course'])->when($course,function ($q) use ($course){
-           return $q->whereHas('chapter',function ($q) use ($course) {
-               return $q->wherehas('course',function ($q) use ($course){
-                   return $q->where('id',$course);
-               });
-           });
+        $query =  Episode::latest('id')->with(['chapter','chapter.course'])->when($course,function ($q) use ($course){
+            return $q->whereHas('chapter',function ($q) use ($course) {
+                return $q->wherehas('course',function ($q) use ($course){
+                    return $q->where('id',$course);
+                });
+            });
         })->when($chapter,function ($q) use ($chapter) {
             return $q->whereHas('chapter',function ($q) use ($chapter) {
                 return $q->where('id',$chapter);
             });
-        })->search($search)->paginate($perPage);
+        })->search($search);
+
+        if ($perPage) {
+            return $query->paginate($perPage);
+        } else {
+            return $query->cursor();
+        }
     }
 
-    public function getAllTeacher($course, $search, $per_page)
+    public function getAllTeacher($course, $search, $per_page , $chapter = null)
     {
-        return Episode::latest('id')->whereHas('chapter',function ($q) {
+        $query = Episode::latest('id')->whereHas('chapter',function ($q) {
             return $q->whereHas('course',function ($q) {
                 return $q->whereHas('teacher',function ($q){
                     return $q->where('user_id',Auth::id());
                 });
             });
-        })->when($course,function ($q) use ($course){
-            return $q->whereHas('chapter',function ($q) use ($course) {
-                return $q->whereHas('course',function ($q) use ($course) {
-                    return $q->where('id',$course);
-                });
+        })->when($chapter,function ($q) use ($chapter) {
+            return $q->whereHas('chapter',function ($q) use ($chapter) {
+                return $q->where('id',$chapter);
             });
-        })->search($search)->paginate($per_page);
+        })->search($search);
+
+        if ($per_page) {
+            return $query->paginate($per_page);
+        } else {
+            return $query->cursor();
+        }
     }
 
     public function findTeacherEpisode($id)
@@ -175,5 +186,32 @@ class EpisodeRepository implements EpisodeRepositoryInterface
         }
 
         return false;
+    }
+
+    public function submitRollCall($episode_id , $details_id, $user_id, $status)
+    {
+        RollCall::query()
+            ->updateOrCreate([
+                'episode_id' => $episode_id,
+                'order_detail_id' => $details_id,
+                'user_id' => $user_id
+            ],[
+                'status' => $status
+            ]);
+    }
+
+    public function checkEpisodeForRollCall($episode_id, $details_id, $user_id)
+    {
+        return Episode::query()->whereHas('chapter',function ($q) use ($user_id,$details_id){
+                return $q->whereHas('course',function ($q) use ($user_id,$details_id){
+                   return $q->whereHas('details',function ($q) use ($user_id,$details_id) {
+                       return $q->where('id',$details_id)->whereHas('order',function ($q) use ($user_id){
+                          return $q->where('user_id',$user_id);
+                       });
+                   })->whereHas('teacher',function ($q) {
+                       return $q->where('id',\auth()->id());
+                   });
+                });
+            })->where('id',$episode_id)->exists();
     }
 }

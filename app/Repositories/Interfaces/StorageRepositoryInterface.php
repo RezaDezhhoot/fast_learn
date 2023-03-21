@@ -25,4 +25,5 @@ interface StorageRepositoryInterface
 
     public function first(array $where = []);
 
+    public function getConfig($storage);
 }

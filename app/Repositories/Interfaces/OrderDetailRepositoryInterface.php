@@ -4,6 +4,7 @@
 namespace App\Repositories\Interfaces;
 
 
+use App\Models\Course;
 use App\Models\OrderDetail;
 
 interface OrderDetailRepositoryInterface
@@ -25,4 +26,7 @@ interface OrderDetailRepositoryInterface
     public function getOrderDetailCount(array $where);
 
     public function getTeacherStudents($from_date , $to_date);
+
+    public function getAllByCourse(Course $course , $user_search , $perPage=10);
+
 }

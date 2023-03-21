@@ -60,4 +60,14 @@ class OrderDetail extends Model
     {
         return Jalalian::forge($this->created_at)->format('%A, %d %B %Y');
     }
+
+    public function scopePaid($q)
+    {
+        return $q->where('status',OrderEnum::STATUS_COMPLETED);
+    }
+
+    public function rollCalls()
+    {
+        return $this->hasMany(RollCall::class);
+    }
 }

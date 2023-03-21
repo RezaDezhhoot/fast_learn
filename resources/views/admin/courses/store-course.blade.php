@@ -23,6 +23,7 @@
                 <x-admin.forms.jdate-picker with="6" id="expire_at" label="پایان تخفیف" wire:model.defer="expire_at"/>
                 <x-admin.forms.checkbox value="1" id="has_support"
                                         label="پشتیبانی استاد " wire:model.defer="has_support" />
+                <x-admin.forms.lfm-standalone with="6" id="time_lapse" label="تایم لپس دوره" :file="$time_lapse" type="image" required="true" wire:model="time_lapse"/>
             </div>
             <hr>
             <x-admin.forms.select2 id="incomingMethod" :data="$data['incoming']" label="روش محاسبه درامد مدرس" wire:model.defer="incomingMethod"/>

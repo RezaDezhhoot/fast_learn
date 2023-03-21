@@ -8,6 +8,7 @@ use App\Repositories\Interfaces\ChapterTranscriptRepositoryInterface;
 use App\Repositories\Interfaces\CommentRepositoryInterface;
 use App\Repositories\Interfaces\ContactUsRepositoryInterface;
 use App\Repositories\Interfaces\EpisodeTranscriptRepositoryInterface;
+use App\Repositories\Interfaces\FormRepositoryInterface;
 use App\Repositories\Interfaces\NewCourseRepositoryInterface;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
 use App\Repositories\Interfaces\TeacherCheckoutRepositoryInterface;
@@ -25,7 +26,7 @@ class Sidebar extends BaseComponent
         ContactUsRepositoryInterface $contactUsRepository , TeacherRequestRepositoryInterface $teacherRequestRepository,
         NewCourseRepositoryInterface $newCourseRepository , EpisodeTranscriptRepositoryInterface $episodeTranscriptRepository,
         BankAccountRepositoryInterface $bankAccountRepository , TeacherCheckoutRepositoryInterface $checkoutRepository , ChapterTranscriptRepositoryInterface $chapterTranscriptRepository ,
-        ViolationReportRepositoryInterface $violationReportRepository
+        ViolationReportRepositoryInterface $violationReportRepository , FormRepositoryInterface $formRepository
     )
     {
         $data = [
@@ -39,7 +40,8 @@ class Sidebar extends BaseComponent
             'chapter_transcripts' => $chapterTranscriptRepository::getNew(),
             'bank_accounts' => $bankAccountRepository::getNew(),
             'checkouts' => $checkoutRepository::getNew(),
-            'violations' => $violationReportRepository::getNew()
+            'violations' => $violationReportRepository::getNew(),
+            'forms' => $formRepository::newItems()
         ];
         return view('admin.layouts.sidebar',$data);
     }

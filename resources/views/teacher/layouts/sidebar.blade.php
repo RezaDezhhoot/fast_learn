@@ -187,6 +187,11 @@
                                 </x-teacher.menu-group>
                                 <x-teacher.menu-item href="{{route('teacher.samples')}}" icon="fa fa-question"  :active="request()->routeIs(['teacher.samples','teacher.store.samples'])" label="نمونه سوالات " />
                                 <li class="menu-section">
+                                    <h4 class="menu-text">بخش گزارشات</h4>
+                                    <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                                </li>
+                                <x-teacher.menu-item  href="{{route('teacher.rollCall')}}" icon="flaticon2-list-1" :active="request()->routeIs(['teacher.rollCall','teacher.store.rollCall'])" label=" دفتر حضور غیاب "  />
+                                <li class="menu-section">
                                     <h4 class="menu-text">بخش ارتباطی</h4>
                                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                                 </li>

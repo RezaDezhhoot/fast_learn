@@ -201,6 +201,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         'Cart' =>  App\Http\Controllers\Cart\Facades\Cart::class,
+        'FormBuilder' => \App\Http\Controllers\FormBuilder\Facades\FormBuilder::class,
         'Payment' => Shetabit\Payment\Facade\Payment::class,
         'DNS1D' => Milon\Barcode\Facades\DNS1DFacade::class,
         'DNS2D' => Milon\Barcode\Facades\DNS2DFacade::class,

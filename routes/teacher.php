@@ -36,4 +36,7 @@ Route::prefix('teacher')->name('teacher.')->middleware(['auth','role:teacher','t
     Route::get('/samples/{action}/{id?}', App\Http\Controllers\Teacher\Samples\StoreSamples::class)->name('store.samples');
     Route::get('/chapters',App\Http\Controllers\Teacher\Chapters\IndexChapter::class)->name('chapters');
     Route::get('/chapters/{action}/{id?}',App\Http\Controllers\Teacher\Chapters\StoreChapter::class)->name('store.chapters');
+
+    Route::get('/roll-calls',App\Http\Controllers\Teacher\RollCalls\IndexRollCall::class)->name('rollCall');
+    Route::get('/roll-calls/{id}',App\Http\Controllers\Teacher\RollCalls\StoreRollCall::class)->name('store.rollCall');
 });

@@ -170,6 +170,13 @@ class CourseRepository implements CourseRepositoryInterface
         })->search($search)->paginate($per_page);
     }
 
+    public function findTeacher($id)
+    {
+        return Course::whereHas('teacher',function ($q){
+            return $q->where('id',Auth::id());
+        })->findOrFail($id);
+    }
+
     public function getTeachersCount($from_date , $to_date)
     {
         return Course::whereBetween('created_at', [$from_date." 00:00:00", $to_date." 23:59:59"])->whereHas('teacher',function ($q){

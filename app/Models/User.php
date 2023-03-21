@@ -46,7 +46,7 @@ class User extends Authenticatable implements Wallet, Confirmable
 
     use LogsActivity;
 
-    protected array $searchAbleColumns = ['email','phone'];
+    protected array $searchAbleColumns = ['email','phone','name'];
 
     const USER_DEFAULT_IMAGE = 'site/images/icons8-user-30.png';
 

@@ -9,9 +9,9 @@
                         <div class="lecture-video-item col-12  p-0">
                         @if(!is_null($episode_data->api_bucket))
                             {!! $episode_data->api_bucket !!}
-                        @elseif(!is_null($episode_data->local_video))
+                        @elseif(!empty($episode_data->local_video))
                                 <div wire:loading.remove class="plyr plyr--full-ui plyr--video plyr--html5 plyr--fullscreen-enabled plyr--paused">
-                                    <video  id="player" class="player" playsinline crossorigin controls data-poster="{{asset($course_data->image)}}" poster="{{asset($course_data->image)}}">
+                                    <video  id="player" class="player" playsinline crossorigin controls data-poster="{{asset($course_data['image'])}}" poster="{{asset($course_data['image'])}}">
                                     </video>
                                 </div>
                             @endif
@@ -56,7 +56,7 @@
                             <div class="tab-content" id="myTabContent">
                                 <div class="tab-pane fade" id="course-content" role="tabpanel" aria-labelledby="course-content-tab">
                                     <div class="mobile-course-menu pt-4">
-                                        <livewire:site.episodes.mobile-contents :course="$course_data" :chapter="$chapter_data" :episode="$episode_data" />
+                                        <livewire:site.episodes.contents :course="$course_data" :chapter="$chapter_data" :episode="$episode_data" view="mobile" />
                                     </div>
                                 </div>
                                 <!-- end tab-pane -->
