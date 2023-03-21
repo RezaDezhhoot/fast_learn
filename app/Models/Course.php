@@ -285,4 +285,9 @@ class Course extends Model
     {
         return $this->hasManyThrough(RollCall::class,OrderDetail::class);
     }
+
+    public function setTimeLapseAttribute($value)
+    {
+        $this->attributes['time_lapse'] = str_replace(env('APP_URL'), '', $value);
+    }
 }

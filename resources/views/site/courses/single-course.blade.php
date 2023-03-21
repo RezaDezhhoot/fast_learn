@@ -6,8 +6,16 @@
                 <div class="col-lg-8 pb-5">
                     <div class="course-dashboard-column w-100 pt-5">
                         <div class="lecture-viewer-container col-12 p-0">
-                            <div class="lecture-video-item col-12  p-0">
-                                <img src="{{asset($course->image)}}" class="col-12  p-0" alt="{{ $course->title }}">
+                            <div wire:ignore class="lecture-video-item col-12  p-0">
+                                @if(!is_null($course->time_lapse))
+                                <div class="plyr plyr--video plyr--html5 plyr--fullscreen-enabled">
+                                    <video id="player" class="player" playsinline crossorigin controls data-poster="{{asset($course->image)}}" poster="{{asset($course->image)}}">
+                                        <source src="{{asset($course->time_lapse)}}" type="video/mp4" />
+                                    </video>
+                                </div>
+                                @else
+                                    <img src="{{asset($course->image)}}" class="col-12  p-0" alt="{{ $course->title }}">
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -344,7 +352,6 @@
 </div>
 <!-- end container -->
 </section>
-
 <div class="modal fade modal-container" id="shareModal" tabindex="-1" role="dialog" aria-labelledby="shareModalTitle"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -424,5 +431,11 @@
             document.body.appendChild(script);
             document.body.appendChild(start);
         });
+
+        Livewire.on('setVideo', data => {
+            const player = new Plyr('#player',{
+                title: data.title,
+            });
+        })
 </script>
 @endpush

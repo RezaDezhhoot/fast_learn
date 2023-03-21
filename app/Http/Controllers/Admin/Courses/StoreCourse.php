@@ -13,6 +13,7 @@ use App\Repositories\Interfaces\QuizRepositoryInterface;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
 use App\Repositories\Interfaces\TagRepositoryInterface;
 use App\Repositories\Interfaces\TeacherRepositoryInterface;
+use Illuminate\Validation\Rule;
 use Livewire\WithFileUploads;
 
 class StoreCourse extends BaseComponent
@@ -20,7 +21,7 @@ class StoreCourse extends BaseComponent
     use WithFileUploads;
     public  $header , $slug , $title , $short_body , $long_body , $image  , $category ,  $quiz , $seo_keywords , $seo_description,
     $teacher , $level , $const_price , $status ,$reduction_type ,$reduction_value = 0 , $start_at , $expire_at  , $tags = [];
-    public  $course , $sub_title , $storage , $type , $incomingMethod;
+    public  $course , $sub_title , $storage , $type , $incomingMethod , $time_lapse , $time_lapse_storage;
 
     public function __construct($id = null)
     {
@@ -63,6 +64,8 @@ class StoreCourse extends BaseComponent
             $this->level = $this->course->level;
             $this->type = $this->course->type;
             $this->incomingMethod = $this->course->incoming_method_id;
+            $this->time_lapse = $this->course->time_lapse;
+            $this->time_lapse_storage = $this->course->time_lapse_storage;
         } elseif ($this->mode == self::CREATE_MODE) {
             $this->header = 'دوره جدید';
         } else abort(404);
@@ -76,7 +79,7 @@ class StoreCourse extends BaseComponent
             ];
         })->pluck('name','id');
 
-        $this->data['storage'] = array_flip(getAvailableStorages());
+        $this->data['storage'] = getAvailableStorages();
 
         $this->data['reduction'] = ReductionEnum::getType();
         $this->data['status'] = CourseEnum::getStatus();
@@ -103,7 +106,7 @@ class StoreCourse extends BaseComponent
             $this->saveInDataBase($this->courseRepository->newCourseObject());
             $this->reset(['slug','sub_title','title','short_body','long_body','image','category','quiz','teacher',
                 'status','level','type','reduction_type','const_price','reduction_value','start_at','expire_at',
-                'tags','seo_keywords','seo_description','incomingMethod']);
+                'tags','seo_keywords','seo_description','incomingMethod','time_lapse_storage','time_lapse']);
         }
     }
 
@@ -131,7 +134,8 @@ class StoreCourse extends BaseComponent
             'expire_at' => ['nullable','date'],
             'level' => ['required','in:'.implode(',',array_keys(CourseEnum::getLevels()))],
             'type' => ['required','in:'.implode(',',array_keys(CourseEnum::getTypes()))],
-            'incomingMethod' => ['nullable','exists:incoming_methods,id']
+            'incomingMethod' => ['nullable','exists:incoming_methods,id'],
+            'time_lapse' => ['nullable','string','max:14000'],
         ],[],[
             'title' => 'عنوان',
             'sub_title' => 'عنوان فرعی',
@@ -151,7 +155,8 @@ class StoreCourse extends BaseComponent
             'expire_at' => 'پایان تخفیف',
             'level' => 'سطح دوره',
             'type' => 'نوع دوره',
-            'incomingMethod' => 'روش محاسبه درامد'
+            'incomingMethod' => 'روش محاسبه درامد',
+            'time_lapse' => 'تایم لپس دوره',
         ]);
         $model->title = $this->title;
         $model->sub_title = $this->sub_title;
@@ -171,6 +176,7 @@ class StoreCourse extends BaseComponent
         $model->expire_at = $this->expire_at;
         $model->seo_keywords = $this->seo_keywords;
         $model->seo_description = $this->seo_description;
+        $model->time_lapse = $this->time_lapse;
         $model->incoming_method_id = emptyToNull($this->incomingMethod);
         $model = $this->courseRepository->save($model);
         $this->tags = array_filter($this->tags);
