@@ -21,7 +21,7 @@ class StoreCourse extends BaseComponent
     use WithFileUploads;
     public  $header , $slug , $title , $short_body , $long_body , $image  , $category ,  $quiz , $seo_keywords , $seo_description,
     $teacher , $level , $const_price , $status ,$reduction_type ,$reduction_value = 0 , $start_at , $expire_at  , $tags = [];
-    public  $course , $sub_title , $storage , $type , $incomingMethod , $time_lapse , $time_lapse_storage;
+    public  $course , $sub_title , $storage , $type , $incomingMethod , $time_lapse ;
 
     public function __construct($id = null)
     {
@@ -65,7 +65,6 @@ class StoreCourse extends BaseComponent
             $this->type = $this->course->type;
             $this->incomingMethod = $this->course->incoming_method_id;
             $this->time_lapse = $this->course->time_lapse;
-            $this->time_lapse_storage = $this->course->time_lapse_storage;
         } elseif ($this->mode == self::CREATE_MODE) {
             $this->header = 'دوره جدید';
         } else abort(404);
