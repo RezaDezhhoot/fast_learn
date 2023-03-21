@@ -102,4 +102,7 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->as('admin.')->group(f
 
     Route::get('/forms',App\Http\Controllers\Admin\Forms\IndexForm::class)->name('form');
     Route::get('/forms/{action}/{id?}',App\Http\Controllers\Admin\Forms\StoreForm::class)->name('store.form');
+
+    Route::get('/forms-answers',App\Http\Controllers\Admin\Forms\IndexAnswers::class)->name('answer');
+    Route::get('/forms-answers/{action}/{id}',App\Http\Controllers\Admin\Forms\StoreAnswers::class)->name('store.answer');
 });

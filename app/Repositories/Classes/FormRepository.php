@@ -58,4 +58,39 @@ class FormRepository implements FormRepositoryInterface
     {
         return FormAnswer::query()->create($data);
     }
+
+    public static function newItems()
+    {
+        return FormAnswer::query()->where('status',false)->count();
+    }
+
+    public function answerGetAllAdmin($subject, $search, $per_page)
+    {
+        return FormAnswer::query()->with(['form','user'])
+            ->when($subject,function ($q) use ($subject) {
+               return $q->where('subject',$subject);
+            })->when($search,function ($q) use ($search){
+                return $q->whereHas('user',function ($q) use ($search){
+                    return $q->search($search);
+                })->orWhereHas('form',function ($q) use ($search){
+                    return $q->search($search);
+                });
+            })->paginate($per_page);
+    }
+
+    public function answerDestroy($id)
+    {
+        return FormAnswer::destroy($id);
+    }
+
+    public function answerFindOrFail($id)
+    {
+        return FormAnswer::query()->findOrFail($id);
+    }
+
+    public function answerUpdate(array $data, FormAnswer $formAnswer)
+    {
+        $formAnswer->update($data);
+        return $formAnswer;
+    }
 }

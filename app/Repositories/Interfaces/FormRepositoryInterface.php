@@ -3,6 +3,7 @@
 namespace App\Repositories\Interfaces;
 
 use App\Models\Form;
+use App\Models\FormAnswer;
 
 interface FormRepositoryInterface
 {
@@ -25,4 +26,14 @@ interface FormRepositoryInterface
 
     //answers
     public function answerCreate(array $data);
+
+    public static function newItems();
+
+    public function answerGetAllAdmin($subject , $search , $per_page);
+
+    public function answerDestroy($id);
+
+    public function answerFindOrFail($id);
+
+    public function answerUpdate(array  $data , FormAnswer $formAnswer);
 }
