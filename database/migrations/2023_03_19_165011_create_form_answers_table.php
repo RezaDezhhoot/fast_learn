@@ -23,7 +23,7 @@ return new class extends Migration
             $table->foreignId('form_id')->nullable('forms')->constrained('forms')->nullOnDelete();
             $table->text('details')->nullable();
             $table->string('storage')->nullable();
-            $table->json('status')->default(false);
+            $table->json('status');
             $table->timestamps();
         });
     }
