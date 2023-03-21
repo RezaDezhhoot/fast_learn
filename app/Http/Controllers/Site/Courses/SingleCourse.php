@@ -88,7 +88,7 @@ class SingleCourse extends BaseComponent
         $this->courseRepository->increment($this->course,1);
         $this->chapters = collect($this->course->chapters)->sortBy('view');
         $this->emit('loadRecaptcha');
-        
+
     }
 
     public function render()
