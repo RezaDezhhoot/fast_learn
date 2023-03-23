@@ -29,4 +29,5 @@ interface TeacherRepositoryInterface
     public function attachOrgan(Teacher $teacher , array $organs);
 
     public function syncOrgan(Teacher $teacher , array $organs);
+
 }

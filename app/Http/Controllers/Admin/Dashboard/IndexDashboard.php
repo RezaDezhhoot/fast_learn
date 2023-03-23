@@ -12,9 +12,11 @@ use App\Repositories\Interfaces\CourseRepositoryInterface;
 use App\Repositories\Interfaces\NotificationRepositoryInterface;
 use App\Repositories\Interfaces\OrderDetailRepositoryInterface;
 use App\Repositories\Interfaces\OrderRepositoryInterface;
+use App\Repositories\Interfaces\OrganRepositoryInterface;
 use App\Repositories\Interfaces\PaymentRepositoryInterface;
 use App\Repositories\Interfaces\QuestionRepositoryInterface;
 use App\Repositories\Interfaces\QuizRepositoryInterface;
+use App\Repositories\Interfaces\TeacherRepositoryInterface;
 use App\Repositories\Interfaces\TranscriptRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use Carbon\Carbon;
@@ -43,6 +45,8 @@ class IndexDashboard extends BaseComponent
         $this->certificateRepository = app(CertificateRepositoryInterface::class);
         $this->transcriptRepository = app(TranscriptRepositoryInterface::class);
         $this->notificationRepository = app(NotificationRepositoryInterface::class);
+        $this->teacherRepository = app(TeacherRepositoryInterface::class);
+        $this->organRepository = app(OrganRepositoryInterface::class);
     }
 
     public function mount()
@@ -98,6 +102,7 @@ class IndexDashboard extends BaseComponent
             'paymentsReduction'=> $this->orderDetailRepository->getDashboardDataPayments($this->from_date,$this->to_date,'reduction_amount',$this->course),
             'paymentsWallet'=> $this->orderDetailRepository->getDashboardDataPayments($this->from_date,$this->to_date,'wallet_amount',$this->course),
             'paymentsTeacher'=> $this->orderDetailRepository->getDashboardDataPayments($this->from_date,$this->to_date,'teacher_amount',$this->course),
+            'paymentsOrgan'=> $this->orderDetailRepository->getDashboardDataPayments($this->from_date,$this->to_date,'organ_amount',$this->course),
             'categories' => $this->categoryRepository->count(),
             'courses' => $this->courseRepository->count(),
             'articles' => $this->articleRepository->count(),
@@ -108,6 +113,8 @@ class IndexDashboard extends BaseComponent
             'all_users' => $this->userRepository->count(),
             'all_orders' => $this->orderRepository->count(),
             'all_transcripts' => $this->transcriptRepository->count(),
+            'teachers' => $this->teacherRepository->count(),
+            'organs' => $this->organRepository->count(),
         ];
     }
 

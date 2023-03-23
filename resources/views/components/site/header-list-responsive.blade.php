@@ -3,7 +3,7 @@
         <a href="{{ route('home') }}" class="logo mx-auto"><img class="logo-size" src="{{ asset($logo) }}" alt="لوگو" /></a>
     </div>
     <hr>
-    
+
     <ul class="generic-list-item off-canvas-menu-list pt-2 pb-2 border-bottom border-bottom-gray">
         <li>
             <a href="{{ route('home') }}">صفحه اصلی</a>
@@ -33,6 +33,16 @@
             @role('admin')
             <li>
                 <a href="{{route('admin.dashboard')}}">  مدیریت </a>
+            </li>
+            @endif
+            @if(isset(auth()->user()->organs))
+                <li>
+                    <a href="{{route('organ.dashboard')}}">  پنل اموزشگاه </a>
+                </li>
+            @endif
+            @role('teacher')
+            <li>
+                <a href="{{route('teacher.dashboard')}}"> پنل مدرس </a>
             </li>
             @endif
             <li>

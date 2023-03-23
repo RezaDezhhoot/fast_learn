@@ -23,6 +23,8 @@ interface OrderDetailRepositoryInterface
 
     public function paymentOfFeesIfCourseHasTeacherAndValidIncomingMethod(OrderDetail $orderDetail): bool|int;
 
+    public function paymentOfFeesIfCourseHasOrganAndValidIncomingMethod(OrderDetail $orderDetail): bool|int;
+
     public function getOrderDetailCount(array $where);
 
     public function getTeacherStudents($from_date , $to_date);

@@ -72,4 +72,9 @@ class OrganRepository implements OrganRepositoryInterface
     {
         return Organ::all();
     }
+
+    public function count()
+    {
+        return Organ::count();
+    }
 }

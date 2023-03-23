@@ -68,7 +68,8 @@ class Home extends BaseComponent
                                 $value['user'] = $model->user->toArray();
                                 break;
                         }
-                        $value['category'] = $model->category->toArray();
+                        if ($model->category)
+                            $value['category'] = $model->category->toArray();
                     });
                 } else
                     $send[$key] = $value;

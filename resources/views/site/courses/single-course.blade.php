@@ -280,6 +280,12 @@
                                     (!is_null($course->quiz) && !is_null($course->quiz->certificate)) ? 'بعله' : 'خیر'
                                     }}
                                 </li>
+                                @if(isset($course->organ))
+                                    <li class="d-flex align-items-center justify-content-between">
+                                        <span><i class="la la-building mr-2 text-color"></i>آموزشگاه</span> {{
+                                    $course->organ->title }}
+                                    </li>
+                                @endif
                             </ul>
                         </div>
                     </div>

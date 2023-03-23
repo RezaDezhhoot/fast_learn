@@ -54,7 +54,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <!--begin::Stats Widget 25-->
                     <div class="card card-custom bg-light-primary card-stretch gutter-b">
                         <!--begin::Body-->
@@ -71,7 +71,7 @@
                     </div>
                     <!--end::Stats Widget 25-->
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <!--begin::Stats Widget 25-->
                     <div class="card card-custom bg-light-primary card-stretch gutter-b">
                         <!--begin::Body-->
@@ -88,7 +88,7 @@
                     </div>
                     <!--end::Stats Widget 25-->
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <!--begin::Stats Widget 25-->
                     <div class="card card-custom bg-light-primary card-stretch gutter-b">
                         <!--begin::Body-->
@@ -105,7 +105,7 @@
                     </div>
                     <!--end::Stats Widget 25-->
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <!--begin::Stats Widget 25-->
                     <div class="card card-custom bg-light-primary card-stretch gutter-b">
                         <!--begin::Body-->
@@ -122,7 +122,7 @@
                     </div>
                     <!--end::Stats Widget 25-->
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <!--begin::Stats Widget 25-->
                     <div class="card card-custom bg-light-primary card-stretch gutter-b">
                         <!--begin::Body-->
@@ -139,7 +139,7 @@
                     </div>
                     <!--end::Stats Widget 25-->
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <!--begin::Stats Widget 25-->
                     <div class="card card-custom bg-light-primary card-stretch gutter-b">
                         <!--begin::Body-->
@@ -151,6 +151,40 @@
                                 {{ $box['certificates'] }}عدد
                             </span>
                             <span class="font-weight-bold text-dark font-size-lg">گواهینامه</span>
+                        </div>
+                        <!--end::Body-->
+                    </div>
+                    <!--end::Stats Widget 25-->
+                </div>
+                <div class="col-md-3">
+                    <!--begin::Stats Widget 25-->
+                    <div class="card card-custom bg-light-primary card-stretch gutter-b">
+                        <!--begin::Body-->
+                        <div class="card-body">
+                             <span class="svg-icon svg-icon-info svg-icon-4x">
+                                <i class="text-info fas fa-chalkboard-teacher fa-3x"></i>
+                            </span>
+                            <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">
+                                {{ $box['teachers'] }}عدد
+                            </span>
+                            <span class="font-weight-bold text-dark font-size-lg">مدرس</span>
+                        </div>
+                        <!--end::Body-->
+                    </div>
+                    <!--end::Stats Widget 25-->
+                </div>
+                <div class="col-md-3">
+                    <!--begin::Stats Widget 25-->
+                    <div class="card card-custom bg-light-primary card-stretch gutter-b">
+                        <!--begin::Body-->
+                        <div class="card-body">
+                            <span class="svg-icon svg-icon-primary svg-icon-4x">
+                               <i class="text-info fa fa-building fa-3x"></i>
+                            </span>
+                            <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">
+                                {{ $box['organs'] }}عدد
+                            </span>
+                            <span class="font-weight-bold text-dark font-size-lg">آموزشگاه ها</span>
                         </div>
                         <!--end::Body-->
                     </div>
@@ -297,7 +331,7 @@
                         </div>
                         <!--end::Stats Widget 25-->
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <!--begin::Stats Widget 25-->
                         <div class="card card-custom bg-light-success card-stretch gutter-b">
                             <!--begin::Body-->
@@ -318,7 +352,7 @@
                         </div>
                         <!--end::Stats Widget 25-->
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <!--begin::Stats Widget 25-->
                         <div class="card card-custom bg-light-success card-stretch gutter-b">
                             <!--begin::Body-->
@@ -334,6 +368,27 @@
                                 {{ number_format($box['paymentsWallet']) }}تومان
                             </span>
                                 <span class="font-weight-bold text-dark font-size-lg">مبالغ کیف پول</span>
+                            </div>
+                            <!--end::Body-->
+                        </div>
+                        <!--end::Stats Widget 25-->
+                    </div>
+                    <div class="col-md-4">
+                        <!--begin::Stats Widget 25-->
+                        <div class="card card-custom bg-light-success card-stretch gutter-b">
+                            <!--begin::Body-->
+                            <div class="card-body">
+                            <span class="svg-icon svg-icon-primary svg-icon-4x"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\legacy\metronic\theme\html\demo1\dist/../src/media/svg/icons\Shopping\Money.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <rect x="0" y="0" width="24" height="24"/>
+                                    <path d="M2,6 L21,6 C21.5522847,6 22,6.44771525 22,7 L22,17 C22,17.5522847 21.5522847,18 21,18 L2,18 C1.44771525,18 1,17.5522847 1,17 L1,7 C1,6.44771525 1.44771525,6 2,6 Z M11.5,16 C13.709139,16 15.5,14.209139 15.5,12 C15.5,9.790861 13.709139,8 11.5,8 C9.290861,8 7.5,9.790861 7.5,12 C7.5,14.209139 9.290861,16 11.5,16 Z" fill="#000000" opacity="0.3" transform="translate(11.500000, 12.000000) rotate(-345.000000) translate(-11.500000, -12.000000) "/>
+                                    <path d="M2,6 L21,6 C21.5522847,6 22,6.44771525 22,7 L22,17 C22,17.5522847 21.5522847,18 21,18 L2,18 C1.44771525,18 1,17.5522847 1,17 L1,7 C1,6.44771525 1.44771525,6 2,6 Z M11.5,16 C13.709139,16 15.5,14.209139 15.5,12 C15.5,9.790861 13.709139,8 11.5,8 C9.290861,8 7.5,9.790861 7.5,12 C7.5,14.209139 9.290861,16 11.5,16 Z M11.5,14 C12.6045695,14 13.5,13.1045695 13.5,12 C13.5,10.8954305 12.6045695,10 11.5,10 C10.3954305,10 9.5,10.8954305 9.5,12 C9.5,13.1045695 10.3954305,14 11.5,14 Z" fill="#000000"/>
+                                </g>
+                            </svg><!--end::Svg Icon--></span>
+                                <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">
+                                {{ number_format($box['paymentsOrgan']) }}تومان
+                            </span>
+                                <span class="font-weight-bold text-dark font-size-lg">مبالغ مشارکت آموزشگاه ها</span>
                             </div>
                             <!--end::Body-->
                         </div>

@@ -388,12 +388,13 @@ class Checkout extends BaseComponent
                         'course_id' => $key,
                         'product_data' => json_encode(['id' => $item->id, 'title' => $item->title]),
                         'price' => ($item->basePrice),
-                        'total_price' => abs($singe_total_price - $singe_voucher_amount - $singe_wallet_amount ),
+                        'total_price' => max($singe_total_price - $singe_voucher_amount - $singe_wallet_amount,0 ),
                         'reduction_amount' => max($singe_voucher_amount + $item->discount(),0),
                         'wallet_amount' => max($singe_wallet_amount, 0),
                         'status' => OrderEnum::STATUS_NOT_PAID,
                         'quantity' => 1,
                         'order_id' => $orderRepository->id,
+                        'organ_id' => $this->courseRepository->find($key)->organ_id ?? null
                     ]);
                 }
                 $this->orderNoteRepository->create([

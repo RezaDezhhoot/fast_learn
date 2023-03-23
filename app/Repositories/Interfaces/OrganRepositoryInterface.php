@@ -25,4 +25,6 @@ interface OrganRepositoryInterface
     public function getNew();
 
     public function getAll();
+
+    public function count();
 }
