@@ -51,6 +51,7 @@ class TeacherCheckoutRepository implements TeacherCheckoutRepositoryInterface
         return TeacherCheckout::where('status',CheckoutEnum::PENDING)->count();
     }
 
+
     public function findOrFail($id, $where = [])
     {
         return TeacherCheckout::where($where)->findOrFail($id);

@@ -21,6 +21,7 @@
                             <th>#</th>
                             <th>شماره شناسه</th>
                             <th>عنوان</th>
+                            <th>اموزشگاه</th>
                             <th>وضعیت</th>
                             <th>نوع دوره</th>
                             <th>بازدید</th>
@@ -35,6 +36,7 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->id }}</td>
                                 <td>{{ $item->title }}</td>
+                                <td>{{ $item->organ->title ?? '' }}</td>
                                 <td>{{ $item->status_label }}</td>
                                 <td>{{ $item->type_label }}</td>
                                 <td>{{ $item->views }}</td>
@@ -43,7 +45,7 @@
                                 <td>{{ number_format($item->price) }} تومان </td>
                             </tr>
                         @empty
-                            <td class="text-center" colspan="11">
+                            <td class="text-center" colspan="13">
                                 دیتایی جهت نمایش وجود ندارد
                             </td>
                         @endforelse
@@ -63,6 +65,7 @@
                                 <th>#</th>
                                 <th>عنوان دوره</th>
                                 <th>سطح دوره</th>
+                                <th>اموزشگاه</th>
                                 <th>وضعیت</th>
                                 <th>تاریخ</th>
                                 <td>مشاهده پیام</td>
@@ -76,6 +79,7 @@
                                         <a title="مشاده جزیئیات" href="{{route('teacher.new.courses',['edit',$item->id])}}">{{ $item->title }}</a>
                                     </td>
                                     <td>{{ $item->level_label }}</td>
+                                    <td>{{ $item->organ->title ?? '' }}</td>
                                     <td>{{ $item->status_label }}</td>
                                     <td>{{ $item->created_at }}</td>
                                     <td>

@@ -1,5 +1,5 @@
 <div wire:init="loadMore">
-    <section class="register-area section--padding dot-bg overflow-hidden">
+    <section class="register-area dot-bg overflow-hidden">
         <div class="container">
             <div class="register-heading-content-wrap text-center">
                 <div class="section-heading">

@@ -12,6 +12,7 @@
                         <tr>
                             <th>#</th>
                             <th>شماره شناسه</th>
+                            <th>تاریخ</th>
                             <th>فرم</th>
                             <th>موضوع</th>
                             <th>وضیعت</th>
@@ -25,6 +26,7 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->id }}</td>
+                                <td>{{ $item->date }}</td>
                                 <td>
                                     <ul>
                                         <li>عنوان : {{ $item->form_details['form_title'] }}</li>
@@ -52,7 +54,7 @@
                                 </td>
                             </tr>
                         @empty
-                            <td class="text-center" colspan="12">
+                            <td class="text-center" colspan="13">
                                 دیتایی جهت نمایش وجود ندارد
                             </td>
                         @endforelse

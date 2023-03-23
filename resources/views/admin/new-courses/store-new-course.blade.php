@@ -12,11 +12,11 @@
                     <table class="table table-striped table-bordered">
                         <thead>
                         <tr>
-                            <th>کد کاربر</th>
+                            <th>کد مدرس</th>
                             <td>نام</td>
                             <td>شماره همراه</td>
                             <td>وضعیت</td>
-                            <td>ای پی کاربر</td>
+                            <td>ای پی مدرس</td>
                             <th>مشاهده لاگ ها</th>
                         </tr>
                         </thead>
@@ -40,12 +40,14 @@
                         <tr>
                             <td>عنوان دوره اموزشی</td>
                             <td>سطح دوره اموزشی</td>
+                            <td>اموزشگاه یا سازمان</td>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
                             <td>{{$course->title}}</td>
                             <td>{{$course->level_label}}</td>
+                            <td>{{$course->organ->title ?? ''}}</td>
                         </tr>
                         </tbody>
                     </table>

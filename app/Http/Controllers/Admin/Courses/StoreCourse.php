@@ -9,6 +9,7 @@ use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\Interfaces\CourseRepositoryInterface;
 use App\Repositories\Interfaces\IncomingMethodRepositoryInterface;
+use App\Repositories\Interfaces\OrganRepositoryInterface;
 use App\Repositories\Interfaces\QuizRepositoryInterface;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
 use App\Repositories\Interfaces\TagRepositoryInterface;
@@ -21,7 +22,7 @@ class StoreCourse extends BaseComponent
     use WithFileUploads;
     public  $header , $slug , $title , $short_body , $long_body , $image  , $category ,  $quiz , $seo_keywords , $seo_description,
     $teacher , $level , $const_price , $status ,$reduction_type ,$reduction_value = 0 , $start_at , $expire_at  , $tags = [];
-    public  $course , $sub_title , $storage , $type , $incomingMethod , $time_lapse ;
+    public  $course , $sub_title , $storage , $type , $incomingMethod , $time_lapse , $organ_id;
 
     public function __construct($id = null)
     {
@@ -33,6 +34,7 @@ class StoreCourse extends BaseComponent
         $this->teacherRepository = app(TeacherRepositoryInterface::class);
         $this->settingRepository = app(SettingRepositoryInterface::class);
         $this->incomingMethodRepository = app(IncomingMethodRepositoryInterface::class);
+        $this->organRepository = app(OrganRepositoryInterface::class);
     }
 
     public function mount($action , $id = null)
@@ -65,6 +67,7 @@ class StoreCourse extends BaseComponent
             $this->type = $this->course->type;
             $this->incomingMethod = $this->course->incoming_method_id;
             $this->time_lapse = $this->course->time_lapse;
+            $this->organ_id = $this->course->organ_id;
         } elseif ($this->mode == self::CREATE_MODE) {
             $this->header = 'دوره جدید';
         } else abort(404);
@@ -85,6 +88,7 @@ class StoreCourse extends BaseComponent
         $this->data['type'] = CourseEnum::getTypes();
         $this->data['quiz'] = $this->quizRepository->getAll()->pluck('name','id');
         $this->data['incoming'] = $this->incomingMethodRepository->getAll()->pluck('title','id');
+        $this->data['organs'] = $this->organRepository->getAll()->pluck('title','id');
 
     }
 
@@ -105,13 +109,14 @@ class StoreCourse extends BaseComponent
             $this->saveInDataBase($this->courseRepository->newCourseObject());
             $this->reset(['slug','sub_title','title','short_body','long_body','image','category','quiz','teacher',
                 'status','level','type','reduction_type','const_price','reduction_value','start_at','expire_at',
-                'tags','seo_keywords','seo_description','incomingMethod','time_lapse_storage','time_lapse']);
+                'tags','seo_keywords','seo_description','incomingMethod','time_lapse_storage','time_lapse','organ_id']);
         }
     }
 
     public function saveInDataBase($model)
     {
         $this->quiz = $this->emptyToNull($this->quiz);
+        $this->organ_id = $this->emptyToNull($this->organ_id);
         $this->start_at = $this->dateConverter($this->start_at,'m') ;
         $this->expire_at = $this->dateConverter($this->expire_at,'m') ;
         $this->validate([
@@ -135,6 +140,7 @@ class StoreCourse extends BaseComponent
             'type' => ['required','in:'.implode(',',array_keys(CourseEnum::getTypes()))],
             'incomingMethod' => ['nullable','exists:incoming_methods,id'],
             'time_lapse' => ['nullable','string','max:14000'],
+            'organ_id' => ['nullable',Rule::in(array_keys($this->data['organs']))]
         ],[],[
             'title' => 'عنوان',
             'sub_title' => 'عنوان فرعی',
@@ -156,6 +162,7 @@ class StoreCourse extends BaseComponent
             'type' => 'نوع دوره',
             'incomingMethod' => 'روش محاسبه درامد',
             'time_lapse' => 'تایم لپس دوره',
+            'organ_id' => 'سازمان یا اموزشگاه'
         ]);
         $model->title = $this->title;
         $model->sub_title = $this->sub_title;
@@ -176,6 +183,7 @@ class StoreCourse extends BaseComponent
         $model->seo_keywords = $this->seo_keywords;
         $model->seo_description = $this->seo_description;
         $model->time_lapse = $this->time_lapse;
+        $model->organ_id = $this->organ_id;
         $model->incoming_method_id = emptyToNull($this->incomingMethod);
         $model = $this->courseRepository->save($model);
         $this->tags = array_filter($this->tags);

@@ -14,6 +14,8 @@ interface FormRepositoryInterface
 
     public function findOrFail($id , $published = false);
 
+    public function all();
+
     public function destroy($id);
 
     public function save(Form $form);

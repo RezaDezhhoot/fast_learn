@@ -27,6 +27,11 @@ class FormRepository implements FormRepositoryInterface
         return Form::query()->published($published)->findOrFail($id);
     }
 
+    public function all()
+    {
+        return Form::all();
+    }
+
     public function destroy($id)
     {
         return Form::destroy($id);

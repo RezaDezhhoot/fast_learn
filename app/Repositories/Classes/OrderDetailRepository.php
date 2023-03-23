@@ -48,18 +48,22 @@ class OrderDetailRepository implements OrderDetailRepositoryInterface
             })->count();
     }
 
-    public function getDashboardDataPayments($from_date , $to_date , $sum , $course_id = null , $teacher = false)
+    public function getDashboardDataPayments($from_date , $to_date , $sum , $course_id = null , $teacher = false  , $organ = false)
     {
-        return $this->getDashboardDataQuery($from_date , $to_date , $sum , $course_id);
+        return $this->getDashboardDataQuery($from_date , $to_date , $sum , $course_id , $teacher , $organ);
     }
 
-    public function getDashboardDataQuery($from_date , $to_date , $sum , $course_id = null , $teacher = false)
+    public function getDashboardDataQuery($from_date , $to_date , $sum , $course_id = null , $teacher = false , $organ = false)
     {
         return OrderDetail::when($teacher,function ($q){
             return $q->whereHas('course',function ($q){
                 return $q->wherehas('teacher',function ($q){
                     return $q->where('user_id',Auth::id());
                 });
+            });
+        })->when($organ,function ($q){
+            return $q->whereHas('organ',function ($q){
+                return $q->whereIn('id',Auth::user()->organs->pluck('id'));
             });
         })->whereBetween('created_at', [$from_date." 00:00:00", $to_date." 23:59:59"])->where('status',OrderEnum::STATUS_COMPLETED)
             ->when($course_id , function ($q) use ($course_id){
@@ -105,6 +109,13 @@ class OrderDetailRepository implements OrderDetailRepositoryInterface
             return $q->wherehas('teacher',function ($q){
                 return $q->where('user_id',Auth::id());
             });
+        })->count();
+    }
+
+    public function getOrgansStudents($from_date, $to_date)
+    {
+        return OrderDetail::whereBetween('created_at', [$from_date." 00:00:00", $to_date." 23:59:59"])->whereHas('organ',function ($q){
+            return $q->whereIn('id',Auth::user()->organs->pluck('id'));
         })->count();
     }
 

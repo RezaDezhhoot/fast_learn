@@ -74,4 +74,9 @@ class NewCourse extends Model
     {
         return $this->hasMany(NewCourseChat::class,'new_course_request_id');
     }
+
+    public function organ(): BelongsTo
+    {
+        return $this->belongsTo(Organ::class);
+    }
 }

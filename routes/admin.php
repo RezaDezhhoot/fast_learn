@@ -105,4 +105,9 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->as('admin.')->group(f
 
     Route::get('/forms-answers',App\Http\Controllers\Admin\Forms\IndexAnswers::class)->name('answer');
     Route::get('/forms-answers/{action}/{id}',App\Http\Controllers\Admin\Forms\StoreAnswers::class)->name('store.answer');
+
+    Route::prefix('organs')->group(function (){
+        Route::get('',\App\Http\Controllers\Admin\Organs\IndexOrgan::class)->name('organ');
+        Route::get('/{action}/{id?}',\App\Http\Controllers\Admin\Organs\StoreOrgan::class)->name('store.organ');
+    });
 });

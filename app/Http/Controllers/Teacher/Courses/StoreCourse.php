@@ -16,7 +16,7 @@ use Livewire\WithFileUploads;
 class StoreCourse extends BaseComponent
 {
     use WithFileUploads , ChatPanel;
-    public $title , $descriptions , $level  ,$files = [] , $header , $course , $component = 'teacher';
+    public $title , $descriptions , $level  ,$files = [] , $header , $course , $component = 'teacher',$organ_id ;
 
     public function __construct($id = null)
     {
@@ -38,7 +38,7 @@ class StoreCourse extends BaseComponent
         } else {
             abort(404);
         }
-
+        $this->data['organs'] = \auth()->user()->companies->pluck('title','id');
     }
 
     public function store()
@@ -62,6 +62,7 @@ class StoreCourse extends BaseComponent
                 return sizeof($this->files) > 0;
             }), 'array', 'max:45'],
             'files.*' => ['required', 'mimes:jpg,jpeg,png,pdf,zip,rar', 'max:2048'],
+            'organ_id' => ['nullable',Rule::in(\auth()->user()->companies->pluck('id'))]
         ],[],[
             'files' => 'فایل ها',
             'title' => 'عنوان',
@@ -71,6 +72,7 @@ class StoreCourse extends BaseComponent
         $mode->title = $this->title;
         $mode->descriptions = $this->descriptions;
         $mode->level = $this->level;
+        $mode->organ_id = $this->organ_id;
         $mode->user_id = Auth::id();
         $mode->status = CourseEnum::NEW_COURSE_PENDING;
         $mode->files = $this->uploadBaseFiles();

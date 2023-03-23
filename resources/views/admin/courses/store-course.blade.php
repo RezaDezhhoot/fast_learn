@@ -25,6 +25,7 @@
             </div>
             <hr>
             <x-admin.forms.select2 id="incomingMethod" :data="$data['incoming']" label="روش محاسبه درامد مدرس" wire:model.defer="incomingMethod"/>
+            <x-admin.forms.select2 id="organ_id" :data="$data['organs']" label="سازمان یا اموزشگاه" wire:model.defer="organ_id"/>
             <x-admin.forms.select2 id="teacher" :data="$data['teacher']" label="مدرس*" wire:model.defer="teacher"/>
             <x-admin.forms.full-text-editor id="short_body" label="توضیحات کوتاه*" wire:model.defer="short_body"/>
             <x-admin.forms.full-text-editor id="long_body" label="توضیحات کامل*" wire:model.defer="long_body"/>

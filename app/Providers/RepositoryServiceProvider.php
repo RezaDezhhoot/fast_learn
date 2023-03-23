@@ -26,6 +26,7 @@ use App\Repositories\Classes\NotificationRepository;
 use App\Repositories\Classes\OrderDetailRepository;
 use App\Repositories\Classes\OrderNoteRepository;
 use App\Repositories\Classes\OrderRepository;
+use App\Repositories\Classes\OrganRepository;
 use App\Repositories\Classes\OtpRepository;
 use App\Repositories\Classes\PaymentRepository;
 use App\Repositories\Classes\PermissionRepository;
@@ -73,6 +74,7 @@ use App\Repositories\Interfaces\NotificationRepositoryInterface;
 use App\Repositories\Interfaces\OrderDetailRepositoryInterface;
 use App\Repositories\Interfaces\OrderNoteRepositoryInterface;
 use App\Repositories\Interfaces\OrderRepositoryInterface;
+use App\Repositories\Interfaces\OrganRepositoryInterface;
 use App\Repositories\Interfaces\OtpRepositoryInterface;
 use App\Repositories\Interfaces\PaymentRepositoryInterface;
 use App\Repositories\Interfaces\PermissionRepositoryInterface;
@@ -344,6 +346,11 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             FormRepositoryInterface::class,
             FormRepository::class
+        );
+
+        $this->app->bind(
+            OrganRepositoryInterface::class,
+            OrganRepository::class
         );
     }
 

@@ -43,7 +43,7 @@ class StoreRollCall extends BaseComponent
 
     public function render()
     {
-        $lists = $this->episodeRepository->getAllTeacher($this->course->id,null,null,1);
+        $lists = $this->episodeRepository->getAllTeacher($this->course->id,null,null,$this->chapter ?? -1);
         $details = $this->orderDetailRepository->getAllByCourse($this->course,$this->search,$this->per_page);
         $this->loadCalls($details);
 

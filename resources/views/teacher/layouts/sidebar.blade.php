@@ -162,6 +162,9 @@
                                 @role('admin')
                                     <x-teacher.menu-item href="{{route('admin.dashboard')}}" icon="flaticon2-user" :active="request()->routeIs('admin.dashboard')" label="مدیریت" />
                                 @endif
+                                @if (auth()->user()->organs)
+                                    <x-teacher.menu-item href="{{route('organ.dashboard')}}" icon="fas fa-building" :active="request()->routeIs('organ.dashboard')" label="پنل اموزشگاه" />
+                                @endif
                                 <x-teacher.menu-item href="{{route('user.dashboard')}}" icon="flaticon2-user" :active="request()->routeIs('user.dashboard')" label="پنل کاربری" />
                                 <x-teacher.menu-item href="{{route('user.profile')}}" icon="flaticon2-user" :active="request()->routeIs('user.profile')" label="پروفایل" />
                                 <li class="menu-section">
@@ -182,7 +185,7 @@
                                 </li>
                                 <x-teacher.menu-group icon="fab fa-product-hunt" :active="request()->routeIs(['teacher.courses','teacher.new.courses','teacher.store.courses','teacher.episodes','teacher.store.episodes','teacher.chapters','teacher.store.chapters'])" label="دوره های اموزشی" >
                                     <x-teacher.menu-item href="{{route('teacher.courses')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['teacher.courses','teacher.new.courses'])" label="دروه ها  " :new="$new_courses" />
-                                    <x-teacher.menu-item href="{{route('teacher.chapters')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['teacher.chapters','teacher.store.chapters'])" label="فصل ها  " :new="$new_courses" />
+                                    <x-teacher.menu-item href="{{route('teacher.chapters')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['teacher.chapters','teacher.store.chapters'])" label="فصل ها  "  />
                                     <x-teacher.menu-item href="{{route('teacher.episodes')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['teacher.episodes','teacher.store.episodes'])" label="درس ها  " />
                                 </x-teacher.menu-group>
                                 <x-teacher.menu-item href="{{route('teacher.samples')}}" icon="fa fa-question"  :active="request()->routeIs(['teacher.samples','teacher.store.samples'])" label="نمونه سوالات " />

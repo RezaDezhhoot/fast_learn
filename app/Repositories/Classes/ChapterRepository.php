@@ -64,11 +64,33 @@ class ChapterRepository implements ChapterRepositoryInterface
         })->search($search)->paginate($pagination);
     }
 
+    public function getAllOrgan($search, $course, $status, $pagination)
+    {
+        return Chapter::latest('id')->whereHas('course',function ($q){
+            return $q->whereHas('organ',function ($q){
+                return $q->whereIn('id',Auth::user()->organs->pluck('id'));
+            });
+        })->when($course,function ($q) use ($course) {
+            return $q->where('course_id',$course);
+        })->when($status,function ($q) use ($status) {
+            return $q->where('status',$status);
+        })->search($search)->paginate($pagination);
+    }
+
     public function findOrFailTeacher($id)
     {
         return Chapter::whereHas('course',function ($q){
             return $q->whereHas('teacher',function ($q){
                 return $q->where('user_id',Auth::id());
+            });
+        })->findOrFail($id);
+    }
+
+    public function findOrFailOrgan($id)
+    {
+        return Chapter::whereHas('course',function ($q){
+            return $q->whereHas('organ',function ($q){
+                return $q->whereIn('id',Auth::user()->organs->pluck('id'));
             });
         })->findOrFail($id);
     }

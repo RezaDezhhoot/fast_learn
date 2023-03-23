@@ -290,4 +290,9 @@ class Course extends Model
     {
         $this->attributes['time_lapse'] = str_replace(env('APP_URL'), '', $value);
     }
+
+    public function organ(): BelongsTo
+    {
+        return $this->belongsTo(Organ::class);
+    }
 }

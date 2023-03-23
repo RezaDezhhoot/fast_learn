@@ -39,6 +39,21 @@ class ChapterTranscriptRepository implements ChapterTranscriptRepositoryInterfac
         })->search($search)->paginate($perPage);
     }
 
+    public function getAllOrgan($course, $status, $search, $perPage)
+    {
+        return ChapterTranscript::latest('id')->whereHas('course',function ($q){
+            return $q->whereHas('organ',function ($q){
+                return $q->whereIn('id',Auth::user()->organs->pluck('id'));
+            });
+        })->when($course,function ($q) use ($course) {
+            return $q->whereHas('course',function ($q) use ($course) {
+                return $q->where('id',$course);
+            });
+        })->when($status,function ($q) use ($status) {
+            return $q->where('status',$status);
+        })->search($search)->paginate($perPage);
+    }
+
     public function findOrFailTeacher($id)
     {
         return ChapterTranscript::whereHas('course',function ($q){
@@ -93,6 +108,15 @@ class ChapterTranscriptRepository implements ChapterTranscriptRepositoryInterfac
         return ChapterTranscript::whereHas('course',function ($q){
             return $q->whereHas('teacher',function ($q){
                 return $q->where('user_id',Auth::id());
+            });
+        })->findOrFail($id);
+    }
+
+    public function findOrganChapter($id)
+    {
+        return ChapterTranscript::whereHas('course',function ($q){
+            return $q->whereHas('organ',function ($q){
+                return $q->whereIn('id',Auth::user()->organs->pluck('id'));
             });
         })->findOrFail($id);
     }

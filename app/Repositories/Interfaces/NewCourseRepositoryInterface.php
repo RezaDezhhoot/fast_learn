@@ -10,6 +10,8 @@ interface NewCourseRepositoryInterface
 
     public function getAllTeacher($search , $status , $per_page);
 
+    public function getAllOrgan($search , $status , $per_page);
+
     public function find($id);
 
     public function findOrFail($id);
@@ -25,4 +27,6 @@ interface NewCourseRepositoryInterface
     public function getNewObject();
 
     public function getTeachersCount();
+
+    public function getOrgansCount();
 }
