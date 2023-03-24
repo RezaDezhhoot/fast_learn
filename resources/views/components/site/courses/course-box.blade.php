@@ -15,9 +15,11 @@
         </div>
         <!-- end card-image -->
         <div class="card-body">
-            <h6 class="ribbon ribbon-blue-bg fs-14 mb-3">
-                <a href="{{ route('courses',['category'=>$item['category']['slug']]) }}">{{ $item['category']['title'] }}</a>
-            </h6>
+            @if(isset($item['category']))
+                <h6 class="ribbon ribbon-blue-bg fs-14 mb-3">
+                    <a href="{{ route('courses',['category'=>$item['category']['slug']]) }}">{{ $item['category']['title'] }}</a>
+                </h6>
+            @endif
             <h5 class="card-title"><a href="{{ route('course',$item['slug']) }}">{{ $item['title'] }}</a></h5>
             @if(!is_null($item['teacher']))
             <p class="card-text"><a href="{{ route('teacher',$item['teacher']['id']) }}">{{ $item['teacher']->user->name ?? '' }}</a></p>

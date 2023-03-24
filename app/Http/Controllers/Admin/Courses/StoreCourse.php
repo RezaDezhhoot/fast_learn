@@ -24,6 +24,7 @@ class StoreCourse extends BaseComponent
     public  $course , $sub_title , $storage , $type , $incomingMethod , $has_support = false;
     public   $time_lapse ;
 
+
     public function __construct($id = null)
     {
         parent::__construct($id);
