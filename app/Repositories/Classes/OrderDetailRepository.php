@@ -151,4 +151,13 @@ class OrderDetailRepository implements OrderDetailRepositoryInterface
             });
         })->paginate($perPage);
     }
+
+    public function getAllOrgan($search, $status, $per_page)
+    {
+        return OrderDetail::query()->latest()->with(['course','organ'])->whereHas('organ',function ($q){
+            return $q->whereIn('id',Auth::user()->organs->pluck('id'));
+        })->when($status,function ($q) use ($status){
+            return $q->where('status',$status);
+        })->paginate($per_page);
+    }
 }

@@ -33,4 +33,5 @@ interface OrderDetailRepositoryInterface
 
     public function getAllByCourse(Course $course , $user_search , $perPage=10);
 
+    public function getAllOrgan($search , $status,$per_page);
 }

@@ -9,6 +9,17 @@ final class CheckoutEnum extends Enum
 {
     const PENDING = 'pending' , DONE = 'done' , ERROR = 'error';
 
+
+    const TYPE_ORGAN = 'organ', TYPE_TEACHER = 'teacher';
+
+    public static function getType()
+    {
+        return [
+            self::TYPE_ORGAN => 'تسویه حساب سازمانی',
+            self::TYPE_TEACHER => 'تسویه حساب مدرس',
+        ];
+    }
+
     public static function getStatus()
     {
         return [

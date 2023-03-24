@@ -123,6 +123,14 @@
                                 </x-organ.menu-group>
                                 <x-organ.menu-item href="{{route('organ.samples')}}" icon="fa fa-question"  :active="request()->routeIs(['organ.samples','organ.store.samples'])" label="نمونه سوالات " />
                                 <li class="menu-section">
+                                    <h4 class="menu-text">بخش مالی</h4>
+                                    <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                                </li>
+                                <x-organ.menu-item href="{{route('organ.order')}}" icon="flaticon2-box"  :active="request()->routeIs(['organ.order'])" label="سفارش ها" />
+                                <x-organ.menu-item  href="{{route('organ.checkouts')}}" icon="fmenu-icon fab fa-cc-amazon-pay" :active="request()->routeIs(['organ.checkouts','organ.store.checkouts'])" label=" تسویه حساب ها " />
+                                <x-organ.menu-item  href="{{route('organ.bankAccounts')}}" icon="fa fa-piggy-bank" :active="request()->routeIs(['organ.bankAccounts','organ.store.bankAccounts'])" label=" حساب های بانکی " />
+
+                                <li class="menu-section">
                                     <h4 class="menu-text">بخش گزارشات</h4>
                                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                                 </li>

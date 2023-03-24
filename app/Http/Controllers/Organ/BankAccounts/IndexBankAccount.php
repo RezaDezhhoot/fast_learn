@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Teacher\BankAccounts;
+namespace App\Http\Controllers\Organ\BankAccounts;
 
 use App\Enums\BankAccountEnum;
 use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\BankAccountRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 use Livewire\WithPagination;
 
 class IndexBankAccount extends BaseComponent
@@ -34,6 +35,7 @@ class IndexBankAccount extends BaseComponent
     public function render()
     {
         $accounts = $this->bankAccountsRepository->getAllTeacher($this->search,$this->status , $this->per_page);
-        return view('teacher.bank-accounts.index-bank-account',['accounts'=>$accounts])->extends('teacher.layouts.teacher');
+        return view('organ.bank-accounts.index-bank-account',get_defined_vars())
+            ->extends('organ.layouts.organ');
     }
 }

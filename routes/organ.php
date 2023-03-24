@@ -21,4 +21,12 @@ Route::prefix('organs')->name('organ.')->middleware(['auth','organ'])->group(fun
 
     Route::get('/roll-calls',App\Http\Controllers\Organ\RollCalls\IndexRollCall::class)->name('rollCall');
     Route::get('/roll-calls/{id?}',App\Http\Controllers\Organ\RollCalls\StoreRollCall::class)->name('store.rollCall');
+
+    Route::get('/orders',App\Http\Controllers\Organ\Orders\IndexOrder::class)->name('order');
+
+    Route::get('/bank-accounts', App\Http\Controllers\Organ\BankAccounts\IndexBankAccount::class)->name('bankAccounts');
+    Route::get('/bank-accounts/{action}/{id?}', App\Http\Controllers\Organ\BankAccounts\StoreBankAccount::class)->name('store.bankAccounts');
+
+    Route::get('/checkouts', App\Http\Controllers\Organ\Checkouts\IndexCheckout::class)->name('checkouts');
+    Route::get('/checkouts/{action}/{id?}', App\Http\Controllers\Organ\Checkouts\StoreCheckout::class)->name('store.checkouts');
 });
