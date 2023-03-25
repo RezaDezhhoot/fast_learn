@@ -29,4 +29,8 @@ interface OrganRepositoryInterface
     public function count();
 
     public function findBYSlug($slug);
+
+    public function getMyOrgans($search , $per_page);
+
+    public function findMyOrgan($id);
 }

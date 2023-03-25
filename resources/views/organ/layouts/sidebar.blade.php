@@ -136,6 +136,11 @@
                                 </li>
                                 <x-organ.menu-item  href="{{route('organ.rollCall')}}" icon="flaticon2-list-1" :active="request()->routeIs(['organ.rollCall','organ.store.rollCall'])" label=" دفتر حضور غیاب "  />
                                 <li class="menu-section">
+                                    <h4 class="menu-text">بخش فنی</h4>
+                                    <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                                </li>
+                                <x-organ.menu-item href="{{route('organ.settings')}}" icon="flaticon2-settings" :active="request()->routeIs(['organ.settings','organ.store.settings'])" label="تنظیمات " />
+                                <li class="menu-section">
                                     <h4 class="menu-text"> خروج</h4>
                                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                                 </li>

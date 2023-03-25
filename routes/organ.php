@@ -29,4 +29,7 @@ Route::prefix('organs')->name('organ.')->middleware(['auth','organ'])->group(fun
 
     Route::get('/checkouts', App\Http\Controllers\Organ\Checkouts\IndexCheckout::class)->name('checkouts');
     Route::get('/checkouts/{action}/{id?}', App\Http\Controllers\Organ\Checkouts\StoreCheckout::class)->name('store.checkouts');
+
+    Route::get('/settings',\App\Http\Controllers\Organ\Settings\Organs::class)->name('settings');
+    Route::get('/settings/{id}',\App\Http\Controllers\Organ\Settings\Organ::class)->name('store.settings');
 });

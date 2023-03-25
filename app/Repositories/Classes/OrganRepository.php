@@ -82,4 +82,18 @@ class OrganRepository implements OrganRepositoryInterface
     {
         return Organ::query()->published(true)->where('slug',$slug)->firstOrFail();
     }
+
+    public function getMyOrgans($search, $per_page)
+    {
+        return Organ::query()->withCount('courses')->latest()->whereHas('user',function ($q){
+           return $q->where('id',auth()->id());
+        })->search($search)->paginate($per_page);
+    }
+
+    public function findMyOrgan($id)
+    {
+        return Organ::query()->whereHas('user',function ($q){
+            return $q->where('id',auth()->id());
+        })->findOrFail($id);
+    }
 }

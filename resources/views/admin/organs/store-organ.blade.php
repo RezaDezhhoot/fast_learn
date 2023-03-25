@@ -69,8 +69,8 @@
                         <x-admin.forms.dropdown with="6" id="transcript-city" :data="$data['city2']" label="شهر {{ @$transcript['city'] != $city ? '(جدید)' : '' }}" wire:model.defer="transcript.city"/>
                         <x-admin.forms.input with="6" type="text" id="transcript-web_site" label="وبسایت {{ @$transcript['web_site'] != $web_site ? '(جدید)' : '' }}" wire:model.defer="transcript.web_site"/>
 
-                        <x-admin.forms.lfm-standalone with="6" id="transcript-logo" label="لوگو" :file="$logo" type="image" required="true" wire:model="transcript.logo"/>
-                        <x-admin.forms.lfm-standalone with="6" id="transcript-image" label="تصویر" :file="$image" type="image" required="true" wire:model="transcript.image"/>
+                        <x-admin.forms.lfm-standalone with="6" id="transcript-logo" label="لوگو" :file="$transcript['logo']" type="image" required="true" wire:model="transcript.logo"/>
+                        <x-admin.forms.lfm-standalone with="6" id="transcript-image" label="تصویر" :file="$transcript['image']" type="image" required="true" wire:model="transcript.image"/>
                         <x-admin.forms.full-text-editor id="transcript-description" label="توضیحات" wire:model.defer="transcript.description"/>
                         <div class="col-12">
                             <button class="btn btn-outline-primary" wire:click="confirmTranscript">تایید</button>
