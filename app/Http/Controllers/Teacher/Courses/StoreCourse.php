@@ -38,7 +38,7 @@ class StoreCourse extends BaseComponent
         } else {
             abort(404);
         }
-        $this->data['organs'] = \auth()->user()->companies->pluck('title','id');
+        $this->data['organs'] = \auth()->user()->teacher->organs->pluck('title','id');
     }
 
     public function store()
@@ -62,7 +62,7 @@ class StoreCourse extends BaseComponent
                 return sizeof($this->files) > 0;
             }), 'array', 'max:45'],
             'files.*' => ['required', 'mimes:jpg,jpeg,png,pdf,zip,rar', 'max:2048'],
-            'organ_id' => ['nullable',Rule::in(\auth()->user()->companies->pluck('id'))]
+            'organ_id' => ['nullable',Rule::in(\auth()->user()->teacher->organs->pluck('id'))]
         ],[],[
             'files' => 'فایل ها',
             'title' => 'عنوان',
