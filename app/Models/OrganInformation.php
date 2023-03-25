@@ -27,4 +27,18 @@ class OrganInformation extends Model
             set: fn($value) => json_encode($value)
         );
     }
+
+    public function logo(): Attribute
+    {
+        return Attribute::make(
+            set: fn($value) => str_replace(env('APP_URL') . '/', '', $value)
+        );
+    }
+
+    public function image(): Attribute
+    {
+        return Attribute::make(
+            set: fn($value) => str_replace(env('APP_URL') . '/', '', $value)
+        );
+    }
 }

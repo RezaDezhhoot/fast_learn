@@ -15,6 +15,15 @@
         @foreach($content as $item)
         <div class="col-lg-{{$item['width']}} col-12 px-4">
             @switch($item['category'])
+                @case('organs')
+                @if($item['type'] == 'slider')
+                    <div wire:ignore>
+                        <x-site.organs.organs-slider :data="$item" />
+                    </div>
+                @elseif(isset($item['content']))
+                    <x-site.organs.organs-grid :data="$item" />
+                @endif
+                @break
             @case('categories')
             @if($item['type'] == 'slider')
                 <div wire:ignore>

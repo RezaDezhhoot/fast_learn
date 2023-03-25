@@ -33,7 +33,7 @@ class Organ extends Model
         'is_new' => 'boolean'
     ];
 
-    public $appends = ['status_label'];
+    public $appends = ['status_label','info'];
 
     public function sluggable(): array
     {
@@ -42,6 +42,13 @@ class Organ extends Model
                 'source' => 'title'
             ]
         ];
+    }
+
+    public function info(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->information ? $this->information->toArray() : null
+        );
     }
 
     public function scopeFindSimilarSlugs(Builder $query, string $attribute, array $config, string $slug): Builder
@@ -112,20 +119,6 @@ class Organ extends Model
     public function episodeTranscripts(): HasMany
     {
         return $this->hasMany(EpisodeTranscript::class);
-    }
-
-    public function logo(): Attribute
-    {
-        return Attribute::make(
-            set: fn($value) => str_replace(env('APP_URL') . '/', '', $value)
-        );
-    }
-
-    public function image(): Attribute
-    {
-        return Attribute::make(
-            set: fn($value) => str_replace(env('APP_URL') . '/', '', $value)
-        );
     }
 
     public function statusLabel(): Attribute

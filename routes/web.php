@@ -35,6 +35,8 @@ Route::get('/sample-questions/{slug}',App\Http\Controllers\Site\Samples\SingleSa
 // v3-teachers
 Route::middleware(['auth','no_teacher'])->get('/apply',App\Http\Controllers\Site\Settings\TeacherRequest::class)->name('teacher.apply');
 
+Route::get('/organ/{slug}',\App\Http\Controllers\Site\Organs\Organ::class)->name('organ');
+
 Route::middleware(['auth'])->group(function (){
     Route::get('/checkout',App\Http\Controllers\Site\Carts\Checkout::class)->name('checkout');
     Route::get('/verify/{gateway?}',App\Http\Controllers\Site\Carts\Verify::class)->name('verify');

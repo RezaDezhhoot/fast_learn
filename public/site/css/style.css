@@ -10307,3 +10307,12 @@
          100% { transform: rotate(360deg); }
      }
 
+.organ-bg {
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+    background-position: center !important;
+}
+
+.organ-title {
+    text-shadow: 5px 3px #4d4d4d;
+}

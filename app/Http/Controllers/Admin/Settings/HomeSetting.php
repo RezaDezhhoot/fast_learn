@@ -31,6 +31,7 @@ class HomeSetting extends BaseComponent
             'articles' => 'اخبار و مقالات',
             'courses' => 'دوره ها',
             'categories' => 'دسته بندی ها',
+            'organs' => 'سازمان یا اموزشگاه'
         ];
         $this->data['width'] = [
             '1' => '8.33%',
@@ -108,7 +109,7 @@ class HomeSetting extends BaseComponent
         $this->contentCase[] = '';
     }
 
-    
+
     public function storeContent()
     {
         $this->authorizing('edit_settings_fag');

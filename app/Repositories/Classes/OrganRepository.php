@@ -77,4 +77,9 @@ class OrganRepository implements OrganRepositoryInterface
     {
         return Organ::count();
     }
+
+    public function findBYSlug($slug)
+    {
+        return Organ::query()->published(true)->where('slug',$slug)->firstOrFail();
+    }
 }
