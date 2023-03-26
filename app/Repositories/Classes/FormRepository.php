@@ -72,6 +72,7 @@ class FormRepository implements FormRepositoryInterface
     public function answerGetAllAdmin($subject, $search, $per_page)
     {
         return FormAnswer::query()->with(['form','user'])
+            ->latest()
             ->when($subject,function ($q) use ($subject) {
                return $q->where('subject',$subject);
             })->when($search,function ($q) use ($search){

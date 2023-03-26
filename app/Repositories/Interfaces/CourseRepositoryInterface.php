@@ -55,4 +55,6 @@ interface CourseRepositoryInterface
     public function findTeacher($id);
 
     public function findOrgan($id);
+
+    public function submitRating(Course $course , $data);
 }

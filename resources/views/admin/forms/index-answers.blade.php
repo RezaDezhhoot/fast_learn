@@ -18,6 +18,7 @@
                             <th>وضیعت</th>
                             <th>IP کاربر</th>
                             <th>کاربر</th>
+                            <th>جزئیات</th>
                             <th>عملیات</th>
                         </tr>
                         </thead>
@@ -36,6 +37,8 @@
                                 <td>{{ $item->subject_label }}</td>
                                 <td>{{ $item->status ? 'بررسی شده' : 'جدید' }}</td>
                                 <td>{{ $item->user_ip }}</td>
+
+
                                 <td>
                                     @if (!is_null($item->user))
                                         <ul>
@@ -45,6 +48,15 @@
                                                 $item->user->name }}</a></li>
                                             <li>ادرس ایمیل : {{ $item->user->email }}</li>
                                             <li>شماره همراه : {{ $item->user->phone }}</li>
+                                        </ul>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($item->rating)
+                                        <strong>دوره اموزشی</strong>
+                                        <ul>
+                                            <li>شناسه : {{ $item->rating->course->id ?? '' }}</li>
+                                            <li>عنوان : {{ $item->rating->course->title ?? '' }}</li>
                                         </ul>
                                     @endif
                                 </td>

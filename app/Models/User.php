@@ -288,4 +288,9 @@ class User extends Authenticatable implements Wallet, Confirmable
     {
         return $this->hasManyThrough(Course::class,Organ::class);
     }
+
+    public function ratings(): HasMany
+    {
+        return $this->hasMany(CourseRating::class);
+    }
 }

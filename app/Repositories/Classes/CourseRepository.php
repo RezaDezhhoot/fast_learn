@@ -246,4 +246,8 @@ class CourseRepository implements CourseRepositoryInterface
         }
     }
 
+    public function submitRating(Course $course, $data)
+    {
+        return $course->ratings()->create($data);
+    }
 }

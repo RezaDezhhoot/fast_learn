@@ -49,7 +49,7 @@ class Course extends Model
 {
     use HasFactory , Searchable , Sluggable , SoftDeletes , CascadeSoftDeletes;
 
-    protected $cascadeDeletes = ['comments','chapters','tags'];
+    protected $cascadeDeletes = ['comments','chapters','tags','ratings'];
 
     protected $guarded = ['id'];
 
@@ -294,5 +294,15 @@ class Course extends Model
     public function organ(): BelongsTo
     {
         return $this->belongsTo(Organ::class);
+    }
+
+    public function form(): BelongsTo
+    {
+        return $this->belongsTo(Form::class);
+    }
+
+    public function ratings(): HasMany
+    {
+        return $this->hasMany(CourseRating::class);
     }
 }

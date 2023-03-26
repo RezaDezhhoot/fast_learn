@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Morilog\Jalali\Jalalian;
 
 class FormAnswer extends Model
@@ -51,5 +53,10 @@ class FormAnswer extends Model
     public function getDateAttribute(): string
     {
         return Jalalian::forge($this->created_at)->format('%A, %d %B %Y');
+    }
+
+    public function rating(): HasOne
+    {
+        return $this->hasOne(CourseRating::class);
     }
 }

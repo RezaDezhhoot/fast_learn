@@ -11,7 +11,7 @@
                 <div class="card-body d-flex align-items-center">
                     <p class="card-text px-2">کد سفارش : <a>{{ $item->tracking_code }}</a></p>
                     <h5 class="card-title"><a href="{{ route('course',['slug'=>$item->course->slug]) }}">{{ $item->course->title }}</a></h5>
-                   
+
                     <p class="card-text px-2"><a>{{ $item->course->type_label }}</a></p>
                     <!-- end rating-wrap -->
                     <div class="d-flex justify-content-between align-items-center px-4">
@@ -19,6 +19,11 @@
                             <a href="{{ route('course',['slug'=>$item->course->slug]) }}" class="icon-element icon-element-sm shadow-sm cursor-pointer ml-1 text-success" data-toggle="tooltip" data-placement="top" data-title="مشاهده">
                                 <i class="la la-eye"></i>
                             </a>
+                            @if($item->course->form)
+                                <a href="{{ route('user.rating',['id'=>$item->course->id]) }}" class="icon-element icon-element-sm shadow-sm cursor-pointer ml-1 text-success" data-toggle="tooltip" data-placement="top" data-title="نظر ستجی">
+                                    <i class="la la-star"></i>
+                                </a>
+                            @endif
                         </div>
                     </div>
                 </div>
