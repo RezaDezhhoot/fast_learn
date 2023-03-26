@@ -16,6 +16,9 @@
                 <div class="col-12 {{ $category == \App\Enums\EventEnum::TARGET_COURSES ? 'd-block' : 'd-none' }}">
                     <x-admin.forms.select2 id="course" :data="$data['course']" label="فیلتر بر حسب دوره اموزشی" wire:model.defer="course"/>
                 </div>
+                <div class="col-12 {{ $category == \App\Enums\EventEnum::TARGET_ORGANS ? 'd-block' : 'd-none' }}">
+                    <x-admin.forms.select2 id="organ" :data="$data['organs']" label="فیلتر بر حسب اموزشگاه" wire:model.defer="organ"/>
+                </div>
             </div>
             <hr>
             <x-admin.forms.text-area label="متن اصلی*" wire:model.defer="body" id="body" />

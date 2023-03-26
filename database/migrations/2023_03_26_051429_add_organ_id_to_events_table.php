@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('events', function (Blueprint $table) {
-            $table->foreignId('course_id')->nullable()->constrained('courses')->nullOnDelete();
+            $table->foreignId('organ_id')->nullable()->constrained('organs')->nullOnDelete();
         });
     }
 
@@ -26,7 +26,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('events', function (Blueprint $table) {
-            $table->dropConstrainedForeignId('course_id');
+            $table->dropConstrainedForeignId('organ_id');
         });
     }
 };
