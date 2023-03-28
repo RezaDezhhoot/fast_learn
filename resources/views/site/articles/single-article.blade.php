@@ -16,23 +16,25 @@
                         <h3 class="fs-22 font-weight-semi-bold pb-4">درباره نویسنده</h3>
                         <div class="media media-card">
                             <div class="media-img rounded-full avatar-lg mr-4">
-                                <img src="{{ asset($article->user->image) }}"
-                                    data-src="{{ asset($article->user->image) }}" alt="{{ $article->user->name }}"
+                                <img src="{{ asset(!empty($article->author_image) ? $article->author_image : $article->user->image) }}"
+                                    data-src="{{ asset(!empty($article->author_image) ? $article->author_image : $article->user->image) }}"
+                                     alt="{{ !empty($article->author_name) ? $article->author_name : $article->user->name  }}"
                                     class="rounded-full lazy" />
                             </div>
                             <div class="media-body">
-                                <h5> {{ $article->user->name }}</h5>
+                                <h5> {{ !empty($article->author_name) ? $article->author_name : $article->user->name  }}</h5>
                                 <span class="d-block lh-18 pt-2 pb-3"> شروع فعالیت از {{
                                     $article->user->created_at->diffForHumans() }} </span>
+                                <p class="pb-3">
+                                    {!! $article->author_info !!}
+                                </p>
                             </div>
                         </div>
                     </div>
                     <!-- end instructor-wrap -->
-                    @auth
                     <div class="course-overview-card pt-4">
                         <h3 class="fs-24 font-weight-semi-bold pb-4">{{ $actionLabel }}</h3>
                         <form method="post" id="commentForm" class="row" wire:submit.prevent="new_comment">
-                            @auth
                             <div class="input-box col-lg-12">
                                 <label class="label-text">پیام</label>
                                 <div class="form-group">
@@ -53,19 +55,10 @@
                                 <!-- end custom-control -->
                                 <button class="btn theme-btn" type="submit">ارسال دیدگاه</button>
                             </div>
-                            @else
-                            <p class="text-info">
-                                برای ثبت دیدگاه ابتدا ثبت نام کنید
-                            </p>
-                            @endif
+
                             <!-- end btn-box -->
                         </form>
                     </div>
-                    @else
-                    <p class="text-info">
-                        برای ثبت دیدگاه ابتدا ثبت نام کنید
-                    </p>
-                    @endif
                     <div class="course-overview-card pt-4">
                         <h3 class="fs-24 font-weight-semi-bold pb-4">نظرات</h3>
                         <div class="review-wrap">
@@ -73,13 +66,13 @@
                             @for($i=0;$i<$commentCount ;$i++) @isset($comments[$i]) <div
                                 class="media media-card shadow-sm p-3 mb-5 bg-white rounded  pb-4 mb-1">
                                 <div class="media-img mr-4 rounded-full">
-                                    <img class="rounded-full lazy" src="{{ asset($comments[$i]->user->image) }}"
-                                        data-src="{{ asset($comments[$i]->user->image) }}"
-                                        alt="{{ $comments[$i]->user->name }}" />
+                                    <img class="rounded-full lazy" src="{{ asset($comments[$i]->user->image ?? \App\Models\User::USER_DEFAULT_IMAGE) }}"
+                                        data-src="{{ asset($comments[$i]->user->image ?? \App\Models\User::USER_DEFAULT_IMAGE) }}"
+                                        alt="{{ $comments[$i]->user->name ?? 'کاربر مهمان' }}" />
                                 </div>
                                 <div class="media-body">
                                     <div class="d-flex flex-wrap align-items-center justify-content-between pb-1">
-                                        <h5>{{ $comments[$i]->user->name }}</h5>
+                                        <h5>{{ $comments[$i]->user->name ?? 'کاربر مهمان' }}</h5>
                                     </div>
                                     <span class="d-block lh-18 py-2">{{ $comments[$i]->created_at->diffForHumans()
                                         }}</span>
@@ -95,12 +88,12 @@
                         @foreach($comments[$i]->childrenRecursive as $value)
                         <div class="media media-card pb-4 shadow-sm p-3 mb-5 bg-white rounded p-4 mb-4 review-reply">
                             <div class="media-img mr-4 rounded-full">
-                                <img class="rounded-full lazy" src="{{ asset($value->user->image) }}"
-                                    data-src="{{ asset($value->user->image) }}" alt="{{ $value->user->name }}" />
+                                <img class="rounded-full lazy" src="{{ asset($value->user->image ?? \App\Models\User::USER_DEFAULT_IMAGE) }}"
+                                    data-src="{{ asset($value->user->image ?? \App\Models\User::USER_DEFAULT_IMAGE) }}" alt="{{ $value->user->name  ?? 'کاربر مهمان' }}" />
                             </div>
                             <div class="media-body">
                                 <div class="d-flex flex-wrap align-items-center justify-content-between pb-1">
-                                    <h5>{{ $value->user->name }}</h5>
+                                    <h5>{{ $value->user->name  ?? 'کاربر مهمان' }}</h5>
                                 </div>
                                 <span class="d-block lh-18 py-2">{{ $value->created_at->diffForHumans() }}</span>
                                 <p class="pb-2">

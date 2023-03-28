@@ -3,7 +3,9 @@
     <x-admin.form-control deleteAble="true"  deleteContent="حذف کامنت" mode="{{$mode}}" title="کامنت"/>
     <div class="card card-custom gutter-b example example-compact">
         <div class="card-header">
+            @if($comment->user)
             <h3 class="card-title"><a target="_blank" href="{{route('admin.store.user',['edit',$comment->user->id])}}">{{ $header }}</a></h3>
+            @endif
         </div>
         <x-admin.forms.validation-errors/>
         <div class="card-body">
@@ -20,9 +22,9 @@
                             </thead>
                             <tbody>
                             <tr>
-                                <td>{{ $comment->user->name }}</td>
-                                <td>{{ $comment->user->phone }}</td>
-                                <td>{{ $comment->user->status_label }}</td>
+                                <td>{{ $comment->user->name ?? 'کاربر مهمان' }}</td>
+                                <td>{{ $comment->user->phone ?? '' }}</td>
+                                <td>{{ $comment->user->status_label ?? '' }}</td>
                             </tr>
                             </tbody>
                         </table>
@@ -72,7 +74,7 @@
                         @foreach($child as $key =>  $item)
                             <div class="col-lg-12 border" style="border: 1px gray solid;padding: 5px;border-radius: 5px;margin: 10px">
                                 <h5>
-                                    {{ $item->user->name }}:
+                                    {{ $item->user->name ?? 'کاربر مهمان'}}:
                                 </h5>
                                 <small>
                                     {{ $item->date }}

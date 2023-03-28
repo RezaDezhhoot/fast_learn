@@ -18,6 +18,11 @@
             <x-admin.forms.full-text-editor id="body" label="محتوا*" wire:model.defer="body"/>
             <x-admin.forms.text-area label="کلمات کلیدی*" help="کلمات را با کاما از هم جدا کنید" wire:model.defer="seo_keywords" id="seo_keywords" />
             <x-admin.forms.text-area label="توضیحات سئو*" wire:model.defer="seo_description" id="seo_description" />
+            <x-admin.form-section label="نویسنده">
+                <x-admin.forms.input type="text"  id="author_name" label="نام نویسنده" wire:model.defer="author_name"/>
+                <x-admin.forms.lfm-standalone id="author_image" label="تصویر نویسنده" :file="$author_image" type="image" required="true" wire:model="author_image"/>
+                <x-admin.forms.full-text-editor id="author_info" label="درباره نویسنده" wire:model.defer="author_info"/>
+            </x-admin.form-section>
             <x-admin.form-section label="تگ ها">
                 <div class="row">
                     @foreach($data['tags'] as $key => $value)

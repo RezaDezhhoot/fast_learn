@@ -6132,7 +6132,7 @@
 
      .card-image .card-img-top {
          min-width: 12rem;
-         max-height: 14rem;
+         height: 14rem;
          border-top-right-radius: 8px;
          border-top-left-radius: 8px;
      }

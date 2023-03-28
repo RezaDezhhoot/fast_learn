@@ -51,10 +51,6 @@
                                                 alt="{{ $course->teacher->user->name }}" />
                                         </a>
                                         <ul class="generic-list-item pt-3">
-                                            <li><i class="la la-user mr-2 text-color-3"></i> {{
-                                                $course->teacher->user->students_count }} دانش آموز </li>
-                                            <li><i class="la la-comment-o mr-2 text-color-3"></i> {{
-                                                number_format($course->teacher->user->comments_count) }} نظر</li>
                                             <li><i class="la la-play-circle-o mr-2 text-color-3"></i> {{
                                                 $course->teacher->user->course_count }} دوره</li>
                                             <li><a

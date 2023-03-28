@@ -23,7 +23,7 @@ class StoreComment extends BaseComponent
         if ($this->mode == self::UPDATE_MODE)
         {
             $this->comment = $this->commentRepository->find($id,false);
-            $this->header = $this->comment->user->name;
+            $this->header = $this->comment->user->name ?? 'کاربر مهمان';
             $this->status = $this->comment->status;
             $this->content = $this->comment->content;
             $this->child = $this->comment->childrenRecursive;

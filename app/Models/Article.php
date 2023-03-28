@@ -51,6 +51,11 @@ class Article extends Model
         $this->attributes['image'] = str_replace(env('APP_URL'), '', $value);
     }
 
+    public function setAuthorImageAttribute($value)
+    {
+        $this->attributes['author_image'] = str_replace(env('APP_URL'), '', $value);
+    }
+
     public function getStatusLabelAttribute(): string
     {
         return ArticleEnum::getStatus()[$this->status];

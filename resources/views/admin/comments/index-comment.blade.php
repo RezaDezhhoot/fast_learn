@@ -26,6 +26,7 @@
                             <th>نوع</th>
                             <th>مورد</th>
                             <th>متن</th>
+                            <th>IP</th>
                             <th>عملیات</th>
                         </tr>
                         </thead>
@@ -34,13 +35,14 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ is_null($item->parent_id) ? 'دیدگاه اصلی' : 'ارسال پاسخ' }}</td>
-                                <td>{{ $item->user->name  }}</td>
-                                <td>{{ $item->user->phone  }}</td>
-                                <td>{{ $item->user->email  }}</td>
+                                <td>{{ $item->user->name ?? 'کاربر مهمان'  }}</td>
+                                <td>{{ $item->user->phone ?? '' }}</td>
+                                <td>{{ $item->user->email ?? ''  }}</td>
                                 <td>{{ $item->status_label }}</td>
                                 <td>{{ $item->for_label }}</td>
                                 <td>{{ $item->commentable_data['title'] ?? '-'}}</td>
                                 <td style="width: 40%;">{!!  $item->content !!}</td>
+                                <td>{{ $item->user_ip }}</td>
                                 <td>
                                     <x-admin.ok-btn wire:click="confirm({{$item->id}})" />
                                     <x-admin.edit-btn href="{{ route('admin.store.comment',['edit', $item->id]) }}" />

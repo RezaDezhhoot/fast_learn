@@ -15,6 +15,8 @@ class StoreArticle extends BaseComponent
     public $article;
     public array $categories = [];
 
+    public $author_name , $author_image , $author_info;
+
     public function __construct($id = null)
     {
         parent::__construct($id);
@@ -37,6 +39,9 @@ class StoreArticle extends BaseComponent
             $this->seo_keywords = $this->article->seo_keywords;
             $this->seo_description = $this->article->seo_description;
             $this->status = $this->article->status;
+            $this->author_name = $this->article->author_name;
+            $this->author_image = $this->article->author_image;
+            $this->author_info = $this->article->author_info;
             $this->category = $this->article->category_id;
             $this->tags = $this->article->tags->pluck('id','id')->toArray();
         } elseif ($this->mode == self::CREATE_MODE) {
@@ -66,7 +71,7 @@ class StoreArticle extends BaseComponent
             $this->saveInDateBase($this->article);
         elseif ($this->mode == self::CREATE_MODE) {
             $this->saveInDateBase( $this->articleRepository->getNewObject());
-            $this->reset(['slug','title','category','image','body','seo_keywords','seo_description','status']);
+            $this->reset(['slug','title','category','image','body','seo_keywords','seo_description','status','author_name','author_image','author_info']);
         }
     }
 
@@ -80,6 +85,9 @@ class StoreArticle extends BaseComponent
             'seo_keywords' => ['required','string','max:250'],
             'seo_description' => ['required','string','max:250'],
             'status' => ['required','in:'.implode(',',array_keys(ArticleEnum::getStatus()))],
+            'author_name' => ['nullable','string','max:250'],
+            'author_image' => ['nullable','string','max:250'],
+            'author_info' => ['nullable','string','max:10000'],
         ];
         $messages = [
             'title' => 'عنوان',
@@ -89,6 +97,9 @@ class StoreArticle extends BaseComponent
             'seo_keywords' => 'کلمات کلیدی',
             'seo_description' => 'توضیحات سئو',
             'status' => 'وضعیت',
+            'author_name' => 'نام نویسنده',
+            'author_image' => 'تصویر نویسنده',
+            'author_info' => 'درباره نویسنده',
         ];
         $this->validate($fields,[],$messages);
         $model->title = $this->title;
@@ -97,6 +108,9 @@ class StoreArticle extends BaseComponent
         $model->category_id = $this->category;
         $model->seo_keywords = $this->seo_keywords;
         $model->seo_description = $this->seo_description;
+        $model->author_name = $this->author_name;
+        $model->author_image = $this->author_image;
+        $model->author_info = $this->author_info;
         $model->status = $this->status;
         $model->user_id = auth()->id();
         $this->articleRepository->save($model);

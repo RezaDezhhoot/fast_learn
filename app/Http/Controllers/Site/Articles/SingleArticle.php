@@ -88,18 +88,25 @@ class SingleArticle extends BaseComponent
             'comment' => 'متن',
             'recaptcha' => 'کلید امنیتی'
         ]);
-        if (!auth()->check())
-            return $this->addError('comment','لطفا ابتدا ثبت نام کنید');
+//        if (!auth()->check())
+//            return $this->addError('comment','لطفا ابتدا ثبت نام کنید');
+
+        if ($rateKey = rateLimiter(value:request()->ip().'_article_comment',max_tries: 3))
+        {
+            return
+                $this->addError('comment', 'زیادی تلاش کردید. لطفا پس از مدتی دوباره تلاش کنید.');
+        }
 
         $status = CommentEnum::NOT_CONFIRMED;
         if ($this->article->user_id == auth()->id()) {
             $status = CommentEnum::CONFIRMED;
         }
         $data = [
-            'user_id' => auth()->id(),
+            'user_id' => auth()->check() ? auth()->id() : null,
             'content' => $this->comment,
             'parent_id'=> $this->actionComment ?? null,
-            'status' => $status
+            'status' => $status,
+            'user_ip' => request()->ip()
         ];
 
         $comment = $this->articleRepository->newComment($this->article,$data);
