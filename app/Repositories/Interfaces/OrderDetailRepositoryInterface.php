@@ -31,7 +31,7 @@ interface OrderDetailRepositoryInterface
 
     public function getOrgansStudents($from_date , $to_date);
 
-    public function getAllByCourse(Course $course , $user_search , $perPage=10);
+    public function getAllByCourse($course , $user_search , $perPage=10);
 
     public function getAllOrgan($search , $status,$per_page);
 }

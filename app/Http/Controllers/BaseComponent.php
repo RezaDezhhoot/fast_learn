@@ -25,7 +25,7 @@ class BaseComponent extends Component
         $sampleRepository , $storageRepository , $teacherRequestRepository , $storagePermissionRepository , $newCoursesRepository , $incomingMethodRepository ,
         $bankAccountsRepository , $checkoutRepository , $lastActivityRepository , $chapterRepository , $chapterTranscriptRepository , $violationReportRepository;
 
-    protected $formReposirtory , $organRepository;
+    protected $formReposirtory , $organRepository , $groupRepository;
     public  $mode = '' , $search = '';
 
     public int $per_page = 10;

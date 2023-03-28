@@ -122,6 +122,7 @@
                                     <x-organ.menu-item href="{{route('organ.episodes')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['organ.episodes','organ.store.episodes'])" label="درس ها  " />
                                 </x-organ.menu-group>
                                 <x-organ.menu-item href="{{route('organ.samples')}}" icon="fa fa-question"  :active="request()->routeIs(['organ.samples','organ.store.samples'])" label="نمونه سوالات " />
+                                <x-organ.menu-item href="{{route('organ.group')}}" icon="flaticon2-group"  :active="request()->routeIs(['organ.group','organ.store.group'])" label="گروه های اموزشی" />
                                 <li class="menu-section">
                                     <h4 class="menu-text">بخش مالی</h4>
                                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>

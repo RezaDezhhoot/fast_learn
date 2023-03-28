@@ -32,4 +32,9 @@ Route::prefix('organs')->name('organ.')->middleware(['auth','organ'])->group(fun
 
     Route::get('/settings',\App\Http\Controllers\Organ\Settings\Organs::class)->name('settings');
     Route::get('/settings/{id}',\App\Http\Controllers\Organ\Settings\Organ::class)->name('store.settings');
+
+    Route::prefix('groups')->group(function (){
+        Route::get('',\App\Http\Controllers\Organ\Groups\IndexGroup::class)->name('group');
+        Route::get('/{action}/{id?}',\App\Http\Controllers\Organ\Groups\StoreGroup::class)->name('store.group');
+    });
 });

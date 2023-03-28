@@ -131,6 +131,9 @@
                 @can('show_samples')
                     <x-admin.menu-item href="{{route('admin.sample')}}" icon="fa fa-question"  :active="request()->routeIs(['admin.sample','admin.store.sample'])" label="نمونه سوالات " />
                 @endcan
+                @can('show_groups')
+                    <x-admin.menu-item href="{{route('admin.group')}}" icon="flaticon2-group"  :active="request()->routeIs(['admin.group','admin.store.group'])" label="گروه های اموزشی" />
+                @endcan
                 <li class="menu-section">
                     <h4 class="menu-text">بخش ارتباطی</h4>
                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>

@@ -141,8 +141,9 @@ class OrderDetailRepository implements OrderDetailRepositoryInterface
         })->count();
     }
 
-    public function getAllByCourse(Course $course , $user_search , $perPage=10)
+    public function getAllByCourse($course , $user_search , $perPage=10)
     {
+        $course = $course instanceof Course ? $course : Course::query()->find($course);
         return $course->details()->when($user_search,function ($q) use ($user_search) {
             return $q->whereHas('order',function ($q) use ($user_search) {
                return $q->whereHas('user',function ($q) use ($user_search){

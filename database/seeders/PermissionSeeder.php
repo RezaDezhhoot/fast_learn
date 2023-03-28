@@ -172,6 +172,10 @@ class PermissionSeeder extends Seeder
             ['name' => 'show_organs' , 'guard_name' => 'web'],
             ['name' => 'edit_organs' , 'guard_name' => 'web'],
             ['name' => 'delete_organs' , 'guard_name' => 'web'],
+
+            ['name' => 'show_groups' , 'guard_name' => 'web'],
+            ['name' => 'edit_groups' , 'guard_name' => 'web'],
+            ['name' => 'delete_groups' , 'guard_name' => 'web'],
         ];
 
         foreach ($permissions as $permission) {
