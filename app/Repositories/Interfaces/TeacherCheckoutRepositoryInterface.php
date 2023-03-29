@@ -19,6 +19,7 @@ interface TeacherCheckoutRepositoryInterface
 
     public static function getNew();
 
+
     public function findOrFail($id , $where = []);
 
 

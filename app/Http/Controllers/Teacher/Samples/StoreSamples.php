@@ -56,7 +56,7 @@ class StoreSamples extends BaseComponent
     private function saveInDateBase($model)
     {
         $fields = [
-            'title' => ['required','string','max:250','unique:samples,title,'.($this->sample->id ?? 0)],
+            'title' => ['required','string','max:250'],
             'type' => ['required','in:'.implode(',',array_keys(SampleEnum::getType()))],
             'driver' => ['required','in:'.implode(',',array_keys(getAvailableStorages()))],
             'course' => ['nullable','in:'.implode(',',array_keys($this->data['course']))],

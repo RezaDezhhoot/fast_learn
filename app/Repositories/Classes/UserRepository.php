@@ -167,6 +167,15 @@ class UserRepository implements UserRepositoryInterface, ConfigRepository , ACLR
                     });
                 });
                 break;
+            case EventEnum::TARGET_ORGANS:
+                $query = $query->whereHas('orders',function ($q) use ($event) {
+                    return $q->whereHas('details',function ($q) use ($event) {
+                        return $q->whereHas('organ',function ($q) use ($event){
+                            return $q->where('organ_id',$event->organ_id);
+                        });
+                    });
+                });
+                break;
         }
         $category = $event->category ?? EventEnum::TARGET_USERS;
         $query->orderBy('id', $orderBy)->chunk(20,function ($users) use ($event , $category) {
@@ -175,6 +184,7 @@ class UserRepository implements UserRepositoryInterface, ConfigRepository , ACLR
                     , event_custom_text($category, nl2br($event->body),
                         match ($category) {
                             EventEnum::TARGET_COURSES => [$user->name,$event->course->title,$event->course->price,$event->course_id],
+                            EventEnum::TARGET_ORGANS => [$user->name,$event->organ->title],
                             default => [$user->name],
                         }))->onQueue($event->id);
             }

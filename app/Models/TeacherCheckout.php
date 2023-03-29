@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static latest(string $string)
  * @method static where(mixed $where)
  * @property mixed $status
+ * @property mixed $author
  */
 class TeacherCheckout extends Model
 {
@@ -39,6 +40,13 @@ class TeacherCheckout extends Model
     {
         return Attribute::make(
             get: fn() => in_array($this->status,array_keys(CheckoutEnum::getStatus())) ? CheckoutEnum::getStatus()[$this->status] : 'نامشخص'
+        );
+    }
+
+    public function type(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => CheckoutEnum::getType()[$this->author ?? CheckoutEnum::TYPE_TEACHER]
         );
     }
 }

@@ -16,6 +16,7 @@ use App\Repositories\Classes\EpisodeRepository;
 use App\Repositories\Classes\EpisodeTranscriptRepository;
 use App\Repositories\Classes\EventRepository;
 use App\Repositories\Classes\FormRepository;
+use App\Repositories\Classes\GroupRepository;
 use App\Repositories\Classes\HomeworkRepository;
 use App\Repositories\Classes\IncomingMethodRepository;
 use App\Repositories\Classes\LastActivityRepository;
@@ -26,6 +27,7 @@ use App\Repositories\Classes\NotificationRepository;
 use App\Repositories\Classes\OrderDetailRepository;
 use App\Repositories\Classes\OrderNoteRepository;
 use App\Repositories\Classes\OrderRepository;
+use App\Repositories\Classes\OrganRepository;
 use App\Repositories\Classes\OtpRepository;
 use App\Repositories\Classes\PaymentRepository;
 use App\Repositories\Classes\PermissionRepository;
@@ -63,6 +65,7 @@ use App\Repositories\Interfaces\EpisodeRepositoryInterface;
 use App\Repositories\Interfaces\EpisodeTranscriptRepositoryInterface;
 use App\Repositories\Interfaces\EventRepositoryInterface;
 use App\Repositories\Interfaces\FormRepositoryInterface;
+use App\Repositories\Interfaces\GroupRepositoryInterface;
 use App\Repositories\Interfaces\HomeworkRepositoryInterface;
 use App\Repositories\Interfaces\IncomingMethodRepositoryInterface;
 use App\Repositories\Interfaces\LastActivityRepositoryInterface;
@@ -73,6 +76,7 @@ use App\Repositories\Interfaces\NotificationRepositoryInterface;
 use App\Repositories\Interfaces\OrderDetailRepositoryInterface;
 use App\Repositories\Interfaces\OrderNoteRepositoryInterface;
 use App\Repositories\Interfaces\OrderRepositoryInterface;
+use App\Repositories\Interfaces\OrganRepositoryInterface;
 use App\Repositories\Interfaces\OtpRepositoryInterface;
 use App\Repositories\Interfaces\PaymentRepositoryInterface;
 use App\Repositories\Interfaces\PermissionRepositoryInterface;
@@ -344,6 +348,16 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             FormRepositoryInterface::class,
             FormRepository::class
+        );
+
+        $this->app->bind(
+            OrganRepositoryInterface::class,
+            OrganRepository::class
+        );
+
+        $this->app->bind(
+            GroupRepositoryInterface::class,
+            GroupRepository::class
         );
     }
 

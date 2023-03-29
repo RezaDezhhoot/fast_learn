@@ -85,6 +85,27 @@ class EpisodeRepository implements EpisodeRepositoryInterface
         }
     }
 
+    public function getAllOrgan($course, $search, $per_page, $chapter = null)
+    {
+        $query = Episode::latest('id')->whereHas('chapter',function ($q) {
+            return $q->whereHas('course',function ($q) {
+                return $q->whereHas('organ',function ($q){
+                    return $q->whereIn('id',Auth::user()->organs->pluck('id'));
+                });
+            });
+        })->when($chapter,function ($q) use ($chapter) {
+            return $q->whereHas('chapter',function ($q) use ($chapter) {
+                return $q->where('id',$chapter);
+            });
+        })->search($search);
+
+        if ($per_page) {
+            return $query->paginate($per_page);
+        } else {
+            return $query->cursor();
+        }
+    }
+
     public function findTeacherEpisode($id)
     {
         return Episode::query()->whereHas('chapter',function ($q) {
@@ -96,12 +117,34 @@ class EpisodeRepository implements EpisodeRepositoryInterface
         })->findOrFail($id);
     }
 
+    public function findOrganEpisode($id)
+    {
+        return Episode::query()->whereHas('chapter',function ($q) {
+            return $q->whereHas('course',function ($q){
+                return $q->whereHas('organ',function ($q){
+                    return $q->whereIn('id',Auth::user()->organs->pluck('id'));
+                });
+            });
+        })->findOrFail($id);
+    }
+
     public function getTeachersCount($from_date , $to_date)
     {
         return Episode::whereBetween('created_at', [$from_date." 00:00:00", $to_date." 23:59:59"])->whereHas('chapter',function ($q) {
             return $q->whereHas('course',function ($q){
                 return $q->whereHas('teacher',function ($q){
                     return $q->where('user_id',Auth::id());
+                });
+            });
+        })->count();
+    }
+
+    public function getOrganCount($from_date, $to_date)
+    {
+        return Episode::whereBetween('created_at', [$from_date." 00:00:00", $to_date." 23:59:59"])->whereHas('chapter',function ($q) {
+            return $q->whereHas('course',function ($q){
+                return $q->whereHas('organ',function ($q){
+                    return $q->whereIn('id',Auth::user()->organs->pluck('id'));
                 });
             });
         })->count();

@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\DB;
  * @property mixed $category
  * @property mixed $body
  * @property mixed $course
+ * @property mixed $organ_id
  *@method static latest(string $string)
  */
 class Event extends Model
@@ -62,6 +63,11 @@ class Event extends Model
         return $this->belongsTo(Course::class)->withTrashed();
     }
 
+    public function organ()
+    {
+        return $this->belongsTo(Organ::class)->withTrashed();
+    }
+
     public function categoryLabel(): Attribute
     {
         return Attribute::make(
@@ -90,6 +96,10 @@ class Event extends Model
                 '{course_title}' => 'عنوان دوره',
                 '{course_price}' => 'هزینه دوره',
                 '{course_id}' => 'کد دوره',
+            ],
+            EventEnum::TARGET_ORGANS => [
+                '{user_name}' => 'نام کاربر',
+                '{organ_title}' => 'عنوان اموزشگاه'
             ]
         ];
     }

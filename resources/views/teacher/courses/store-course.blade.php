@@ -11,6 +11,7 @@
             <div class="row">
                 <x-teacher.forms.input with="6" type="text" id="title" label="عنوان*" wire:model.defer="title"/>
                 <x-teacher.forms.dropdown with="6" id="level" :data="$data['level']" label="سطح دوره*" wire:model.defer="level"/>
+                <x-teacher.forms.dropdown id="organ_id" :data="$data['organs']" label="اموزشگاه" wire:model.defer="organ_id"/>
             </div>
             <x-teacher.forms.basic-text-editor id="descriptions" label="توضیحات کامل" wire:model.defer="descriptions"/>
             <x-teacher.form-section label="فایل ها">

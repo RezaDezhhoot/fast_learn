@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('events', function (Blueprint $table) {
-            $table->foreignId('course_id')->nullable()->constrained('courses');
+            $table->foreignId('course_id')->nullable()->constrained('courses')->nullOnDelete();
         });
     }
 

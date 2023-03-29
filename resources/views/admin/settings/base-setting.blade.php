@@ -126,6 +126,10 @@
 
             </x-admin.form-section>
 
+            <x-admin.form-section  label="اموزشگاه">
+                <x-admin.forms.dropdown id="organ_form" :data="$data['forms']" label="فرم برای ثبت درخواست اموزشگاه" wire:model.defer="organ_form"/>
+            </x-admin.form-section>
+
             <x-admin.form-section  label="نماد های اعتماد">
                 <div class="border p-3">
                     <x-admin.button class="btn btn-light-primary font-weight-bolder btn-sm" content="افزودن نماد" wire:click="addAutograph()" />

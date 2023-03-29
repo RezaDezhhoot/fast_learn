@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Settings;
 
 use App\Enums\NotificationEnum;
 use App\Http\Controllers\BaseComponent;
+use App\Repositories\Interfaces\FormRepositoryInterface;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
 use Exception;
 use Illuminate\Support\Facades\Log;
@@ -37,10 +38,13 @@ class BaseSetting extends BaseComponent
 
     public $users_can_send_teacher_request = false;
 
+    public $organ_form;
+
     public function __construct($id = null)
     {
         parent::__construct($id);
         $this->settingRepository = app(SettingRepositoryInterface::class);
+        $this->formReposirtory = app(FormRepositoryInterface::class);
     }
 
     public function mount()
@@ -104,6 +108,9 @@ class BaseSetting extends BaseComponent
 
         $this->notify_should_be_queueable = $this->settingRepository->getRow('notify_should_be_queueable');
         $this->exam_should_be_queueable = $this->settingRepository->getRow('exam_should_be_queueable');
+        $this->organ_form = $this->settingRepository->getRow('organ_form');
+
+        $this->data['forms'] = $this->formReposirtory->all()->pluck('name','id');
     }
 
     public function render()
@@ -163,6 +170,8 @@ class BaseSetting extends BaseComponent
                 'users_can_send_teacher_request' => ['required','boolean'],
                 'notify_should_be_queueable' => ['required','boolean'],
                 'exam_should_be_queueable' => ['required','boolean'],
+
+                'organ_form' => ['nullable','exists:forms,id']
             ] , [] ,
             [
                 'name' => 'نام سایت',
@@ -211,6 +220,7 @@ class BaseSetting extends BaseComponent
                 'users_can_send_teacher_request' => 'کاربران می توانند مدرس شوند',
                 'notify_should_be_queueable' => 'زمان ارسال اعلان ها',
                 'exam_should_be_queueable' => 'زمان پردازش ازمون ها',
+                'organ_form' => 'فرم ثبت اموزشگاه'
             ]
         );
 
@@ -266,6 +276,8 @@ class BaseSetting extends BaseComponent
 
         $this->settingRepository::updateOrCreate(['name' => 'notify_should_be_queueable'], ['value' => $this->notify_should_be_queueable]);
         $this->settingRepository::updateOrCreate(['name' => 'exam_should_be_queueable'], ['value' => $this->exam_should_be_queueable]);
+
+        $this->settingRepository::updateOrCreate(['name' => 'organ_form'], ['value' => $this->organ_form]);
 
         $this->emitNotify('اطلاعات با موفقیت ثبت شد');
     }

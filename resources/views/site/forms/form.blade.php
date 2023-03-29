@@ -1,5 +1,5 @@
 <div wire:init="loadMore">
-    <section class="register-area section--padding dot-bg overflow-hidden">
+    <section class="register-area dot-bg overflow-hidden">
         <div class="container">
             <div class="register-heading-content-wrap text-center">
                 <div class="section-heading">
@@ -96,7 +96,7 @@
                                                                  x-on:livewire-upload-progress="progress = $event.detail.progress" class="custom-file">
                                                                 <input type="file" class="custom-file-input" wire:model.defer="form.{{$key}}.value" id="{{$key}}">
                                                                 <label class="custom-file-label"  for="{{$key}}">
-                                                                    {{ (!empty($form[$key]['value'] && @$form[$key]['value']->temporaryUrl())) ? str()->limit($form[$key]['value']->temporaryUrl(),40) : 'انتخاب فایل' }}
+                                                                    {{ is_object($form[$key]['value']) ? str()->limit($form[$key]['value']->temporaryUrl(),40) : 'انتخاب فایل' }}
                                                                 </label>
 
                                                                 <div class="mt-2" x-show="isUploading">

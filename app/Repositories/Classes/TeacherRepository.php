@@ -3,6 +3,7 @@
 
 namespace App\Repositories\Classes;
 
+use App\Models\Organ;
 use App\Models\Teacher;
 use App\Repositories\Interfaces\TeacherRepositoryInterface;
 
@@ -60,5 +61,15 @@ class TeacherRepository implements TeacherRepositoryInterface
         $teacher = Teacher::where('user_id',$user_id)->first();
         if (!is_null($teacher))
             $teacher->delete();
+    }
+
+    public function attachOrgan(Teacher $teacher, array $organs)
+    {
+        $teacher->organs()->attach($organs);
+    }
+
+    public function syncOrgan(Teacher $teacher, array $organs)
+    {
+        $teacher->organs()->sync($organs);
     }
 }

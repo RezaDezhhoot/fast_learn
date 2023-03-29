@@ -37,6 +37,7 @@
                     <table class="table table-striped table-bordered">
                         <thead>
                         <tr>
+                            <th>نوع تسویه حساب</th>
                             <th>شماره کارت</th>
                             <th>شماره شبا</th>
                             <th>مبلغ</th>
@@ -44,6 +45,7 @@
                         </thead>
                         <tbody>
                         <tr>
+                            <td>{{ $checkout->type }}</td>
                             <td>{{ $checkout->bank_account_info['card_number'] }}</td>
                             <td>{{ $checkout->bank_account_info['sheba_number'] }}</td>
                             <td>{{ number_format($checkout->price) }} تومان </td>

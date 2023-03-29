@@ -24,7 +24,15 @@ class NewCourseRepository implements NewCourseRepositoryInterface
 
     public function findOrFail($id)
     {
-        return NewCourse::with('user')->findOrFail($id);
+        if (\auth()->user()->hasRole('admin'))
+            return NewCourse::with('user')->findOrFail($id);
+        else {
+            return NewCourse::with('user')->whereHas('user',function ($q){
+                return $q->where('id',\auth()->id());
+            })->orWhereHas('organ',function ($q){
+                return $q->whereIn('id',Auth::user()->organs->pluck('id'));
+            })->findOrFail($id);
+        }
     }
 
     public function destroy($id)
@@ -45,7 +53,9 @@ class NewCourseRepository implements NewCourseRepositoryInterface
 
     public static function getNewTeacher()
     {
-        return NewCourse::where('status',CourseEnum::NEW_COURSE_ANSWERED)->count();
+        return NewCourse::where('status',CourseEnum::NEW_COURSE_ANSWERED)->whereHas('user',function ($q){
+            return $q->where('id',Auth::id());
+        })->count();
 
     }
 
@@ -53,6 +63,15 @@ class NewCourseRepository implements NewCourseRepositoryInterface
     {
         return NewCourse::latest('id')->whereHas('user',function ($q){
            return $q->where('id',Auth::id());
+        })->when($status,function ($q) use ($status) {
+            return $q->where('status',$status);
+        })->search($search)->paginate($per_page);
+    }
+
+    public function getAllOrgan($search, $status, $per_page)
+    {
+        return NewCourse::latest('id')->whereHas('organ',function ($q){
+            return $q->whereIn('id',Auth::user()->organs->pluck('id'));
         })->when($status,function ($q) use ($status) {
             return $q->where('status',$status);
         })->search($search)->paginate($per_page);
@@ -66,5 +85,12 @@ class NewCourseRepository implements NewCourseRepositoryInterface
     public function getTeachersCount()
     {
         return NewCourse::where('status',CourseEnum::NEW_COURSE_PENDING)->where('user_id',Auth::id())->count();
+    }
+
+    public function getOrgansCount()
+    {
+        return NewCourse::where('status',CourseEnum::NEW_COURSE_PENDING)->whereHas('organ',function ($q) {
+            return $q->whereIn('id',Auth::user()->organs->pluck('id'));
+        })->count();
     }
 }

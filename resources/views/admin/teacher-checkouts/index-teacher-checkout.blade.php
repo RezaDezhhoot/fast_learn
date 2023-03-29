@@ -11,6 +11,7 @@
                         <thead>
                         <tr>
                             <th>#</th>
+                            <th>نوع تسویه حساب</th>
                             <th>شماره همراه</th>
                             <th>کد کاربر</th>
                             <th>نام</th>
@@ -28,6 +29,7 @@
                         @forelse($checkouts as $item)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
+                                <td>{{ $item->type }}</td>
                                 <td>{{ $item->id }}</td>
                                 <td>{{ $item->user->id }}</td>
                                 <td>{{ $item->user->name }}</td>
@@ -43,7 +45,7 @@
                                 </td>
                             </tr>
                         @empty
-                            <td class="text-center" colspan="14">
+                            <td class="text-center" colspan="15">
                                 دیتایی جهت نمایش وجود ندارد
                             </td>
                         @endforelse

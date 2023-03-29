@@ -27,6 +27,11 @@ class FormRepository implements FormRepositoryInterface
         return Form::query()->published($published)->findOrFail($id);
     }
 
+    public function all()
+    {
+        return Form::all();
+    }
+
     public function destroy($id)
     {
         return Form::destroy($id);
@@ -67,6 +72,7 @@ class FormRepository implements FormRepositoryInterface
     public function answerGetAllAdmin($subject, $search, $per_page)
     {
         return FormAnswer::query()->with(['form','user'])
+            ->latest()
             ->when($subject,function ($q) use ($subject) {
                return $q->where('subject',$subject);
             })->when($search,function ($q) use ($search){

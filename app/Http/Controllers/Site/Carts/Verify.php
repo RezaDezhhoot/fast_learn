@@ -123,6 +123,10 @@ class Verify extends BaseComponent
                 $detail->incoming_method_id = $detail->course->incoming_method_id;
                 $detail->teacher_amount = $fee;
             }
+            if ($organFee = $this->orderDetailRepository->paymentOfFeesIfCourseHasOrganAndValidIncomingMethod($detail)) {
+                $detail->organ_amount = $organFee;
+            }
+
             $this->orderDetailRepository->save($detail);
 
             if (!is_null($detail->course->quiz)) {

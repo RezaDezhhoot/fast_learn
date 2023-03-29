@@ -6,7 +6,7 @@ use BenSampo\Enum\Enum;
 
 final class FormEnum extends Enum
 {
-    const TEACHER = 'teacher' , STUDENT = 'student' , ORGAN = 'organ' , USER = 'user';
+    const TEACHER = 'teacher' , STUDENT = 'student' , ORGAN = 'organ' , USER = 'user' , COURSES = 'course';
 
     const PUBLISHED = 'published' , DRAFT = 'draft';
 
@@ -23,8 +23,9 @@ final class FormEnum extends Enum
         return [
             self::TEACHER => 'مدریسن',
             self::STUDENT => 'دانش اموزان',
-//            self::ORGAN => 'موسسه ها',
-            self::USER => 'کل کاربران'
+            self::ORGAN => 'موسسه ها',
+            self::USER => 'کل کاربران',
+            self::COURSES => 'دروه های اموزشی'
         ];
     }
 }

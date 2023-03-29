@@ -6,9 +6,12 @@ use App\Enums\BankAccountEnum;
 use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\BankAccountRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
+use Livewire\WithPagination;
 
 class IndexBankAccount extends BaseComponent
 {
+    use WithPagination;
+
     public $status , $placeholder = 'عنوان حساب یا شماره همراه مدرس';
     protected $queryString = ['status'];
 

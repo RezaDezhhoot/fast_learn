@@ -18,6 +18,8 @@ interface EpisodeTranscriptRepositoryInterface
 
     public function getAllTeacher($search , $status , $course , $per_page);
 
+    public function getAllOrgan($search , $status , $course , $per_page);
+
     public function find($id);
 
     public function findOrFail($id);
@@ -25,6 +27,8 @@ interface EpisodeTranscriptRepositoryInterface
     public function confirmThisTranscript(EpisodeTranscript $episodeTranscript , $episode);
 
     public function findTeacherEpisode($id);
+
+    public function findOrganEpisode($id);
 
     public static function getNew();
 }

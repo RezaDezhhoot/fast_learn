@@ -11,9 +11,13 @@ interface ChapterRepositoryInterface
 
     public function getAllTeacher($search , $course , $status, $pagination);
 
+    public function getAllOrgan($search , $course , $status, $pagination);
+
     public function findOrFail($id);
 
     public function findOrFailTeacher($id);
+
+    public function findOrFailOrgan($id);
 
     public function newModel(): Chapter;
 

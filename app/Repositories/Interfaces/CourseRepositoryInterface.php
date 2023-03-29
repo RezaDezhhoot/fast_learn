@@ -14,6 +14,8 @@ interface CourseRepositoryInterface
 
     public function getAllTeacher($search , $level , $status , $per_page);
 
+    public function getAllOrgan($search , $level , $status , $per_page);
+
     public function save(Course $course);
 
     public function delete(Course $course);
@@ -46,7 +48,13 @@ interface CourseRepositoryInterface
 
     public function getTeachersCount($from_date , $to_date);
 
+    public function getOrgansCount($from_date , $to_date);
+
     public function setCourseToOrder($course);
 
     public function findTeacher($id);
+
+    public function findOrgan($id);
+
+    public function submitRating(Course $course , $data);
 }

@@ -12,11 +12,13 @@
                         <tr>
                             <th>#</th>
                             <th>شماره شناسه</th>
+                            <th>تاریخ</th>
                             <th>فرم</th>
                             <th>موضوع</th>
                             <th>وضیعت</th>
                             <th>IP کاربر</th>
                             <th>کاربر</th>
+                            <th>جزئیات</th>
                             <th>عملیات</th>
                         </tr>
                         </thead>
@@ -25,6 +27,7 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->id }}</td>
+                                <td>{{ $item->date }}</td>
                                 <td>
                                     <ul>
                                         <li>عنوان : {{ $item->form_details['form_title'] }}</li>
@@ -34,6 +37,8 @@
                                 <td>{{ $item->subject_label }}</td>
                                 <td>{{ $item->status ? 'بررسی شده' : 'جدید' }}</td>
                                 <td>{{ $item->user_ip }}</td>
+
+
                                 <td>
                                     @if (!is_null($item->user))
                                         <ul>
@@ -47,12 +52,21 @@
                                     @endif
                                 </td>
                                 <td>
+                                    @if($item->rating)
+                                        <strong>دوره اموزشی</strong>
+                                        <ul>
+                                            <li>شناسه : {{ $item->rating->course->id ?? '' }}</li>
+                                            <li>عنوان : {{ $item->rating->course->title ?? '' }}</li>
+                                        </ul>
+                                    @endif
+                                </td>
+                                <td>
                                     <x-admin.edit-btn href="{{ route('admin.store.answer',['edit', $item->id]) }}" />
                                     <x-admin.delete-btn onclick="deleteItem({{$item->id}})" />
                                 </td>
                             </tr>
                         @empty
-                            <td class="text-center" colspan="12">
+                            <td class="text-center" colspan="13">
                                 دیتایی جهت نمایش وجود ندارد
                             </td>
                         @endforelse

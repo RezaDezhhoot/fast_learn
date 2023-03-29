@@ -25,9 +25,15 @@ interface EpisodeRepositoryInterface
 
     public function getAllTeacher($course , $search , $per_page , $chapter = null);
 
+    public function getAllOrgan($course , $search , $per_page , $chapter = null);
+
     public function findTeacherEpisode($id);
 
+    public function findOrganEpisode($id);
+
     public function getTeachersCount($from_date , $to_date);
+
+    public function getOrganCount($from_date , $to_date);
 
     public function newComment(Episode $episode, array $data);
 

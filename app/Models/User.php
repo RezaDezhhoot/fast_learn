@@ -9,6 +9,7 @@ use App\Traits\Admin\Searchable;
 use Bavix\Wallet\Interfaces\Confirmable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -258,9 +259,38 @@ class User extends Authenticatable implements Wallet, Confirmable
         return $this->hasMany(EpisodeLike::class);
     }
 
-    public function hasLiked($episode)
+    public function hasLiked($episode): bool
     {
         return $this->likes()->where('episode_id',$episode->id)->exists();
     }
 
+    public function organs(): HasMany
+    {
+        return $this->hasMany(Organ::class);
+    }
+
+    public function companies(): BelongsToMany
+    {
+        return $this->belongsToMany(Organ::class,'organ_employees');
+    }
+
+    public function hasOrgan($slug): bool
+    {
+        return $this->organs()->where('slug',$slug)->exists();
+    }
+
+    public function isEmployee($slug): bool
+    {
+        return $this->companies()->where('slug',$slug)->exists();
+    }
+
+    public function organCourses(): HasManyThrough
+    {
+        return $this->hasManyThrough(Course::class,Organ::class);
+    }
+
+    public function ratings(): HasMany
+    {
+        return $this->hasMany(CourseRating::class);
+    }
 }

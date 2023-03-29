@@ -52,7 +52,10 @@
                 </li>
                 <x-admin.menu-item href="{{route('admin.profile')}}" icon="flaticon2-user" :active="request()->routeIs('admin.profile')" label="پروفایل" />
                 <x-admin.menu-item href="{{route('user.dashboard')}}" icon="flaticon2-user" :active="request()->routeIs('user.dashboard')" label="پنل کاربری" />
-                @role('admin')
+                @if (auth()->user()->organs)
+                    <x-admin.menu-item href="{{route('organ.dashboard')}}" icon="fas fa-building" :active="request()->routeIs('organ.dashboard')" label="پنل اموزشگاه" />
+                @endif
+                @role('teacher')
                     <x-admin.menu-item href="{{route('teacher.dashboard')}}" icon="fas fa-chalkboard-teacher" :active="request()->routeIs('teacher.dashboard')" label="پنل مدرس" />
                 @endif
                 <li class="menu-section">
@@ -128,6 +131,9 @@
                 @can('show_samples')
                     <x-admin.menu-item href="{{route('admin.sample')}}" icon="fa fa-question"  :active="request()->routeIs(['admin.sample','admin.store.sample'])" label="نمونه سوالات " />
                 @endcan
+                @can('show_groups')
+                    <x-admin.menu-item href="{{route('admin.group')}}" icon="flaticon2-group"  :active="request()->routeIs(['admin.group','admin.store.group'])" label="گروه های اموزشی" />
+                @endcan
                 <li class="menu-section">
                     <h4 class="menu-text">بخش ارتباطی</h4>
                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
@@ -188,6 +194,13 @@
                 @role('administrator')
                 <x-admin.menu-item href="{{route('log-viewer::dashboard')}}" icon="flaticon-book" :active="request()->routeIs(['telescope'])" label=" گزارش های سیستم logger" />
                 <x-admin.menu-item href="{{route('telescope')}}" icon="flaticon-search" :active="request()->routeIs(['telescope'])" label=" گزارش های سیستم telescope" />
+                @endif
+                <li class="menu-section">
+                    <h4 class="menu-text">بخش ارگان ها</h4>
+                    <i class="menu-icon ki ki-bold-more-hor icon-md "></i>
+                </li>
+                @can('show_organs')
+                    <x-admin.menu-item href="{{route('admin.organ')}}" icon="fa fa-building" :active="request()->routeIs(['admin.organ','admin.store.organ'])" label=" ارگان ها ({{ $organs }})" />
                 @endif
                 <li class="menu-section">
                     <h4 class="menu-text">بخش کاربر</h4>

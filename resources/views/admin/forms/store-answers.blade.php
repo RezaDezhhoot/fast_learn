@@ -40,14 +40,27 @@
                                 <tr>
                                     <td>عنوان</td>
                                     <td>موضوع</td>
+                                    <td>تاریخ</td>
                                     <td>فضای ذخیره سازی</td>
+                                    @if($formModel->rating)
+                                        <th>دوره اموزشی</th>
+                                    @endif
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr>
                                     <td>{{ $formModel->form_details['form_title'] }}</td>
                                     <td>{{ $formModel->subject_label }}</td>
+                                    <td>{{ $formModel->date }}</td>
                                     <td><x-admin.forms.dropdown disabled id="storage" :data="$data['storage']" label="فضای ذخیره سازی فایل های ارسالی" wire:model.defer="storage"/></td>
+                                    @if($formModel->rating)
+                                    <td>
+                                        <ul>
+                                            <li>شناسه : {{ $formModel->rating->course->id ?? '' }}</li>
+                                            <li>عنوان : {{ $formModel->rating->course->title ?? '' }}</li>
+                                        </ul>
+                                    </td>
+                                    @endif
                                 </tr>
                                 </tbody>
                             </table>

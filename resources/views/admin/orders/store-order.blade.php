@@ -66,6 +66,7 @@
                                 <td>هزینه کل:</td>
                                 <td>کیف پول :</td>
                                 <td> هزینه مدرسین:</td>
+                                <td> هزینه اموزشگاه ها:</td>
                                 <td>هزینه پرداخت شده:</td>
                             </tr>
                             </thead>
@@ -74,6 +75,7 @@
                                 <td>{{number_format($order->price)}}تومان </td>
                                 <td>{{number_format($order->wallet_pay)}}تومان </td>
                                 <td>{{number_format($order->details->sum('teacher_amount'))}}تومان </td>
+                                <td>{{number_format($order->details->sum('organ_amount'))}}تومان </td>
                                 <td>{{number_format($order->total_price)}} تومان </td>
                             </tr>
                             </tbody>
@@ -138,7 +140,9 @@
                                     <td>تخفیف:</td>
                                     <td>کیف پول:</td>
                                     <td> هزینه مدرس:</td>
+                                    <td> هزینه آموزشگاه:</td>
                                     <td>هزینه پرداخت شده:</td>
+                                    <td>اموزشگاه:</td>
                                     <td>وضعیت:</td>
                                     <td>عملیات:</td>
                                 </tr>
@@ -150,7 +154,16 @@
                                     <td>{{ number_format($detail->reduction_amount) }}تومان  </td>
                                     <td>{{ number_format($detail->wallet_amount) }}تومان  </td>
                                     <td>{{ number_format($detail->teacher_amount) }}تومان  </td>
+                                    <td>{{ number_format($detail->organ_amount) }}تومان  </td>
                                     <td>{{ number_format($detail->total_price) }}تومان  </td>
+                                    <td>
+                                        @if(isset($detail->course->organ))
+                                        <ul>
+                                            <li>عنوان : {{ $detail->course->organ->title ?? '' }}</li>
+                                            <li>شناسه : {{ $detail->course->organ->id ?? '' }}</li>
+                                        </ul>
+                                        @endif
+                                    </td>
                                     <td>
                                         <div class="form-group">
                                             <x-admin.forms.dropdown id="status{{$detail->id}}" :data="$data['status']" label="وضعیت*" wire:model.defer="statuses.{{$detail->id}}"/>

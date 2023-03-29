@@ -48,18 +48,22 @@ class OrderDetailRepository implements OrderDetailRepositoryInterface
             })->count();
     }
 
-    public function getDashboardDataPayments($from_date , $to_date , $sum , $course_id = null , $teacher = false)
+    public function getDashboardDataPayments($from_date , $to_date , $sum , $course_id = null , $teacher = false  , $organ = false)
     {
-        return $this->getDashboardDataQuery($from_date , $to_date , $sum , $course_id);
+        return $this->getDashboardDataQuery($from_date , $to_date , $sum , $course_id , $teacher , $organ);
     }
 
-    public function getDashboardDataQuery($from_date , $to_date , $sum , $course_id = null , $teacher = false)
+    public function getDashboardDataQuery($from_date , $to_date , $sum , $course_id = null , $teacher = false , $organ = false)
     {
         return OrderDetail::when($teacher,function ($q){
             return $q->whereHas('course',function ($q){
                 return $q->wherehas('teacher',function ($q){
                     return $q->where('user_id',Auth::id());
                 });
+            });
+        })->when($organ,function ($q){
+            return $q->whereHas('organ',function ($q){
+                return $q->whereIn('id',Auth::user()->organs->pluck('id'));
             });
         })->whereBetween('created_at', [$from_date." 00:00:00", $to_date." 23:59:59"])->where('status',OrderEnum::STATUS_COMPLETED)
             ->when($course_id , function ($q) use ($course_id){
@@ -99,6 +103,28 @@ class OrderDetailRepository implements OrderDetailRepositoryInterface
         return false;
     }
 
+    public function paymentOfFeesIfCourseHasOrganAndValidIncomingMethod(OrderDetail $orderDetail): bool|int
+    {
+        if ($orderDetail->organ) {
+            if (!empty($orderDetail->organ->percent) && $orderDetail->organ->percent) {
+                $fee = $orderDetail->total_price*($orderDetail->organ->percent/100);
+                if ($fee > 0) {
+                    $description = "واریز درصد مشارکت بابت دوره اموزشی {$orderDetail->course->title}  به مبلغ ".(number_format($fee)).' تومان ';
+                    $orderDetail->organ->user->deposit($fee, ['description' => $description, 'from_admin'=> true]);
+                    app(SendRepositoryInterface::class)->sendNOTIFICATION(
+                        $description,
+                        $orderDetail->course->teacher->user_id,
+                        NotificationEnum::FEE,
+                        $orderDetail->id,
+                    );
+                }
+
+                return $fee;
+            }
+        }
+        return false;
+    }
+
     public function getTeacherStudents($from_date , $to_date)
     {
         return OrderDetail::whereBetween('created_at', [$from_date." 00:00:00", $to_date." 23:59:59"])->whereHas('course',function ($q){
@@ -108,8 +134,16 @@ class OrderDetailRepository implements OrderDetailRepositoryInterface
         })->count();
     }
 
-    public function getAllByCourse(Course $course , $user_search , $perPage=10)
+    public function getOrgansStudents($from_date, $to_date)
     {
+        return OrderDetail::whereBetween('created_at', [$from_date." 00:00:00", $to_date." 23:59:59"])->whereHas('organ',function ($q){
+            return $q->whereIn('id',Auth::user()->organs->pluck('id'));
+        })->count();
+    }
+
+    public function getAllByCourse($course , $user_search , $perPage=10)
+    {
+        $course = $course instanceof Course ? $course : Course::query()->find($course);
         return $course->details()->when($user_search,function ($q) use ($user_search) {
             return $q->whereHas('order',function ($q) use ($user_search) {
                return $q->whereHas('user',function ($q) use ($user_search){
@@ -117,5 +151,14 @@ class OrderDetailRepository implements OrderDetailRepositoryInterface
                });
             });
         })->paginate($perPage);
+    }
+
+    public function getAllOrgan($search, $status, $per_page)
+    {
+        return OrderDetail::query()->latest()->with(['course','organ'])->whereHas('organ',function ($q){
+            return $q->whereIn('id',Auth::user()->organs->pluck('id'));
+        })->when($status,function ($q) use ($status){
+            return $q->where('status',$status);
+        })->paginate($per_page);
     }
 }
