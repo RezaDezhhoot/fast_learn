@@ -113,13 +113,12 @@
 @push('scripts')
     <script>
         Livewire.on('setVideo', data => {
-            const player = new Plyr('#player',{
-                title: data.title,
-            });
+            const player = new Plyr('#player');
+            window.player = player;
             player.source = {
                 type: 'video',
                 title: data.title,
-                download: false,
+                download: true,
                 sources: [
                     {
                         src: data.src,
@@ -128,7 +127,7 @@
                     }
                 ]
             }
-            player.play();
+
         })
     </script>
 @endpush
