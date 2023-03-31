@@ -9,8 +9,8 @@
                         <li><a href="{{ route('about') }}">درباره ما</a></li>
                         <li><a href="{{ route('contact') }}">با ما تماس بگیرید</a></li>
                         <li><a href="{{ route('fag') }}">سوالات متداول</a></li>
-                        <li><a href="{{ route('courses') }}">دوره های اموزشی</a></li>
-                        <li><a href="{{ route('teachers') }}">مدریسن</a></li>
+                        <li><a href="{{ route('courses') }}">دوره های آموزشی</a></li>
+                        <li><a href="{{ route('teachers') }}">مدرسین</a></li>
                         <li><a href="{{ route('samples') }}">نمونه سوالات</a></li>
                     </ul>
                 </div>

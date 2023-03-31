@@ -110,10 +110,6 @@ class User extends Authenticatable implements Wallet, Confirmable
         return $this->hasMany(Ticket::class)->latest('id')->parent(true);
     }
 
-    public function setImageAttribute($value)
-    {
-        $this->attributes['image'] = str_replace(env('APP_URL'), '', $value);
-    }
 
     public function getImageAttribute($value)
     {
