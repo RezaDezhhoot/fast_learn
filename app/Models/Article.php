@@ -46,16 +46,6 @@ class Article extends Model
         return $query->whereNotNull('category_id');
     }
 
-    public function setImageAttribute($value)
-    {
-        $this->attributes['image'] = str_replace(env('APP_URL'), '', $value);
-    }
-
-    public function setAuthorImageAttribute($value)
-    {
-        $this->attributes['author_image'] = str_replace(env('APP_URL'), '', $value);
-    }
-
     public function getStatusLabelAttribute(): string
     {
         return ArticleEnum::getStatus()[$this->status];

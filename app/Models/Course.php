@@ -105,12 +105,6 @@ class Course extends Model
         return sprintf('%02d', $hours);
     }
 
-
-    public function setImageAttribute($value)
-    {
-        $this->attributes['image'] = str_replace(env('APP_URL'), '', $value);
-    }
-
     public function getCanCustomizeAttribute(): bool
     {
         return empty($this->const_price);
@@ -284,10 +278,5 @@ class Course extends Model
     public function rollCalls(): HasManyThrough
     {
         return $this->hasManyThrough(RollCall::class,OrderDetail::class);
-    }
-
-    public function setTimeLapseAttribute($value)
-    {
-        $this->attributes['time_lapse'] = str_replace(env('APP_URL'), '', $value);
     }
 }

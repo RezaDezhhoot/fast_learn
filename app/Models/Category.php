@@ -48,11 +48,6 @@ class Category extends Model
         return CategoryEnum::getTypes()[$this->type];
     }
 
-    public function setImageAttribute($value)
-    {
-        $this->attributes['image'] = str_replace(env('APP_URL'), '', $value);
-    }
-
     public function child(): HasMany
     {
         return $this->hasMany($this,'parent_id');

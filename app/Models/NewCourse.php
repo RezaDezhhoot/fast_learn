@@ -53,15 +53,6 @@ class NewCourse extends Model
         );
     }
 
-    public function setFilesAttribute($value)
-    {
-        $file = [];
-        foreach (explode(',',$value) as $item)
-            $file[] = str_replace(env('APP_URL'), '', $item);
-
-        $this->attributes['files'] = implode(',',$file);
-    }
-
     public function getFilesAttribute($value)
     {
         if (!empty($value))

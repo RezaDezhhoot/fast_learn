@@ -92,9 +92,11 @@ class Contents extends BaseComponent
                     endif;
                     break;
                 case 'file':
-                    if ($disk = getDisk($episode->file_storage))
-                        if ($disk->exists($episode->file) and (( $this->course_data->price == 0) || $user_has_episode))
+                    if ($disk = getDisk($episode->file_storage)) {
+                        if ($disk->exists($episode->file) and (( $this->course_data->price == 0) || $user_has_episode)) {
                             return $disk->download($episode->file);
+                        }
+                    }
                     break;
                 case 'link':
                     if (!is_null($episode->link) and ((  $this->course_data->price == 0) || $user_has_episode))

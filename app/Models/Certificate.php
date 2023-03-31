@@ -21,25 +21,6 @@ class Certificate extends Model
 
     protected array $searchAbleColumns = ['name'];
 
-    public function setLogoAttribute($value)
-    {
-        $this->attributes['logo'] = str_replace(env('APP_URL'), '', $value);
-    }
-
-    public function setBgImageAttribute($value)
-    {
-        $this->attributes['bg_image'] = str_replace(env('APP_URL'), '', $value);
-    }
-
-    public function setAutographImageAttribute($value)
-    {
-        $this->attributes['autograph_image'] = str_replace(env('APP_URL'), '', $value);
-    }
-
-    public function setBorderImageAttribute($value)
-    {
-        $this->attributes['border_image'] = str_replace(env('APP_URL'), '', $value);
-    }
 
     public function users(): HasMany
     {

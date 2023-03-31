@@ -36,7 +36,7 @@ class StorageConfigServiceProvider extends ServiceProvider
             StorageEnum::PUBLIC_LABEL => [
                 'driver' => 'local',
                 'root' => storage_path('app/public'),
-                'url' => env('APP_URL').'/storage',
+                'url' => 'storage',
                 'visibility' => 'public',
                 'throw' => false,
             ],
@@ -57,17 +57,17 @@ class StorageConfigServiceProvider extends ServiceProvider
             ->map(function($item , $key){
                 $item->config = json_decode($item->config,true);
 
-                if (isset($item->config['port'])) 
+                if (isset($item->config['port']))
                     $item->config['port'] = (int)$item->config['port'];
-                
-                if (isset($item->config['privateKey'])) 
+
+                if (isset($item->config['privateKey']))
                     $item->config['privateKey'] = emptyToNull($item->config['privateKey']);
-                
+
                 return $item;
             })
             ->pluck('config','name')
             ->toArray();
-            
+
             $disks = array_merge($storages,$disks);
         }
         config(['filesystems.disks' => $disks]);

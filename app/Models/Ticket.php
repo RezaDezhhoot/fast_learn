@@ -58,18 +58,10 @@ class Ticket extends Model
         return Jalalian::forge($this->created_at)->format('%A, %d %B %Y');
     }
 
-    public function setFileAttribute($value)
-    {
-        $file = [];
-        foreach (explode(',',$value) as $item)
-            $file[] = str_replace(env('APP_URL'), '', $item);
-
-        $this->attributes['file'] = implode(',',$file);
-    }
 
     public function getFileAttribute($value)
     {
-        
+
         return explode(',',$value);
     }
 
