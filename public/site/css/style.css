@@ -10316,3 +10316,7 @@
 .organ-title {
     text-shadow: 5px 3px #4d4d4d;
 }
+
+.episode-title{
+    width: 50%;
+}
