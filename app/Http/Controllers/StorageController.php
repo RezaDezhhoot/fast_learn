@@ -17,7 +17,7 @@ class StorageController extends Controller
         $this->episodeRepository = $episodeRepository;
     }
 
-    public function __invoke($episode,$type): \Illuminate\Http\Response
+    public function __invoke($episode,$type)
     {
         $episode = $this->episodeRepository->findOrFail($episode);
         if (!$episode->free && !$episode->chapter->course->price == 0) {
@@ -37,16 +37,23 @@ class StorageController extends Controller
         };
     }
 
-    private function getFile($path , Filesystem $filesystem): \Illuminate\Http\Response
+    private function getFile($path , Filesystem $filesystem)
     {
+        ini_set('memory_limit', '-1');
         if (!$filesystem->exists($path))
             abort(404);
 
         $file = $filesystem->get($path);
 
         $type = $filesystem->mimeType($path);
-        $response = Response::make($file, 200);
+        $response = Response::make($file);
         $response->header("Content-Type", $type);
+        $response->header("Content-Description", 'File Transfer');
+        $response->header("Content-Transfer-Encoding", 'binary');
+        $response->header("Expires", 0);
+        $response->header("Cache-Control", 'must-revalidate, post-check=0, pre-check=0');
+        $response->header("Pragma", 'public');
+        $response->header("Content-Length", $filesystem->size($path));
 
         return $response;
     }
