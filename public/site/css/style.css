@@ -10307,3 +10307,6 @@
          100% { transform: rotate(360deg); }
      }
 
+     .episode-title{
+         width: 50%;
+     }

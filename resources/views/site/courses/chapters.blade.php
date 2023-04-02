@@ -43,10 +43,10 @@
                                         @foreach($item['episode_title_list'] as $episode)
                                             <li>
                                                     <a href="{{route('episode',[$course['slug'],$item['slug'],$episode['id'],$episode['title']])}}" class="d-flex align-items-center justify-content-between">
-                                                                <span>
-                                                                    <i class="la la-book-open mr-1"></i>
+                                                                <div class="episode-title">
+                                                                    <i class="la la-video mr-1"></i>
                                                                     {{$episode['title']}}
-                                                                </span>
+                                                                </div>
                                                     <span>
                                                         {{ $episode['time'] }}
                                                     </span>
