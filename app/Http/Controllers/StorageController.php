@@ -39,22 +39,24 @@ class StorageController extends Controller
 
     private function getFile($path , Filesystem $filesystem)
     {
-        ini_set('memory_limit', '-1');
-        if (!$filesystem->exists($path))
-            abort(404);
+        set_time_limit(0);
+        $fs = $filesystem->getDriver();
 
-        $file = $filesystem->get($path);
+        $metaData = $filesystem->mimeType($path);
+        $stream = $fs->readStream($path);
 
-        $type = $filesystem->mimeType($path);
-        $response = Response::make($file);
-        $response->header("Content-Type", $type);
-        $response->header("Content-Description", 'File Transfer');
-        $response->header("Content-Transfer-Encoding", 'binary');
-        $response->header("Expires", 0);
-        $response->header("Cache-Control", 'must-revalidate, post-check=0, pre-check=0');
-        $response->header("Pragma", 'public');
-        $response->header("Content-Length", $filesystem->size($path));
 
-        return $response;
+        if (ob_get_level()) ob_end_clean();
+
+        return response()->stream(
+            function() use($stream) {
+                while(ob_get_level() > 0) ob_end_flush();
+                fpassthru($stream);
+            },
+            200,
+            [
+                'Content-Type' => $metaData,
+                'Content-disposition' => 'attachment; filename="' . basename($path) . '"',
+            ]);
     }
 }

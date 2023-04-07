@@ -11,7 +11,7 @@
                             {!! $episode_data->api_bucket !!}
                         @elseif(!empty($episode_data->local_video))
                                 <div wire:loading.remove class="plyr plyr--full-ui plyr--video plyr--html5 plyr--fullscreen-enabled plyr--paused">
-                                    <video  id="player" class="player" playsinline crossorigin controls data-poster="{{asset($course_data['image'])}}" poster="{{asset($course_data['image'])}}">
+                                    <video preload id="player" class="player" playsinline crossorigin controls data-poster="{{asset($course_data['image'])}}" poster="{{asset($course_data['image'])}}">
                                     </video>
                                 </div>
                             @endif
