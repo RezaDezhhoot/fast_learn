@@ -54,4 +54,9 @@ class CertificateRepository implements CertificateRepositoryInterface
     {
         return Certificate::count();
     }
+
+    public function params()
+    {
+        return Certificate::certificateParams();
+    }
 }

@@ -25,4 +25,6 @@ interface CertificateRepositoryInterface
     public function getAll();
 
     public function count();
+
+    public function params();
 }
