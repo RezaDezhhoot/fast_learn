@@ -77,12 +77,12 @@ class Episode extends Model
 
     public function setFileAttribute($value)
     {
-        $this->attributes['file'] = ltrim( $value,'/storage');
+        $this->attributes['file'] = ltrim( $value,env('APP_URL').'/storage');
     }
 
     public function setLocalVideoAttribute($value)
     {
-        $this->attributes['local_video'] = ltrim( $value,'/storage');
+        $this->attributes['local_video'] = ltrim( $value,env('APP_URL').'/storage');
     }
 
     public function homeworks(): HasMany
