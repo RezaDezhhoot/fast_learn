@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\CertificateEnum;
 use App\Traits\Admin\Searchable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,6 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static findOrFail($id)
  * @method static latest(string $string)
  * @method static count()
+ * @property mixed $content_type
  */
 class Certificate extends Model
 {
@@ -55,5 +57,7 @@ class Certificate extends Model
             '{score}' => 'نمره کسب شده',
         ];
     }
+
+
 
 }

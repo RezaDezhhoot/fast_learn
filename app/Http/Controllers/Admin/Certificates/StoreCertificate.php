@@ -14,7 +14,7 @@ class StoreCertificate extends BaseComponent
     public object $certificate;
     public $header , $name , $title  , $logo , $bg_image , $autograph_image , $border_image ,$demo , $params = [], $content_type;
 
-    public $param_title , $param_top = null, $param_left = null , $panel_top = null , $panel_left = null;
+    public $param_title , $param_top = null, $param_left = null , $panel_top = null , $panel_left = null , $panel_right = null , $panel_with = null , $panel_height = null;
 
     public function __construct($id = null)
     {
@@ -92,6 +92,7 @@ class StoreCertificate extends BaseComponent
         if ($this->mode == self::CREATE_MODE)
             $this->userRepository->submit_certificate(Auth::user(),$model->id,0);
 
+
         return $this->emitNotify('اطلاعات با موفقیت ذخیره شد');
     }
 
@@ -121,6 +122,9 @@ class StoreCertificate extends BaseComponent
                 'left' => $this->param_left,
                 'panel_top' => $this->panel_top,
                 'panel_left' => $this->panel_left,
+                'panel_right' => $this->panel_right,
+                'panel_with' => $this->panel_with,
+                'panel_height' => $this->panel_height,
                 'change' => false
             ];
             $this->reset(['param_title']);
@@ -133,6 +137,9 @@ class StoreCertificate extends BaseComponent
         $this->params[$data['id']]['left'] = $data['left'];
         $this->params[$data['id']]['panel_top'] = $data['panel_top'];
         $this->params[$data['id']]['panel_left'] = $data['panel_left'];
+        $this->params[$data['id']]['panel_right'] = $data['panel_right'];
+        $this->params[$data['id']]['panel_with'] = $data['panel_with'];
+        $this->params[$data['id']]['panel_height'] = $data['panel_height'];
         $this->params = collect($this->params)->map(function ($v , $k) {
             $v['change'] = true;
             return $v;

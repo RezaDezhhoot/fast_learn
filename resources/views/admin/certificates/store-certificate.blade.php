@@ -112,8 +112,13 @@
 
             items.forEach((ball , K) => {
                 ball.onmousedown = function(event) {
+                    // alert(panel.getBoundingClientRect().left);
                     var panel_top = window.pageYOffset + panel.getBoundingClientRect().top
-                    var panel_left = window.pageYOffset + panel.getBoundingClientRect().left
+                    var panel_left = panel.getBoundingClientRect().left
+                    var panel_right = panel.getBoundingClientRect().right
+                    var panel_with = panel.offsetWidth;
+                    var panel_height = panel.offsetHeight;
+
 
                     let shiftX = event.clientX - ball.getBoundingClientRect().left;
                     let shiftY = event.clientY - ball.getBoundingClientRect().top;
@@ -138,7 +143,7 @@
                         document.getElementById(`key-${ball.id}`).style.top = pageY - shiftY + 'px';
 
                         @this.call('setParamData', {
-                            id:ball.id,panel_top , panel_left , left: pageX - shiftX , top:pageY - shiftY
+                            id:ball.id,panel_top , panel_left , left: pageX - shiftX , top:pageY - shiftY , panel_with , panel_height , panel_right
                         })
                     }
 
