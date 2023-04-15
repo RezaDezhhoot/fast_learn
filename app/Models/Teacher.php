@@ -23,6 +23,10 @@ class Teacher extends Model
 
     public $appends = ['short_code','username'];
 
+    public $casts = [
+        'panel_status' => 'boolean'
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

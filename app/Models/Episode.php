@@ -44,6 +44,10 @@ class Episode extends Model
         'file_storage' => 'string',
         'video_storage' => 'string',
         'homework_storage' => 'string',
+        'free' => 'boolean',
+        'show_api_video' => 'boolean',
+        'downloadable_local_video' => 'boolean',
+        'can_homework' => 'boolean',
     ];
 
     protected $appends = [

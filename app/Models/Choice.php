@@ -15,6 +15,10 @@ class Choice extends Model
     use HasFactory;
 
 
+    public $casts = [
+        'is_true' => 'boolean'
+    ];
+
     public function question(): BelongsTo
     {
         return $this->belongsTo(Question::class);
