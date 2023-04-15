@@ -42,7 +42,7 @@
                     </x-admin.form-section>
 
                     <div style="position: relative" wire:ignore.self>
-                        <div id="panel" class="bg-secondary mx-auto" wire:ignore.self style="height: 100mm;width: 290mm">
+                        <div id="panel"  class="bg-secondary mx-auto" wire:ignore.self style="height: 100mm;width: 290mm;background-image: url('{{asset($bg_image)}}');background-size: 100% 100%;background-repeat: no-repeat;background-position: center;">
                             @foreach($params as $key => $param)
                                 @if($param['change'] == false)
                                 <span  id="{{$key}}" class="item d-flex align-items-center p-4" style="cursor: grab;position:absolute; z-index: 1000;left: {{$param['left']}}px;top: {{$param['top']}}px"
