@@ -120,11 +120,11 @@ class StoreCertificate extends BaseComponent
                 'title' => $this->param_title,
                 'top' => $this->param_top,
                 'left' => $this->param_left,
-                'panel_top' => $this->panel_top,
-                'panel_left' => $this->panel_left,
-                'panel_right' => $this->panel_right,
-                'panel_with' => $this->panel_with,
-                'panel_height' => $this->panel_height,
+                'panel_top' => $this->panel_top ?? 1,
+                'panel_left' => $this->panel_left ?? 1,
+                'panel_right' => $this->panel_right ?? 1,
+                'panel_with' => $this->panel_with ?? 1,
+                'panel_height' => $this->panel_height ?? 1,
                 'change' => false
             ];
             $this->reset(['param_title']);

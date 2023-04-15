@@ -133,7 +133,7 @@ class Setting extends Model
                 'Sahand' => 'سهند',
                 ''
             ],
-            'Azerbaijan, West' => [
+            'Azerbaijan West' => [
                 'Orumie' => 'ارومیه',
                 'Khouy' => 'خوی',
                 'Myandoab' => 'میاندوآب',

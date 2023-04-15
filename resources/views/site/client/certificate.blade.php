@@ -148,7 +148,7 @@
                                 <div class="col-10">
                                     <div style="position: relative;height: 100%" dir="ltr">
                                         @foreach($certificate->custom_text as $item)
-                                            <span style="position: absolute;left: {{ min(round((($item['left'] - $item['panel_left'])/$item['panel_with'])*100),100) }}%;top: {{$item['top'] - $item['panel_top']}}px">
+                                            <span style="position: absolute;left: {{ min(round((($item['left'] - $item['panel_left'])/($item['panel_with'] ?? 1))*100),100) }}%;top: {{$item['top'] - $item['panel_top']}}px">
                                                 {{$item['title']}}
                                             </span>
                                         @endforeach
