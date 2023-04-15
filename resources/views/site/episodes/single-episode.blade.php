@@ -11,15 +11,10 @@
                             {!! $episode_data->api_bucket !!}
                         @elseif(!empty($episode_data->local_video))
                                 <div class="container-fluid" wire:ignore>
-                                    <video controls crossorigin playsinline poster="{{$course_data['image']}}" id="player">
-                                        <!-- Video files -->
-{{--                                        <source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4" type="video/mp4" size="576">--}}
-{{--                                        <source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-720p.mp4" type="video/mp4" size="720">--}}
-{{--                                        <source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-1080p.mp4" type="video/mp4" size="1080">--}}
-{{--                                        <source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-1440p.mp4" type="video/mp4" size="1440">--}}
-
-
-                                    </video>
+                                    <div wire:loading.remove class="plyr plyr--full-ui plyr--video plyr--html5 plyr--fullscreen-enabled plyr--paused">
+                                        <video preload id="player" class="player" playsinline crossorigin controls data-poster="{{asset($course_data['image'])}}" poster="{{asset($course_data['image'])}}">
+                                        </video>
+                                    </div>
                                 </div>
                             @endif
                         </div>
