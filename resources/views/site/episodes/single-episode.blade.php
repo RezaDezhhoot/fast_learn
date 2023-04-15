@@ -109,7 +109,7 @@
                     <livewire:site.includes.site.footer/>
                 </div>
                 <!-- end course-dashboard-column -->
-                <div class="course-dashboard-sidebar-column" >
+                <div class="course-dashboard-sidebar-column episode-list" >
                     <button class="sidebar-open" type="button"><i class="la la-angle-right"></i> محتوای دوره</button>
                     <livewire:site.episodes.contents :course="$course_data" :chapter="$chapter_data" :episode="$episode_data" />
                     <!-- end course-dashboard-sidebar-wrap -->
