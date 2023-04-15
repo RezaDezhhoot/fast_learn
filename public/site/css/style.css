@@ -10320,3 +10320,6 @@
 .episode-title{
     width: 50%;
 }
+     .episode-list{
+         overflow-y: auto;
+     }
