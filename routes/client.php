@@ -31,4 +31,8 @@ Route::prefix('client')->middleware(['auth'])->group(function (){
     Route::get('/sample-questions',App\Http\Controllers\Site\Client\MySample::class)->name('user.sample');
     // v3-teachers
     Route::get('/requests',App\Http\Controllers\Site\Client\Requests::class)->name('user.requests');
+
+    Route::get('/create-organ/requests',App\Http\Controllers\Site\Client\OrganRequest::class)->name('user.organ.request');
+
+    Route::get('/rating/{id}',App\Http\Controllers\Site\Client\Ratings\StoreRating::class)->name('user.rating');
 });

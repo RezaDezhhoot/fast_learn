@@ -23,8 +23,9 @@ class BaseComponent extends Component
         $choiceRepository , $reductionRepository , $reductionMetaRepository , $roleRepository , $permissionRepository , $ticketRepository ,
         $sendRepository , $userDetailRepository , $orderNoteRepository , $homeworkRepository , $contactUsRepository , $logRepository ,
         $sampleRepository , $storageRepository , $teacherRequestRepository , $storagePermissionRepository , $newCoursesRepository , $incomingMethodRepository ,
-        $bankAccountsRepository , $checkoutRepository , $lastActivityRepository , $chapterRepository , $chapterTranscriptRepository;
+        $bankAccountsRepository , $checkoutRepository , $lastActivityRepository , $chapterRepository , $chapterTranscriptRepository , $violationReportRepository;
 
+    protected $formReposirtory , $organRepository , $groupRepository;
     public  $mode = '' , $search = '';
 
     public int $per_page = 10;

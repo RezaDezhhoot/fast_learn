@@ -63,6 +63,25 @@ class EpisodeTranscriptRepository implements EpisodeTranscriptRepositoryInterfac
         })->search($search)->paginate($per_page);
     }
 
+    public function getAllOrgan($search, $status, $course, $per_page)
+    {
+        return EpisodeTranscript::latest('id')->whereHas('chapter',function ($q) {
+            return $q->whereHas('course',function ($q){
+                return $q->whereHas('organ',function ($q){
+                    return $q->whereIn('id',Auth::user()->organs->pluck('id'));
+                });
+            });
+        })->when($course,function ($q) use ($course) {
+            return $q->whereHas('chapter',function ($q) use ($course) {
+                return $q->whereHas('course',function ($q) use ($course) {
+                    return $q->where('id',$course);
+                });
+            });
+        })->when($status,function ($q) use ($status) {
+            return $q->where('status',$status);
+        })->search($search)->paginate($per_page);
+    }
+
     public function find($id)
     {
         return EpisodeTranscript::find($id);
@@ -100,6 +119,17 @@ class EpisodeTranscriptRepository implements EpisodeTranscriptRepositoryInterfac
             return $q->whereHas('course',function ($q){
                 return $q->whereHas('teacher',function ($q){
                     return $q->where('user_id',Auth::id());
+                });
+            });
+        })->findOrFail($id);
+    }
+
+    public function findOrganEpisode($id)
+    {
+        return EpisodeTranscript::whereHas('chapter',function ($q) {
+            return $q->whereHas('course',function ($q){
+                return $q->whereHas('organ',function ($q){
+                    return $q->whereIn('id',Auth::user()->organs->pluck('id'));
                 });
             });
         })->findOrFail($id);

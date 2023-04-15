@@ -8,12 +8,15 @@ use App\Repositories\Interfaces\ChapterTranscriptRepositoryInterface;
 use App\Repositories\Interfaces\CommentRepositoryInterface;
 use App\Repositories\Interfaces\ContactUsRepositoryInterface;
 use App\Repositories\Interfaces\EpisodeTranscriptRepositoryInterface;
+use App\Repositories\Interfaces\FormRepositoryInterface;
 use App\Repositories\Interfaces\NewCourseRepositoryInterface;
+use App\Repositories\Interfaces\OrganRepositoryInterface;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
 use App\Repositories\Interfaces\TeacherCheckoutRepositoryInterface;
 use App\Repositories\Interfaces\TeacherRequestRepositoryInterface;
 use App\Repositories\Interfaces\TicketRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
+use App\Repositories\Interfaces\ViolationReportRepositoryInterface;
 
 class Sidebar extends BaseComponent
 {
@@ -23,7 +26,8 @@ class Sidebar extends BaseComponent
         UserRepositoryInterface $userRepository , SettingRepositoryInterface $settingRepository ,
         ContactUsRepositoryInterface $contactUsRepository , TeacherRequestRepositoryInterface $teacherRequestRepository,
         NewCourseRepositoryInterface $newCourseRepository , EpisodeTranscriptRepositoryInterface $episodeTranscriptRepository,
-        BankAccountRepositoryInterface $bankAccountRepository , TeacherCheckoutRepositoryInterface $checkoutRepository , ChapterTranscriptRepositoryInterface $chapterTranscriptRepository
+        BankAccountRepositoryInterface $bankAccountRepository , TeacherCheckoutRepositoryInterface $checkoutRepository , ChapterTranscriptRepositoryInterface $chapterTranscriptRepository ,
+        ViolationReportRepositoryInterface $violationReportRepository , FormRepositoryInterface $formRepository , OrganRepositoryInterface $organRepository
     )
     {
         $data = [
@@ -36,7 +40,10 @@ class Sidebar extends BaseComponent
             'episode_transcripts' => $episodeTranscriptRepository::getNew(),
             'chapter_transcripts' => $chapterTranscriptRepository::getNew(),
             'bank_accounts' => $bankAccountRepository::getNew(),
-            'checkouts' => $checkoutRepository::getNew()
+            'checkouts' => $checkoutRepository::getNew(),
+            'violations' => $violationReportRepository::getNew(),
+            'forms' => $formRepository::newItems(),
+            'organs' => $organRepository->getNew()
         ];
         return view('admin.layouts.sidebar',$data);
     }

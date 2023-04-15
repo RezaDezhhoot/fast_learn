@@ -27,7 +27,7 @@ class StoreEpisodeTranscript extends BaseComponent
         $this->data['storage'] = getAvailableStorages();
         if ($this->mode == self::UPDATE_MODE) {
             $this->episode = $this->episodeTranscriptRepository->findOrFail($id);
-            $this->header = " {$this->episode->chapter->course->title} - {$this->episode->chapter->title} - {$this->episode->title}";
+            $this->header = @$this->episode->chapter->course->title.' - '.@$this->episode->chapter->title. ' - ' .@$this->episode->title;
             $this->status =  $this->episode->status;
             $this->message =  $this->episode->message;
             $this->is_confirmed =  $this->episode->is_confirmed;

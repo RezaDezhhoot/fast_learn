@@ -36,7 +36,7 @@ class SingleCourse extends BaseComponent
 
     private $homework ;
 
-    public $episode  , $has_samples = false , $chapters = [] , $show_homework_form = false;
+    public $episode  , $has_samples = false , $chapters = [] , $show_homework_form = false , $time_lapse;
 
     public function __construct($id = null)
     {
@@ -88,6 +88,7 @@ class SingleCourse extends BaseComponent
         $this->courseRepository->increment($this->course,1);
         $this->chapters = collect($this->course->chapters)->sortBy('view');
         $this->emit('loadRecaptcha');
+
     }
 
     public function render()

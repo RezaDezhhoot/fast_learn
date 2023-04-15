@@ -92,6 +92,8 @@ trait FormBuilder
         $this->resetErrorBag();
         if (in_array($this->form[$this->formKey]['type'], ['text', 'textArea'])) {
             $this->emit('showModal', 'text');
+        } elseif (in_array($this->form[$this->formKey]['type'], ['file'])) {
+            $this->emit('showModal', 'file');
         } elseif (in_array($this->form[$this->formKey]['type'], ['select', 'customRadio'])) {
             $this->emit('showModal', 'select');
         } else {

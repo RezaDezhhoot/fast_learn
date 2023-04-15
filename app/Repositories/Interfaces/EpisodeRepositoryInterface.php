@@ -23,11 +23,17 @@ interface EpisodeRepositoryInterface
 
     public function getAllAdmin($course = null , $chapter = null ,$search = null,$perPage = 10);
 
-    public function getAllTeacher($course , $search , $per_page);
+    public function getAllTeacher($course , $search , $per_page , $chapter = null);
+
+    public function getAllOrgan($course , $search , $per_page , $chapter = null);
 
     public function findTeacherEpisode($id);
 
+    public function findOrganEpisode($id);
+
     public function getTeachersCount($from_date , $to_date);
+
+    public function getOrganCount($from_date , $to_date);
 
     public function newComment(Episode $episode, array $data);
 
@@ -36,4 +42,14 @@ interface EpisodeRepositoryInterface
     public function like($episode);
 
     public function unLike($episode);
+
+    public function submitReport(Episode $episode , $subject);
+
+    public function hasReported(Episode $episode);
+
+    public function submitRollCall($episode_id,$details_id,$user_id,$status);
+
+    public function checkEpisodeForRollCall($episode_id,$details_id,$user_id);
+
+//    public function getRollCalls(Episode $episode);
 }

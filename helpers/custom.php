@@ -60,3 +60,13 @@ function custom_text($key , $raw_text = '' ,$values = [])
         $raw_text
     );
 }
+
+function event_custom_text($key , $raw_text = '' ,$values = [])
+{
+    $eventRepository = app(\App\Repositories\Interfaces\EventRepositoryInterface::class);
+
+    return str_replace(array_keys($eventRepository::getParams()[$key]),
+        $values,
+        $raw_text
+    );
+}

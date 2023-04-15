@@ -4,6 +4,7 @@
 namespace App\Repositories\Interfaces;
 
 
+use App\Models\Course;
 use App\Models\OrderDetail;
 
 interface OrderDetailRepositoryInterface
@@ -18,11 +19,19 @@ interface OrderDetailRepositoryInterface
 
     public function getDashboardData($from_date, $to_date, $course_id = null);
 
-    public function getDashboardDataPayments($from_date, $to_date, $sum, $course_id = null, $teacher = false);
+    public function getDashboardDataPayments($from_date, $to_date, $sum, $course_id = null, $teacher = false , $organ = false);
 
     public function paymentOfFeesIfCourseHasTeacherAndValidIncomingMethod(OrderDetail $orderDetail): bool|int;
+
+    public function paymentOfFeesIfCourseHasOrganAndValidIncomingMethod(OrderDetail $orderDetail): bool|int;
 
     public function getOrderDetailCount(array $where);
 
     public function getTeacherStudents($from_date , $to_date);
+
+    public function getOrgansStudents($from_date , $to_date);
+
+    public function getAllByCourse($course , $user_search , $perPage=10);
+
+    public function getAllOrgan($search , $status,$per_page);
 }

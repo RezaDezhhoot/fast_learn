@@ -130,11 +130,31 @@ class SampleRepository implements SampleRepositoryInterface
         })->search($search)->paginate($pagination);
     }
 
+    public function getAllOrgans($search, $status, $course, $pagination)
+    {
+        return Sample::withoutGlobalScope('published')->latest('id')->whereHas('course',function ($q) use ($course){
+            return $q->whereHas('organ',function ($q){
+                return $q->whereIn('id',Auth::user()->organs->pluck('id'));
+            })->when($course,function ($q) use ($course) {
+                return $q->where('id',$course);
+            });
+        })->search($search)->paginate($pagination);
+    }
+
     public function findOrFailTeacher($id)
     {
         return Sample::withoutGlobalScope('published')->whereHas('course',function ($q) {
             return $q->whereHas('teacher',function ($q){
                 return $q->where('user_id',Auth::id());
+            });
+        })->findOrFail($id);
+    }
+
+    public function findOrFailOrgan($id)
+    {
+        return Sample::withoutGlobalScope('published')->whereHas('course',function ($q) {
+            return $q->whereHas('organ',function ($q){
+                return $q->whereIn('id',Auth::user()->organs->pluck('id'));
             });
         })->findOrFail($id);
     }

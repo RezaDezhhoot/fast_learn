@@ -46,6 +46,7 @@
                 <div class="content">
                     <div class="row mt-4">
                         <div class="row">
+                            @if($certificate->certificate->content_type == \App\Enums\CertificateEnum::DEFAULT)
                             <div class="col-1">
 
                             </div>
@@ -143,15 +144,31 @@
                                     </tr>
                                 </table>
                             </div>
+                            @else
+                                <div class="col-10">
+                                    <div style="position: relative;height: 100%" dir="ltr">
+                                        @foreach($certificate->custom_text as $item)
+                                            <span style="position: absolute;left: {{ min(round((($item['left'] - $item['panel_left'])/$item['panel_with'])*100),100) }}%;top: {{$item['top'] - $item['panel_top']}}px">
+                                                {{$item['title']}}
+                                            </span>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                <div class="col-2 p-1 d-flex justify-content-end">
+                                    @if(!empty($certificate->user->image))
+                                        <img class="certificate-image" src="{{ asset($certificate->user->image) }}" alt="">
+                                    @endif
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
             </main>
-            <footer>
-                <div class="autograph">
-                    <img src="{{ asset($certificate->certificate->autograph_image) }}" >
-                </div>
-            </footer>
+{{--            <footer>--}}
+{{--                <div class="autograph">--}}
+{{--                    <img src="{{ asset($certificate->certificate->autograph_image) }}" >--}}
+{{--                </div>--}}
+{{--            </footer>--}}
         </div>
     </div>
     <div class="mt-3">

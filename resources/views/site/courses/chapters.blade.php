@@ -47,10 +47,10 @@
                                                     @else
                                                             <a class="d-flex align-items-center justify-content-between">
                                                   @endif
-                                                                <span>
+                                                                <div class="episode-title">
                                                                     <i class="la la-book-open mr-1"></i>
                                                                     {{$episode['title']}}
-                                                                </span>
+                                                                </div>
                                                     <span>
                                                         {{ $episode['time'] }}
                                                     </span>

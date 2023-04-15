@@ -20,23 +20,29 @@ class Contents extends BaseComponent
 
     public $recaptcha;
 
+    public $view;
+
     public function __construct($id = null)
     {
         parent::__construct($id);
         $this->courseRepository = app(CourseRepositoryInterface::class);
     }
 
-    public function mount($course , $chapter , $episode)
+    public function mount($course , $chapter , $episode , $view = 'web')
     {
         $this->episode_data = $episode;
         $this->course_data = $course;
         $this->chapter_data = $chapter;
+        $this->view = $view;
         $this->user = auth()->user();
     }
 
     public function render()
     {
-        return view('site.episodes.contents');
+        if ($this->view == 'web')
+            return view('site.episodes.contents');
+        else
+            return view('site.episodes.mobile-contents');
     }
 
     public function GoToEpisode($chapter,$episode)
@@ -52,8 +58,10 @@ class Contents extends BaseComponent
 
     public function loadEpisode($episode)
     {
-        $this->set_content('local_video',$episode);
-        $this->set_content('show_local_video',$episode);
+        if ($this->view == 'web') {
+            $this->set_content('local_video',$episode);
+            $this->set_content('show_local_video',$episode);
+        }
     }
 
     public function set_content($type,$id)

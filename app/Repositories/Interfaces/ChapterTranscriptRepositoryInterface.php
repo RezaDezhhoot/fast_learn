@@ -10,6 +10,8 @@ interface ChapterTranscriptRepositoryInterface
 
     public function getAllTeacher($course , $status , $search , $perPage);
 
+    public function getAllOrgan($course , $status , $search , $perPage);
+
     public function findOrFailTeacher($id);
 
     public function findOrFail($id);
@@ -25,6 +27,8 @@ interface ChapterTranscriptRepositoryInterface
     public function confirmThisTranscript(ChapterTranscript $chapterTranscript  , $status ,$chapter = null);
 
     public function findTeacherChapter($id);
+
+    public function findOrganChapter($id);
 
     public static function getNew();
 }

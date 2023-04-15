@@ -24,8 +24,8 @@
                         <tbody>
                         <tr>
                             <td>{{ $episode->title }}</td>
-                            <td>{{ $episode->chapter->title }}</td>
-                            <td>{{ $episode->chapter->course->title }}</td>
+                            <td>{{ $episode->chapter->title ?? '' }}</td>
+                            <td>{{ $episode->chapter->course->title ?? '' }}</td>
                             <td>
                                 @if(!empty($episode->link))
                                     <a target="_blank" href="{{$episode->link}}">مشاهده</a>

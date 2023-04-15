@@ -10,9 +10,11 @@ interface CourseRepositoryInterface
 {
     public function getAllAdmin($search , $status , $category , $per_page , $type);
 
-    public function getAllSite($search = null , $orderBy = null , $type = null , $category = null , $teacher = null , $property = null , $province = null , $city = null);
+    public function getAllSite($search = null , $orderBy = null , $type = null , $category = null , $teacher = null , $property = null );
 
     public function getAllTeacher($search , $level , $status , $per_page);
+
+    public function getAllOrgan($search , $level , $status , $per_page);
 
     public function save(Course $course);
 
@@ -46,5 +48,13 @@ interface CourseRepositoryInterface
 
     public function getTeachersCount($from_date , $to_date);
 
+    public function getOrgansCount($from_date , $to_date);
+
     public function setCourseToOrder($course);
+
+    public function findTeacher($id);
+
+    public function findOrgan($id);
+
+    public function submitRating(Course $course , $data);
 }

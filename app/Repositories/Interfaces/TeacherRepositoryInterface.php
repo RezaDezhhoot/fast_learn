@@ -25,4 +25,9 @@ interface TeacherRepositoryInterface
     public function updateOrCreate(array $key , array $value);
 
     public function delete($user_id);
+
+    public function attachOrgan(Teacher $teacher , array $organs);
+
+    public function syncOrgan(Teacher $teacher , array $organs);
+
 }

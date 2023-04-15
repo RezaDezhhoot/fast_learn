@@ -15,6 +15,8 @@ use App\Repositories\Classes\CourseRepository;
 use App\Repositories\Classes\EpisodeRepository;
 use App\Repositories\Classes\EpisodeTranscriptRepository;
 use App\Repositories\Classes\EventRepository;
+use App\Repositories\Classes\FormRepository;
+use App\Repositories\Classes\GroupRepository;
 use App\Repositories\Classes\HomeworkRepository;
 use App\Repositories\Classes\IncomingMethodRepository;
 use App\Repositories\Classes\LastActivityRepository;
@@ -25,6 +27,7 @@ use App\Repositories\Classes\NotificationRepository;
 use App\Repositories\Classes\OrderDetailRepository;
 use App\Repositories\Classes\OrderNoteRepository;
 use App\Repositories\Classes\OrderRepository;
+use App\Repositories\Classes\OrganRepository;
 use App\Repositories\Classes\OtpRepository;
 use App\Repositories\Classes\PaymentRepository;
 use App\Repositories\Classes\PermissionRepository;
@@ -46,6 +49,7 @@ use App\Repositories\Classes\TicketRepository;
 use App\Repositories\Classes\TranscriptRepository;
 use App\Repositories\Classes\UserDetailRepository;
 use App\Repositories\Classes\UserRepository;
+use App\Repositories\Classes\ViolationReportRepository;
 use App\Repositories\Classes\WalletRepository;
 use App\Repositories\Interfaces\ArticleRepositoryInterface;
 use App\Repositories\Interfaces\BankAccountRepositoryInterface;
@@ -60,6 +64,8 @@ use App\Repositories\Interfaces\CourseRepositoryInterface;
 use App\Repositories\Interfaces\EpisodeRepositoryInterface;
 use App\Repositories\Interfaces\EpisodeTranscriptRepositoryInterface;
 use App\Repositories\Interfaces\EventRepositoryInterface;
+use App\Repositories\Interfaces\FormRepositoryInterface;
+use App\Repositories\Interfaces\GroupRepositoryInterface;
 use App\Repositories\Interfaces\HomeworkRepositoryInterface;
 use App\Repositories\Interfaces\IncomingMethodRepositoryInterface;
 use App\Repositories\Interfaces\LastActivityRepositoryInterface;
@@ -70,6 +76,7 @@ use App\Repositories\Interfaces\NotificationRepositoryInterface;
 use App\Repositories\Interfaces\OrderDetailRepositoryInterface;
 use App\Repositories\Interfaces\OrderNoteRepositoryInterface;
 use App\Repositories\Interfaces\OrderRepositoryInterface;
+use App\Repositories\Interfaces\OrganRepositoryInterface;
 use App\Repositories\Interfaces\OtpRepositoryInterface;
 use App\Repositories\Interfaces\PaymentRepositoryInterface;
 use App\Repositories\Interfaces\PermissionRepositoryInterface;
@@ -91,6 +98,7 @@ use App\Repositories\Interfaces\TicketRepositoryInterface;
 use App\Repositories\Interfaces\TranscriptRepositoryInterface;
 use App\Repositories\Interfaces\UserDetailRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
+use App\Repositories\Interfaces\ViolationReportRepositoryInterface;
 use App\Repositories\Interfaces\WalletRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 use RecursiveDirectoryIterator;
@@ -330,6 +338,26 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             ChapterTranscriptRepositoryInterface::class,
             ChapterTranscriptRepository::class
+        );
+
+        $this->app->bind(
+            ViolationReportRepositoryInterface::class,
+            ViolationReportRepository::class
+        );
+
+        $this->app->bind(
+            FormRepositoryInterface::class,
+            FormRepository::class
+        );
+
+        $this->app->bind(
+            OrganRepositoryInterface::class,
+            OrganRepository::class
+        );
+
+        $this->app->bind(
+            GroupRepositoryInterface::class,
+            GroupRepository::class
         );
     }
 

@@ -16,6 +16,8 @@
                             <th>شماره شناسه</th>
                             <th>نام مستعار</th>
                             <th>عنوان</th>
+                            <th>آموزشگاه</th>
+                            <th>مدرس</th>
                             <th>وضعیت</th>
                             <th>نوع دوره</th>
                             <th>بازدید</th>
@@ -31,6 +33,8 @@
                                 <td>{{ $item->id }}</td>
                                 <td>{{ $item->slug }}</td>
                                 <td>{{ $item->title }}</td>
+                                <td>{{ $item->organ->title ?? '' }}</td>
+                                <td>{{ @$item->teacher->user->name ?? '' }}</td>
                                 <td>{{ $item->status_label }}</td>
                                 <td>{{ $item->type_label }}</td>
                                 <td>{{ $item->views }}</td>
@@ -41,7 +45,7 @@
                                 </td>
                             </tr>
                         @empty
-                            <td class="text-center" colspan="11">
+                            <td class="text-center" colspan="14">
                                 دیتایی جهت نمایش وجود ندارد
                             </td>
                         @endforelse

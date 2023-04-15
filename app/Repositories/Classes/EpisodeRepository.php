@@ -6,6 +6,7 @@ namespace App\Repositories\Classes;
 
 use App\Models\Episode;
 use App\Models\EpisodeLike;
+use App\Models\RollCall;
 use App\Repositories\Interfaces\EpisodeRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 
@@ -44,34 +45,65 @@ class EpisodeRepository implements EpisodeRepositoryInterface
 
     public function getAllAdmin($course = null , $chapter = null, $search = null, $perPage = 10)
     {
-        return Episode::latest('id')->with(['chapter','chapter.course'])->when($course,function ($q) use ($course){
-           return $q->whereHas('chapter',function ($q) use ($course) {
-               return $q->wherehas('course',function ($q) use ($course){
-                   return $q->where('id',$course);
-               });
-           });
+        $query =  Episode::latest('id')->with(['chapter','chapter.course'])->when($course,function ($q) use ($course){
+            return $q->whereHas('chapter',function ($q) use ($course) {
+                return $q->wherehas('course',function ($q) use ($course){
+                    return $q->where('id',$course);
+                });
+            });
         })->when($chapter,function ($q) use ($chapter) {
             return $q->whereHas('chapter',function ($q) use ($chapter) {
                 return $q->where('id',$chapter);
             });
-        })->search($search)->paginate($perPage);
+        })->search($search);
+
+        if ($perPage) {
+            return $query->paginate($perPage);
+        } else {
+            return $query->cursor();
+        }
     }
 
-    public function getAllTeacher($course, $search, $per_page)
+    public function getAllTeacher($course, $search, $per_page , $chapter = null)
     {
-        return Episode::latest('id')->whereHas('chapter',function ($q) {
+        $query = Episode::latest('id')->whereHas('chapter',function ($q) {
             return $q->whereHas('course',function ($q) {
                 return $q->whereHas('teacher',function ($q){
                     return $q->where('user_id',Auth::id());
                 });
             });
-        })->when($course,function ($q) use ($course){
-            return $q->whereHas('chapter',function ($q) use ($course) {
-                return $q->whereHas('course',function ($q) use ($course) {
-                    return $q->where('id',$course);
+        })->when($chapter,function ($q) use ($chapter) {
+            return $q->whereHas('chapter',function ($q) use ($chapter) {
+                return $q->where('id',$chapter);
+            });
+        })->search($search);
+
+        if ($per_page) {
+            return $query->paginate($per_page);
+        } else {
+            return $query->cursor();
+        }
+    }
+
+    public function getAllOrgan($course, $search, $per_page, $chapter = null)
+    {
+        $query = Episode::latest('id')->whereHas('chapter',function ($q) {
+            return $q->whereHas('course',function ($q) {
+                return $q->whereHas('organ',function ($q){
+                    return $q->whereIn('id',Auth::user()->organs->pluck('id'));
                 });
             });
-        })->search($search)->paginate($per_page);
+        })->when($chapter,function ($q) use ($chapter) {
+            return $q->whereHas('chapter',function ($q) use ($chapter) {
+                return $q->where('id',$chapter);
+            });
+        })->search($search);
+
+        if ($per_page) {
+            return $query->paginate($per_page);
+        } else {
+            return $query->cursor();
+        }
     }
 
     public function findTeacherEpisode($id)
@@ -85,12 +117,34 @@ class EpisodeRepository implements EpisodeRepositoryInterface
         })->findOrFail($id);
     }
 
+    public function findOrganEpisode($id)
+    {
+        return Episode::query()->whereHas('chapter',function ($q) {
+            return $q->whereHas('course',function ($q){
+                return $q->whereHas('organ',function ($q){
+                    return $q->whereIn('id',Auth::user()->organs->pluck('id'));
+                });
+            });
+        })->findOrFail($id);
+    }
+
     public function getTeachersCount($from_date , $to_date)
     {
         return Episode::whereBetween('created_at', [$from_date." 00:00:00", $to_date." 23:59:59"])->whereHas('chapter',function ($q) {
             return $q->whereHas('course',function ($q){
                 return $q->whereHas('teacher',function ($q){
                     return $q->where('user_id',Auth::id());
+                });
+            });
+        })->count();
+    }
+
+    public function getOrganCount($from_date, $to_date)
+    {
+        return Episode::whereBetween('created_at', [$from_date." 00:00:00", $to_date." 23:59:59"])->whereHas('chapter',function ($q) {
+            return $q->whereHas('course',function ($q){
+                return $q->whereHas('organ',function ($q){
+                    return $q->whereIn('id',Auth::user()->organs->pluck('id'));
                 });
             });
         })->count();
@@ -139,5 +193,68 @@ class EpisodeRepository implements EpisodeRepositoryInterface
         } elseif ($this->hasLiked($episode)) {
             return $episode->likes()->where('user_ip',request()->ip())->delete();
         }
+    }
+
+    public function hasReported(Episode $episode)
+    {
+        $hasReportedWithIP = $episode->reports()->where('user_ip',request()->ip())->exists();
+        if (\auth()->check()) {
+            if (!$episode->reports()->where('user_id',\auth()->id())->exists() && !$hasReportedWithIP) {
+                return false;
+            }
+        } elseif (! $hasReportedWithIP) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function submitReport(Episode $episode,$subject)
+    {
+        if (\auth()->check()) {
+            if (! $this->hasReported($episode)) {
+                $episode->reports()->create([
+                    'user_ip' => request()->ip(),
+                    'user_id' => \auth()->id(),
+                    'subject' => $subject,
+                ]);
+                return true;
+            }
+        } elseif (! $this->hasReported($episode)) {
+            $episode->reports()->create([
+                'user_ip' => request()->ip(),
+                'subject' => $subject
+            ]);
+            return true;
+        }
+
+        return false;
+    }
+
+    public function submitRollCall($episode_id , $details_id, $user_id, $status)
+    {
+        RollCall::query()
+            ->updateOrCreate([
+                'episode_id' => $episode_id,
+                'order_detail_id' => $details_id,
+                'user_id' => $user_id
+            ],[
+                'status' => $status
+            ]);
+    }
+
+    public function checkEpisodeForRollCall($episode_id, $details_id, $user_id)
+    {
+        return Episode::query()->whereHas('chapter',function ($q) use ($user_id,$details_id){
+                return $q->whereHas('course',function ($q) use ($user_id,$details_id){
+                   return $q->whereHas('details',function ($q) use ($user_id,$details_id) {
+                       return $q->where('id',$details_id)->whereHas('order',function ($q) use ($user_id){
+                          return $q->where('user_id',$user_id);
+                       });
+                   })->whereHas('teacher',function ($q) {
+                       return $q->where('id',\auth()->id());
+                   });
+                });
+            })->where('id',$episode_id)->exists();
     }
 }

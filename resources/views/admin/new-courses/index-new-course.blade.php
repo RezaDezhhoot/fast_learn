@@ -13,6 +13,7 @@
                             <th>#</th>
                             <th>عنوان دوره</th>
                             <th>سطح دوره</th>
+                            <th>اموزشگاه یا سازمان</th>
                             <th>کد کاربر</th>
                             <th>نام</th>
                             <th>شماره همراه</th>
@@ -28,6 +29,7 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->title }}</td>
                                 <td>{{ $item->level_label }}</td>
+                                <td>{{ $item->organ->title ?? '' }}</td>
                                 <td>{{ $item->user->id }}</td>
                                 <td>{{ $item->user->name }}</td>
                                 <td>{{ $item->user->phone }}</td>
@@ -40,7 +42,7 @@
                                 </td>
                             </tr>
                         @empty
-                            <td class="text-center" colspan="13">
+                            <td class="text-center" colspan="14">
                                 دیتایی جهت نمایش وجود ندارد
                             </td>
                         @endforelse

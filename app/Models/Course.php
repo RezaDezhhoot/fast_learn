@@ -10,6 +10,7 @@ use App\Traits\Admin\Searchable;
 use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Dyrynda\Database\Support\CascadeSoftDeletes;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -48,7 +49,7 @@ class Course extends Model
 {
     use HasFactory , Searchable , Sluggable , SoftDeletes , CascadeSoftDeletes;
 
-    protected $cascadeDeletes = ['comments','chapters','tags'];
+    protected $cascadeDeletes = ['comments','chapters','tags','ratings'];
 
     protected $guarded = ['id'];
 
@@ -68,6 +69,16 @@ class Course extends Model
                 'source' => 'title'
             ]
         ];
+    }
+
+    public function scopeFindSimilarSlugs(Builder $query, string $attribute, array $config, string $slug): Builder
+    {
+        $separator = $config['separator'];
+
+        return $query->where(function(Builder $q) use ($attribute, $slug, $separator) {
+            $q->where($attribute, '=', $slug)
+                ->orWhere($attribute, 'LIKE', $slug . $separator . '%');
+        })->withoutGlobalScopes();
     }
 
     protected function typeLabel(): Attribute
@@ -92,12 +103,6 @@ class Course extends Model
         $medias = $this->episodes()->sum(DB::raw("TIME_TO_SEC(time)"));
         $hours = floor($medias / 3600);
         return sprintf('%02d', $hours);
-    }
-
-
-    public function setImageAttribute($value)
-    {
-        $this->attributes['image'] = str_replace(env('APP_URL'), '', $value);
     }
 
     public function getCanCustomizeAttribute(): bool
@@ -268,5 +273,25 @@ class Course extends Model
     public function incoming_method(): BelongsTo
     {
         return $this->belongsTo(IncomingMethod::class);
+    }
+
+    public function rollCalls(): HasManyThrough
+    {
+        return $this->hasManyThrough(RollCall::class,OrderDetail::class);
+    }
+
+    public function organ(): BelongsTo
+    {
+        return $this->belongsTo(Organ::class);
+    }
+
+    public function form(): BelongsTo
+    {
+        return $this->belongsTo(Form::class);
+    }
+
+    public function ratings(): HasMany
+    {
+        return $this->hasMany(CourseRating::class);
     }
 }

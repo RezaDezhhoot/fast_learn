@@ -33,7 +33,7 @@ class CourseRepository implements CourseRepositoryInterface
         })->search($search)->paginate($per_page);
     }
 
-    public function getAllSite($search = null, $orderBy = null, $type = null, $category = null , $teacher = null, $property = null,$province = null , $city = null)
+    public function getAllSite($search = null, $orderBy = null, $type = null, $category = null , $teacher = null, $property = null)
     {
         return Course::published()->when($type, function($q) use ($type) {
             return match ($type) {
@@ -66,10 +66,6 @@ class CourseRepository implements CourseRepositoryInterface
             return $q->where('teacher_id',base64_decode($teacher));
         })->when($property , function ($q) use ($property){
             return $q->where('type',$property);
-        })->when($province,function ($q) use ($province) {
-            return $q->where('province',$province);
-        })->when($city , function ($q) use ($city) {
-            return $q->where('city' , $city);
         })->hasCategory()->paginate(9);
     }
 
@@ -174,10 +170,42 @@ class CourseRepository implements CourseRepositoryInterface
         })->search($search)->paginate($per_page);
     }
 
+    public function getAllOrgan($search, $level, $status, $per_page)
+    {
+        return Course::latest('id')->with('organ')->withCount('episodes')
+            ->whereIn('organ_id',Auth::user()->organs->pluck('id')->toArray())
+            ->when($level,function ($q) use ($level) {
+            return $q->where('level',$level);
+        })->when($status,function ($q) use ($status) {
+            return $q->where('status',$status);
+        })->search($search)->paginate($per_page);
+    }
+
+    public function findTeacher($id)
+    {
+        return Course::whereHas('teacher',function ($q){
+            return $q->where('id',Auth::id());
+        })->findOrFail($id);
+    }
+
+    public function findOrgan($id)
+    {
+        return Course::whereHas('organ',function ($q){
+            return $q->whereIn('id',Auth::user()->organs->pluck('id'));
+        })->findOrFail($id);
+    }
+
     public function getTeachersCount($from_date , $to_date)
     {
         return Course::whereBetween('created_at', [$from_date." 00:00:00", $to_date." 23:59:59"])->whereHas('teacher',function ($q){
             return $q->where('id',Auth::id());
+        })->count();
+    }
+
+    public function getOrgansCount($from_date, $to_date)
+    {
+        return Course::whereBetween('created_at', [$from_date." 00:00:00", $to_date." 23:59:59"])->whereHas('organ',function ($q){
+            return $q->whereIn('id',Auth::user()->organs->pluck('id'));
         })->count();
     }
 
@@ -218,4 +246,8 @@ class CourseRepository implements CourseRepositoryInterface
         }
     }
 
+    public function submitRating(Course $course, $data)
+    {
+        return $course->ratings()->create($data);
+    }
 }

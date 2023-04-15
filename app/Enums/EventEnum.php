@@ -30,6 +30,18 @@ final class EventEnum extends Enum
     const FIFTY_ONE = [2,0] ,  FIFTY_TWO = [2,1] ;
     const ALL = 0;
 
+    const TARGET_USERS = 'target_users' , TARGET_TEACHERS = 'target_teachers' , TARGET_COURSES = 'target_courses' , TARGET_ORGANS = 'target_organs';
+
+    public static function getTargets()
+    {
+        return [
+            self::TARGET_USERS => 'همه کاربران',
+            self::TARGET_TEACHERS => 'مدریسن',
+            self::TARGET_COURSES => 'دانش اموزان',
+            self::TARGET_ORGANS => 'سازمان ها'
+        ];
+    }
+
     public static function getNumbers()
     {
         return [
@@ -79,7 +91,7 @@ final class EventEnum extends Enum
             self::TEN_EIGHT,
             self::TEN_NINE,
             self::TEN_TEN,
-        
+
 
             self::TWENTY_ONE,
             self::TWENTY_TWO,
@@ -95,7 +107,7 @@ final class EventEnum extends Enum
             self::THIRTY_ONE,
             self::THIRTY_TWO,
             self::THIRTY_THREE,
-            
+
             self::FIFTY_ONE,
             self::FIFTY_TWO
         ];

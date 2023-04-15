@@ -84,7 +84,7 @@ class IndexEvent extends BaseComponent
     public function workSingle($id)
     {
         $this->authorizing('edit_events');
-        if ($id != 'start' && !app()->environment('local'))
+        if ( !app()->environment('local'))
         {
             Artisan::call('cache:clear');
             Artisan::call("queue:work --queue=$id --stop-when-empty");

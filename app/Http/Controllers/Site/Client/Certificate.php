@@ -19,8 +19,7 @@ class Certificate extends Component
     {
         $this->user = auth()->user();
         $this->certificate = $userRepository->findCertificate($this->user,$id,$this->status);
-        $this->hour = Carbon::make($this->certificate->transcript->created_at ?? now())->diffInHours($this->certificate->transcript->updated_at ?? now());
-        $this->hour = $this->hour > 0 ? $this->hour : 10;
+        $this->hour = $this->certificate->hours;
         SEOMeta::setTitle($this->certificate->certificate->name);
         SEOMeta::setDescription($settingRepository->getRow('seoDescription'));
         SEOMeta::addKeyword($settingRepository->getRow('seoKeyword',[]));
@@ -32,6 +31,7 @@ class Certificate extends Component
         JsonLd::setTitle($this->certificate->certificate->name);
         JsonLd::setDescription($settingRepository->getRow('seoDescription'));
         JsonLd::addImage(asset($settingRepository->getRow('logo')));
+//        dd($this->certificate->custom_text);
     }
     public function render()
     {

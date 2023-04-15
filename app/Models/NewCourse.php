@@ -53,14 +53,6 @@ class NewCourse extends Model
         );
     }
 
-    public function setFilesAttribute($value)
-    {
-        $file = [];
-        foreach (explode(',',$value) as $item)
-            $file[] = str_replace(env('APP_URL'), '', $item);
-
-        $this->attributes['files'] = implode(',',$file);
-    }
 
     public function getFilesAttribute($value)
     {
@@ -73,5 +65,10 @@ class NewCourse extends Model
     public function chats(): HasMany
     {
         return $this->hasMany(NewCourseChat::class,'new_course_request_id');
+    }
+
+    public function organ(): BelongsTo
+    {
+        return $this->belongsTo(Organ::class);
     }
 }

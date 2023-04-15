@@ -23,10 +23,13 @@
                 <x-admin.forms.jdate-picker with="6" id="expire_at" label="پایان تخفیف" wire:model.defer="expire_at"/>
                 <x-admin.forms.dropdown with="6" id="province" :data="$data['province']" label="استان" wire:model="province"/>
                 <x-admin.forms.dropdown with="6" id="city" :data="$data['city']" label="شهر" wire:model.defer="city"/>
+                <x-admin.forms.lfm-standalone with="6" id="time_lapse" label="تایم لپس دوره" :file="$time_lapse" type="image" required="true" wire:model="time_lapse"/>
             </div>
             <hr>
             <x-admin.forms.select2 id="incomingMethod" :data="$data['incoming']" label="روش محاسبه درامد مدرس" wire:model.defer="incomingMethod"/>
+            <x-admin.forms.select2 id="organ_id" :data="$data['organs']" label="سازمان یا اموزشگاه" wire:model.defer="organ_id"/>
             <x-admin.forms.select2 id="teacher" :data="$data['teacher']" label="مدرس*" wire:model.defer="teacher"/>
+            <x-admin.forms.select2 id="form_id" :data="$data['forms']" label="فرم نظر سنجی" wire:model.defer="form_id"/>
             <x-admin.forms.full-text-editor id="short_body" label="توضیحات کوتاه*" wire:model.defer="short_body"/>
             <x-admin.forms.full-text-editor id="long_body" label="توضیحات کامل*" wire:model.defer="long_body"/>
             <x-admin.forms.lfm-standalone id="image" label="تصویر*" :file="$image" type="image" required="true" wire:model="image"/>

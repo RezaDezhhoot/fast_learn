@@ -22,4 +22,6 @@ interface EventRepositoryInterface
     public function update(Event $event,$data): bool;
 
     public static function observe();
+
+    public static function getParams();
 }

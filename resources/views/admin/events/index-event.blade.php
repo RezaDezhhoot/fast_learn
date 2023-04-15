@@ -25,11 +25,12 @@
                             <th>#</th>
                             <th>عنوان</th>
                             <th>وضعیت</th>
-                            <th>تعداد کاربر</th>
+                            <th> کاربران هدف</th>
                             <th>نوع رویداد</th>
                             <th>مرتب سازی</th>
                             <th>نویسنده</th>
                             <th>نتیجه</th>
+                            <th>متن پیام</th>
                             <th>خطا ها</th>
                             <th>عملیات </th>
                         </tr>
@@ -40,11 +41,14 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->title }}</td>
                                 <td>{{ $item->status_label }}</td>
-                                <td>{{ $item->users_count }}</td>
+                                <td>{{ $item->category_label }}</td>
                                 <td>{{ $item->event_label }}</td>
                                 <td>{{ $item->order_label }}</td>
                                 <td>{{ $item->user->name }}</td>
                                 <td>{{ $item->result }}</td>
+                                <td class="text-left">
+                                    {!! $item->body !!}
+                                </td>
                                 <td class="text-left">
                                     @if(!empty($item->errors))
                                         {{ str()->limit($item->errors,$limit = 100 , $end = '...') }}

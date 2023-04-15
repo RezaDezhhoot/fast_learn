@@ -6,13 +6,16 @@
     <div class="logo-box px-4">
         <a href="{{ route('home') }}" class="logo "><img class="logo-size" src="{{ asset($logo) }}" alt="لوگو" /></a>
     </div>
-    <ul class="generic-list-item off-canvas-menu-list off--canvas-menu-list pt-35px">
+    <ul class="generic-list-item off-canvas-menu-list off--canvas-menu-list  pt-35px">
         <x-site.client.sidebar-link title="داشبورد" link="{{ route('user.dashboard') }}" icon="la la-dashboard pr-2" :active="request()->routeIs('user.dashboard')" />
         @role('admin')
             <x-site.client.sidebar-link title="پنل مدیریت" link="{{ route('admin.dashboard') }}" icon="la la-user-circle pr-2" :active="request()->routeIs('admin.dashboard')" />
         @endif
         @role('teacher')
             <x-site.client.sidebar-link title="پنل مدرس" link="{{ route('teacher.dashboard') }}" icon="la la-chalkboard-teacher pr-2" :active="request()->routeIs('teacher.dashboard')" />
+        @endif
+        @if (auth()->user()->organs)
+            <x-site.client.sidebar-link link="{{route('organ.dashboard')}}" icon="la la-building" :active="request()->routeIs('organ.dashboard')" title="پنل اموزشگاه" />
         @endif
         <x-site.client.sidebar-link title=" پروفایل من" link="{{ route('user.profile') }}" icon="la la-user pr-2" :active="request()->routeIs('user.profile')" />
         <x-site.client.sidebar-link title=" دوره های من" link="{{ route('user.courses') }}" icon="la la-file pr-2" :active="request()->routeIs('user.courses')" />
@@ -23,6 +26,7 @@
         <x-site.client.sidebar-link title=" تمرین های من" link="{{ route('user.homeworks') }}" icon="la la-file-archive pr-2" :active="request()->routeIs('user.homeworks')" />
         <x-site.client.sidebar-link title=" پیام ها" link="{{ route('user.notifications') }}" icon="la la-bell pr-2" :active="request()->routeIs('user.notifications')" />
         <x-site.client.sidebar-link title=" درخواست های همکاری" link="{{ route('user.requests') }}" icon="la la-chalkboard-teacher pr-2" :active="request()->routeIs('user.requests')" />
+        <x-site.client.sidebar-link title="ثبت اموزشگاه" link="{{ route('user.organ.request') }}" icon="la la-building pr-2" :active="request()->routeIs('user.organ.request')" />
         <x-site.client.sidebar-link title="پشتیبانی" link="{{ route('user.tickets') }}" icon="la la-support pr-2" :active="request()->routeIs(['user.tickets','user.ticket'])" />
         <x-site.client.sidebar-link title="خروج" link="{{ route('logout') }}" icon="la la-power-off pr-2" :active="request()->routeIs('logout')" />
     </ul>

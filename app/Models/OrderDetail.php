@@ -7,6 +7,7 @@ use App\Traits\Admin\Searchable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Morilog\Jalali\Jalalian;
 
@@ -59,5 +60,20 @@ class OrderDetail extends Model
     public function getDateAttribute(): string
     {
         return Jalalian::forge($this->created_at)->format('%A, %d %B %Y');
+    }
+
+    public function scopePaid($q)
+    {
+        return $q->where('status',OrderEnum::STATUS_COMPLETED);
+    }
+
+    public function rollCalls(): HasMany
+    {
+        return $this->hasMany(RollCall::class);
+    }
+
+    public function organ(): BelongsTo
+    {
+        return $this->belongsTo(Organ::class);
     }
 }

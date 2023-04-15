@@ -8,7 +8,9 @@ use App\Enums\ReductionEnum;
 use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\Interfaces\CourseRepositoryInterface;
+use App\Repositories\Interfaces\FormRepositoryInterface;
 use App\Repositories\Interfaces\IncomingMethodRepositoryInterface;
+use App\Repositories\Interfaces\OrganRepositoryInterface;
 use App\Repositories\Interfaces\QuizRepositoryInterface;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
 use App\Repositories\Interfaces\TagRepositoryInterface;
@@ -21,7 +23,10 @@ class StoreCourse extends BaseComponent
     use WithFileUploads;
     public  $header , $slug , $title , $short_body , $long_body , $image  , $category ,  $quiz , $seo_keywords , $seo_description,
     $teacher , $level , $const_price , $status ,$reduction_type ,$reduction_value = 0 , $start_at , $expire_at  , $tags = [];
+
     public  $course , $sub_title , $storage , $type , $incomingMethod , $province , $city;
+
+    public  $time_lapse , $organ_id , $form_id;
 
     public function __construct($id = null)
     {
@@ -33,6 +38,8 @@ class StoreCourse extends BaseComponent
         $this->teacherRepository = app(TeacherRepositoryInterface::class);
         $this->settingRepository = app(SettingRepositoryInterface::class);
         $this->incomingMethodRepository = app(IncomingMethodRepositoryInterface::class);
+        $this->organRepository = app(OrganRepositoryInterface::class);
+        $this->formReposirtory = app(FormRepositoryInterface::class);
     }
 
     public function mount($action , $id = null)
@@ -66,6 +73,9 @@ class StoreCourse extends BaseComponent
             $this->incomingMethod = $this->course->incoming_method_id;
             $this->province = $this->course->province;
             $this->city = $this->course->city;
+            $this->time_lapse = $this->course->time_lapse;
+            $this->organ_id = $this->course->organ_id;
+            $this->form_id = $this->course->form_id;
         } elseif ($this->mode == self::CREATE_MODE) {
             $this->header = 'دوره جدید';
         } else abort(404);
@@ -79,7 +89,7 @@ class StoreCourse extends BaseComponent
             ];
         })->pluck('name','id');
 
-        $this->data['storage'] = array_flip(getAvailableStorages());
+        $this->data['storage'] = getAvailableStorages();
 
         $this->data['reduction'] = ReductionEnum::getType();
         $this->data['status'] = CourseEnum::getStatus();
@@ -87,6 +97,8 @@ class StoreCourse extends BaseComponent
         $this->data['quiz'] = $this->quizRepository->getAll()->pluck('name','id');
         $this->data['incoming'] = $this->incomingMethodRepository->getAll()->pluck('title','id');
         $this->data['province'] = $this->settingRepository::getProvince();
+        $this->data['organs'] = $this->organRepository->getAll()->pluck('title','id');
+        $this->data['forms'] = $this->formReposirtory->all()->pluck('name','id');
     }
 
     public function render()
@@ -110,13 +122,14 @@ class StoreCourse extends BaseComponent
             $this->saveInDataBase($this->courseRepository->newCourseObject());
             $this->reset(['slug','sub_title','title','short_body','long_body','image','category','quiz','teacher',
                 'status','level','type','reduction_type','const_price','reduction_value','start_at','expire_at',
-                'tags','seo_keywords','seo_description','incomingMethod','province','city']);
+                'tags','seo_keywords','seo_description','incomingMethod','province','city','time_lapse_storage','time_lapse','organ_id','form_id']);
         }
     }
 
     public function saveInDataBase($model)
     {
         $this->quiz = $this->emptyToNull($this->quiz);
+        $this->organ_id = $this->emptyToNull($this->organ_id);
         $this->start_at = $this->dateConverter($this->start_at,'m') ;
         $this->expire_at = $this->dateConverter($this->expire_at,'m') ;
         $this->validate([
@@ -140,7 +153,10 @@ class StoreCourse extends BaseComponent
             'type' => ['required','in:'.implode(',',array_keys(CourseEnum::getTypes()))],
             'incomingMethod' => ['nullable','exists:incoming_methods,id'],
             'province' => ['nullable',Rule::in(array_keys($this->data['province']))],
-            'city' => ['nullable',Rule::in(array_keys($this->data['city']))]
+            'city' => ['nullable',Rule::in(array_keys($this->data['city']))],
+            'time_lapse' => ['nullable','string','max:14000'],
+            'organ_id' => ['nullable',Rule::in(array_keys($this->data['organs']))],
+            'form_id' => ['nullable',Rule::in(array_keys($this->data['forms']))]
         ],[],[
             'title' => 'عنوان',
             'sub_title' => 'عنوان فرعی',
@@ -163,6 +179,9 @@ class StoreCourse extends BaseComponent
             'incomingMethod' => 'روش محاسبه درامد',
             'province' => 'استان',
             'city' => 'شهر',
+            'time_lapse' => 'تایم لپس دوره',
+            'organ_id' => 'سازمان یا اموزشگاه',
+            'form_id' => 'فرم نظر سنجی'
         ]);
         $model->title = $this->title;
         $model->sub_title = $this->sub_title;
@@ -184,6 +203,9 @@ class StoreCourse extends BaseComponent
         $model->seo_description = $this->seo_description;
         $model->province = $this->province;
         $model->city = $this->city;
+        $model->time_lapse = $this->time_lapse;
+        $model->organ_id = $this->organ_id;
+        $model->form_id = $this->form_id;
         $model->incoming_method_id = emptyToNull($this->incomingMethod);
         $model = $this->courseRepository->save($model);
         $this->tags = array_filter($this->tags);

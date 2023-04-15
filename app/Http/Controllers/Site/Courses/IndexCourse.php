@@ -19,7 +19,7 @@ class IndexCourse extends BaseComponent
 {
     use WithPagination;
     protected $queryString = ['q','category','type','orderBy','teacher','property'];
-    public ?string $q = null , $category = null  , $orderBy = null , $type = null , $property = null , $teacher =null , $province = null , $city = null;
+    public ?string $q = null , $category = null  , $orderBy = null , $type = null , $property = null , $teacher =null;
     public array $categories = [] , $types = [] , $orders = [] ;
 
     public function __construct()
@@ -59,22 +59,15 @@ class IndexCourse extends BaseComponent
             'home' => ['link' => route('home') , 'label' => 'صفحه اصلی'],
             'courses' => ['link' => '' , 'label' => 'دوره های اموزشی']
         ];
-        $this->data['province'] = $this->settingRepository::getProvince();
         $this->data['teachers'] = $this->teacherRepository->getAll()->pluck('user_name','short_code')->toArray();
     }
 
     public function render(CourseRepositoryInterface $courseRepository)
     {
-        $this->data['city'] = [];
-        if (isset($this->province) && in_array($this->province,array_keys($this->data['province'])))
-            $this->data['city'] = $this->settingRepository::getCity($this->province);
-        else {
-            $this->data['city'] = $this->settingRepository::getCity(array_keys($this->data['province'])[0]);
-        }
 
         $courses = $courseRepository->getAllSite(
             $this->q ,$this->orderBy ,$this->type ,
-            $this->category, $this->teacher,$this->property,$this->province , $this->city
+            $this->category, $this->teacher,$this->property
         );
         return view('site.courses.index-course',['courses' => $courses])->extends('site.layouts.site.site');
     }

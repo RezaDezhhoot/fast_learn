@@ -66,18 +66,6 @@
                                             <option value="{{ $key }}">{{ $value }}</option>
                                         @endforeach
                                     </select>
-                                    <select class="select-container-select mb-2 form-control" wire:model="province">
-                                        <option value="">استان</option>
-                                        @foreach($data['province'] as $key => $value)
-                                            <option value="{{ $key }}">{{ $value }}</option>
-                                        @endforeach
-                                    </select>
-                                    <select class="select-container-select mb-2 form-control" wire:model="city">
-                                        <option value="">شهر</option>
-                                        @foreach($data['city'] as $key => $value)
-                                            <option value="{{ $key }}">{{ $value }}</option>
-                                        @endforeach
-                                    </select>
                                 </div>
                             </div>
                         </div>

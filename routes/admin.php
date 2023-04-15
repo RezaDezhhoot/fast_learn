@@ -94,4 +94,25 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->as('admin.')->group(f
 
     Route::get('/chapter-transcripts',App\Http\Controllers\Admin\ChapterTranscripts\IndexChapterTranscript::class)->name('chapterTranscript');
     Route::get('/chapter-transcripts/{action}/{id?}',App\Http\Controllers\Admin\ChapterTranscripts\StoreChapterTranscript::class)->name('store.chapterTranscript');
+
+    Route::get('/reports/violations' , App\Http\Controllers\Admin\Reports\IndexViolation::class)->name('report.violation');
+
+    Route::get('/roll-calls',App\Http\Controllers\Admin\RollCalls\IndexRollCall::class)->name('rollCall');
+    Route::get('/roll-calls/{id}',App\Http\Controllers\Admin\RollCalls\StoreRollCall::class)->name('store.rollCall');
+
+    Route::get('/forms',App\Http\Controllers\Admin\Forms\IndexForm::class)->name('form');
+    Route::get('/forms/{action}/{id?}',App\Http\Controllers\Admin\Forms\StoreForm::class)->name('store.form');
+
+    Route::get('/forms-answers',App\Http\Controllers\Admin\Forms\IndexAnswers::class)->name('answer');
+    Route::get('/forms-answers/{action}/{id}',App\Http\Controllers\Admin\Forms\StoreAnswers::class)->name('store.answer');
+
+    Route::prefix('organs')->group(function (){
+        Route::get('',\App\Http\Controllers\Admin\Organs\IndexOrgan::class)->name('organ');
+        Route::get('/{action}/{id?}',\App\Http\Controllers\Admin\Organs\StoreOrgan::class)->name('store.organ');
+    });
+
+    Route::prefix('groups')->group(function (){
+        Route::get('',\App\Http\Controllers\Admin\Groups\IndexGroup::class)->name('group');
+        Route::get('/{action}/{id?}',\App\Http\Controllers\Admin\Groups\StoreGroup::class)->name('store.group');
+    });
 });

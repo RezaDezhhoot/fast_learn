@@ -50,6 +50,11 @@ class Episode extends Model
         'time_label'
     ];
 
+    public function reports(): HasMany
+    {
+        return $this->hasMany(ViolationReport::class);
+    }
+
     public function comments(): MorphMany
     {
         return $this->morphMany(Comment::class, 'commentable')->latest('id')->where('status',CommentEnum::CONFIRMED)
@@ -72,12 +77,12 @@ class Episode extends Model
 
     public function setFileAttribute($value)
     {
-        $this->attributes['file'] = str_replace(env('APP_URL').'/storage', '', $value);
+        $this->attributes['file'] = ltrim( $value,env('APP_URL').'/storage');
     }
 
     public function setLocalVideoAttribute($value)
     {
-        $this->attributes['local_video'] = str_replace(env('APP_URL').'/storage', '', $value);
+        $this->attributes['local_video'] = ltrim( $value,env('APP_URL').'/storage');
     }
 
     public function homeworks(): HasMany
@@ -121,5 +126,10 @@ class Episode extends Model
     public function likes(): HasMany
     {
         return $this->hasMany(EpisodeLike::class);
+    }
+
+    public function rollCalls(): HasMany
+    {
+        return $this->hasMany(RollCall::class);
     }
 }

@@ -51,7 +51,7 @@ class Sample extends Model
 
     public function setFileAttribute($value)
     {
-        $this->attributes['file'] = str_replace(env('APP_URL').'/storage', '', $value);
+        $this->attributes['file'] = ltrim( $value,env('APP_URL').'/storage');
     }
 
     protected static function booted()

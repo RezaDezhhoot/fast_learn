@@ -51,4 +51,9 @@ class EventRepository implements EventRepositoryInterface
     {
         Event::observe(EventObserver::class);
     }
+
+    public static function getParams()
+    {
+        return Event::getParams();
+    }
 }

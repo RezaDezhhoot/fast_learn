@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\HasOrganMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -67,6 +68,7 @@ class Kernel extends HttpKernel
         'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
         'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
         'no_teacher' => \App\Http\Middleware\NoTeacher::class,
-        'teacher' => \App\Http\Middleware\TeacherMiddleware::class
+        'teacher' => \App\Http\Middleware\TeacherMiddleware::class,
+        'organ' => HasOrganMiddleware::class
     ];
 }

@@ -3,7 +3,9 @@
 namespace App\Jobs;
 
 use App\Enums\EventEnum;
+use App\Enums\NotificationEnum;
 use App\Mail\EventMail;
+use App\Notifications\SendNotification;
 use App\Repositories\Interfaces\EventRepositoryInterface;
 use App\Repositories\Interfaces\SendRepositoryInterface;
 use Exception;
@@ -28,16 +30,17 @@ class ProcessEvent implements ShouldQueue
 
     public $failOnTimeout = true;
 
-    protected $event , $user;
+    protected $event , $user , $text;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($event , $user)
+    public function __construct($event , $user , $text)
     {
         $this->event = $event;
         $this->user = $user;
+        $this->text = $text;
         $this->sendRepository = app(SendRepositoryInterface::class);
         $this->eventRepository = app(EventRepositoryInterface::class);
     }
@@ -52,10 +55,11 @@ class ProcessEvent implements ShouldQueue
     {
         $this->start();
 
+        $this->user->notify(new SendNotification($this->text,$this->user->id,NotificationEnum::PUBLIC,$this->user->id));
         if ($this->event->event == EventEnum::EMAIL)
-            $this->sendRepository->sendEmail(new EventMail($this->event->title,$this->event->body),$this->user['email']);
+            $this->sendRepository->sendEmail(new EventMail($this->event->title,$this->text),$this->user['email']);
         elseif ($this->event->event == EventEnum::SMS)
-            $this->sendRepository->sendSMS($this->event->body,$this->user['phone']);
+            $this->sendRepository->sendSMS($this->text,$this->user['phone']);
 
         $this->stop();
     }
