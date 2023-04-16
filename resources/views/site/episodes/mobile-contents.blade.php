@@ -56,7 +56,7 @@
                                                             <i class="la la-folder-open mr-1"></i> منابع<i class="la la-angle-down ml-1"></i>
                                                         </a>
 
-                                                        <div class="dropdown-menu dropdown-menu-left">
+                                                        <div class="dropdown-menu dropdown-menu-left custom-pos">
                                                             @if(!empty($value['local_video']) && $value['downloadable_local_video'])
                                                                 <a  wire:click="set_content('local_video','{{$value['id']}}')" class="dropdown-item" href="javascript:void(0)">
                                                                     دانلود ویدئو <i class="la la-video"></i>
