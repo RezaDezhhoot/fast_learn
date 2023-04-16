@@ -70,7 +70,7 @@ class Contents extends BaseComponent
 
         $episode = $this->chapter_data->episodes->where('id',$id)->first();
         $this->episode_id = $episode->id;
-        $user_has_episode = (\auth()->check() && ($this->user->hasCourse($this->course_data->id))) || $episode->free;
+        $user_has_episode = (\auth()->check() && ($this->user->hasCourse($this->course_data->id) || auth()->user()->hasRole('admin') )) || $episode->free;
 
         if ($this->course_data->price == 0 && !$user_has_episode) {
             $this->courseRepository->setCourseToOrder($this->course_data);

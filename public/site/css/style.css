@@ -10314,3 +10314,8 @@
      .episode-list{
          overflow-y: auto;
      }
+
+     .custom-pos{
+         top: -100% !important;
+         left: 100% !important;
+     }

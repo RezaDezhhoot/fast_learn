@@ -57,7 +57,7 @@ class Homework extends BaseComponent
     {
         $this->resetHomework();
         if (Auth::check()) {
-            $user_has_episode = $this->user->hasCourse($this->course_data->id);
+            $user_has_episode = $this->user->hasCourse($this->course_data->id || auth()->user()->hasRole('admin'));
             if ($this->course_data->price == 0 && !$user_has_episode) {
                 $this->courseRepository->setCourseToOrder($this->course_data);
                 $this->emitNotify('شما با موفقیت در این دوره ثبت نام شدید.');
@@ -102,7 +102,7 @@ class Homework extends BaseComponent
                 $this->show_homework_form = false;
                 return $this->emitNotify('زیادی تلاش کردید. لطفا پس از مدتی دوباره تلاش کنید.','warning');
             }
-            $user_has_episode = $this->user->hasCourse($this->course_data->id);
+            $user_has_episode = $this->user->hasCourse($this->course_data->id) || auth()->user()->hasRole('admin');
             if ($user_has_episode) {
                 if (!is_null($this->episode_data) && is_null($this->homework)) {
                     $this->validate([
