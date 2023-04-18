@@ -46,7 +46,8 @@ class StoreEvent extends BaseComponent
 
     public function updatedCategory($value)
     {
-        $this->vars = $this->eventRepository::getParams()[$value];
+        if (!empty($value))
+            $this->vars = $this->eventRepository::getParams()[$value];
     }
 
     public function store()

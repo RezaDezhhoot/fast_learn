@@ -115,4 +115,11 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->as('admin.')->group(f
         Route::get('',\App\Http\Controllers\Admin\Groups\IndexGroup::class)->name('group');
         Route::get('/{action}/{id?}',\App\Http\Controllers\Admin\Groups\StoreGroup::class)->name('store.group');
     });
+
+    Route::prefix('polls')->group(function () {
+        Route::get('',\App\Http\Controllers\Admin\Polls\IndexPoll::class)->name('poll');
+        Route::get('/crud/{action}/{id?}',\App\Http\Controllers\Admin\Polls\StorePoll::class)->name('store.poll');
+        Route::get('/report/{id}',\App\Http\Controllers\Admin\Polls\Report::class)->name('report.poll');
+    });
+
 });

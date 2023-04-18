@@ -221,6 +221,7 @@
                 @endcan
                 @can('show_forms')
                     <x-admin.menu-item href="{{route('admin.form')}}" icon="flaticon2-writing" :active="request()->routeIs(['admin.form','admin.store.form'])" label="فرم ها" />
+                    <x-admin.menu-item href="{{route('admin.poll')}}" icon="flaticon2-writing" :active="request()->routeIs(['admin.poll','admin.store.poll','admin.report.poll'])" label="فرم های نظر سنجی" />
                 @endcan
                 {{-- v2-storages --}}
                 @can('show_storages')

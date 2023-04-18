@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+\Illuminate\Support\Facades\Artisan::call('storage:link');
 Route::get('/storage/{episode}/{type}', App\Http\Controllers\StorageController::class)->name('storage');
 Route::get('/',App\Http\Controllers\Site\Homes\Home::class)->name('home');
 Route::get('/courses',App\Http\Controllers\Site\Courses\IndexCourse::class)->name('courses');

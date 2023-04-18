@@ -6,6 +6,7 @@ use App\Enums\CategoryEnum;
 use App\Enums\CourseEnum;
 use App\Enums\ReductionEnum;
 use App\Http\Controllers\BaseComponent;
+use App\Models\Poll;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\Interfaces\CourseRepositoryInterface;
 use App\Repositories\Interfaces\FormRepositoryInterface;
@@ -26,7 +27,7 @@ class StoreCourse extends BaseComponent
 
     public  $course , $sub_title , $storage , $type , $incomingMethod , $province , $city;
 
-    public  $time_lapse , $organ_id , $form_id;
+    public  $time_lapse , $organ_id , $poll_id;
 
     public function __construct($id = null)
     {
@@ -75,7 +76,7 @@ class StoreCourse extends BaseComponent
             $this->city = $this->course->city;
             $this->time_lapse = $this->course->time_lapse;
             $this->organ_id = $this->course->organ_id;
-            $this->form_id = $this->course->form_id;
+            $this->poll_id = $this->course->poll_id;
         } elseif ($this->mode == self::CREATE_MODE) {
             $this->header = 'دوره جدید';
         } else abort(404);
@@ -98,7 +99,7 @@ class StoreCourse extends BaseComponent
         $this->data['incoming'] = $this->incomingMethodRepository->getAll()->pluck('title','id');
         $this->data['province'] = $this->settingRepository::getProvince();
         $this->data['organs'] = $this->organRepository->getAll()->pluck('title','id');
-        $this->data['forms'] = $this->formReposirtory->all()->pluck('name','id');
+        $this->data['forms'] = Poll::all()->pluck('title','id');
     }
 
     public function render()
@@ -122,7 +123,7 @@ class StoreCourse extends BaseComponent
             $this->saveInDataBase($this->courseRepository->newCourseObject());
             $this->reset(['slug','sub_title','title','short_body','long_body','image','category','quiz','teacher',
                 'status','level','type','reduction_type','const_price','reduction_value','start_at','expire_at',
-                'tags','seo_keywords','seo_description','incomingMethod','province','city','time_lapse_storage','time_lapse','organ_id','form_id']);
+                'tags','seo_keywords','seo_description','incomingMethod','province','city','time_lapse_storage','time_lapse','organ_id','poll_id']);
         }
     }
 
@@ -156,7 +157,7 @@ class StoreCourse extends BaseComponent
             'city' => ['nullable',Rule::in(array_keys($this->data['city']))],
             'time_lapse' => ['nullable','string','max:14000'],
             'organ_id' => ['nullable',Rule::in(array_keys($this->data['organs']))],
-            'form_id' => ['nullable',Rule::in(array_keys($this->data['forms']))]
+            'poll_id' => ['nullable',Rule::in(array_keys($this->data['forms']))]
         ],[],[
             'title' => 'عنوان',
             'sub_title' => 'عنوان فرعی',
@@ -181,7 +182,7 @@ class StoreCourse extends BaseComponent
             'city' => 'شهر',
             'time_lapse' => 'تایم لپس دوره',
             'organ_id' => 'سازمان یا اموزشگاه',
-            'form_id' => 'فرم نظر سنجی'
+            'poll_id' => 'فرم نظر سنجی'
         ]);
         $model->title = $this->title;
         $model->sub_title = $this->sub_title;
@@ -205,7 +206,7 @@ class StoreCourse extends BaseComponent
         $model->city = $this->city;
         $model->time_lapse = $this->time_lapse;
         $model->organ_id = $this->organ_id;
-        $model->form_id = $this->form_id;
+        $model->poll_id = $this->poll_id;
         $model->incoming_method_id = emptyToNull($this->incomingMethod);
         $model = $this->courseRepository->save($model);
         $this->tags = array_filter($this->tags);

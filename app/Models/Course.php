@@ -287,7 +287,7 @@ class Course extends Model
 
     public function form(): BelongsTo
     {
-        return $this->belongsTo(Form::class);
+        return $this->belongsTo(Poll::class,'poll_id');
     }
 
     public function ratings(): HasMany
