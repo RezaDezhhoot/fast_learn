@@ -27,7 +27,7 @@
                                         <li class="course-item-link {{$value['id'] == $episode_data['id'] ? 'active': ''}}" >
                                             <div class="course-item-content-wrap">
                                                 <!-- end custom-control -->
-                                                @if($value['free'] || $course_data->price == 0 || (auth()->check() ) && (auth()->user()->hasCourse($course_data->id) || auth()->user()->hasRole('admin') )) )
+                                                @if($value['free'] || $course_data->price == 0 || (auth()->check() ) && (auth()->user()->hasCourse($course_data->id) || auth()->user()->hasRole('admin') ))
                                                     <div class="course-item-content" wire:click="GoToEpisode({{$item['id']}},{{$value['id']}})">
                                                         <div>
                                                             <h4 class="fs-15">{{ $loop->iteration }}. {{ $value['title'] }}</h4>

@@ -57,9 +57,6 @@
             <div class="row">
 
                 <div class="col-lg-12 table-responsive">
-                    <h4 class="card-label">
-                        <span class="d-block text-dark font-weight-bolder">پرفروش ترین دوره ها</span>
-                    </h4>
                     <table  class="table table-striped table-bordered" id="kt_datatable">
                         <thead>
                         <tr>
