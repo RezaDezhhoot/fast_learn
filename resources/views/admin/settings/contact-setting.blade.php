@@ -21,6 +21,7 @@
                     <x-admin.forms.input with="3" type="text" id="linkedin" placeholder="linkedin" label="لینکدین" wire:model.defer="linkedin"/>
                     <x-admin.forms.input with="3" type="text" id="youtube" placeholder="youtube" label="یوتیوب" wire:model.defer="youtube"/>
                     <x-admin.forms.input with="3" type="text" id="telegram" placeholder="telegram" label="تلگرام" wire:model.defer="telegram"/>
+                    <x-admin.forms.input with="3" type="text" id="aparat" placeholder="aparat" label="اپارات" wire:model.defer="aparat"/>
                 </div>
             </x-admin.form-section>
             <x-admin.form-section label="موضوعات تیکت">

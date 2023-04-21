@@ -95,6 +95,11 @@
                                         <a href="{{ $instagram }}"><i class="la la-instagram la-lg"></i></a>
                                     </li>
                                     @endif
+                                        @if(!empty($aparat))
+                                            <li>
+                                                <a href="{{ $aparat }}"><i class="la la-video la-lg"></i></a>
+                                            </li>
+                                        @endif
                             </ul>
                         </div>
                     </div>
@@ -175,7 +180,7 @@
             Livewire.on('loadRecaptcha', () => {
                 const script = document.createElement('script');
 
-                script.setAttribute('src', 'https://www.google.com/recaptcha/api.js?hl=fa?hl=fa');
+                script.setAttribute('src', 'https://www.google.com/recaptcha/api.js?hl=fa');
 
                 const start = document.createElement('script');
 

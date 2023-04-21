@@ -21,7 +21,7 @@ class Contact extends BaseComponent
     public $tel , $address , $email , $google , $contact;
     public $instagram , $twitter , $youtube , $telegram , $linkedin;
 
-    public $full_name , $contact_email , $phone , $body , $recaptcha;
+    public $full_name , $contact_email , $phone , $body , $recaptcha , $aparat;
 
     public function mount(SettingRepositoryInterface $settingRepository)
     {
@@ -42,6 +42,7 @@ class Contact extends BaseComponent
         $this->contact = $settingRepository->getRow('contactText');
         $this->google = $settingRepository->getRow('googleMap');
         $this->instagram = $settingRepository->getRow('instagram');
+        $this->aparat = $settingRepository->getRow('aparat');
         $this->twitter = $settingRepository->getRow('twitter');
         $this->youtube = $settingRepository->getRow('youtube');
         $this->linkedin = $settingRepository->getRow('linkedin');

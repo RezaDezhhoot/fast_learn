@@ -8,7 +8,7 @@ use App\Repositories\Interfaces\SettingRepositoryInterface;
 class ContactSetting extends BaseComponent
 {
     public $header , $googleMap  , $contactText , $tel, $subject = [] , $links = [] , $violations = [] , $email, $address;
-    public $instagram , $twitter , $youtube , $telegram , $linkedin;
+    public $instagram , $twitter , $youtube , $telegram , $linkedin , $aparat;
 
     public function __construct($id = null)
     {
@@ -29,6 +29,7 @@ class ContactSetting extends BaseComponent
         $this->twitter = $this->settingRepository->getRow('twitter');
         $this->youtube = $this->settingRepository->getRow('youtube');
         $this->telegram = $this->settingRepository->getRow('telegram');
+        $this->aparat = $this->settingRepository->getRow('aparat');
         $this->subject = $this->settingRepository->getRow('subject',[]);
         $this->links = $this->settingRepository->getRow('links',[]);
         $this->violations = $this->settingRepository->getRow('violations',[]);
@@ -55,6 +56,7 @@ class ContactSetting extends BaseComponent
                 'youtube' => ['nullable','string','max:400'],
                 'linkedin' => ['nullable','string','max:400'],
                 'telegram' => ['nullable','string','max:400'],
+                'aparat' => ['nullable','string','max:400'],
                 'subject' => ['nullable','array'],
                 'subject.*' => ['required','string','max:70'],
                 'links' => ['nullable','array'],
@@ -71,6 +73,7 @@ class ContactSetting extends BaseComponent
                 'instagram' => 'اینستاگرام',
                 'twitter' => 'توییتر',
                 'linkedin' => 'لینکدین',
+                'aparat' => 'اپارات',
                 'youtube' => 'یوتیوب',
                 'telegram' => 'تلگرام',
                 'subject' => 'موضوع ها',
@@ -84,6 +87,7 @@ class ContactSetting extends BaseComponent
         $this->settingRepository::updateOrCreate(['name' => 'googleMap'],['value' => $this->googleMap]);
         $this->settingRepository::updateOrCreate(['name' => 'contactText'],['value' => $this->contactText]);
         $this->settingRepository::updateOrCreate(['name' => 'instagram'], ['value' => $this->instagram]);
+        $this->settingRepository::updateOrCreate(['name' => 'aparat'], ['value' => $this->aparat]);
         $this->settingRepository::updateOrCreate(['name' => 'twitter'], ['value' => $this->twitter]);
         $this->settingRepository::updateOrCreate(['name' => 'linkedin'], ['value' => $this->linkedin]);
         $this->settingRepository::updateOrCreate(['name' => 'youtube'], ['value' => $this->youtube]);
