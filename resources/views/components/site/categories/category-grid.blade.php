@@ -5,7 +5,7 @@
             <div class="col-lg-9">
                 <div class="category-content-wrap">
                     <div class="section-heading">
-                        <h5 class="ribbon ribbon-lg mb-2">دسته بندی ها</h5>
+                        <h5 class="ribbon ribbon-lg mb-2">مشاغل</h5>
                         <h2 class="section__title">{{$data['title']}}</h2>
                         <span class="section-divider"></span>
                     </div><!-- end section-heading -->
@@ -14,7 +14,7 @@
             <div class="col-lg-3">
                 <div class="category-btn-box text-left">
                 @if(!empty($data['moreLink']))
-                    <a href="{{$data['moreLink']}}" class="btn theme-btn">همه دسته بندی ها <i class="la la-arrow-left icon ml-1"></i></a>
+                    <a href="{{$data['moreLink']}}" class="btn theme-btn">همه مشاغل <i class="la la-arrow-left icon ml-1"></i></a>
                 @endif
                 </div><!-- end category-btn-box-->
             </div><!-- end col-lg-3 -->

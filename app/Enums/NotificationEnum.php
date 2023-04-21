@@ -31,6 +31,7 @@ final class NotificationEnum extends Enum
             self::SECURITY => 'امنیتی',
             self::QUIZ => 'ازمون',
             self::ALL => 'عمومی',
+            self::PUBLIC => 'عمومی',
             self::TEACHER => 'مدرسین',
             self::FEE => ' حق التدرس'
         ];

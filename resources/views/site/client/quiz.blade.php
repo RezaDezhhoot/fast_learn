@@ -37,7 +37,14 @@
                                     <td>{{   $transcript->result_label }}</td>
                                 </tr>
                                 @if($transcript->result == \App\Enums\QuizEnum::PENDING || $transcript->result == \App\Enums\QuizEnum::SUSPENDED)
-                                    <td colspan="2"><button class="btn btn-outline-primary mt-2 btn-sm d-flex align-items-center" onclick="enter_quiz()">شرکت در ازمون <i class="la la-door-open"></i></button></td>
+                                    <td colspan="2">
+                                        <div class="d-flex align-items-center">
+                                            <button class="btn btn-outline-primary mt-2 btn-sm d-flex align-items-center" onclick="enter_quiz()">شرکت در ازمون <i class="la la-door-open"></i></button>
+                                            @if($transcript->course->form && !collect(auth()->user()->ratings)->where('course_id', $transcript->course_id)->first())
+                                                <a href="{{ route('user.rating',['id'=>$transcript->course_id]) }}" class="btn mx-2 btn-outline-info mt-2 btn-sm d-flex align-items-center">شرکت در نظر سنجی <i class="la la-door-open"></i></a>
+                                            @endif
+                                        </div>
+                                    </td>
                                 @else
                                     <td colspan="2">کارنامه</td>
                                     <tr>

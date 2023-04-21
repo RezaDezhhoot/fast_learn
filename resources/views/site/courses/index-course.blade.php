@@ -68,6 +68,18 @@
                                     </select>
                                 </div>
                             </div>
+
+                            <div class="widget-panel">
+                                <h3 class="fs-18 font-weight-semi-bold pb-3">مرتب سازی بر اساس استان</h3>
+                                <div class="select-container select--container px-2 m-0">
+                                    <select class="select-container-select mb-2 form-control" wire:model="province">
+                                        <option value="">مرتب سازی</option>
+                                        @foreach($data['province'] as $key => $value)
+                                            <option value="{{ $key }}">{{ $value }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-lg-3 col-6">
                             <div class="widget-panel">
@@ -76,6 +88,18 @@
                                     <select class="select-container-select mb-2 form-control" wire:model="teacher">
                                         <option value="">مدرس</option>
                                         @foreach($data['teachers'] as $key => $value)
+                                            <option value="{{ $key }}">{{ $value }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="widget-panel">
+                                <h3 class="fs-18 font-weight-semi-bold pb-3">مرتب سازی بر اساس شهر</h3>
+                                <div class="select-container select--container px-2 m-0">
+                                    <select class="select-container-select mb-2 form-control" wire:model="city">
+                                        <option value="">مرتب سازی</option>
+                                        @foreach($data['city'] as $key => $value)
                                             <option value="{{ $key }}">{{ $value }}</option>
                                         @endforeach
                                     </select>
@@ -108,15 +132,27 @@
                                         id="{{ $item['slug'] }}" required="" />
                                     <label class="custom-control-label custom--control-label text-black"
                                         for="{{ $item['slug'] }}"> {{ $item['title'] }} </label>
-                                    @if(!empty($item['sub_categories']))
-                                    @foreach($item['sub_categories'] as $key => $value)
+                                    @if(!empty($item['children_recursive']))
+                                    @foreach($item['children_recursive'] as $key => $value)
                                     <div class="custom-control custom-checkbox mb-1 fs-15">
-                                        <input type="radio" name="category" wire:model="category" value="{{ $value }}"
-                                            class="custom-control-input" id="{{ $value }}" required="" />
+                                        <input type="radio" name="category" wire:model="category" value="{{ $value['slug'] }}"
+                                            class="custom-control-input" id="{{ $value['slug'] }}" required="" />
                                         <label class="custom-control-label custom--control-label text-black"
-                                            for="{{ $value }}"> <span
-                                                class="text-gray">{{$item['sub_categories_title'][$key]}}</span>
+                                            for="{{ $value['slug'] }}"> <span
+                                                class="text-gray">{{$value['title']}}</span>
                                         </label>
+                                        @if(!empty($value['children_recursive']))
+                                            @foreach($value['children_recursive'] as $key2 => $value2)
+                                                <div class="custom-control custom-checkbox mb-1 fs-15">
+                                                    <input type="radio" name="category" wire:model="category" value="{{ $value2['slug'] }}"
+                                                           class="custom-control-input" id="{{ $value2['slug'] }}" required="" />
+                                                    <label class="custom-control-label custom--control-label text-black"
+                                                           for="{{ $value2['slug'] }}"> <span
+                                                            class="text-gray">{{$value2['title']}}</span>
+                                                    </label>
+                                                </div>
+                                            @endforeach
+                                        @endif
                                     </div>
                                     @endforeach
                                     @endif

@@ -48,31 +48,36 @@ class Quiz extends BaseComponent
     public function enter_quiz()
     {
         if ($this->userDetails) {
-            if ($this->transcript->result == QuizEnum::PENDING) {
-                $this->transcript->result = QuizEnum::SUSPENDED;
-                $this->generate_token(QuizEnum::PENDING);
-                $this->transcript->token = $this->token;
-                $this->transcript->timer = Carbon::make(now())->addMinutes((int)ceil($this->transcript->quiz->time));
-                $this->transcriptRepository->deleteAnswer($this->transcript,$this->transcript->quiz->questions->pluck('id','id'));
-                $this->transcriptRepository->save($this->transcript);
-                return redirect()->route('user.exam',['token' =>  $this->token]);
-            } elseif ($this->transcript->result == QuizEnum::SUSPENDED) {
-                try {
-                    if (!empty($this->transcript->timer))
-                        $interval = Carbon::make(now())->diff(Carbon::make($this->transcript->timer));
-                    if (isset($interval) && (int)$interval->format("%r") >= "") {
-                        $this->generate_token(QuizEnum::SUSPENDED);
-                        $this->transcript->token = $this->token;
-                        $this->transcriptRepository->deleteAnswer($this->transcript,$this->transcript->quiz->questions->pluck('id','id'));
-                        $this->transcriptRepository->save($this->transcript);
-                        return redirect()->route('user.exam',['token' =>  $this->token]);
+            if ($this->transcript->course->form && collect(auth()->user()->ratings)->where('course_id', $this->transcript->course_id)->first()) {
+                if ($this->transcript->result == QuizEnum::PENDING) {
+                    $this->transcript->result = QuizEnum::SUSPENDED;
+                    $this->generate_token(QuizEnum::PENDING);
+                    $this->transcript->token = $this->token;
+                    $this->transcript->timer = Carbon::make(now())->addMinutes((int)ceil($this->transcript->quiz->time));
+                    $this->transcriptRepository->deleteAnswer($this->transcript,$this->transcript->quiz->questions->pluck('id','id'));
+                    $this->transcriptRepository->save($this->transcript);
+                    return redirect()->route('user.exam',['token' =>  $this->token]);
+                } elseif ($this->transcript->result == QuizEnum::SUSPENDED) {
+                    try {
+                        if (!empty($this->transcript->timer))
+                            $interval = Carbon::make(now())->diff(Carbon::make($this->transcript->timer));
+                        if (isset($interval) && (int)$interval->format("%r") >= "") {
+                            $this->generate_token(QuizEnum::SUSPENDED);
+                            $this->transcript->token = $this->token;
+                            $this->transcriptRepository->deleteAnswer($this->transcript,$this->transcript->quiz->questions->pluck('id','id'));
+                            $this->transcriptRepository->save($this->transcript);
+                            return redirect()->route('user.exam',['token' =>  $this->token]);
+                        }
+                        return $this->emitNotify('این ازمون به اتمام رسیده است.','warning');
+                    } catch (Exception $e) {
+                        return $this->emitNotify('خطا در هنگام ورود به ازمون','warning');
                     }
-                    return $this->emitNotify('این ازمون به اتمام رسیده است.','warning');
-                } catch (Exception $e) {
-                    return $this->emitNotify('خطا در هنگام ورود به ازمون','warning');
                 }
+                return $this->emitNotify('این ازمون به اتمام رسیده است.','warning');
+            } else {
+                return $this->emitNotify('<b class="text-danger">توجه</b> : کاربر گرامی قبل از شروع ازمون می بایست در نظر سنجی دوره شرکت نمایید.','warning');
             }
-            return $this->emitNotify('این ازمون به اتمام رسیده است.','warning');
+
         }
         return $this->emitNotify('<b class="text-danger">توجه</b> : کاربر گرامی قبل از شروع ازمون می بایست پروفایل خود را تکمیل نمایید.','warning');
     }
