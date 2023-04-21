@@ -101,8 +101,7 @@ class Auth extends BaseComponent
         $confirm_user = false;
         $user = $this->userRepository->getUser('phone',"$this->phone");
         $user_otp = $user->otp;
-
-        if ($user->status == UserEnum::CONFIRMED || $this->auth_type == 'none'){
+        if ($user->status == UserEnum::CONFIRMED || $this->auth_type == NotificationEnum::NONE_METHOD){
             if (Hash::check($this->password, $user->password) ||
                 (!is_null($user->otp) && Hash::check($this->password, $user_otp) && $this->sms === true))
                 $auth = true;
@@ -205,7 +204,7 @@ class Auth extends BaseComponent
         $this->sent = false;
         $this->validate([
             'name' => ['required','string','max:250'],
-            'email' => ['required','string','email','unique:users,email','max:250'],
+            'email' => ['nullable','string','email','unique:users,email','max:250'],
             'phone' => ['required','string','size:11','unique:users,phone'],
             'password' => ['required','min:'.($this->settingRepository->getRow('password_length') ?? 8),'regex:/^.*(?=.*[a-zA-Z])(?=.*[0-9]).*$/'],
             'recaptcha' => ['required', new ReCaptchaRule],

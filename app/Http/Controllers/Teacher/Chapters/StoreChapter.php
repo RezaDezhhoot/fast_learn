@@ -75,7 +75,7 @@ class StoreChapter extends BaseComponent
             'title' => ' عنوان درس',
             'description' => 'توضیحات',
             'view' => 'نمایش درس',
-            'course' => 'دوره اموزشی',
+            'course' => 'دوره آموزشی',
         ]);
         $chapter->status = ChapterEnum::TRANSCRIPT_PENDING;
         $chapter->title = $this->title;

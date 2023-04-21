@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Dashboard;
 use App\Enums\NotificationEnum;
 use App\Enums\PaymentEnum;
 use App\Http\Controllers\BaseComponent;
+use App\Models\Viewer;
 use App\Repositories\Interfaces\ArticleRepositoryInterface;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\Interfaces\CertificateRepositoryInterface;
@@ -25,6 +26,8 @@ class IndexDashboard extends BaseComponent
     public $from_date , $to_date , $box , $course;
 
     public $to_date_viwe , $from_date_view;
+
+    public $viewers = [];
 
     protected $queryString = ['to_date','from_date','course'];
 
@@ -65,10 +68,22 @@ class IndexDashboard extends BaseComponent
         }
         $this->from_date_view = $this->dateConverter($this->from_date);
 
-
+        $today = now()->format('Y-m-d');
+        $yesterday = now()->subDay()->format('Y-m-d');
 
         $this->getData();
         $this->data['courses'] = $this->courseRepository->getAll()->pluck('title','id');
+        $most_viewers_day = Viewer::query()->max('date');
+        $this->viewers = [
+            'today_viewers' => Viewer::query()->where('date',$today)->distinct()->count('ip'),
+            'yesterday_viewers' => Viewer::query()->where('date',$yesterday)->distinct()->count('ip'),
+            'all_viewers' => Viewer::query()->distinct()->count('ip'),
+            'today_views' => Viewer::query()->where('date',$today)->count(),
+            'yesterday_views' => Viewer::query()->where('date',$yesterday)->count(),
+            'all_views' => Viewer::query()->count(),
+            'most_viewers_day' => $most_viewers_day,
+            'most_viewers_day_count' => Viewer::query()->where('date',$most_viewers_day)->count(),
+        ];
     }
 
     public function confirmFilter()

@@ -165,7 +165,7 @@
         Livewire.on('loadRecaptcha', () => {
             const script = document.createElement('script');
 
-            script.setAttribute('src', 'https://www.google.com/recaptcha/api.js');
+            script.setAttribute('src', 'https://www.google.com/recaptcha/api.js?hl=fa');
 
             const start = document.createElement('script');
 

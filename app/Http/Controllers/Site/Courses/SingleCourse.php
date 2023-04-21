@@ -31,7 +31,7 @@ class SingleCourse extends BaseComponent
 {
     use WithFileUploads , AuthorizesRequests;
     public  $course;
-    public  $related_courses = [] , $comments = [] , $recaptcha , $episodes = [] , $user , $commentCount = 10 , $actionComment  , $actionLabel = 'دیدگاه جدید';
+    public  $related_courses = [] , $user_name , $comments = [] , $recaptcha , $episodes = [] , $user , $commentCount = 10 , $actionComment  , $actionLabel = 'دیدگاه جدید';
     public ?string $api_bucket = null , $local_video , $comment = null;
 
     private $homework ;
@@ -72,13 +72,16 @@ class SingleCourse extends BaseComponent
         $this->user = auth()->user();
         if (!is_null($this->course->samples))
             $this->has_samples = sizeof($this->course->samples) > 0;
+
+        if (auth()->check())
+            $this->user_name = auth()->user()->name;
     }
 
     public function loadCourse()
     {
         $this->page_address = [
             'home' => ['link' => route('home') , 'label' => 'صفحه اصلی'],
-            'courses' => ['link' => route('courses') , 'label' => 'دوره های اموزشی'],
+            'courses' => ['link' => route('courses') , 'label' => 'دوره های آموزشی'],
             'category' => ['link' => route('courses',['category' => $this->course->category->slug]) ,'label' => $this->course->category->title],
             'course' => ['link' => '' , 'label' => $this->course->title],
         ];
@@ -115,9 +118,11 @@ class SingleCourse extends BaseComponent
     {
         $this->validate([
             'comment' => ['required','string','max:255'],
+            'user_name' => ['nullable','string','max:255'],
             'recaptcha' => ['required', new ReCaptchaRule],
         ],[],[
             'comment' => 'متن',
+            'user_name' => 'نام',
             'recaptcha' => 'کلید امنیتی'
         ]);
         if (!auth()->check())
@@ -130,6 +135,7 @@ class SingleCourse extends BaseComponent
         $data = [
             'user_id' => auth()->id(),
             'content' => $this->comment,
+            'name' => $this->user_name,
             'parent_id'=> $this->actionComment ?? null,
             'status' => $status
         ];

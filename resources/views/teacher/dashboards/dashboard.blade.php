@@ -32,7 +32,7 @@
                             <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">
                                 {{ $box['courses'] }} عدد
                             </span>
-                            <span class="font-weight-bold text-dark font-size-lg">دوره های اموزشی</span>
+                            <span class="font-weight-bold text-dark font-size-lg">دوره های آموزشی</span>
                         </div>
                         <!--end::Body-->
                     </div>
@@ -101,7 +101,7 @@
                         <div class="card-header h-auto border-0">
                             <div class="card-title py-5">
                                 <h3 class="card-label">
-                                    <span class="d-block text-dark font-weight-bolder"> نمودار واریز حق التدریس بابت دوره های اموزشی</span>
+                                    <span class="d-block text-dark font-weight-bolder"> نمودار واریز حق التدریس بابت دوره های آموزشی</span>
                                 </h3>
                             </div>
                         </div>

@@ -4796,6 +4796,8 @@
 
      .pattern-bg {
          background-image: url(../images/pattern.png);
+         background-position: center;
+         background-size: contain;
      }
 
      .generic-img-box {

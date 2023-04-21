@@ -3,7 +3,7 @@
     <x-admin.form-control link="{{ route('admin.store.episode',['create'] ) }}"  title="درس ها"/>
     <div class="card card-custom">
         <div class="card-body">
-            <x-admin.forms.select2 id="course" :data="$data['course']" label="فیلتر بر حسب دوره اموزشی" wire:model.defer="course"/>
+            <x-admin.forms.select2 id="course" :data="$data['course']" label="فیلتر بر حسب دوره آموزشی" wire:model.defer="course"/>
             <x-admin.forms.select2 id="chapter" :data="$data['chapter']" label="فیلتر بر حسب فصل " wire:model.defer="chapter"/>
             @include('admin.layouts.advance-table')
             <div class="row">

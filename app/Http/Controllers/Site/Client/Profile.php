@@ -144,7 +144,7 @@ class Profile extends BaseComponent
     {
         $fields = [
             'name' => ['required', 'string','max:150'],
-            'email' => ['required','email','max:255' , 'unique:users,email,'. ($this->user->id ?? 0)],
+            'email' => ['nullable','email','max:255' , 'unique:users,email,'. ($this->user->id ?? 0)],
             'file' => ['nullable','image','mimes:jpg,jpeg,png,PNG,JPG,JPEG','max:'.($this->settingRepository->getRow('max_profile_image_size') ?? 2048)],
         ];
         $messages = [

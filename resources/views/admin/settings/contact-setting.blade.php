@@ -18,6 +18,7 @@
                 <div class="row">
                     <x-admin.forms.input with="3" type="text" id="instagram" placeholder="instagram" label="اینستاگرام" wire:model.defer="instagram"/>
                     <x-admin.forms.input with="3" type="text" id="twitter" placeholder="twiter" label="توییتر" wire:model.defer="twitter"/>
+                    <x-admin.forms.input with="3" type="text" id="linkedin" placeholder="linkedin" label="لینکدین" wire:model.defer="linkedin"/>
                     <x-admin.forms.input with="3" type="text" id="youtube" placeholder="youtube" label="یوتیوب" wire:model.defer="youtube"/>
                     <x-admin.forms.input with="3" type="text" id="telegram" placeholder="telegram" label="تلگرام" wire:model.defer="telegram"/>
                 </div>

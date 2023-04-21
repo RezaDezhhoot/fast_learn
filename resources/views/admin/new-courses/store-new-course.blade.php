@@ -38,8 +38,8 @@
                     <table class="table table-striped table-bordered">
                         <thead>
                         <tr>
-                            <td>عنوان دوره اموزشی</td>
-                            <td>سطح دوره اموزشی</td>
+                            <td>عنوان دوره آموزشی</td>
+                            <td>سطح دوره آموزشی</td>
                         </tr>
                         </thead>
                         <tbody>

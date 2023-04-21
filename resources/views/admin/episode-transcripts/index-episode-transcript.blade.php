@@ -3,7 +3,7 @@
     <x-admin.form-control  store="{{false}}" title="رونوشت ها"/>
     <div class="card card-custom">
         <div class="card-body">
-            <x-admin.forms.select2 id="course" :data="$data['course']" label="فیلتر بر حسب دوره اموزشی" wire:model.defer="course"/>
+            <x-admin.forms.select2 id="course" :data="$data['course']" label="فیلتر بر حسب دوره آموزشی" wire:model.defer="course"/>
             <x-admin.forms.dropdown id="status" :data="$data['status']" label="وضعیت" wire:model="status"/>
             @include('admin.layouts.advance-table')
             <div class="row">

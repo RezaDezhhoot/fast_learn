@@ -26,7 +26,7 @@
                         @endif
                     </fieldset>
                 </div>
-                <x-admin.forms.select2 id="course" :data="$data['course']" label=" دوره اموزشی"
+                <x-admin.forms.select2 id="course" :data="$data['course']" label=" دوره آموزشی"
                 wire:model.defer="course" />
                 <x-admin.forms.text-area label="کلمات کلیدی*" help="کلمات را با کاما از هم جدا کنید" wire:model.defer="seo_keywords" id="seo_keywords" />
                 <x-admin.forms.text-area label="توضیحات سئو*" wire:model.defer="seo_description" id="seo_description" />

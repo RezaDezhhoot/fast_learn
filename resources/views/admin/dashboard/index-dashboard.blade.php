@@ -49,6 +49,45 @@
             <div class="card-header h-auto-0 p-0 border-0">
                 <div class="card-title mt-3">
                     <h5 class="card-label">
+                        <span class="d-block text-dark font-weight-bolder"> امار بازدید</span>
+                    </h5>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-lg-12 table-responsive">
+                    <h4 class="card-label">
+                        <span class="d-block text-dark font-weight-bolder">پرفروش ترین دوره ها</span>
+                    </h4>
+                    <table  class="table table-striped table-bordered" id="kt_datatable">
+                        <thead>
+                        <tr>
+                            <th>بازدید کل</th>
+                            <th>بازدید امروز</th>
+                            <th>بازدیدکننده امروز</th>
+                            <th>بازدید دیروز</th>
+                            <th>بازدیدکننده دیروز</th>
+                            <th>پربیننده ترین روز</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                           <td>{{$viewers['all_views']}}</td>
+                           <td>{{$viewers['today_views']}}</td>
+                           <td>{{$viewers['today_viewers']}}</td>
+                           <td>{{$viewers['yesterday_views']}}</td>
+                           <td>{{$viewers['yesterday_viewers']}}</td>
+                           <td>{{$viewers['most_viewers_day']}} - {{$viewers['most_viewers_day_count']}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card-header h-auto-0 p-0 border-0">
+                <div class="card-title mt-3">
+                    <h5 class="card-label">
                         <span class="d-block text-dark font-weight-bolder"> محتوا</span>
                     </h5>
                 </div>
@@ -232,7 +271,7 @@
                         <!--end::Page Heading-->
                     </div>
                 </div>
-                <x-admin.forms.select2 id="course" :data="$data['courses']" label="فیلتر بر حسب دوره اموزشی" wire:model.defer="course"/>
+                <x-admin.forms.select2 id="course" :data="$data['courses']" label="فیلتر بر حسب دوره آموزشی" wire:model.defer="course"/>
                 <div class="row p-0 m-0 w-100 d-flex justify-content-center">
                     <div class="col-md-4">
                         <!--begin::Stats Widget 25-->
@@ -349,7 +388,7 @@
                         <div class="card-header h-auto border-0">
                             <div class="card-title py-5">
                                 <h3 class="card-label">
-                                    <span class="d-block text-dark font-weight-bolder"> نمودار پرداخت هزینه بابت دوره های اموزشی</span>
+                                    <span class="d-block text-dark font-weight-bolder"> نمودار پرداخت هزینه بابت دوره های آموزشی</span>
                                 </h3>
                             </div>
                         </div>

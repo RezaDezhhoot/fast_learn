@@ -9,7 +9,7 @@
                     @endforeach
                 </ul>
                 <div class="section-heading">
-                    <h2 class="section__title"> {{ $course->title }}</h2>
+                    <h2 class="section__title text-white"> {{ $course->title }}</h2>
                     <p class="section__desc pt-2 lh-30">{{ $course->sub_title }}</p>
                 </div>
                 <!-- end section-heading -->
@@ -29,7 +29,7 @@
                 </div>
                 <!-- end d-flex -->
                 <div class="bread-btn-box pt-3">
-                    <button class="btn theme-btn theme-btn-sm theme-btn-transparent lh-28 mr-2 mb-2" data-toggle="modal" data-target="#shareModal"><i class="la la-share mr-1"></i>اشتراک گذاری</button>
+                    <button class="btn theme-btn theme-btn-sm theme-btn-transparent lh-28 mr-2 mb-2 text-white" data-toggle="modal" data-target="#shareModal"><i class="la la-share mr-1"></i>اشتراک گذاری</button>
                 </div>
             </div>
             <!-- end breadcrumb-content -->

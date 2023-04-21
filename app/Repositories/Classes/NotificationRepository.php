@@ -76,20 +76,26 @@ class NotificationRepository implements NotificationRepositoryInterface
                         $user->notify((new SendSMS($text , $user->phone)));
                     break;
                 case NotificationEnum::EMAIL_METHOD:
-                    $notify_should_be_queueable ?
-                        $user->notify((new SendEmailOnQueue($text, $subject_label, $view, $email_username, $name , $data))
-                            ->onQueue(JobEnum::EMAIL)) :
-                        $user->notify(new SendEmail($text, $subject_label, $view, $email_username, $name , $data));
+                    if (!is_null($user->email)) {
+                        $notify_should_be_queueable ?
+                            $user->notify((new SendEmailOnQueue($text, $subject_label, $view, $email_username, $name , $data))
+                                ->onQueue(JobEnum::EMAIL)) :
+                            $user->notify(new SendEmail($text, $subject_label, $view, $email_username, $name , $data));
+                    }
                     break;
                 case NotificationEnum::BOTH_METHODS:
                     if ($notify_should_be_queueable) {
                         $user->notify((new SendSMSOnQueue($text , $user->phone))
                             ->onQueue(JobEnum::SMS));
-                        $user->notify((new SendEmailOnQueue($text, $subject_label, $view, $email_username, $name , $data))
-                            ->onQueue(JobEnum::EMAIL));
+                        if (!is_null($user->email)) {
+                            $user->notify((new SendEmailOnQueue($text, $subject_label, $view, $email_username, $name , $data))
+                                ->onQueue(JobEnum::EMAIL));
+                        }
                     } else {
                         $user->notify(new SendSMS($text , $user->phone));
-                        $user->notify(new SendEmail($text, $subject_label, $view, $email_username, $name , $data));
+                        if (!is_null($user->email)) {
+                            $user->notify(new SendEmail($text, $subject_label, $view, $email_username, $name , $data));
+                        }
                     }
                     break;
             }

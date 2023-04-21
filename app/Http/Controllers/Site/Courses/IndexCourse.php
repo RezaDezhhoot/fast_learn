@@ -32,32 +32,32 @@ class IndexCourse extends BaseComponent
         CategoryRepositoryInterface $categoryRepository ,
     )
     {
-        SEOMeta::setTitle($this->settingRepository->getRow('title').' دوره های اموزشی ');
+        SEOMeta::setTitle($this->settingRepository->getRow('title').' دوره های آموزشی ');
         SEOMeta::setDescription($this->settingRepository->getRow('seoDescription'));
         SEOMeta::addKeyword($this->settingRepository->getRow('seoKeyword',[]));
         OpenGraph::setUrl(url()->current());
-        OpenGraph::setTitle($this->settingRepository->getRow('title').' دوره های اموزشی ');
+        OpenGraph::setTitle($this->settingRepository->getRow('title').' دوره های آموزشی ');
         OpenGraph::setDescription($this->settingRepository->getRow('seoDescription'));
-        TwitterCard::setTitle($this->settingRepository->getRow('title').' دوره های اموزشی ');
+        TwitterCard::setTitle($this->settingRepository->getRow('title').' دوره های آموزشی ');
         TwitterCard::setDescription($this->settingRepository->getRow('seoDescription'));
-        JsonLd::setTitle($this->settingRepository->getRow('title').' دوره های اموزشی ');
+        JsonLd::setTitle($this->settingRepository->getRow('title').' دوره های آموزشی ');
         JsonLd::setDescription($this->settingRepository->getRow('seoDescription'));
         JsonLd::addImage(asset($this->settingRepository->getRow('logo')));
 
         $this->categories = $categoryRepository->getCategoriesWithTheirSubCategories(CategoryEnum::COURSE,[['parent_id',null]]);
-        $this->types = ['free' => 'دوره های اموزشی رایگان' , 'cash' => 'دوره های اموزشی نقدی'];
+        $this->types = ['free' => 'دوره های آموزشی رایگان' , 'cash' => 'دوره های آموزشی نقدی'];
         $this->data['types'] = CourseEnum::getTypes();
         $this->orders = [
-            'latest' => 'جدید ترین دوره های اموزشی' ,
-            'oldest' => 'قدیمی ترین دوره های اموزشی' ,
-            'expensive' => 'گران ترین دوره های اموزشی',
-            'inexpensive' => 'ارزان ترین دوره های اموزشی',
-            CourseEnum::HOLDING => 'دوره های اموزشی در حال برگذاری' ,
-            CourseEnum::FINISHED => 'دوره های اموزشی تکمیل شده' ,
+            'latest' => 'جدید ترین دوره های آموزشی' ,
+            'oldest' => 'قدیمی ترین دوره های آموزشی' ,
+            'expensive' => 'گران ترین دوره های آموزشی',
+            'inexpensive' => 'ارزان ترین دوره های آموزشی',
+            CourseEnum::HOLDING => 'دوره های آموزشی در حال برگذاری' ,
+            CourseEnum::FINISHED => 'دوره های آموزشی تکمیل شده' ,
         ];
         $this->page_address = [
             'home' => ['link' => route('home') , 'label' => 'صفحه اصلی'],
-            'courses' => ['link' => '' , 'label' => 'دوره های اموزشی']
+            'courses' => ['link' => '' , 'label' => 'دوره های آموزشی']
         ];
         $this->data['teachers'] = $this->teacherRepository->getAll()->pluck('user_name','short_code')->toArray();
     }

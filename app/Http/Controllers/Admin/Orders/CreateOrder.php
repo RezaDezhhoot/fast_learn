@@ -118,7 +118,7 @@ class CreateOrder extends BaseComponent
             'wallet' => ['required','between:0,9999999999999.99999',"max:{$this->calculateWallet()}"],
             'reduction' => ['required','between:0,9999999999999.99999'],
         ],[],[
-            'course_id' => 'دوره اموزشی',
+            'course_id' => 'دوره آموزشی',
             'wallet' => 'مبلغ کیف پول',
             'reduction' => 'مبلغ تخفیف'
         ]);

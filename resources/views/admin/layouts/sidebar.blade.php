@@ -102,7 +102,7 @@
                     <x-admin.menu-group icon="fab fa-product-hunt" :active="request()->routeIs(
                     ['admin.course','admin.store.course','admin.episode','admin.store.episode',
                     'admin.newCourse','admin.store.newCourse','admin.episodeTranscript',
-                    'admin.store.episodeTranscript','admin.chapter','admin.store.chapter','admin.chapterTranscript','admin.store.chapterTranscript'])" label="دوره های اموزشی" >
+                    'admin.store.episodeTranscript','admin.chapter','admin.store.chapter','admin.chapterTranscript','admin.store.chapterTranscript'])" label="دوره های آموزشی" >
                         @can('show_courses')
                             <x-admin.menu-item href="{{route('admin.course')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['admin.course','admin.store.course'])" label="دروه ها  " />
                         @endcan

@@ -112,7 +112,7 @@
         })
 
     </script>
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="https://www.google.com/recaptcha/api.js?hl=fa" async defer></script>
 
     <script>
         function reCaptchaCallback(response) {

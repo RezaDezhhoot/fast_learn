@@ -11,7 +11,7 @@
                 <x-teacher.forms.input with="6" type="text" id="title" label="عنوان *" wire:model.defer="title" />
                 <x-teacher.forms.input with="6" type="number" id="view" label="نمایش *" wire:model.defer="view" />
 
-                <x-teacher.forms.select2  id="course" :data="$data['course']" label=" دوره اموزشی*"
+                <x-teacher.forms.select2  id="course" :data="$data['course']" label=" دوره آموزشی*"
                                        wire:model.defer="course" />
                 <x-teacher.forms.text-area label="توضیحات" wire:model.defer="description" id="description" />
             </div>

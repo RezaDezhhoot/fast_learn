@@ -1,5 +1,5 @@
 @props(['item'])
-<div class="card card-item " {{ $attributes }}>
+<div class="card card-item " {{ $attributes }}>`
     <div class="card-image">
         <a href="{{ route('article',$item['slug']) }}" class="d-block">
             <img class="card-img-top" src="{{ asset($item['image']) }}" alt="{{ $item['title'] }}">
@@ -11,7 +11,7 @@
     <div class="card-body">
         <h5 class="card-title"><a href="{{ route('article',$item['slug']) }}">{{ $item['title'] }}</a></h5>
         <ul class="generic-list-item generic-list-item-bullet generic-list-item--bullet d-flex align-items-center flex-wrap fs-14 pt-2">
-            <li class="d-flex align-items-center">   توسط  {{ $item['user']['name'] }} </li>
+            <li class="d-flex align-items-center">   توسط  {{ $item['author_name'] ??$item['user']['name'] }} </li>
             <li class="d-flex align-items-center"><a href="#">
                     @if(isset($item->comments))
                         {{ $item->comments->count()}} نظر

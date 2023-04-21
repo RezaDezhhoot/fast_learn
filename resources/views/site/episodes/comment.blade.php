@@ -5,6 +5,16 @@
             <form method="post" id="commentForm" class="row" wire:submit.prevent="new_comment">
                 @auth
                     <div class="input-box col-lg-12">
+                        <label class="label-text">نام شما</label>
+                        <div class="form-group">
+                            <input type="text" wire:model.defer="user_name" class="form-control form--control pl-3"
+                                   name="user_name">
+                        </div>
+                        @error('user_name')
+                        <span class="invalid-feedback d-block">{{$message}}</span>
+                        @enderror
+                    </div>
+                    <div class="input-box col-lg-12">
                         <label class="label-text">پیام</label>
                         <div class="form-group">
                                         <textarea wire:model.defer="comment" class="form-control form--control pl-3"

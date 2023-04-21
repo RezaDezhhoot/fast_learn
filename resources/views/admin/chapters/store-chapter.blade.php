@@ -10,7 +10,7 @@
             <div class="row">
                 <x-admin.forms.input with="6" type="text" id="title" label="عنوان *" wire:model.defer="title" />
                 <x-admin.forms.dropdown with="6" id="status" :data="$data['status']" label="وضعیت*" wire:model.defer="status"/>
-                <x-admin.forms.select2 with="6" id="course" :data="$data['course']" label=" دوره اموزشی*"
+                <x-admin.forms.select2 with="6" id="course" :data="$data['course']" label=" دوره آموزشی*"
                                        wire:model.defer="course" />
                 <x-admin.forms.input with="6" type="number" id="view" label="نمایش *" wire:model.defer="view" />
                 <x-admin.forms.text-area label="توضیحات" wire:model.defer="description" id="description" />

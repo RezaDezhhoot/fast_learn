@@ -37,7 +37,7 @@
                         <table class="table table-striped table-bordered">
                             <thead>
                             <tr>
-                                <td>دوره اموزشی</td>
+                                <td>دوره آموزشی</td>
                                 <td>وضعیت</td>
                                 <th> دیدگاه</th>
                                 <td>دیدگاه والد</td>

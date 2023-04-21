@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Comment extends BaseComponent
 {
-    public  $comments = [] , $recaptcha , $user , $commentCount = 10  , $actionComment  , $actionLabel = 'دیدگاه جدید' , $comment = null;
+    public  $comments = [] , $user_name , $recaptcha , $user , $commentCount = 10  , $actionComment  , $actionLabel = 'دیدگاه جدید' , $comment = null;
 
     public  $course_data, $epsode_data;
 
@@ -26,6 +26,10 @@ class Comment extends BaseComponent
         $this->course_data = $course;
         $this->epsode_data = $episode;
         $this->comments = $this->epsode_data->comments;
+
+        if (auth()->check())
+            $this->user_name = auth()->user()->name;
+
         $this->emit('loadRecaptcha');
     }
 
@@ -48,8 +52,10 @@ class Comment extends BaseComponent
     {
         $this->validate([
             'comment' => ['required','string','max:255'],
+            'user_name' => ['nullable','string','max:255'],
         ],[],[
             'comment' => 'متن',
+            'user_name' => 'نام',
         ]);
         if (!auth()->check()) {
              $this->addError('comment','لطفا ابتدا ثبت نام کنید');
@@ -69,6 +75,7 @@ class Comment extends BaseComponent
         $data = [
             'user_id' => auth()->id(),
             'content' => $this->comment,
+            'name' => $this->user_name,
             'parent_id'=> $this->actionComment ?? null,
             'status' => $status
         ];

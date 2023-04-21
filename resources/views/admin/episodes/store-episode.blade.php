@@ -12,7 +12,7 @@
                 <x-admin.forms.input with="6" type="url" id="link" label="لینک" wire:model.defer="link" />
                 <x-admin.forms.input with="6" type="text" id="time" label="زمان *" wire:model.defer="time" />
                 <x-admin.forms.input with="6" type="number" id="view" label="نمایش *" wire:model.defer="view" />
-                <x-admin.forms.select2 id="course_id" :data="$data['course']" label=" دوره اموزشی"
+                <x-admin.forms.select2 id="course_id" :data="$data['course']" label=" دوره آموزشی"
                     wire:model="course_id" />
 
                 <x-admin.forms.dropdown id="chapter_id" :data="$data['chapter']" label=" فصل"

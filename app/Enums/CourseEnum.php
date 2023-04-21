@@ -49,8 +49,8 @@ final class CourseEnum extends Enum
     {
         return [
             self::OFFLINE => 'وبینار',
-            self::IN_PERSON => 'دوره های اموزشی حضوری',
-            self::ONLINE => 'دوره های اموزشی انلاین',
+            self::IN_PERSON => 'دوره های آموزشی حضوری',
+            self::ONLINE => 'دوره های آموزشی انلاین',
         ];
     }
 

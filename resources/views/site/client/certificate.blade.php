@@ -95,8 +95,8 @@
                                     <table>
                                         <tr>
                                             <td>
-                                                <b>دوره اموزشی</b>
-                                                <span>{{ $certificate->transcript->course_data['title'] ?? 'نام دوره اموزشی' }}</span>
+                                                <b>دوره آموزشی</b>
+                                                <span>{{ $certificate->transcript->course_data['title'] ?? 'نام دوره آموزشی' }}</span>
                                             </td>
                                         </tr>
                                     </table>
@@ -118,7 +118,7 @@
                                                     {{ $hour }}ساعت
                                                 </span>
                                                 <b>در</b>
-                                                <span>{{$certificate->certificate->title ?? 'نام اموزشگاه'}}</span>
+                                                <span>{{$certificate->certificate->title ?? 'نام آموزشگاه'}}</span>
                                             </td>
                                             <td>
                                                 <b>    برگذار گردید با موفقیت </b>

@@ -14,7 +14,7 @@
                 <x-admin.forms.dropdown with="6" id="orderBy" :data="$data['orderBy']" label="مرتب سازی کاربران بر اساس*" wire:model.defer="orderBy"/>
                 <x-admin.forms.dropdown with="6" id="category" :data="$data['category']" label="کاربران هدف" wire:model="category"/>
                 <div class="col-12 {{ $category == \App\Enums\EventEnum::TARGET_COURSES ? 'd-block' : 'd-none' }}">
-                    <x-admin.forms.select2 id="course" :data="$data['course']" label="فیلتر بر حسب دوره اموزشی" wire:model.defer="course"/>
+                    <x-admin.forms.select2 id="course" :data="$data['course']" label="فیلتر بر حسب دوره آموزشی" wire:model.defer="course"/>
                 </div>
             </div>
             <hr>

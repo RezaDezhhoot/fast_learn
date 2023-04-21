@@ -1,5 +1,5 @@
 <div>
-    <x-site.breadcrumbs :data="$page_address" title="دوره های اموزشی" />
+    <x-site.breadcrumbs :data="$page_address" title="دوره های آموزشی" />
 
     <section class="course-area">
         <div class="container">
@@ -18,7 +18,7 @@
                     <div class="row">
                         <div class="col-lg-3 col-6">
                             <div class="widget-panel">
-                                <h3 class="fs-18 font-weight-semi-bold pb-3">فیلتر بر اساس نوع دوره اموزشی</h3>
+                                <h3 class="fs-18 font-weight-semi-bold pb-3">فیلتر بر اساس نوع دوره آموزشی</h3>
                                 @foreach($data['types'] as $key => $item)
                                     <div class="custom-control custom-checkbox mb-1 fs-15">
                                         <input type="radio" name="property" class="custom-control-input" wire:model="property"

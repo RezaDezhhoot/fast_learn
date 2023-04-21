@@ -111,7 +111,7 @@
                                             </td>
                                         </tr>
                                         <tr class="font-size-lg font-weight-bolder h-65px">
-                                            <td >دوره اموزشی :</td>
+                                            <td >دوره آموزشی :</td>
                                             <td >{{ $transcript->course_data['title'] ?? '' }}</td>
                                         </tr>
                                         <tr class="font-size-lg font-weight-bolder h-65px">

@@ -9,7 +9,7 @@
                 @endforeach
             </x-teacher.nav-tabs-list>
             @if($tab == self::CHAPTERS)
-                <x-teacher.forms.dropdown id="course" :data="$data['course']" label="فیلتر بر حسب دوره اموزشی" wire:model="course"/>
+                <x-teacher.forms.dropdown id="course" :data="$data['course']" label="فیلتر بر حسب دوره آموزشی" wire:model="course"/>
                 @include('teacher.layouts.advance-table')
                 <div class="row">
                     <div class="col-lg-12 table-responsive">

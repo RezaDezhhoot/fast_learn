@@ -67,7 +67,7 @@ class StoreChapter extends BaseComponent
             'title' => 'عنوان',
             'status' => 'وضعیت',
             'description' => 'توضیحات',
-            'course' => 'دوره اموزشی',
+            'course' => 'دوره آموزشی',
             'view' => 'شماره نمایش ',
         ]);
         $chapter->title = $this->title;

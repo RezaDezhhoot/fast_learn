@@ -9,7 +9,7 @@
                 <thead>
                 <tr>
                     <td>#</td>
-                    <td>دوره اموزشی</td>
+                    <td>دوره آموزشی</td>
                     <td>عنوان درس</td>
                     <td>بررسی توسط مدرس</td>
                     <td>تاریخ</td>
@@ -125,7 +125,7 @@
 </div>
 
 @push('scripts')
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="https://www.google.com/recaptcha/api.js?hl=fa" async defer></script>
 
     <script>
         function delete_homework() {

@@ -76,7 +76,7 @@
                             <div class="input-box col-lg-6">
                                 <label class="label-text">ایمیل </label>
                                 <div class="form-group">
-                                    <input disabled class="form-control form--control" type="text" name="text"
+                                    <input class="form-control form--control" type="text" name="text"
                                            wire:model.defer="email"/>
                                     <span class="la la-envelope input-icon"></span>
                                     @error('email')

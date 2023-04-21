@@ -16,7 +16,7 @@
                             <a wire:click="like" class="btn theme-btn theme-btn-sm theme-btn-transparent lh-26 text-white mr-2" >
                                 <i class="la {{ $has_liked ? 'la-star' : 'la-star-o' }} mr-1"></i> امتیاز دهید
                             </a>
-                            <a href="{{route('course',$course_data->slug)}}" class="btn theme-btn theme-btn-sm theme-btn-transparent lh-26 d-flex align-items-center text-white mr-2">  بازگشت به دوره اموزشی<i class="la la-arrow-left mr-1 la-lg"></i> </a>
+                            <a href="{{route('course',$course_data->slug)}}" class="btn theme-btn theme-btn-sm theme-btn-transparent lh-26 d-flex align-items-center text-white mr-2">  بازگشت به دوره آموزشی<i class="la la-arrow-left mr-1 la-lg"></i> </a>
                         </div>
                     </div>
                 </div>

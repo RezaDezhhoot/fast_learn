@@ -8,7 +8,7 @@ use App\Repositories\Interfaces\SettingRepositoryInterface;
 class ContactSetting extends BaseComponent
 {
     public $header , $googleMap  , $contactText , $tel, $subject = [] , $links = [] , $violations = [] , $email, $address;
-    public $instagram , $twitter , $youtube , $telegram;
+    public $instagram , $twitter , $youtube , $telegram , $linkedin;
 
     public function __construct($id = null)
     {
@@ -53,6 +53,7 @@ class ContactSetting extends BaseComponent
                 'instagram' => ['nullable','string','max:300'],
                 'twitter' => ['nullable','string','max:400'],
                 'youtube' => ['nullable','string','max:400'],
+                'linkedin' => ['nullable','string','max:400'],
                 'telegram' => ['nullable','string','max:400'],
                 'subject' => ['nullable','array'],
                 'subject.*' => ['required','string','max:70'],
@@ -69,6 +70,7 @@ class ContactSetting extends BaseComponent
                 'email' => 'ایمیل',
                 'instagram' => 'اینستاگرام',
                 'twitter' => 'توییتر',
+                'linkedin' => 'لینکدین',
                 'youtube' => 'یوتیوب',
                 'telegram' => 'تلگرام',
                 'subject' => 'موضوع ها',
@@ -83,6 +85,7 @@ class ContactSetting extends BaseComponent
         $this->settingRepository::updateOrCreate(['name' => 'contactText'],['value' => $this->contactText]);
         $this->settingRepository::updateOrCreate(['name' => 'instagram'], ['value' => $this->instagram]);
         $this->settingRepository::updateOrCreate(['name' => 'twitter'], ['value' => $this->twitter]);
+        $this->settingRepository::updateOrCreate(['name' => 'linkedin'], ['value' => $this->linkedin]);
         $this->settingRepository::updateOrCreate(['name' => 'youtube'], ['value' => $this->youtube]);
         $this->settingRepository::updateOrCreate(['name' => 'telegram'], ['value' => $this->telegram]);
         $this->settingRepository::updateOrCreate(['name' => 'tel'], ['value' => $this->tel]);

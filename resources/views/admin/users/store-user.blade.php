@@ -10,7 +10,7 @@
             <div class="row">
                 <x-admin.forms.input with="6" type="text" id="first_name" label="نام*" wire:model.defer="name"/>
                 <x-admin.forms.input with="6" type="text" id="phone" label="شماره همراه*" wire:model.defer="phone"/>
-                <x-admin.forms.input with="6" type="email" id="email" label="ایمیل*" wire:model.defer="email"/>
+                <x-admin.forms.input with="6" type="email" id="email" label="ایمیل" wire:model.defer="email"/>
                 <x-admin.forms.dropdown with="6" id="status" :data="$data['status']" label="وضعیت*" wire:model.defer="status"/>
                 <x-admin.forms.input with="6" type="text" id="id_code" label="شماره ملی" wire:model.defer="code_id"/>
                 <x-admin.forms.input with="6" type="text" id="father_name" label="نام پدر" wire:model.defer="father_name"/>

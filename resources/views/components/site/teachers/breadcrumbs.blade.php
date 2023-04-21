@@ -7,7 +7,7 @@
                     <img class="rounded-full" src="{{ asset($teacher->user->image) }}" alt="{{ $teacher->user->name }}" />
                 </div>
                 <div class="media-body">
-                    <h2 class="section__title fs-30">{{ $teacher->user->name }}</h2>
+                    <h2 class="section__title fs-30 text-white">{{ $teacher->user->name }}</h2>
                     <span class="d-block lh-18 pt-1 pb-2">{{ $teacher->created_at->diffForHumans() }}</span>
                     <p class="lh-18">{{ $teacher->sub_title }}</p>
                 </div>

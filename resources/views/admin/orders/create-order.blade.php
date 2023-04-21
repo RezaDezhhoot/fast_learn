@@ -85,7 +85,7 @@
     </div>
     <x-admin.modal-page id="details" title="دوره برای سفارش" wire:click="storeDetails">
         <x-admin.forms.validation-errors />
-        <x-admin.forms.select2 id="course" :data="$data['course']" label=" *  دوره اموزشی" wire:model="course_id"/>
+        <x-admin.forms.select2 id="course" :data="$data['course']" label=" *  دوره آموزشی" wire:model="course_id"/>
         <div class="form-group col-12">
             <p class="form-control">
                 موجودی کیف پول کاربر (تومان) : {{number_format($user_wallet)}}

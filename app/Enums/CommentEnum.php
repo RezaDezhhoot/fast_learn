@@ -28,8 +28,8 @@ final class CommentEnum extends Enum
     public static function getFor()
     {
         return [
-            self::ARTICLE => 'مقالات اموزشی',
-            self::COURSE => 'دوره اموزشی',
+            self::ARTICLE => 'مقالات آموزشی',
+            self::COURSE => 'دوره آموزشی',
             self::EPISODE => 'درس ها'
         ];
     }

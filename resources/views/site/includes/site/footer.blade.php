@@ -11,7 +11,7 @@
                         <li><a href="{{ route('fag') }}">سوالات متداول</a></li>
                         <li><a href="{{ route('courses') }}">دوره های آموزشی</a></li>
                         <li><a href="{{ route('teachers') }}">مدرسین</a></li>
-                        <li><a href="{{ route('samples') }}">نمونه سوالات</a></li>
+{{--                        <li><a href="{{ route('samples') }}">نمونه سوالات</a></li>--}}
                     </ul>
                 </div>
                 <!-- end footer-item -->

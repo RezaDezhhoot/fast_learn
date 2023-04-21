@@ -108,7 +108,7 @@ class HomeSetting extends BaseComponent
         $this->contentCase[] = '';
     }
 
-    
+
     public function storeContent()
     {
         $this->authorizing('edit_settings_fag');
@@ -158,7 +158,7 @@ class HomeSetting extends BaseComponent
         $this->authorizing('edit_settings_fag');
         $fields = [
             'box_title' => ['required', 'string'],
-            'box_link' => ['required', 'url'],
+            'box_link' => ['required', 'string'],
             'box_image' => ['required','string' ,'max:1400'],
             'box_description' => ['required','string','max:255'],
             'box_width' => ['required', 'numeric','in:'.implode(',',array_keys($this->data['boxWidth']))]

@@ -17,7 +17,7 @@ use Psr\Container\NotFoundExceptionInterface;
 
 class SingleArticle extends BaseComponent
 {
-    public  $related_posts , $comments , $recaptcha , $commentCount = 10 ,  $actionComment  , $actionLabel = 'دیدگاه جدید' ;
+    public  $related_posts , $comments , $user_name , $recaptcha , $commentCount = 10 ,  $actionComment  , $actionLabel = 'دیدگاه جدید' ;
     public ?string $comment = null;
     public object $article;
 
@@ -63,6 +63,9 @@ class SingleArticle extends BaseComponent
         $ids = array_value_recursive('id',$this->categoryRepository->find($this->article->category_id)->toArray());
         $this->related_posts = $this->articleRepository->whereIn('category_id',$ids,3,true,[['id' , '!=' , $this->article->id]]);
         $this->comments = $this->article->comments;
+
+        if (auth()->check())
+            $this->user_name = auth()->user()->name;
     }
     public function render()
     {
@@ -83,9 +86,11 @@ class SingleArticle extends BaseComponent
     {
         $this->validate([
             'comment' => ['required','string','max:255'],
+            'user_name' => ['nullable','string','max:255'],
             'recaptcha' => ['required', new ReCaptchaRule],
         ],[],[
             'comment' => 'متن',
+            'user_name' => 'نام',
             'recaptcha' => 'کلید امنیتی'
         ]);
 //        if (!auth()->check())
@@ -104,6 +109,7 @@ class SingleArticle extends BaseComponent
         $data = [
             'user_id' => auth()->check() ? auth()->id() : null,
             'content' => $this->comment,
+            'name' => $this->user_name,
             'parent_id'=> $this->actionComment ?? null,
             'status' => $status,
             'user_ip' => request()->ip()

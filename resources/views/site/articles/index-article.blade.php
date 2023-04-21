@@ -1,5 +1,5 @@
 <div>
-    <x-site.breadcrumbs :data="$page_address" title="مقالات اموزشی" />
+    <x-site.breadcrumbs :data="$page_address" title="مقالات آموزشی" />
     <section class="course-area">
         <div class="container">
             <div class="filter-bar mb-4">

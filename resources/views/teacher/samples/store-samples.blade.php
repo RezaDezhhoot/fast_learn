@@ -13,7 +13,7 @@
                 <x-teacher.forms.dropdown with="6" id="driver" :data="$data['storage']" label="فضای ذخیره سازی*" wire:model.defer="driver"/>
                 <x-teacher.forms.lfm-standalone  id="file" label="فایل*" :file="$file"
                                                type="image" required="true" wire:model="file" />
-                <x-teacher.forms.select2 id="course" :data="$data['course']" label=" دوره اموزشی"
+                <x-teacher.forms.select2 id="course" :data="$data['course']" label=" دوره آموزشی"
                                        wire:model.defer="course" />
                 <x-teacher.forms.full-text-editor id="description" label="توضیحات " wire:model.defer="description" />
 

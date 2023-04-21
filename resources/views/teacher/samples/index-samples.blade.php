@@ -3,7 +3,7 @@
     <x-teacher.form-control link="{{ route('teacher.store.samples',['create'] ) }}" confirmContent="تعریف نمونه سوال جدید" title="نمونه سوالات"/>
     <div class="card card-custom">
         <div class="card-body">
-            <x-teacher.forms.select2 id="course" :data="$data['course']" label="فیلتر بر حسب دوره اموزشی" wire:model.defer="course"/>
+            <x-teacher.forms.select2 id="course" :data="$data['course']" label="فیلتر بر حسب دوره آموزشی" wire:model.defer="course"/>
             <x-teacher.forms.dropdown id="status" :data="$data['status']" label="وضعیت" wire:model="status"/>
             @include('teacher.layouts.advance-table')
             <div class="row">
@@ -13,7 +13,7 @@
                         <tr>
                             <th>#</th>
                             <th> عنوان</th>
-                            <th> دوره اموزشی</th>
+                            <th> دوره آموزشی</th>
                             <th>وضعیت</th>
                             <th>نوع</th>
                             <th>تعداد دانلود</th>

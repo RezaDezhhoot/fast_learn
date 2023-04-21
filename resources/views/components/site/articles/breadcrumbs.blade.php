@@ -4,7 +4,7 @@
         <div class="col-lg-8 mr-auto">
             <div class="breadcrumb-content">
                 <div class="section-heading pb-3">
-                    <h2 class="section__title">{{ $article->title }}</h2>
+                    <h2 class="section__title text-white">{{ $article->title }}</h2>
                 </div>
                 <ul class="generic-list-item generic-list-item-arrow d-flex flex-wrap align-items-center">
                     @foreach($data as $item)

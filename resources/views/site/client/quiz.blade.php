@@ -53,7 +53,7 @@
                                         }}</td>
                                     </tr>
                                     <tr>
-                                        <td >دوره اموزشی :</td>
+                                        <td >دوره آموزشی :</td>
                                         <td >{{ $transcript->course_data['title'] ?? '' }}</td>
                                     </tr>
                                     <tr>

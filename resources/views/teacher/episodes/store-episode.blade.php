@@ -13,7 +13,7 @@
                 <x-teacher.forms.input with="6" type="text" id="time" label="زمان *" wire:model.defer="time" />
                 <x-teacher.forms.input with="6" type="number" id="view" label="نمایش *" wire:model.defer="view" />
                 <div class="col-12">
-                    <x-teacher.forms.select2 id="course_id" :data="$data['course']" label=" دوره اموزشی"
+                    <x-teacher.forms.select2 id="course_id" :data="$data['course']" label=" دوره آموزشی"
                                              wire:model.defer="course_id" />
                     <x-teacher.forms.dropdown id="chapter_id" :data="$data['chapter']" label=" فصل*"
                                             wire:model.defer="chapter_id" />

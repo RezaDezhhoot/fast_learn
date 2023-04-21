@@ -79,6 +79,16 @@
                             <h3 class="fs-24 font-weight-semi-bold pb-4">{{ $actionLabel }}</h3>
                             <form method="post" id="commentForm" class="row" wire:submit.prevent="new_comment">
                                 @auth
+                                    <div class="input-box col-lg-12">
+                                        <label class="label-text">نام شما</label>
+                                        <div class="form-group">
+                                            <input type="text" wire:model.defer="user_name" class="form-control form--control pl-3"
+                                                   name="user_name">
+                                        </div>
+                                        @error('user_name')
+                                        <span class="invalid-feedback d-block">{{$message}}</span>
+                                        @enderror
+                                    </div>
                                 <div class="input-box col-lg-12">
                                     <label class="label-text">پیام</label>
                                     <div class="form-group">
@@ -233,7 +243,7 @@
                                     <h3 class="card-title fs-18 mt-2 pb-2">این دوره شامل</h3>
                                     <ul class="generic-list-item pb-3">
                                         <li><i class="la la-play-circle-o mr-2 text-color"></i>{{ $course->hours }} ساعت
-                                            ویدیو اموزشی </li>
+                                            ویدیو آموزشی </li>
                                         <li><i class="la la-key mr-2 text-color"></i>دسترسی کامل مادام العمر</li>
                                     </ul>
                                 </div>
@@ -378,12 +388,8 @@
             <div class="modal-footer justify-content-center border-top-gray">
                 <ul class="social-icons social-icons-styled">
                     <li>
-                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ route('codes',$course->short_code) }}"
-                            class="facebook-bg"><i class="la la-facebook"></i></a>
-                    </li>
-                    <li>
-                        <a href="https://twitter.com/intent/tweet?text={{ route('codes',$course->short_code) }}"
-                            class="twitter-bg"><i class="la la-twitter"></i></a>
+                        <a href="https://t.me/share/url?url={{ route('codes',$course->short_code) }}"
+                            class="twitter-bg"><i class="la la-telegram"></i></a>
                     </li>
                     <li>
                         <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ route('codes',$course->short_code) }}"
@@ -419,7 +425,7 @@
         Livewire.on('loadRecaptcha', () => {
             const script = document.createElement('script');
 
-            script.setAttribute('src', 'https://www.google.com/recaptcha/api.js');
+            script.setAttribute('src', 'https://www.google.com/recaptcha/api.js?hl=fa');
 
             const start = document.createElement('script');
 

@@ -30,7 +30,7 @@
                             </div>
                             <!-- end input-box -->
                             <div class="input-box">
-                                <label class="label-text">آدرس ایمیل*</label>
+                                <label class="label-text">آدرس ایمیل</label>
                                 <div class="form-group">
                                     <input  wire:model.defer="email"  class="form-control form--control" type="email" name="email" placeholder="آدرس ایمیل" />
                                     <span class="la la-envelope input-icon"></span>
@@ -109,7 +109,7 @@
     <!-- end container -->
 </section>
     @push('scripts')
-        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+        <script src="https://www.google.com/recaptcha/api.js?hl=fa" async defer></script>
 
         <script>
             function reCaptchaCallback(response) {

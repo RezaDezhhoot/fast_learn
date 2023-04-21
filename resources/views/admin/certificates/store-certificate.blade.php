@@ -9,7 +9,7 @@
         <div class="card-body">
             <div class="row">
                 <x-admin.forms.input with="6" type="text" id="name" label="عنوان *" wire:model.defer="name"/>
-                <x-admin.forms.input with="6" type="text" id="title" label="اموزشگاه *" wire:model.defer="title"/>
+                <x-admin.forms.input with="6" type="text" id="title" label="آموزشگاه *" wire:model.defer="title"/>
             </div>
             <hr>
             @if($mode == self::UPDATE_MODE)

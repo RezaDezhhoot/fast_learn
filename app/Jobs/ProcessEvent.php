@@ -56,7 +56,7 @@ class ProcessEvent implements ShouldQueue
         $this->start();
 
         $this->user->notify(new SendNotification($this->text,$this->user->id,NotificationEnum::PUBLIC,$this->user->id));
-        if ($this->event->event == EventEnum::EMAIL)
+        if ($this->event->event == EventEnum::EMAIL && isset($this->user['email']) && !is_null($this->user['email']))
             $this->sendRepository->sendEmail(new EventMail($this->event->title,$this->text),$this->user['email']);
         elseif ($this->event->event == EventEnum::SMS)
             $this->sendRepository->sendSMS($this->text,$this->user['phone']);
