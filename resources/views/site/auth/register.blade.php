@@ -12,7 +12,7 @@
                 <div class="card card-item">
                     <div class="card-body">
                         <h3 class="card-title text-center fs-24 lh-35 pb-4">
-                            شروع به یادگیری کنید!
+                            عضو خانواده خودشکوفا شوید
                         </h3>
                         <div class="section-block"></div>
                         <form wire:submit.prevent="signUp()" class="pt-4">
@@ -30,7 +30,7 @@
                             </div>
                             <!-- end input-box -->
                             <div class="input-box">
-                                <label class="label-text">آدرس ایمیل</label>
+                                <label class="label-text">آدرس ایمیل(اختیاری)</label>
                                 <div class="form-group">
                                     <input  wire:model.defer="email"  class="form-control form--control" type="email" name="email" placeholder="آدرس ایمیل" />
                                     <span class="la la-envelope input-icon"></span>
