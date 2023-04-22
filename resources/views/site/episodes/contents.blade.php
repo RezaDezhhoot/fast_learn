@@ -128,6 +128,8 @@
                     }
                 ]
             }
+            player.muted = true;
+            player.play();
         })
     </script>
 @endpush
