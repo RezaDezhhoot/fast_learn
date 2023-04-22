@@ -20,16 +20,18 @@ class StorageController extends Controller
     public function __invoke($episode,$type)
     {
         $episode = $this->episodeRepository->findOrFail($episode);
-        if (!\auth()->user()->hasRole('admin')) {
-            if (!$episode->free && !$episode->chapter->course->price == 0) {
-                if (\auth()->check()) {
-                    if ( !auth()->user()->hasCourse($episode->chapter->course->id) && !Auth::user()->hasPermissionTo('edit_courses'))
-                        abort(404);
-                } else {
+        if (!$episode->free && !$episode->chapter->course->price == 0) {
+            if (\auth()->check()) {
+                if (
+                    !auth()->user()->hasCourse($episode->chapter->course->id) ||
+                    !\auth()->user()->hasRole('admin')) {
                     abort(404);
                 }
+            } else {
+                abort(404);
             }
         }
+
 
 
 
