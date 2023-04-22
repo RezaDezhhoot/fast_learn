@@ -48,6 +48,7 @@ class Episode extends Model
         'show_api_video' => 'boolean',
         'downloadable_local_video' => 'boolean',
         'can_homework' => 'boolean',
+        'allow_show_local_video' => 'boolean'
     ];
 
     protected $appends = [
