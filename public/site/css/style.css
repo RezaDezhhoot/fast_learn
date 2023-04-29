@@ -10269,8 +10269,8 @@
      }
 
      .logo-size {
-         max-width: 4rem;
-         transform: scale(0.9);
+         max-width: 7rem;
+         /*transform: scale(0.9);*/
      }
 
      .logo-footer {
@@ -10320,4 +10320,8 @@
      .custom-pos{
          top: -100% !important;
          left: 100% !important;
+     }
+
+     span {
+         font-weight: 400;
      }

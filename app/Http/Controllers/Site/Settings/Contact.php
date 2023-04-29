@@ -21,7 +21,7 @@ class Contact extends BaseComponent
     public $tel , $address , $email , $google , $contact;
     public $instagram , $twitter , $youtube , $telegram , $linkedin;
 
-    public $full_name , $contact_email , $phone , $body , $recaptcha , $aparat;
+    public $full_name , $contact_email , $phone , $body , $recaptcha , $aparat ,$whatsapp;
 
     public function mount(SettingRepositoryInterface $settingRepository)
     {
@@ -47,6 +47,7 @@ class Contact extends BaseComponent
         $this->youtube = $settingRepository->getRow('youtube');
         $this->linkedin = $settingRepository->getRow('linkedin');
         $this->telegram = $settingRepository->getRow('telegram');
+        $this->whatsapp = $settingRepository->getRow('whatsapp');
         $this->page_address = [
             'home' => ['link' => route('home') , 'label' => 'صفحه اصلی'],
             'contact' => ['link' => '' , 'label' => 'ارتباط با ما']

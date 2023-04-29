@@ -33,6 +33,28 @@
                         </tr>
                         </tbody>
                     </table>
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <td>نام ثبت شده</td>
+                            <td>شماره همراه ثبت شده</td>
+                            <td>ایمیل ثبت شده</td>
+                            <td>رشته </td>
+                            <td>سطح تحصیلات </td>
+                            <td>موضوع اموزشی </td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>{{ $request->name }}</td>
+                            <td>{{ $request->phone }}</td>
+                            <td>{{ $request->email }}</td>
+                            <td>{{ $request->filed }}</td>
+                            <td>{{ $request->grade }}</td>
+                            <td>{{ $request->subject }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
                 @if(!is_null($url))
                     <div class="col-12">

@@ -11,7 +11,6 @@
                             </div>
                             <div class="card-body">
                                 <h5 class="card-title"><a href="{{ route('teacher',$item->id) }}">{{ $item->user->name }}</a></h5>
-                                <p class="card-text">معلم</p>
                                 <a href="{{ route('teacher',$item->id) }}" class="btn theme-btn theme-btn-sm theme-btn-transparent mt-3">مشاهده نمایه <i class="la la-arrow-left icon ml-1"></i></a>
                             </div>
                         </div>

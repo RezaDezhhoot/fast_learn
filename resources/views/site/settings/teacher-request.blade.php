@@ -217,8 +217,88 @@
                         <div class="card-body">
                             <form method="post" wire:submit.prevent="store"  class="row">
                                 <div class="input-box col-12">
-                                    <label class="label-text">توضیحات *</label>
+                                    <label class="label-text">توضیحات*</label>
                                     <x-admin.forms.basic-text-editor with="12" id="descriptions" label="" wire:model.defer="descriptions"/>
+                                </div>
+                                <div class="input-box col-md-6 col-12">
+                                    <label class="label-text">نام*</label>
+                                    <div class="form-group">
+                                        <input wire:model.defer="name" class="form-control form--control" type="text" name="name" placeholder="نام" />
+                                        <span class="la la-user input-icon"></span>
+                                        @error('name')
+                                        <small class="text-danger">
+                                            {{ $message }}
+                                        </small>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="input-box col-md-6 col-12">
+                                    <label class="label-text">ادرس ایمیل*</label>
+                                    <div class="form-group">
+                                        <input wire:model.defer="email" class="form-control form--control" type="email" name="email" placeholder="ادرس ایمیل" />
+                                        <span class="la la-envelope input-icon"></span>
+                                        @error('email')
+                                        <small class="text-danger">
+                                            {{ $message }}
+                                        </small>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="input-box col-md-6 col-12">
+                                    <label class="label-text">شماره تماس*</label>
+                                    <div class="form-group">
+                                        <input wire:model.defer="phone" class="form-control form--control" type="text" name="phone" placeholder="شماره تماس" />
+                                        <span class="la la-phone input-icon"></span>
+                                        @error('phone')
+                                        <small class="text-danger">
+                                            {{ $message }}
+                                        </small>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="input-box col-md-6 col-12">
+                                    <label class="label-text">سطح تحصیلات*</label>
+                                    <div class="form-group">
+                                        <select name="grade" wire:model.defer="grade" class="form-control form--control" id="grade">
+                                            <option value=""></option>
+                                            <option value="دیپلم">دیپلم</option>
+                                            <option value="کاردانی">کاردانی</option>
+                                            <option value="کارشناسی">کارشناسی</option>
+                                            <option value="کارشناسی ارشد">کارشناسی ارشد</option>
+                                            <option value="دکتری">دکتری</option>
+                                            <option value="سایر">سایر...</option>
+                                        </select>
+                                        <span class="la la-certificate input-icon"></span>
+                                        @error('grade')
+                                        <small class="text-danger">
+                                            {{ $message }}
+                                        </small>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="input-box col-md-6 col-12">
+                                    <label class="label-text">رشته تحصیلی*</label>
+                                    <div class="form-group">
+                                        <input wire:model.defer="filed" class="form-control form--control" type="text" name="filed" placeholder="رشته تحصیلی" />
+                                        <span class="la la-book input-icon"></span>
+                                        @error('filed')
+                                        <small class="text-danger">
+                                            {{ $message }}
+                                        </small>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="input-box col-md-6 col-12">
+                                    <label class="label-text">موضوع آموزشی*</label>
+                                    <div class="form-group">
+                                        <input wire:model.defer="subject" class="form-control form--control" type="text" name="subject" placeholder="موضوع آموزشی" />
+                                        <span class="la la-header input-icon"></span>
+                                        @error('subject')
+                                        <small class="text-danger">
+                                            {{ $message }}
+                                        </small>
+                                        @enderror
+                                    </div>
                                 </div>
                                 <div class="input-box col-12">
                                     <label class="label-text">ادرس رزومه / لینک</label>

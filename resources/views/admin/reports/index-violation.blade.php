@@ -1,6 +1,6 @@
 <div>
-    @section('title','گزارش تخلفات ')
-    <x-admin.form-control  title="گزارش تخلفات"/>
+    @section('title','گزارش ایرادات ')
+    <x-admin.form-control  title="گزارش ایرادات"/>
     <div class="card card-custom">
         <div class="card-body">
             <x-admin.forms.dropdown id="status" :data="$data['status']" label="وضعیت" wire:model="status"/>

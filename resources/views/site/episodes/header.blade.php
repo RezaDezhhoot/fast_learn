@@ -10,7 +10,7 @@
                         <div class="nav-left-button d-flex align-items-center">
                             @if(! $has_reported)
                                 <a data-toggle="modal" data-target="#reportModal" class="btn theme-btn theme-btn-sm theme-btn-transparent lh-26 text-white mr-2" >
-                                    <i class="la la-warning mr-1"></i>گزارش تخلف
+                                    <i class="la la-warning mr-1"></i>گزارش ایراد
                                 </a>
                             @endif
                             <a wire:click="like" class="btn theme-btn theme-btn-sm theme-btn-transparent lh-26 text-white mr-2" >
@@ -28,7 +28,7 @@
             <div class="modal-content">
                 <div class="modal-header border-bottom-gray">
                     <div class="pr-2">
-                        <h5 class="modal-title fs-19 font-weight-semi-bold lh-24" id="reportModalTitle">گزارش تخلف</h5>
+                        <h5 class="modal-title fs-19 font-weight-semi-bold lh-24" id="reportModalTitle">گزارش ایراد</h5>
                     </div>
                     <button type="button" class="close" data-dismiss="modal" aria-label="نزدیک">
                         <span aria-hidden="true" class="la la-times"></span>

@@ -22,6 +22,7 @@
                     <x-admin.forms.input with="3" type="text" id="youtube" placeholder="youtube" label="یوتیوب" wire:model.defer="youtube"/>
                     <x-admin.forms.input with="3" type="text" id="telegram" placeholder="telegram" label="تلگرام" wire:model.defer="telegram"/>
                     <x-admin.forms.input with="3" type="text" id="aparat" placeholder="aparat" label="اپارات" wire:model.defer="aparat"/>
+                    <x-admin.forms.input with="3" type="text" id="whatsapp" placeholder="whatsapp" label="واتساپ" wire:model.defer="whatsapp"/>
                 </div>
             </x-admin.form-section>
             <x-admin.form-section label="موضوعات تیکت">
@@ -47,7 +48,7 @@
                     @endforeach
                 </div>
             </x-admin.form-section>
-            <x-admin.form-section label="موضوعات برای گزارش تخلف دروس">
+            <x-admin.form-section label="موضوعات برای گزارش ایراد دروس">
                 <div class="border p-3">
                     <x-admin.button class="btn btn-light-primary font-weight-bolder btn-sm" content="افزودن موضوع" wire:click="addViolation()" />
                     @foreach($violations as $key => $item)

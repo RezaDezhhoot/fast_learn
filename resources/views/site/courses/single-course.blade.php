@@ -388,12 +388,20 @@
             <div class="modal-footer justify-content-center border-top-gray">
                 <ul class="social-icons social-icons-styled">
                     <li>
-                        <a href="https://t.me/share/url?url={{ route('codes',$course->short_code) }}"
+                        <a target="_blank" href="https://t.me/share/url?url={{ route('codes',$course->short_code) }}"
                             class="twitter-bg"><i class="la la-telegram"></i></a>
                     </li>
                     <li>
-                        <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ route('codes',$course->short_code) }}"
+                        <a target="_blank" href="https://www.linkedin.com/sharing/share-offsite/?url={{ route('codes',$course->short_code) }}"
                             class="linkedin-bg"><i class="la la-linkedin"></i></a>
+                    </li>
+                    <li>
+                        <a target="_blank" href="whatsapp://send/?text={{ route('codes',$course->short_code) }}"
+                           class="linkedin-bg"><i class="la la-whatsapp"></i></a>
+                    </li>
+                    <li>
+                        <a target="_blank" href="mailto:?subject={{$course->title }}"
+                           class="linkedin-bg"><i class="la la-envelope"></i></a>
                     </li>
                 </ul>
             </div>

@@ -8,7 +8,7 @@ use App\Repositories\Interfaces\SettingRepositoryInterface;
 class ContactSetting extends BaseComponent
 {
     public $header , $googleMap  , $contactText , $tel, $subject = [] , $links = [] , $violations = [] , $email, $address;
-    public $instagram , $twitter , $youtube , $telegram , $linkedin , $aparat;
+    public $instagram , $twitter , $youtube , $telegram , $linkedin , $aparat , $whatsapp;
 
     public function __construct($id = null)
     {
@@ -29,6 +29,7 @@ class ContactSetting extends BaseComponent
         $this->twitter = $this->settingRepository->getRow('twitter');
         $this->youtube = $this->settingRepository->getRow('youtube');
         $this->telegram = $this->settingRepository->getRow('telegram');
+        $this->whatsapp = $this->settingRepository->getRow('whatsapp');
         $this->aparat = $this->settingRepository->getRow('aparat');
         $this->subject = $this->settingRepository->getRow('subject',[]);
         $this->links = $this->settingRepository->getRow('links',[]);
@@ -56,6 +57,7 @@ class ContactSetting extends BaseComponent
                 'youtube' => ['nullable','string','max:400'],
                 'linkedin' => ['nullable','string','max:400'],
                 'telegram' => ['nullable','string','max:400'],
+                'whatsapp' => ['nullable','string','max:400'],
                 'aparat' => ['nullable','string','max:400'],
                 'subject' => ['nullable','array'],
                 'subject.*' => ['required','string','max:70'],
@@ -76,12 +78,13 @@ class ContactSetting extends BaseComponent
                 'aparat' => 'اپارات',
                 'youtube' => 'یوتیوب',
                 'telegram' => 'تلگرام',
+                'whatsapp' => 'واتساپ',
                 'subject' => 'موضوع ها',
                 'subject.*' => 'موضوع ها',
                 'links' => 'لینک های دانلود',
                 'links.*.link' => 'لینک های دانلود',
                 'links.*.title' => 'لینک های دانلود',
-                'violations' => 'موضوعات گزارش تخلف'
+                'violations' => 'موضوعات گزارش ایراد'
             ]
         );
         $this->settingRepository::updateOrCreate(['name' => 'googleMap'],['value' => $this->googleMap]);
@@ -92,6 +95,7 @@ class ContactSetting extends BaseComponent
         $this->settingRepository::updateOrCreate(['name' => 'linkedin'], ['value' => $this->linkedin]);
         $this->settingRepository::updateOrCreate(['name' => 'youtube'], ['value' => $this->youtube]);
         $this->settingRepository::updateOrCreate(['name' => 'telegram'], ['value' => $this->telegram]);
+        $this->settingRepository::updateOrCreate(['name' => 'whatsapp'], ['value' => $this->whatsapp]);
         $this->settingRepository::updateOrCreate(['name' => 'tel'], ['value' => $this->tel]);
         $this->settingRepository::updateOrCreate(['name' => 'email'], ['value' => $this->email]);
         $this->settingRepository::updateOrCreate(['name' => 'address'], ['value' => $this->address]);

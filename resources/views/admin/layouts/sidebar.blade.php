@@ -148,7 +148,7 @@
                     <x-admin.menu-item  href="{{route('admin.contact')}}" icon="flaticon-email" :active="request()->routeIs(['admin.contact','admin.store.contact'])" label=" ارتباط با ما ({{$contacts}})" />
                 @endcan
                 @can('show_contacts')
-                    <x-admin.menu-item  href="{{route('admin.report.violation')}}" icon="flaticon-warning" :active="request()->routeIs(['admin.report.violation'])" label="گزارش تخلفات ({{$violations}})" />
+                    <x-admin.menu-item  href="{{route('admin.report.violation')}}" icon="flaticon-warning" :active="request()->routeIs(['admin.report.violation'])" label="گزارش ایرادات ({{$violations}})" />
                 @endcan
                 @can('show_forms')
                     <x-admin.menu-item href="{{route('admin.answer')}}" icon="flaticon2-writing" :active="request()->routeIs(['admin.answer','admin.store.answer'])" label="فرم های ارسالی ({{$forms}})" />

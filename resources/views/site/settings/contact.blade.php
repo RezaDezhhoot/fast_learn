@@ -52,7 +52,7 @@
                                    <i class="la la-telegram text-primary"></i>
                                </div>
                            </div>
-                            <h3 class="info__title">با ما تماس بگیرید</h3>
+                            <h3 class="info__title">به ما پیام دهید </h3>
                             <p class="info__text">{{ $tel }}</p>
                         </div>
                         <!-- end info-box -->
@@ -82,9 +82,14 @@
                             <ul class="social-icons social-icons-styled social--icons-styled pt-30px">
                                     @if(!empty($telegram))
                                     <li>
-                                        <a href="{{ $telegram }}"><i class="la la-facebook la-lg"></i></a>
+                                        <a href="{{ $telegram }}"><i class="la la-telegram la-lg"></i></a>
                                     </li>
                                    @endif
+                                        @if(!empty($whatsapp))
+                                            <li>
+                                                <a href="{{ $whatsapp }}"><i class="la la-whatsapp la-lg"></i></a>
+                                            </li>
+                                        @endif
                                     @if(!empty($linkedin))
                                     <li>
                                         <a href="{{ $linkedin }}"><i class="la la-linkedin la-lg"></i></a>

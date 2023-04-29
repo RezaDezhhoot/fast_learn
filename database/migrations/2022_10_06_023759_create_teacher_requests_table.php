@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('url')->nullable();
             $table->text('files')->nullable();
             $table->string('status');
-            $table->text('result')->nullbale();
+            $table->text('result')->nullable();
             $table->timestamps();
         });
     }

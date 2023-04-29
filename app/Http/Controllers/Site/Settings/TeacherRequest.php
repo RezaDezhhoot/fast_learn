@@ -18,7 +18,7 @@ use Livewire\WithFileUploads;
 class TeacherRequest extends BaseComponent
 {
     use WithFileUploads;
-    public $descriptions , $files = [] , $url , $law;
+    public $descriptions , $files = [] , $url , $law , $name , $email , $phone , $filed , $grade , $subject;
 
     public function __construct($id = null)
     {
@@ -48,6 +48,12 @@ class TeacherRequest extends BaseComponent
             'home' => ['link' => route('home') , 'label' => 'صفحه اصلی'],
             'fag' => ['link' => '' , 'label' => 'مدرس شوید']
         ];
+
+        if (\auth()->check()) {
+            $this->name = \auth()->user()->name;
+            $this->phone = \auth()->user()->phone;
+            $this->email = \auth()->user()->email ?? null;
+        }
     }
 
     public function store()
@@ -69,11 +75,23 @@ class TeacherRequest extends BaseComponent
             'files' => ['nullable','array','max:3'],
             'files.*' => ['required','file','max:2048','mimes:png,jpeg,pdf,zip,rar'],
             'url' => ['nullable','url','max:250'],
+            'name' => ['required','string','max:255'],
+            'email' => ['required','string','max:255'],
+            'phone' => ['required','string','max:255'],
+            'filed' => ['required','string','max:255'],
+            'grade' => ['required','string','max:255'],
+            'subject' => ['required','string','max:255'],
         ],[],[
             'descriptions' => 'توضیحات',
             'files' => 'فایل های سرفصل و رزومه',
             'files.*' => 'فایل های سرفصل و رزومه',
             'url' => 'ادرس رزومه',
+            'name' => 'نام',
+            'email' => 'ادرس ایمیل',
+            'phone' => 'شماره تماس',
+            'filed' => 'رشته تحصیلی',
+            'grade' => 'سطح تحصیلات',
+            'subject' => 'موضوع آموزشی',
         ]);
         try {
             $this->teacherRequestRepository->newApply([
@@ -82,7 +100,13 @@ class TeacherRequest extends BaseComponent
                 'url' => $this->url,
                 'status' => TeacherEnum::APPLY_PENDING,
                 'files' => $this->uploadFiles(),
-                'result' => ''
+                'name' => $this->name,
+                'email' => $this->email,
+                'phone' => $this->phone,
+                'filed' => $this->filed,
+                'grade' => $this->grade,
+                'subject' => $this->subject,
+                'result' => '',
             ]);
             $this->resetData();
             redirect()->route('user.requests');
