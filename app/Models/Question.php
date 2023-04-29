@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * @method static findOrFail($id)
@@ -21,7 +23,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Question extends Model
 {
-    use HasFactory , Searchable;
+    use HasFactory , Searchable , LogsActivity;
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
+    }
 
     protected array $searchAbleColumns = ['name'];
 

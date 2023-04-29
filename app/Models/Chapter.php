@@ -16,10 +16,12 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Builder;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Chapter extends Model
 {
-    use HasFactory , SoftDeletes , CascadeSoftDeletes , Sluggable , Searchable;
+    use HasFactory , SoftDeletes , CascadeSoftDeletes , Sluggable , Searchable , LogsActivity;
 
     public $appends = [
         'episode_count' , 'episode_title_list' , 'minutes'
@@ -38,6 +40,11 @@ class Chapter extends Model
                 'source' => 'title'
             ]
         ];
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
     }
 
     public function scopeFindSimilarSlugs(Builder $query, string $attribute, array $config, string $slug): Builder

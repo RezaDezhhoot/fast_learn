@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * @method static findOrFail($id)
@@ -22,9 +24,14 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  */
 class Quiz extends Model
 {
-    use HasFactory , Searchable , SoftDeletes;
+    use HasFactory , Searchable , SoftDeletes , LogsActivity;
 
     protected $guarded = ['id'];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
+    }
 
     protected array $searchAbleColumns = ['name'];
 

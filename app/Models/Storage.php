@@ -9,13 +9,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * @method static doesntHave(string $string)
  */
 class Storage extends Model
 {
-    use HasFactory , SoftDeletes , Searchable;
+    use HasFactory , SoftDeletes , Searchable , LogsActivity;
 
     protected array $searchAbleColumns = ['name'];
 
@@ -24,6 +26,12 @@ class Storage extends Model
     ];
 
     protected $guarded = ['id'];
+
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
+    }
 
     public function scopeAvailable($query)
     {

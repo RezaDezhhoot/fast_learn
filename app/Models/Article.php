@@ -15,6 +15,8 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Str;
 use Morilog\Jalali\Jalalian;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * @property mixed created_at
@@ -28,7 +30,7 @@ class Article extends Model
 {
     protected $guarded = ['id'];
 
-    use HasFactory , Searchable , Sluggable;
+    use HasFactory , Searchable , Sluggable , LogsActivity;
 
     protected array $searchAbleColumns = ['slug','title','body'];
 
@@ -89,5 +91,10 @@ class Article extends Model
             ->with(['childrenRecursive' => function($q) {
                 return $q->where('status',CommentEnum::CONFIRMED);
             }])->whereNull('parent_id');
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
     }
 }

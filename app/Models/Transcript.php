@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Morilog\Jalali\Jalalian;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * @property mixed result
@@ -22,9 +24,14 @@ use Morilog\Jalali\Jalalian;
  */
 class Transcript extends Model
 {
-    use HasFactory;
+    use HasFactory , LogsActivity;
 
     protected $guarded = ['id'];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
+    }
 
     public function user(): BelongsTo
     {

@@ -123,7 +123,7 @@ class StoreCourse extends BaseComponent
             $this->saveInDataBase($this->courseRepository->newCourseObject());
             $this->reset(['slug','sub_title','title','short_body','long_body','image','category','quiz','teacher',
                 'status','level','type','reduction_type','const_price','reduction_value','start_at','expire_at',
-                'tags','seo_keywords','seo_description','incomingMethod','province','city','time_lapse_storage','time_lapse','organ_id','poll_id']);
+                'tags','seo_keywords','seo_description','incomingMethod','province','city','time_lapse','organ_id','poll_id']);
         }
     }
 

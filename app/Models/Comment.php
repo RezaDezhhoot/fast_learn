@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Morilog\Jalali\Jalalian;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 
 /**
@@ -23,13 +25,18 @@ use Morilog\Jalali\Jalalian;
  */
 class Comment extends Model
 {
-    use HasFactory;
+    use HasFactory , LogsActivity;
 
     protected $guarded = ['id'];
 
     protected $attributes = [
         'status' => CommentEnum::NOT_CONFIRMED,
     ];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
+    }
 
     public function user(): BelongsTo
     {

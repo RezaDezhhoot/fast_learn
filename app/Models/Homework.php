@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * @method static where(array $where)
@@ -15,7 +17,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Homework extends Model
 {
-    use HasFactory;
+    use HasFactory , LogsActivity;
 
     protected $guarded = ['id'];
 
@@ -24,6 +26,12 @@ class Homework extends Model
     protected $casts = [
         'storage' => 'string',
     ];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
+    }
+
 
     public function user(): BelongsTo
     {

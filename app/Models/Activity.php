@@ -26,7 +26,7 @@ class Activity extends LogActivity
     public function getSubjectLabelAttribute(): string
     {
         return in_array($this->subject_type,array_keys(PaymentEnum::getSubjects())) ?
-            PaymentEnum::getSubjects()[$this->subject_type] : 'تنظیمات';
+            PaymentEnum::getSubjects()[$this->subject_type] : $this->subject_type;
     }
 
     public function getEventLabelAttribute(): string

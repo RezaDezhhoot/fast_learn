@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Morilog\Jalali\Jalalian;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * @method static latest(string $string)
@@ -21,7 +23,7 @@ use Morilog\Jalali\Jalalian;
  */
 class NewCourse extends Model
 {
-    use HasFactory , Searchable;
+    use HasFactory , Searchable , LogsActivity;
 
     protected $table = 'new_course_requests';
 
@@ -30,6 +32,11 @@ class NewCourse extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
     }
 
     public function statusLabel(): Attribute

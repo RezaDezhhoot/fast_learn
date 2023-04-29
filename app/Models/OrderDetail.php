@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Morilog\Jalali\Jalalian;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * @property mixed status
@@ -26,11 +28,16 @@ use Morilog\Jalali\Jalalian;
  */
 class OrderDetail extends Model
 {
-    use HasFactory , Searchable , SoftDeletes;
+    use HasFactory , Searchable , SoftDeletes , LogsActivity;
 
     protected $guarded = ['id'];
 
     protected array $searchAbleColumns = ['id'];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
+    }
 
     public function order(): BelongsTo
     {

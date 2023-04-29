@@ -22,6 +22,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 use Morilog\Jalali\Jalalian;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * @property mixed reduction_value
@@ -47,7 +49,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  */
 class Course extends Model
 {
-    use HasFactory , Searchable , Sluggable , SoftDeletes , CascadeSoftDeletes;
+    use HasFactory , Searchable , Sluggable , SoftDeletes , CascadeSoftDeletes , LogsActivity;
 
     protected $cascadeDeletes = ['comments','chapters','tags','ratings'];
 
@@ -60,6 +62,11 @@ class Course extends Model
     public function scopePublished($query)
     {
         return $query->where('status','!=',CourseEnum::DRAFT);
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
     }
 
     public function sluggable(): array

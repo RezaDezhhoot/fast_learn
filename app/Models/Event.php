@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * @property mixed $status
@@ -22,11 +24,16 @@ use Illuminate\Support\Facades\DB;
  */
 class Event extends Model
 {
-    use HasFactory , Searchable;
+    use HasFactory , Searchable , LogsActivity;
 
     protected $guarded = ['id'];
 
     protected array $searchAbleColumns = ['title'];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
+    }
 
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {

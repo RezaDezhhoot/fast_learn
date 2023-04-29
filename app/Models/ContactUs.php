@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Morilog\Jalali\Jalalian;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * @method static create(array $data)
@@ -21,7 +23,7 @@ use Morilog\Jalali\Jalalian;
  */
 class ContactUs extends Model
 {
-    use Searchable;
+    use Searchable , LogsActivity;
 
     protected array $searchAbleColumns = ['full_name','phone','email'];
 
@@ -29,6 +31,11 @@ class ContactUs extends Model
     protected $table = 'contact_us';
 
     use HasFactory;
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
+    }
 
     public function statusLabel(): Attribute
     {

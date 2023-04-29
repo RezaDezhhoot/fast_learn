@@ -37,11 +37,11 @@ class Setting extends Model
     public static function getProvince()
     {
         return  [
-            'Alborz' => 'البز',
+            'Alborz' => 'البرز',
             'Ardabil' => 'ادربیل',
             'Azerbaijan East' => 'اذربایجان شرقی',
             'Azerbaijan West' => 'اذربایجان غربی',
-            'Bushehr' => 'بوشر',
+            'Bushehr' => 'بوشهر',
             'Chahar Mahaal and Bakhtiari' => 'چهار محال و بختیاری',
             'Fars' => 'فارس',
             'Gilan' => 'گیلان',

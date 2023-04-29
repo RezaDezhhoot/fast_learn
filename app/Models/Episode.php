@@ -17,6 +17,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * @property mixed course
@@ -32,7 +34,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Episode extends Model
 {
-    use HasFactory , Searchable , SoftDeletes , CascadeSoftDeletes;
+    use HasFactory , Searchable , SoftDeletes , CascadeSoftDeletes , LogsActivity;
 
     protected $cascadeDeletes = ['homeworks','transcripts','comments','likes'];
 
@@ -49,6 +51,12 @@ class Episode extends Model
     protected $appends = [
         'time_label'
     ];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
+    }
+
 
     public function reports(): HasMany
     {

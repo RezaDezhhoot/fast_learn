@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 use App\Traits\Admin\Searchable;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * @method static latest(string $string)
@@ -19,7 +21,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Sample extends Model
 {
-    use HasFactory , Searchable  , Sluggable;
+    use HasFactory , Searchable  , Sluggable , LogsActivity;
 
     protected $guarded = ['id'];
 
@@ -32,6 +34,11 @@ class Sample extends Model
                 'source' => 'title'
             ]
         ];
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
     }
 
     public function course(): BelongsTo

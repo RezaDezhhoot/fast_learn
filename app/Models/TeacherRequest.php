@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Morilog\Jalali\Jalalian;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * @method static create(array $data)
@@ -20,7 +22,12 @@ use Morilog\Jalali\Jalalian;
 class TeacherRequest extends Model
 {
     protected $guarded = [];
-    use HasFactory;
+    use HasFactory , LogsActivity;
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
+    }
 
     public function user(): BelongsTo
     {

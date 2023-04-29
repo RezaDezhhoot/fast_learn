@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * @method static findOrFail($id)
@@ -18,12 +20,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Certificate extends Model
 {
-    use HasFactory , Searchable , SoftDeletes;
+    use HasFactory , Searchable , SoftDeletes , LogsActivity;
 
     protected $guarded = ['id'];
 
     protected array $searchAbleColumns = ['name'];
 
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
+    }
 
     public function users(): HasMany
     {

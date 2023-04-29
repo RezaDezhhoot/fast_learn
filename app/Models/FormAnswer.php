@@ -10,16 +10,23 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Morilog\Jalali\Jalalian;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class FormAnswer extends Model
 {
-    use HasFactory;
+    use HasFactory , LogsActivity;
 
     protected $guarded = ['id'];
 
     public function form(): BelongsTo
     {
         return $this->belongsTo(Form::class);
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
     }
 
     public function user(): BelongsTo

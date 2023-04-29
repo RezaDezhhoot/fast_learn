@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * @method static article()
@@ -26,7 +28,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Category extends Model
 {
-    use HasFactory , Searchable  , Sluggable;
+    use HasFactory , Searchable  , Sluggable , LogsActivity;
 
     public function sluggable(): array
     {
@@ -35,6 +37,11 @@ class Category extends Model
                 'source' => 'title'
             ]
         ];
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
     }
 
     protected $table = 'categories';

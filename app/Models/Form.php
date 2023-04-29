@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * @property mixed $subject
@@ -16,9 +18,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Form extends Model
 {
-    use HasFactory , Searchable;
+    use HasFactory , Searchable , LogsActivity;
 
     protected array $searchAbleColumns = ['name'];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
+    }
 
     public function answers(): HasMany
     {

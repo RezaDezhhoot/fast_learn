@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Morilog\Jalali\Jalalian;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * @property mixed priority
@@ -23,10 +25,14 @@ use Morilog\Jalali\Jalalian;
  */
 class Ticket extends Model
 {
-    use HasFactory;
+    use HasFactory , LogsActivity;
 
     protected $guarded = ['id','user_id'];
 
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
+    }
 
     public function user()
     {

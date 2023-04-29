@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Morilog\Jalali\Jalalian;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * @method static latest(string $string)
@@ -17,7 +19,12 @@ use Morilog\Jalali\Jalalian;
  */
 class BankAccount extends Model
 {
-    use HasFactory  , Searchable;
+    use HasFactory  , Searchable , LogsActivity;
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
+    }
 
     protected array $searchAbleColumns = ['title'];
 

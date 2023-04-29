@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Morilog\Jalali\Jalalian;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * @property mixed $status
@@ -23,7 +25,7 @@ use Morilog\Jalali\Jalalian;
  */
 class Organ extends Model
 {
-    use HasFactory, SoftDeletes, Searchable, Sluggable;
+    use HasFactory, SoftDeletes, Searchable, Sluggable , LogsActivity;
 
     protected $guarded = ['id'];
 
@@ -42,6 +44,11 @@ class Organ extends Model
                 'source' => 'title'
             ]
         ];
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
     }
 
     public function info(): Attribute

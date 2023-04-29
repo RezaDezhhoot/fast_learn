@@ -6,6 +6,8 @@ use App\Traits\Admin\Searchable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * @method static findOrFail($id)
@@ -13,9 +15,14 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  */
 class Tag extends Model
 {
-    use HasFactory , Searchable;
+    use HasFactory , Searchable , LogsActivity;
 
     protected $table = 'tags';
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
+    }
 
     protected array $searchAbleColumns = ['name'];
 
