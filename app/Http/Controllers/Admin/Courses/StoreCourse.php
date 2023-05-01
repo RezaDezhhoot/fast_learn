@@ -127,7 +127,7 @@ class StoreCourse extends BaseComponent
             'image' => ['required','string','max:255'],
             'category' => ['required','exists:categories,id'],
             'quiz' => ['nullable','exists:quizzes,id'],
-            'teacher' => ['required','exists:users,id'],
+            'teacher' => ['required','exists:teachers,id'],
             'const_price' => ['required','between:0,99999999999999.9999','numeric'],
             'status' => ['required','in:'.implode(',',array_keys(CourseEnum::getStatus()))],
             'reduction_type' => ['nullable','in:'.implode(',',array_keys(ReductionEnum::getType()))],
