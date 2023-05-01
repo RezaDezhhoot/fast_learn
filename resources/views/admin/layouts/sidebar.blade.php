@@ -107,7 +107,7 @@
                     'admin.newCourse','admin.store.newCourse','admin.episodeTranscript',
                     'admin.store.episodeTranscript','admin.chapter','admin.store.chapter','admin.chapterTranscript','admin.store.chapterTranscript'])" label="دوره های اموزشی" >
                         @can('show_courses')
-                            <x-admin.menu-item href="{{route('admin.course')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['admin.course','admin.store.course'])" label="دروه ها  " />
+                            <x-admin.menu-item href="{{route('admin.course')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['admin.course','admin.store.course'])" label="دوره های اموزشی  " />
                         @endcan
                             @can('show_chapters')
                                 <x-admin.menu-item href="{{route('admin.chapter')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['admin.chapter','admin.store.chapter'])" label="فصل ها  " />
