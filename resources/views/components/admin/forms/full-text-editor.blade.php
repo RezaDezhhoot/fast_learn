@@ -6,8 +6,12 @@
                   x-data="{text: @entangle($attributes->wire('model')) }"
                   x-init="CKEDITOR.replace('{{$id}}', {
                             language: 'fa',
+                            allowedContent: true,
+                            extraAllowedContent: '*(*);*{*}',
+                            extraAllowedContent: 'span;ul;li;table;td;style;*[id];*(*);*{*}',
                            filebrowserImageBrowseUrl: '/file-manager/ckeditor'
                         });
+                        CKEDITOR.dtd.$removeEmpty['span'] = 0;
                         CKEDITOR.instances.{{$id}}.on('change', function () {
                             $dispatch('input', CKEDITOR.instances.{{$id}}.getData())
                         });"
