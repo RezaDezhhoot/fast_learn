@@ -24,19 +24,19 @@
             @if(!is_null($item['teacher']))
             <p class="card-text"><a href="{{ route('teacher',$item['teacher']['id']) }}">{{ $item['teacher']->user->name ?? '' }}</a></p>
             @endif
-            <div class="rating-wrap d-flex align-items-center py-2">
-                <div class="review-stars">
-                    <span class="rating-number">{{ $item['score'] }}</span>
-                    @for($i=1; $i<=5;$i++) @if($i <=$item['score'])
-                        <span class="la la-star"></span>
-                        @else
-                        <span class="la la-star-o"></span>
-                        @endif
-                    @endfor
-                </div>
-                <span class="rating-total pl-1">({{$item['sold_count']}})</span>
-            </div>
-            <!-- end rating-wrap -->
+{{--            <div class="rating-wrap d-flex align-items-center py-2">--}}
+{{--                <div class="review-stars">--}}
+{{--                    <span class="rating-number">{{ $item['score'] }}</span>--}}
+{{--                    @for($i=1; $i<=5;$i++) @if($i <=$item['score'])--}}
+{{--                        <span class="la la-star"></span>--}}
+{{--                        @else--}}
+{{--                        <span class="la la-star-o"></span>--}}
+{{--                        @endif--}}
+{{--                    @endfor--}}
+{{--                </div>--}}
+{{--                <span class="rating-total pl-1">({{$item['sold_count']}})</span>--}}
+{{--            </div>--}}
+{{--            <!-- end rating-wrap -->--}}
             <div class="d-flex justify-content-between align-items-center">
                 @if($item['has_reduction'] && $item['base_price'] > 0)
                 <p class="card-price text-black font-weight-bold">{{ number_format($item['price']) }} تومان
