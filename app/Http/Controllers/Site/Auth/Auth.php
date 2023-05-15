@@ -102,7 +102,7 @@ class Auth extends BaseComponent
         $user = $this->userRepository->getUser('phone',"$this->phone");
         $user_otp = $user->otp;
 
-        if ($user->status == UserEnum::CONFIRMED || $this->auth_type == 'none'){
+        if ($user->status == UserEnum::CONFIRMED || $this->auth_type == NotificationEnum::NONE_METHOD){
             if (Hash::check($this->password, $user->password) ||
                 (!is_null($user->otp) && Hash::check($this->password, $user_otp) && $this->sms === true))
                 $auth = true;

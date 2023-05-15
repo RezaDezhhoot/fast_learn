@@ -241,9 +241,9 @@ class Course extends Model
     }
 
     public function getUpdatedDateAttribute(): string
-    {
-        return Jalalian::forge($this->updated_at)->format('%A, %d %B %Y');
-    }
+{
+    return Jalalian::forge($this->updated_at)->format('%A, %d %B %Y');
+}
 
     public function getScoreAttribute(): int
     {

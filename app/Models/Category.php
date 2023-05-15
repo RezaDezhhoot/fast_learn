@@ -50,6 +50,8 @@ class Category extends Model
 
     protected array $searchAbleColumns = ['slug','title'];
 
+    public $appends = ['data_type'];
+
     public function getTypeLabelAttribute(): string
     {
         return CategoryEnum::getTypes()[$this->type];

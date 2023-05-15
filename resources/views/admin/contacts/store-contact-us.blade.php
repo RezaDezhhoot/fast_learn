@@ -35,6 +35,12 @@
                 </div>
             </x-admin.form-section>
             <div class="row">
+                <div class="col-12">
+                    <fieldset class="border p-4">
+                        <legend class="font-size-h6">پیام</legend>
+                        {!! $contact->body !!}
+                    </fieldset>
+                </div>
                 <x-admin.forms.dropdown with="6" id="status" :data="$data['status']" label="وضعیت*" wire:model.defer="status"/>
                 <x-admin.forms.dropdown with="6" id="action" :data="$data['action']" label="عملیات*" wire:model.defer="answer_action"/>
                 <x-admin.forms.text-area label="متن پاسخ*" wire:model.defer="answer" id="answer" />
