@@ -21,7 +21,7 @@
             </div>
             <div class="divider"><span></span></div>
             <div class="row pt-30px">
-                @foreach($teacher->user->courses as $item)
+                @foreach($teacher->courses as $item)
                     <div class="col-lg-4 responsive-column-half">
                         <x-site.courses.course-box :item="$item" />
                     </div>
