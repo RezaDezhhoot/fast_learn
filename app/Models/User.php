@@ -162,9 +162,9 @@ class User extends Authenticatable implements Wallet, Confirmable
         return $this->hasMany(Transcript::class)->orderBy('id','desc');
     }
 
-    public function courses(): HasMany
+    public function courses(): HasManyThrough
     {
-        return $this->hasMany(Course::class,'teacher_id');
+        return $this->hasManyThrough(Course::class,Teacher::class);
     }
 
     protected function courseCount(): Attribute
@@ -177,7 +177,7 @@ class User extends Authenticatable implements Wallet, Confirmable
     protected function studentsCount(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->courses()->select('id')->withCount(['details' => function ($q){
+            get: fn () => $this->courses()->withCount(['details' => function ($q){
                 return $q->where('status',OrderEnum::STATUS_COMPLETED);
             }])->cursor()->sum('details_count')
         );
@@ -186,7 +186,7 @@ class User extends Authenticatable implements Wallet, Confirmable
     protected function commentsCount(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->courses()->select('id')->withCount('comments')
+            get: fn () => $this->courses()->withCount('comments')
                 ->cursor()->sum('comments_count')
         );
     }
