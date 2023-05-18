@@ -4,7 +4,7 @@
         <div class="container">
             <div class="py-5 px-2">
                 <div class="card card-item">
-                    <h2 class="px-4">درباره من</h2>
+                    <h2 class="px-4">معرفی</h2>
                     <div class="card-body">
                         {!! $teacher->body !!}
                     </div>
@@ -16,7 +16,7 @@
     <section class="course-area">
         <div class="container">
             <div class="d-flex align-items-center justify-content-between pb-3">
-                <h3 class="fs-24 font-weight-semi-bold">دوره های من</h3>
+                <h3 class="fs-24 font-weight-semi-bold">دوره ها</h3>
                 <span class="ribbon ribbon-lg">{{count($teacher->courses)}}</span>
             </div>
             <div class="divider"><span></span></div>
