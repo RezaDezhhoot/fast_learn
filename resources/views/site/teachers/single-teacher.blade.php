@@ -17,7 +17,7 @@
         <div class="container">
             <div class="d-flex align-items-center justify-content-between pb-3">
                 <h3 class="fs-24 font-weight-semi-bold">دوره های من</h3>
-                <span class="ribbon ribbon-lg">24</span>
+                <span class="ribbon ribbon-lg">{{count($teacher->courses)}}</span>
             </div>
             <div class="divider"><span></span></div>
             <div class="row pt-30px">
