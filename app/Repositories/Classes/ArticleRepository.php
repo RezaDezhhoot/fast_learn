@@ -64,7 +64,7 @@ class ArticleRepository  implements ArticleRepositoryInterface
 
     public function getAllSite($search = null, $category = null)
     {
-        return Article::published(true)->with('category')->when($category,function ($q) use ($category){
+        return Article::published(true)->latest('id')->with('category')->when($category,function ($q) use ($category){
             $categoryRepository = app(CategoryRepositoryInterface::class);
             if ($categories = $categoryRepository->get([['slug',$category]],'first')) {
                 $ids = array_value_recursive('id',$categories->toArray());

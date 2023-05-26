@@ -12,7 +12,7 @@
                     @endforeach
                 </ul>
                 <ul class="generic-list-item generic-list-item-bullet generic-list-item--bullet d-flex align-items-center flex-wrap fs-14 pt-2">
-                    <li class="d-flex align-items-center"> توسط <a >{{ $article->user->name }}</a></li>
+                    <li class="d-flex align-items-center"> توسط <a >{{ $article->author_name ?? $article->user->name }}</a></li>
                     <li class="d-flex align-items-center"> {{ $article->updated_date }}</li>
                     <li class="d-flex align-items-center"><a class="page-scroll">{{ $article->comments->count() }} نظر</a></li>
                 </ul>
