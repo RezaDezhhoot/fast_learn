@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Articles;
 
 use App\Enums\ArticleEnum;
 use App\Enums\CategoryEnum;
+use App\Enums\StorageEnum;
 use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\Interfaces\ArticleRepositoryInterface;
@@ -112,7 +113,7 @@ class StoreArticle extends BaseComponent
         $model->status = $this->status;
         $model->type = $this->type;
         $model->file = $this->file;
-        $model->driver = $this->driver;
+        $model->driver = StorageEnum::PUBLIC;
         $model->user_id = auth()->id();
         $this->articleRepository->save($model);
         $this->tags = array_filter($this->tags);

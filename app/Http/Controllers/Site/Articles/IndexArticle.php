@@ -12,9 +12,12 @@ use Artesaos\SEOTools\Facades\JsonLd;
 use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Facades\TwitterCard;
+use Livewire\WithPagination;
 
 class IndexArticle extends BaseComponent
 {
+    use WithPagination;
+    
     public array $categories = [];
     public ?string $q = null , $category = null , $type;
     protected $queryString = ['q','category'];

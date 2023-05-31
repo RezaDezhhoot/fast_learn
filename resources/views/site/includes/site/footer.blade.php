@@ -54,7 +54,7 @@
             <!-- end col-lg-3 -->
             <div class="col-lg-4 responsive-column-half">
                 <div class="footer-item">
-                    <h3 class="fs-20 font-weight-semi-bold pb-2">اخبار و مقلات</h3>
+                   <h3 class="fs-20 font-weight-semi-bold pb-2">اخبار و مقالات</h3>
                     <div class="divider border-bottom-0"><span></span></div>
                     <form method="get" wire:submit.prevent="search" class="subscriber-form">
                         <p class="pb-3 lh-24">به دنبال اخبار خاصی می گردید؟</p>
