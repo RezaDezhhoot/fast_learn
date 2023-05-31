@@ -95,7 +95,7 @@
                                                 @if(!empty($item->description))
                                                 <p class="px-0 text-black">
                                                     <i class="la la-star mr-1"></i>
-                                                    {{ $item->description }}
+                                                    {!! $item->description !!}
                                                 </p>
                                                 @endif
                                                 <hr>
