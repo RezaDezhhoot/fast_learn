@@ -38,6 +38,7 @@
 
                     <div class="course-details-content-wrap mt-5">
                         {!! $course->long_body !!}
+                        @if($course->type != \App\Enums\CourseEnum::ONLINE)
                         <div class="course-overview-card">
                             <div class="curriculum-header d-flex align-items-center justify-content-between pb-4">
                                 <h3 class="fs-24 font-weight-semi-bold">محتوای دوره</h3>
@@ -210,6 +211,7 @@
                             </div>
                             <!-- end curriculum-content -->
                         </div>
+                        @endif
                         <!-- end course-overview-card -->
                         {{-- @if(!is_null($course->teacher))
                         <div class="course-overview-card pt-4">
@@ -426,7 +428,7 @@
                             <div class="divider"><span></span></div>
                             <ul class="generic-list-item generic-list-item-flash">
                                 <li class="d-flex align-items-center justify-content-between">
-                                    <span><i class="la la-clock mr-2 text-color"></i>مدت زمان</span> {{ $course->time }}
+                                    <span><i class="la la-clock mr-2 text-color"></i>مدت زمان</span> {{ $course->custom_hours ?: $course->time }}
                                 </li>
                                 <li class="d-flex align-items-center justify-content-between">
                                     <span><i class="la la-circle mr-2 text-color"></i>وضعیت </span> {{
@@ -437,7 +439,7 @@
                                     !is_null($course->quiz) ? 'بله' : 'خیر' }}
                                 </li>
                                 <li class="d-flex align-items-center justify-content-between">
-                                    <span><i class="la la-eye mr-2 text-color"></i>درس ها</span> {{
+                                    <span><i class="la la-eye mr-2 text-color"></i>تعداد جلسات</span> {{
                                     $course->episodes->count() }}
                                 </li>
                                 <li class="d-flex align-items-center justify-content-between">

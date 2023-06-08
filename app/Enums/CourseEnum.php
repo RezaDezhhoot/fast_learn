@@ -20,7 +20,7 @@ final class CourseEnum extends Enum
 
     const PROFESSIONAL = 'professional' , MEDIUM = 'medium' , BEGINNER = 'beginner' , ALL_LEVEL = 'all_level';
 
-    const OFFLINE = 'offline' , IN_PERSON = 'in_person' , ONLINE = 'online';
+    const OFFLINE = 'offline' , IN_PERSON = 'in_person' , ONLINE = 'online' , IN_PERSON_ONLINE = 'in_person_online' , ONLINE_OFFLINE = 'online_offline' ,IN_PERSON_OFFLINE = 'in_person_offline' ;
 
     #[ArrayShape([self::BEGINNER => "string", self::MEDIUM => "string", self::PROFESSIONAL => "string", self::ALL_LEVEL => "string"])]
     public static function getLevels(): array
@@ -39,18 +39,20 @@ final class CourseEnum extends Enum
         return [
             self::DRAFT => 'پیشنویس',
             self::COMING_SOON => 'به زودی',
-            self::HOLDING => 'در حال برگذاری',
+            self::HOLDING => 'در حال برگزاری',
             self::FINISHED => 'اتمام یافته',
         ];
     }
-    
-    #[ArrayShape([self::OFFLINE => "string", self::IN_PERSON => "string", self::ONLINE => "string"])]
+
     public static function getTypes(): array
     {
         return [
             self::OFFLINE => 'دوره افلاین',
             self::IN_PERSON => 'دوره حضوری',
             self::ONLINE => 'دوره انلاین',
+            self::IN_PERSON_ONLINE => 'انلاین و حضوری',
+            self::ONLINE_OFFLINE => 'انلاین و افلاین',
+            self::IN_PERSON_OFFLINE => 'افلاین و حضوری',
         ];
     }
 }

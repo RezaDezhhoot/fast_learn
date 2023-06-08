@@ -55,7 +55,7 @@ class IndexCourse extends BaseComponent
             'oldest' => 'قدیمی ترین' ,
 //            'expensive' => 'گران ترین',
 //            'inexpensive' => 'ارزان ترین',
-            CourseEnum::HOLDING => 'در حال برگذاری' ,
+            CourseEnum::HOLDING => 'در حال برگزاری' ,
             CourseEnum::FINISHED => 'تکمیل شده' ,
         ];
         $this->page_address = [

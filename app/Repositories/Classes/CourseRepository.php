@@ -38,7 +38,7 @@ class CourseRepository implements CourseRepositoryInterface
     }
 
     public function getAllSite(
-        $search = null, $orderBy = null, $type = null, $category = null , $teacher = null, $property = null , 
+        $search = null, $orderBy = null, $type = null, $category = null , $teacher = null, $property = null ,
         $organization = null
         )
     {
@@ -66,8 +66,9 @@ class CourseRepository implements CourseRepositoryInterface
             }
             return null;
         })->when($search,function ($q) use ($search) {
-            return $q->where('title',$search)->orWhere('slug',$search)->orWhereHas('tags',function ($q) use ($search){
-                return $q->where('name',$search);
+            return $q->where('title','like','%'.$search.'%')->orWhere('slug','like','%'.$search.'%')
+                ->orWhereHas('tags',function ($q) use ($search){
+                return $q->where('name','like','%'.$search.'%');
             });
         })->when($organization , function($q) use ($organization) {
             return $q->whereHas('organizations' , function($q) use ($organization) {
@@ -106,17 +107,17 @@ class CourseRepository implements CourseRepositoryInterface
         $course->tags()->sync($tags);
     }
 
-    public function attachOrgans(Course $course , array $organs) 
+    public function attachOrgans(Course $course , array $organs)
     {
         $course->organizations()->attach($organs);
     }
 
-    public function syncOrgans(Course $course , array $organs) 
+    public function syncOrgans(Course $course , array $organs)
     {
         $course->organizations()->sync($organs);
     }
 
-    public function attachExecutives(Course $course , array $executives) 
+    public function attachExecutives(Course $course , array $executives)
     {
         $course->executives()->attach($executives);
     }
