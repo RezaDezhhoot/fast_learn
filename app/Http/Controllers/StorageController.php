@@ -24,7 +24,9 @@ class StorageController extends Controller
             if (\auth()->check()) {
                 if (
                     !auth()->user()->hasCourse($episode->chapter->course->id) ||
-                    !\auth()->user()->hasRole('admin')) {
+                    !\auth()->user()->hasRole('admin') ||
+                    !in_array(\auth()->user()->courses->pluck('id')->toArray() ,$episode->chapter->course->id)
+                ) {
                     abort(404);
                 }
             } else {
