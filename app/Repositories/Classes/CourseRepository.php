@@ -162,7 +162,7 @@ class CourseRepository implements CourseRepositoryInterface
     public function getAllTeacher($search, $level, $status, $per_page)
     {
         return Course::latest('id')->with('teacher')->withCount('episodes')->whereHas('teacher',function ($q){
-           return $q->where('id',Auth::id());
+           return $q->where('user_id',Auth::id());
         })->when($level,function ($q) use ($level) {
             return $q->where('level',$level);
         })->when($status,function ($q) use ($status) {
@@ -173,14 +173,14 @@ class CourseRepository implements CourseRepositoryInterface
     public function findTeacher($id)
     {
         return Course::whereHas('teacher',function ($q){
-            return $q->where('id',Auth::id());
+            return $q->where('user_id',Auth::id());
         })->findOrFail($id);
     }
 
     public function getTeachersCount($from_date , $to_date)
     {
         return Course::whereBetween('created_at', [$from_date." 00:00:00", $to_date." 23:59:59"])->whereHas('teacher',function ($q){
-            return $q->where('id',Auth::id());
+            return $q->where('user_id',Auth::id());
         })->count();
     }
 

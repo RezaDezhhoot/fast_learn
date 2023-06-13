@@ -23,9 +23,10 @@ class StorageController extends Controller
         if (!$episode->free && !$episode->chapter->course->price == 0) {
             if (\auth()->check()) {
                 if (
-                    !auth()->user()->hasCourse($episode->chapter->course->id) ||
-                    !\auth()->user()->hasRole('admin') ||
-                    !in_array(\auth()->user()->courses->pluck('id')->toArray() ,$episode->chapter->course->id)
+                    !auth()->user()->hasCourse($episode->chapter->course->id) &&
+                    !auth()->user()->hasRole('admin') &&
+                    !auth()->user()->hasRole('super_admin') &&
+                    !in_array($episode->chapter->course->id,\auth()->user()->teacher->courses->pluck('id')->toArray() )
                 ) {
                     abort(404);
                 }
