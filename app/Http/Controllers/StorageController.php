@@ -30,7 +30,6 @@ class StorageController extends Controller
                 ) {
                     abort(404);
                 }
-            } else {
                 abort(404);
             }
         }

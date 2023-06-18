@@ -5,12 +5,14 @@ namespace App\Repositories\Classes;
 
 use App\Enums\CourseEnum;
 use App\Enums\OrderEnum;
+use App\Enums\QuizEnum;
 use App\Enums\SampleEnum;
 use App\Models\Course;
 use App\Models\Order;
 use App\Observers\CourseObserver;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\Interfaces\CourseRepositoryInterface;
+use App\Repositories\Interfaces\TranscriptRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -201,7 +203,7 @@ class CourseRepository implements CourseRepositoryInterface
             try {
                 DB::beginTransaction();
                 $order = Order::query()->create($order);
-                $order->details()->create([
+                $detail = $order->details()->create([
                     'course_id' => $course->id,
                     'product_data' => json_encode(['id' => $course->id, 'title' => $course->title]),
                     'price' => $course->base_price,
@@ -211,6 +213,23 @@ class CourseRepository implements CourseRepositoryInterface
                     'wallet_amount' => 0,
                     'quantity' => 1,
                 ]);
+                $detail->refresh();
+                $transcriptRepository = app(TranscriptRepositoryInterface::class);
+                if (!is_null($detail->course->quiz)) {
+                    $quiz = $detail->course->quiz;
+                    for ($i=0;$i<$quiz->enter_count;$i++) {
+                        $transcriptRepository->create([
+                            'user_id' => auth()->id(),
+                            'quiz_id' => $quiz->id,
+                            'course_id' => $detail->course->id,
+                            'result' => QuizEnum::PENDING,
+                            'course_data' => json_encode([
+                                'id' => $detail->course->id,
+                                'title' => $detail->course->title,
+                            ])
+                        ]);
+                    }
+                }
                 DB::commit();
                 return true;
             } catch (\Exception $e) {
