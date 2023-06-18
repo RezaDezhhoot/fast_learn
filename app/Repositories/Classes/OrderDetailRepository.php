@@ -101,7 +101,7 @@ class OrderDetailRepository implements OrderDetailRepositoryInterface
 
     public function getTeacherStudents($from_date , $to_date)
     {
-        return OrderDetail::whereBetween('created_at', [$from_date." 00:00:00", $to_date." 23:59:59"])->whereHas('course',function ($q){
+        return OrderDetail::query()->whereHas('course',function ($q){
             return $q->wherehas('teacher',function ($q){
                 return $q->where('user_id',Auth::id());
             });

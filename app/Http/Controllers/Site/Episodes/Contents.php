@@ -50,9 +50,9 @@ class Contents extends BaseComponent
         $this->chapter_data = $this->course_data->chapters->where('id',$chapter)->first();
         $episode = $this->chapter_data->episodes->where('id',$episode)->first();
 //        if ((\auth()->check() && ($this->user->hasCourse($this->course_data->id))) || $episode->free) {
-            return redirect()->route('episode',[
-                $this->course_data->slug , $this->chapter_data->slug , $episode , $episode->title
-            ]);
+        return redirect()->route('episode',[
+            $this->course_data->slug , $this->chapter_data->slug , $episode , $episode->title
+        ]);
 //        }
     }
 
@@ -70,7 +70,8 @@ class Contents extends BaseComponent
 
         $episode = $this->chapter_data->episodes->where('id',$id)->first();
         $this->episode_id = $episode->id;
-        $user_has_episode = (\auth()->check() && ($this->user->hasCourse($this->course_data->id) || auth()->user()->hasRole('admin') )) || $episode->free;
+        $user_has_episode = (\auth()->check() && ($this->user->hasCourse($this->course_data->id) || auth()->user()->hasRole('admin') )) || $episode->free ||
+            (\auth()->check() && \auth()->user()->teacher && in_array($episode->chapter->course->id,\auth()->user()->teacher->courses->pluck('id')->toArray() ));
 
         if ($this->course_data->price == 0 && !$user_has_episode) {
             $this->courseRepository->setCourseToOrder($this->course_data);
