@@ -252,7 +252,7 @@ class EpisodeRepository implements EpisodeRepositoryInterface
                           return $q->where('user_id',$user_id);
                        });
                    })->whereHas('teacher',function ($q) {
-                       return $q->where('id',\auth()->id());
+                       return $q->where('user_id',\auth()->id());
                    });
                 });
             })->where('id',$episode_id)->exists();
