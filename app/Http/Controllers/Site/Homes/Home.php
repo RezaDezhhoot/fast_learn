@@ -51,28 +51,24 @@ class Home extends BaseComponent
         {
             if ($value['category'] <> 'banners')
             {
-                if ($value['type'] == 'slider')
-                {
-                    $model = $this->settingRepository::models()[$value['category']];
-                    $send[$key] = $value;
-                    $send[$key]['content'] = $model::findMany($value['contentCase']);
-                    $send[$key]['content']->each(function($model) use ($value) {
-                        switch ($value['category']) {
-                            case 'courses':
-                                $model->setAppends(['status_label','reduction_percent','hours','price','base_price','has_reduction','type_label','sold_count','score']);
-                                if (!is_null($model->teacher))
-                                    $value['teacher'] = $model->teacher->toArray();
-                                break;
-                            case 'articles':
-                                $model->setAppends(['updated_date','comments_count']);
-                                $value['user'] = $model->user->toArray();
-                                break;
-                        }
-                        if ($model->category)
-                            $value['category'] = $model->category->toArray();
-                    });
-                } else
-                    $send[$key] = $value;
+                $model = $this->settingRepository::models()[$value['category']];
+                $send[$key] = $value;
+                $send[$key]['content'] = $model::findMany($value['contentCase']);
+                $send[$key]['content']->each(function($model) use ($value) {
+                    switch ($value['category']) {
+                        case 'courses':
+                            $model->setAppends(['status_label','reduction_percent','hours','price','base_price','has_reduction','type_label','sold_count','score']);
+                            if (!is_null($model->teacher))
+                                $value['teacher'] = $model->teacher->toArray();
+                            break;
+                        case 'articles':
+                            $model->setAppends(['updated_date','comments_count']);
+                            $value['user'] = $model->user->toArray();
+                            break;
+                    }
+                    if ($model->category)
+                        $value['category'] = $model->category->toArray();
+                });
             } else
                 $send[$key] = $value;
         }
@@ -88,18 +84,7 @@ class Home extends BaseComponent
 
     public function loadOthers()
     {
-        foreach ($this->content as $key => $value)
-        {
-            if ($value['category'] <> 'banners')
-            {
-                if ($value['type'] == 'slider')
-                    continue;
 
-                $model = $this->settingRepository::models()[$value['category']];
-                $value['content'] = $model::findMany($value['contentCase']);
-                $this->content[$key] = $value;
-            }
-        }
     }
 
     public function render()
