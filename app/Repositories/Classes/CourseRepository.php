@@ -65,7 +65,9 @@ class CourseRepository implements CourseRepositoryInterface
                 return $q->where('name','LIKE','%'.$search.'%');
             });
         })->when($teacher , function ($q) use ($teacher){
-            return $q->where('teacher_id',base64_decode($teacher));
+            return $q->wherehas('teacher',function ($q) use ($teacher) {
+                return $q->where('user_id',base64_decode($teacher));
+            });
         })->when($property , function ($q) use ($property){
             return $q->where('type',$property);
         })->hasCategory()->paginate(9);
@@ -110,12 +112,12 @@ class CourseRepository implements CourseRepositoryInterface
     public function get($col, $value , $published = false)
     {
         return $published ?
-        Course::published()->with(['chapters','comments','samples' => function($q){
-            return $q->where('type',SampleEnum::PUBLIC_TYPE);
-        }])->where($col,$value)->firstOrfail() :
-        Course::where($col,$value)->with(['chapters','chapters.episodes','comments','samples' => function($q){
-            return $q->where('type',SampleEnum::PUBLIC_TYPE);
-        }])->firstOrfail();
+            Course::published()->with(['chapters','comments','samples' => function($q){
+                return $q->where('type',SampleEnum::PUBLIC_TYPE);
+            }])->where($col,$value)->firstOrfail() :
+            Course::where($col,$value)->with(['chapters','chapters.episodes','comments','samples' => function($q){
+                return $q->where('type',SampleEnum::PUBLIC_TYPE);
+            }])->firstOrfail();
     }
 
     public function whereIn($col, array $value , $take = false , $published = false , $where = [])
@@ -164,7 +166,7 @@ class CourseRepository implements CourseRepositoryInterface
     public function getAllTeacher($search, $level, $status, $per_page)
     {
         return Course::latest('id')->with('teacher')->withCount('episodes')->whereHas('teacher',function ($q){
-           return $q->where('user_id',Auth::id());
+            return $q->where('user_id',Auth::id());
         })->when($level,function ($q) use ($level) {
             return $q->where('level',$level);
         })->when($status,function ($q) use ($status) {

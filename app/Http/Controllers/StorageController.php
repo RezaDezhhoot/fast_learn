@@ -7,6 +7,7 @@ use App\Repositories\Interfaces\SettingRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Contracts\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Storage;
 
 class StorageController extends Controller
 {
@@ -30,12 +31,8 @@ class StorageController extends Controller
                 ) {
                     abort(404);
                 }
-                abort(404);
             }
         }
-
-
-
 
         return match ($type) {
             'video' => $this->getFile($episode->local_video , getDisk($episode->video_storage) ),
@@ -47,21 +44,19 @@ class StorageController extends Controller
     private function getFile($path , Filesystem $filesystem)
     {
         ini_set('memory_limit', '-1');
-        if (!$filesystem->exists($path))
-            abort(404);
+//        $file = $filesystem->get($path);
 
-        $file = $filesystem->get($path);
+//        $type = $filesystem->mimeType($path);
+//        $response = Response::make($file);
+//        $response->header("Content-Type", $type);
+//        $response->header("Content-Description", 'File Transfer');
+//        $response->header("Content-Transfer-Encoding", 'binary');
+//        $response->header("Expires", 0);
+//        $response->header("Cache-Control", 'must-revalidate, post-check=0, pre-check=0');
+//        $response->header("Pragma", 'public');
+//        $response->header("Content-Length", $filesystem->size($path));
 
-        $type = $filesystem->mimeType($path);
-        $response = Response::make($file);
-        $response->header("Content-Type", $type);
-        $response->header("Content-Description", 'File Transfer');
-        $response->header("Content-Transfer-Encoding", 'binary');
-        $response->header("Expires", 0);
-        $response->header("Cache-Control", 'must-revalidate, post-check=0, pre-check=0');
-        $response->header("Pragma", 'public');
-        $response->header("Content-Length", $filesystem->size($path));
+        return $filesystem->response($path, basename($path), ['Accept-Ranges' => 'bytes']);
 
-        return $response;
     }
 }
