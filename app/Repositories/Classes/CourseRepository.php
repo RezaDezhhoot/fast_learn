@@ -37,7 +37,7 @@ class CourseRepository implements CourseRepositoryInterface
 
     public function getAllSite($search = null, $orderBy = null, $type = null, $category = null , $teacher = null, $property = null ,  $province = null , $city = null)
     {
-        return Course::published()->when($type, function($q) use ($type) {
+        return Course::published()->latest()->when($type, function($q) use ($type) {
             return match ($type) {
                 'free' => $q->where('const_price',0),
                 'cash' => $q->where('const_price','>',0),
@@ -65,7 +65,9 @@ class CourseRepository implements CourseRepositoryInterface
                 return $q->where('name','LIKE','%'.$search.'%');
             });
         })->when($teacher , function ($q) use ($teacher){
-            return $q->where('teacher_id',base64_decode($teacher));
+            return $q->wherehas('teacher',function ($q) use ($teacher) {
+                return $q->where('user_id',base64_decode($teacher));
+            });
         })->when($property , function ($q) use ($property){
             return $q->where('type',$property);
         })->when($province , function ($q) use ($province , $city){
@@ -114,12 +116,12 @@ class CourseRepository implements CourseRepositoryInterface
     public function get($col, $value , $published = false)
     {
         return $published ?
-        Course::published()->with(['chapters','comments','samples' => function($q){
-            return $q->where('type',SampleEnum::PUBLIC_TYPE);
-        }])->where($col,$value)->firstOrfail() :
-        Course::where($col,$value)->with(['chapters','chapters.episodes','comments','samples' => function($q){
-            return $q->where('type',SampleEnum::PUBLIC_TYPE);
-        }])->firstOrfail();
+            Course::published()->with(['chapters','comments','samples' => function($q){
+                return $q->where('type',SampleEnum::PUBLIC_TYPE);
+            }])->where($col,$value)->firstOrfail() :
+            Course::where($col,$value)->with(['chapters','chapters.episodes','comments','samples' => function($q){
+                return $q->where('type',SampleEnum::PUBLIC_TYPE);
+            }])->firstOrfail();
     }
 
     public function whereIn($col, array $value , $take = false , $published = false , $where = [])
@@ -168,7 +170,7 @@ class CourseRepository implements CourseRepositoryInterface
     public function getAllTeacher($search, $level, $status, $per_page)
     {
         return Course::latest('id')->with('teacher')->withCount('episodes')->whereHas('teacher',function ($q){
-           return $q->where('user_id',Auth::id());
+            return $q->where('user_id',Auth::id());
         })->when($level,function ($q) use ($level) {
             return $q->where('level',$level);
         })->when($status,function ($q) use ($status) {
@@ -181,10 +183,10 @@ class CourseRepository implements CourseRepositoryInterface
         return Course::latest('id')->with('organ')->withCount('episodes')
             ->whereIn('organ_id',Auth::user()->organs->pluck('id')->toArray())
             ->when($level,function ($q) use ($level) {
-            return $q->where('level',$level);
-        })->when($status,function ($q) use ($status) {
-            return $q->where('status',$status);
-        })->search($search)->paginate($per_page);
+                return $q->where('level',$level);
+            })->when($status,function ($q) use ($status) {
+                return $q->where('status',$status);
+            })->search($search)->paginate($per_page);
     }
 
     public function findTeacher($id)
