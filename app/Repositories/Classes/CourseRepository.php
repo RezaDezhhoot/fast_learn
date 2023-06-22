@@ -37,7 +37,7 @@ class CourseRepository implements CourseRepositoryInterface
 
     public function getAllSite($search = null, $orderBy = null, $type = null, $category = null , $teacher = null, $property = null)
     {
-        return Course::published()->when($type, function($q) use ($type) {
+        return Course::published()->latest()->when($type, function($q) use ($type) {
             return match ($type) {
                 'free' => $q->where('const_price',0),
                 'cash' => $q->where('const_price','>',0),
