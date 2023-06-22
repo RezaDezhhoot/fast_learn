@@ -32,7 +32,7 @@ class SendExamNotify
         };
         if (!empty($raw_text)){
             $text = custom_text('exams',$raw_text,[
-                $event->transcript->quiz->name,$event->transcript->score,$event->transcript->quiz->total_score,$event->transcript->quiz->minimum_score
+                $event->transcript->quiz->name,$event->transcript->score,$event->transcript->quiz->minimum_score,$event->transcript->quiz->total_score
             ]);
             $subject_label = 'نتیجه ازمون';
             app(NotificationRepositoryInterface::class)
