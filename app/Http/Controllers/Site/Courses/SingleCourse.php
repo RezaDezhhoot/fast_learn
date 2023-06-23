@@ -26,6 +26,9 @@ use Livewire\WithFileUploads;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use App\Enums\QuizEnum;
+use App\Repositories\Interfaces\TranscriptRepositoryInterface;
+
 
 class SingleCourse extends BaseComponent
 {
@@ -315,7 +318,7 @@ class SingleCourse extends BaseComponent
         try {
             DB::beginTransaction();
             $order = $this->orderRepository->create($order);
-            $this->orderDetailRepository->create([
+            $detail = $this->orderDetailRepository->create([
                 'course_id' => $this->course->id,
                 'product_data' => json_encode(['id' => $this->course->id, 'title' => $this->course->title]),
                 'price' => $this->course->base_price,
@@ -326,6 +329,23 @@ class SingleCourse extends BaseComponent
                 'quantity' => 1,
                 'order_id' => $order->id,
             ]);
+            $detail->refresh();
+            $transcriptRepository = app(TranscriptRepositoryInterface::class);
+            if (!is_null($detail->course->quiz)) {
+                    $quiz = $detail->course->quiz;
+                    for ($i=0;$i<$quiz->enter_count;$i++) {
+                        $transcriptRepository->create([
+                            'user_id' => auth()->id(),
+                            'quiz_id' => $quiz->id,
+                            'course_id' => $detail->course->id,
+                            'result' => QuizEnum::PENDING,
+                            'course_data' => json_encode([
+                                'id' => $detail->course->id,
+                                'title' => $detail->course->title,
+                            ])
+                        ]);
+                    }
+                }
             DB::commit();
             $this->show_homework_form = true;
             $this->emitNotify('دوره با موفقیت برای شما ثبت شد');

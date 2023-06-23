@@ -39,6 +39,9 @@
                 <a href="{{route('user.courses')}}">  دوره های من </a>
             </li>
             <li>
+                <a href="{{route('user.quizzes')}}">  آزمون های من </a>
+            </li>
+            <li>
                 <a href="{{route('user.dashboard')}}">  داشبورد </a>
             </li>
             <li>

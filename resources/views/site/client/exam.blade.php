@@ -20,31 +20,17 @@
                     </div>
                     <!-- end container -->
                 </div>
-                <div class="bg-dark pt-60px pb-60px">
+                <div class="bg-dark pt-60px pb-60px" style="background-color: #0c3800 !important;">
                     <div class="container">
-                        <ul class="quiz-course-nav d-flex align-items-center justify-content-between">
-                            @for($i=1;$i<=$question_count;$i++)
-                                <li>
-                                    <a href="?page={{$i}}" class="icon-element icon-element-sm" data-toggle="tooltip" data-placement="top">
-                                        @if($page == $i)
-                                            <i class="la la-eye"></i>
-                                        @elseif($page < $i)
-                                            <i class="la la-clock"></i>
-                                        @else
-                                            <i class="la la-check"></i>
-                                        @endif
-                                    </a>
-                                </li>
-                            @endfor
-                        </ul>
-                        <div class="breadcrumb-content pt-40px">
+                       
+                        <div class="breadcrumb-content">
                             <div class="section-heading">
                                 <h2 class="section__title text-white fs-30 pb-2">سوال {{ $page }} از {{ $question_count }}</h2>
                                 @foreach($question as $item)
-                                    <small>سطح سوال : {{ $item->difficulty_label }}</small>
-                                    <p class="section__desc text-white-50">
+                                    <small style="color:#fff">سطح سوال : {{ $item->difficulty_label }}</small>
+                                    <div class="section__desc" style="color:#fff">
                                         {!! $item->text !!}
-                                    </p>
+                                    </div>
                                 @endforeach
                             </div>
                         </div>
@@ -91,7 +77,7 @@
                             @endforeach
                         </div>
                         <div>
-                            {{$question->links('site.includes.paginate')}}
+                            {{$question->links('site.includes.paginate-exam')}}
                         </div>
                         <!-- end quiz-ans-list -->
                     </div>

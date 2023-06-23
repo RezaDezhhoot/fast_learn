@@ -23,6 +23,7 @@
                 <x-admin.forms.dropdown with="6" id="reduction_type" :data="$data['reduction']" label="نوع تخفیف" wire:model.defer="reduction_type"/>
                 <x-admin.forms.jdate-picker with="6" id="start_at" label="شروع تخفیف" wire:model.defer="start_at"/>
                 <x-admin.forms.jdate-picker with="6" id="expire_at" label="پایان تخفیف" wire:model.defer="expire_at"/>
+                    <x-admin.forms.input type="text" id="custom_hours"  label="زمان آموزشی" wire:model.defer="custom_hours"/>
             </div>
             <hr>
 {{--            <x-admin.forms.select2 id="teacher" :data="$data['teacher']" label="مدرس*" wire:model.defer="teacher"/>--}}
