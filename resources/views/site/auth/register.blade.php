@@ -77,7 +77,7 @@
                                     </div>
                                 </div>
                                 <small class="text-info">
-                                    حداقل 8 کارکتر شامل حروف و اعداد
+                                    حداقل 5 کارکتر شامل حروف و اعداد
                                 </small>
                                 @error('password')
                                 <small class="text-danger d-block">
@@ -109,7 +109,7 @@
     <!-- end container -->
 </section>
     @push('scripts')
-        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+        <script src="https://www.google.com/recaptcha/api.js?hl=fa" async defer></script>
 
         <script>
             function reCaptchaCallback(response) {

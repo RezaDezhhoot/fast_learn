@@ -211,7 +211,7 @@ class Auth extends BaseComponent
             'name' => ['required','string','max:250'],
             'email' => ['nullable','string','email','unique:users,email','max:250'],
             'phone' => ['required','string','size:11','unique:users,phone'],
-            'password' => ['required','min:'.($this->settingRepository->getRow('password_length') ?? 8),'regex:/^.*(?=.*[a-zA-Z])(?=.*[0-9]).*$/'],
+            'password' => ['required','min:'.($this->settingRepository->getRow('password_length') ?? 5),'regex:/^.*(?=.*[a-zA-Z])(?=.*[0-9]).*$/'],
             'recaptcha' => ['required', new ReCaptchaRule],
         ],[],[
             'name' => 'نام کامل',
