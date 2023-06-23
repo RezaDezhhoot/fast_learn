@@ -30,6 +30,9 @@
                     <a href="{{route('user.courses')}}"> <i class="la la-file-video-o mr-1"></i> دوره های من </a>
                 </li>
                 <li>
+                    <a href="{{route('user.quizzes')}}"> <i class="la la-bolt mr-1"></i> آزمون های من </a>
+                </li>
+                <li>
                     <a href="{{route('user.dashboard')}}"> <i class="la la-dashboard mr-1"></i> داشبورد </a>
                 </li>
                 <li>

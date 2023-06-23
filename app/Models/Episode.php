@@ -42,12 +42,12 @@ class Episode extends Model
 
     public function setFileAttribute($value)
     {
-        $this->attributes['file'] = str_replace(env('APP_URL'), '', $value);
+        $this->attributes['file'] = str_replace(env('APP_URL').'/storage', '', $value);
     }
 
     public function setLocalVideoAttribute($value)
     {
-        $this->attributes['local_video'] = str_replace(env('APP_URL'), '', $value);
+        $this->attributes['local_video'] = str_replace(env('APP_URL').'/storage', '', $value);
     }
 
     public function homeworks(): HasMany

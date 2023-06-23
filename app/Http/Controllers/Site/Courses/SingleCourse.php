@@ -26,6 +26,9 @@ use Livewire\WithFileUploads;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use App\Enums\QuizEnum;
+use App\Repositories\Interfaces\TranscriptRepositoryInterface;
+
 
 class SingleCourse extends BaseComponent
 {
@@ -107,7 +110,7 @@ class SingleCourse extends BaseComponent
 
     }
 
-    public function set_content($type,$id)
+   public function set_content($type,$id)
     {
         $this->reset(['api_bucket']);
         if (!auth()->check())
@@ -115,39 +118,45 @@ class SingleCourse extends BaseComponent
 
         $episode = $this->episodeRepository->find($id);
         $this->episode_id = $episode->id;
-        $user_has_episode = $this->user->hasCourse($this->course->id);
+        $user_has_episode = $this->user->hasCourse($this->course->id) || $episode->free;
         if ($this->course->price == 0 && !$user_has_episode){
             $this->getFreeOrder();
         }
-        switch ($type){
-            case 'api_bucket':
-                if (!is_null($episode->api_bucket) and $episode->show_api_video and (($this->course->price == 0) || $user_has_episode)):
-                    $this->episode_title = $episode->title;
-                    return $this->api_bucket = $episode->api_bucket;
+        try {
+            switch ($type){
+                case 'api_bucket':
+                    if (!is_null($episode->api_bucket) and $episode->show_api_video and (($this->course->price == 0) || $user_has_episode)):
+                        $this->episode_title = $episode->title;
+                        return $this->api_bucket = $episode->api_bucket;
+                        endif;
+                    break;
+                case 'local_video':
+
+                    if ( ( $this->course->price == 0 || $user_has_episode ) and $episode->downloadable_local_video ) {
+
+                        if ($disk = getDisk($episode->video_storage))
+                            return $disk->download($episode->local_video);
+                    }
+                    break;
+                case 'show_local_video':
+                    if (!is_null($episode->local_video) and $episode->allow_show_local_video and ($this->course->price == 0 || $user_has_episode)):
+                        $this->episode_title = $episode->title;
+                        $this->local_video = route('storage',[$episode->id,'video']);
+                        $this->emit('setVideo',['title' => '1','src' => $this->local_video]);
                     endif;
-                break;
-            case 'local_video':
-                if ( ( $this->course->price == 0 || $user_has_episode) and $episode->downloadable_local_video ) {
-                    if ($disk = getDisk($episode->video_storage))
-                        return $disk->download($episode->local_video);
-                }
-                break;
-            case 'show_local_video':
-                if (!is_null($episode->local_video) and $episode->allow_show_local_video and ($this->course->price == 0 || $user_has_episode)):
-                    $this->episode_title = $episode->title;
-                    $this->local_video = route('storage',[$episode->id,'video']);
-                    $this->emit('setVideo',['title' => '1','src' => $this->local_video]);
-                endif;
-                break;
-            case 'file':
-                if ($disk = getDisk($episode->file_storage))
-                    if ($disk->exists($episode->file) and (( $this->course->price == 0) || $user_has_episode))
-                        return $disk->download($episode->file);
-                break;
-            case 'link':
-                if (!is_null($episode->link) and ((  $this->course->price == 0) || $user_has_episode))
-                    return redirect()->away($episode->link);
-                break;
+                    break;
+                case 'file':
+                    if ($disk = getDisk($episode->file_storage))
+                        if ($disk->exists($episode->file) and (( $this->course->price == 0) || $user_has_episode))
+                            return $disk->download($episode->file);
+                    break;
+                case 'link':
+                    if (!is_null($episode->link) and ((  $this->course->price == 0) || $user_has_episode))
+                        return redirect()->away($episode->link);
+                    break;
+            }
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
         }
     }
 
@@ -309,7 +318,7 @@ class SingleCourse extends BaseComponent
         try {
             DB::beginTransaction();
             $order = $this->orderRepository->create($order);
-            $this->orderDetailRepository->create([
+            $detail = $this->orderDetailRepository->create([
                 'course_id' => $this->course->id,
                 'product_data' => json_encode(['id' => $this->course->id, 'title' => $this->course->title]),
                 'price' => $this->course->base_price,
@@ -320,6 +329,23 @@ class SingleCourse extends BaseComponent
                 'quantity' => 1,
                 'order_id' => $order->id,
             ]);
+            $detail->refresh();
+            $transcriptRepository = app(TranscriptRepositoryInterface::class);
+            if (!is_null($detail->course->quiz)) {
+                    $quiz = $detail->course->quiz;
+                    for ($i=0;$i<$quiz->enter_count;$i++) {
+                        $transcriptRepository->create([
+                            'user_id' => auth()->id(),
+                            'quiz_id' => $quiz->id,
+                            'course_id' => $detail->course->id,
+                            'result' => QuizEnum::PENDING,
+                            'course_data' => json_encode([
+                                'id' => $detail->course->id,
+                                'title' => $detail->course->title,
+                            ])
+                        ]);
+                    }
+                }
             DB::commit();
             $this->show_homework_form = true;
             $this->emitNotify('دوره با موفقیت برای شما ثبت شد');

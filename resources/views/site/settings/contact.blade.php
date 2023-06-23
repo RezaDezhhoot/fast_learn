@@ -114,7 +114,7 @@
                 <div class="row pt-30px">
                     <div class=" col-12">
                         <div class="map-container" wire:ignore>
-                            <iframe src="https://www.google.com/maps/embed?pb={{ $google }}"
+                            <iframe src="{{ $google }}"
                                     frameborder="0" width="100%" height="400px"></iframe>
                         </div>
                         <!-- end map-container -->

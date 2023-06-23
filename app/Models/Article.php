@@ -51,6 +51,11 @@ class Article extends Model
     {
         $this->attributes['image'] = str_replace(env('APP_URL'), '', $value);
     }
+    
+        public function setFileAttribute($value)
+    {
+        $this->attributes['file'] = str_replace(env('APP_URL').'/storage', '', $value);
+    }
 
     public function getStatusLabelAttribute(): string
     {

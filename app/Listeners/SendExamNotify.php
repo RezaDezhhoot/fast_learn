@@ -40,7 +40,7 @@ class SendExamNotify
         if (!empty($raw_text)){
             $send_type = $SettingRepository->getRow('send_type');
             $text = str_replace(array_keys($SettingRepository::variables()['exams']),
-                [$event->transcript->quiz->name,$event->transcript->score,$event->transcript->quiz->total_score,$event->transcript->quiz->minimum_score],
+                [$event->transcript->quiz->name,$event->transcript->score,$event->transcript->quiz->minimum_score,$event->transcript->quiz->total_score],
                 $raw_text);
 
             try {
