@@ -30,7 +30,7 @@
                             </div>
                             <!-- end input-box -->
                             <div class="input-box">
-                                <label class="label-text">آدرس ایمیل*</label>
+                                <label class="label-text">آدرس ایمیل(اختیاری)</label>
                                 <div class="form-group">
                                     <input  wire:model.defer="email"  class="form-control form--control" type="email" name="email" placeholder="آدرس ایمیل" />
                                     <span class="la la-envelope input-icon"></span>

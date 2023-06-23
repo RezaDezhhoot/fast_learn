@@ -111,7 +111,7 @@ class StoreUser extends BaseComponent
             'name' => ['required', 'string','max:65'],
             'phone' => ['required', 'size:11' , 'unique:users,phone,'. ($this->user->id ?? 0)],
             'status' => ['required','in:'.implode(',',array_keys(UserEnum::getStatus()))],
-            'email' => ['required','email','max:200','unique:users,email,'. ($this->user->id ?? 0)],
+            'email' => ['nullable','email','max:200','unique:users,email,'. ($this->user->id ?? 0)],
             'image' => ['nullable','string','max:255'],
             'province' => ['nullable','string','in:'.implode(',',array_keys($this->data['province']))],
             'city' => ['nullable','string','in:'.implode(',',array_keys($this->data['city']))],

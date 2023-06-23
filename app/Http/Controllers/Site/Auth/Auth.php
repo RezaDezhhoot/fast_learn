@@ -209,7 +209,7 @@ class Auth extends BaseComponent
         $this->sent = false;
         $this->validate([
             'name' => ['required','string','max:250'],
-            'email' => ['required','string','email','unique:users,email','max:250'],
+            'email' => ['nullable','string','email','unique:users,email','max:250'],
             'phone' => ['required','string','size:11','unique:users,phone'],
             'password' => ['required','min:'.($this->settingRepository->getRow('password_length') ?? 8),'regex:/^.*(?=.*[a-zA-Z])(?=.*[0-9]).*$/'],
             'recaptcha' => ['required', new ReCaptchaRule],
