@@ -221,7 +221,7 @@ class Auth extends BaseComponent
             'email' => $this->email,
             'phone' => $this->phone,
             'password' => $this->password,
-            'status' => UserEnum::NOT_CONFIRMED,
+            'status' => UserEnum::CONFIRMED,
             'ip' => request()->ip(),
         ]);
         $registerGift = $this->settingRepository->getRow('registerGift');
