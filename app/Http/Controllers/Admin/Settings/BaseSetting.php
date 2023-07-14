@@ -10,6 +10,7 @@ use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use App\Enums\StorageEnum;
+
 class BaseSetting extends BaseComponent
 {
     public $header , $name , $logo , $status , $title  , $copyRight  ;
