@@ -40,7 +40,7 @@
                                 @endif
                                 <li class="nav-item" >
                                     <a class="nav-link" id="question-and-ans-tab" data-toggle="tab" href="#question-and-ans" role="tab" aria-controls="question-and-ans" aria-selected="false">
-                                        تالار گفتوگو
+                                        تالار گفت و گو
                                     </a>
                                 </li>
                                 @if($course_data->teacher)

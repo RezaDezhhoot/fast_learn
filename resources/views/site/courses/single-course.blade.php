@@ -224,6 +224,7 @@
                                     @endif
                                 </div>
                                 <div class="buy-course-btn-box mt-4">
+                                    @if($course->buyable)
                                     @if ($course->price == 0)
                                     @if (auth()->check() && $user->hasCourse($course->id))
                                     <button disabled type="button" class="btn btn-outline-success w-100 mb-2">شما در این دوره ثبت نام کرده اید</button>
@@ -236,6 +237,10 @@
                                     @else
                                     <button wire:click="addToCart()" type="button" class="btn theme-btn w-100 mb-2"><i
                                             class="la la-shopping-cart fs-18 mr-1"></i> به سبد خرید اضافه کنید</button>
+                                    @endif
+                                    @else
+                                        <button disabled type="button" class="btn theme-btn w-100 mb-2"><i
+                                                class="la la-shopping-cart fs-18 mr-1"></i> عدم امکان ثبت نام</button>
                                     @endif
 
                                 </div>

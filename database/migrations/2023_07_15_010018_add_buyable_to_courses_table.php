@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('episodes', function (Blueprint $table) {
-            $table->bigInteger('chapter_id')->unsigned()->nullable();
+        Schema::table('courses', function (Blueprint $table) {
+            $table->boolean('buyable')->default(true);
         });
     }
 
@@ -25,8 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('episodes', function (Blueprint $table) {
-            $table->dropColumn('chapter_id');
+        Schema::table('courses', function (Blueprint $table) {
+            $table->dropColumn('buyable');
         });
     }
 };

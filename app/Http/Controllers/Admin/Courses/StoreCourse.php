@@ -22,7 +22,7 @@ class StoreCourse extends BaseComponent
     public  $header , $slug , $title , $short_body , $long_body , $image  , $category ,  $quiz , $seo_keywords , $seo_description,
     $teacher , $level , $const_price , $status ,$reduction_type ,$reduction_value = 0 , $start_at , $expire_at  , $tags = [];
     public  $course , $sub_title , $storage , $type , $incomingMethod , $has_support = false;
-    public   $time_lapse ;
+    public   $time_lapse , $buyable , $related = [] , $courses = [] ;
 
 
     public function __construct($id = null)
@@ -60,6 +60,7 @@ class StoreCourse extends BaseComponent
             $this->start_at = $this->dateConverter($this->course->start_at);
             $this->expire_at = $this->dateConverter($this->course->expire_at);
             $this->tags = $this->course->tags->pluck('id','id')->toArray();
+            $this->related = $this->course->related->pluck('id','id')->toArray();
             $this->seo_keywords = $this->course->seo_keywords;
             $this->seo_description = $this->course->seo_description;
             $this->const_price = $this->course->const_price;
@@ -68,12 +69,14 @@ class StoreCourse extends BaseComponent
             $this->has_support = $this->course->has_support;
             $this->incomingMethod = $this->course->incoming_method_id;
             $this->time_lapse = $this->course->time_lapse;
+            $this->buyable = $this->course->buyable;
         } elseif ($this->mode == self::CREATE_MODE) {
             $this->header = 'دوره جدید';
         } else abort(404);
         $this->data['level'] = CourseEnum::getLevels();
         $this->data['category'] = $this->categoryRepository->getAll(CategoryEnum::COURSE)->pluck('title','id');
         $this->data['tags'] = $this->tagRepository->getAll()->pluck('name','id');
+        $this->data['courses'] = $this->courseRepository->getAll()->pluck('title','id')->toArray();
         $this->data['teacher'] = $this->teacherRepository->getAll()->map(function ($item){
             return [
                 'id' => $item->id,
@@ -108,7 +111,7 @@ class StoreCourse extends BaseComponent
             $this->saveInDataBase($this->courseRepository->newCourseObject());
             $this->reset(['slug','sub_title','title','short_body','long_body','image','category','quiz','teacher',
                 'status','level','type','reduction_type','const_price','reduction_value','start_at','expire_at',
-                'tags','seo_keywords','seo_description','incomingMethod','has_support','time_lapse']);
+                'tags','seo_keywords','seo_description','incomingMethod','has_support','time_lapse','buyable']);
         }
     }
 
@@ -139,6 +142,7 @@ class StoreCourse extends BaseComponent
             'incomingMethod' => ['nullable','exists:incoming_methods,id'],
             'has_support' => ['boolean'],
             'time_lapse' => ['nullable','string','max:14000'],
+            'buyable' => ['required','boolean']
         ],[],[
             'title' => 'عنوان',
             'sub_title' => 'عنوان فرعی',
@@ -161,6 +165,7 @@ class StoreCourse extends BaseComponent
             'incomingMethod' => 'روش محاسبه درامد',
             'has_support' => 'پشتیبانی استاد',
             'time_lapse' => 'تایم لپس دوره',
+            'buyable' => 'فابل خرید'
         ]);
         $model->title = $this->title;
         $model->sub_title = $this->sub_title;
@@ -182,14 +187,19 @@ class StoreCourse extends BaseComponent
         $model->seo_description = $this->seo_description;
         $model->has_support = $this->has_support;
         $model->time_lapse = $this->time_lapse;
+        $model->buyable = $this->buyable;
         $model->incoming_method_id = emptyToNull($this->incomingMethod);
         $model = $this->courseRepository->save($model);
         $this->tags = array_filter($this->tags);
-        if ($this->mode == self::CREATE_MODE)
+        $this->related = array_filter($this->related);
+        if ($this->mode == self::CREATE_MODE) {
             $this->courseRepository->attachTags($model,$this->tags);
-        elseif ($this->mode == self::UPDATE_MODE)
+            $model->related()->attach($this->related);
+        }
+        elseif ($this->mode == self::UPDATE_MODE) {
             $this->courseRepository->syncTags($model,$this->tags);
-
+            $model->related()->sync($this->related);
+        }
         return $this->emitNotify('اطلاعات با موفقیت ثبت شد');
     }
 

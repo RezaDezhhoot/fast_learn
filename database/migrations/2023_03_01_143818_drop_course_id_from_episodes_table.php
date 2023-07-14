@@ -26,7 +26,10 @@ return new class extends Migration
     public function down()
     {
         Schema::table('episodes', function (Blueprint $table) {
-            $table->foreignId('course_id')->constrained('courses')->cascadeOnDelete();
+            if (!Schema::hasColumn('episodes','course_id')
+            ) {
+                $table->foreignId('course_id')->nullable()->constrained('courses')->cascadeOnDelete();
+            }
         });
     }
 };

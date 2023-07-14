@@ -13,8 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('episodes', function (Blueprint $table) {
-            $table->bigInteger('chapter_id')->unsigned()->nullable();
+        Schema::create('course_related', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('course_id')->constrained('courses')->cascadeOnDelete();
+            $table->foreignId('related_id')->constrained('courses')->cascadeOnDelete();
         });
     }
 
@@ -25,8 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('episodes', function (Blueprint $table) {
-            $table->dropColumn('chapter_id');
-        });
+        Schema::dropIfExists('course_related');
     }
 };

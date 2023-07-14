@@ -33,11 +33,21 @@
             <x-admin.forms.lfm-standalone id="image" label="تصویر*" :file="$image" type="image" required="true" wire:model="image"/>
             <x-admin.forms.text-area label="کلمات کلیدی*" help="کلمات را با کاما از هم جدا کنید" wire:model.defer="seo_keywords" id="seo_keywords" />
             <x-admin.forms.text-area label="توضیحات سئو*" wire:model.defer="seo_description" id="seo_description" />
+            <x-admin.forms.checkbox value="1" id="buyable" label="قابل خرید " wire:model.defer="buyable" />
             <x-admin.form-section label="تگ ها">
                 <div class="row">
                     @foreach($data['tags'] as $key => $value)
                         <div class="col-3">
                             <x-admin.forms.checkbox value="{{$key}}" id="{{$key}}tag" label="{{$value}}" wire:model.defer="tags.{{$key}}" />
+                        </div>
+                    @endforeach
+                </div>
+            </x-admin.form-section>
+            <x-admin.form-section label="دوره های مرتبط">
+                <div class="row">
+                    @foreach($data['courses'] as $key => $value)
+                        <div class="col-3">
+                            <x-admin.forms.checkbox value="{{$key}}" id="{{$key}}courses" label="{{$value}}" wire:model.defer="related.{{$key}}" />
                         </div>
                     @endforeach
                 </div>

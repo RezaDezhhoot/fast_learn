@@ -85,8 +85,12 @@ class SingleCourse extends BaseComponent
             'category' => ['link' => route('courses',['category' => $this->course->category->slug]) ,'label' => $this->course->category->title],
             'course' => ['link' => '' , 'label' => $this->course->title],
         ];
-        $ids = array_value_recursive('id',$this->categoryRepository->find($this->course->category_id)->toArray());
-        $this->related_courses = $this->courseRepository->whereIn('category_id',$ids,3,true,[['id' , '!=' , $this->course->id]]);
+        if (sizeof($this->course->related) > 0) {
+            $this->related_courses = $this->course->related;
+        } else {
+            $ids = array_value_recursive('id',$this->categoryRepository->find($this->course->category_id)->toArray());
+            $this->related_courses = $this->courseRepository->whereIn('category_id',$ids,5,true,[['id' , '!=' , $this->course->id]]);
+        }
         $this->comments = $this->course->comments;
         $this->courseRepository->increment($this->course,1);
         $this->chapters = collect($this->course->chapters)->sortBy('view');
@@ -101,7 +105,7 @@ class SingleCourse extends BaseComponent
 
     public function addToCart()
     {
-        if ($this->course->price > 0) {
+        if ($this->course->price > 0 && $this->course->buyable) {
             Cart::add($this->course);
             return redirect()->route('cart');
         }

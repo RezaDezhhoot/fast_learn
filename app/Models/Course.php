@@ -279,4 +279,9 @@ class Course extends Model
     {
         return $this->hasManyThrough(RollCall::class,OrderDetail::class);
     }
+
+    public function related()
+    {
+        return $this->belongsToMany(self::class,'course_related','course_id','related_id');
+    }
 }
