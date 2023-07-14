@@ -286,11 +286,11 @@
                                     <span><i class="la la-gear mr-2 text-color"></i>نوع دوره</span> {{
                                     $course->type_label }}
                                 </li>
-                                <li class="d-flex align-items-center justify-content-between">
-                                    <span><i class="la la-certificate mr-2 text-color"></i>گواهی</span> {{
-                                    (!is_null($course->quiz) && !is_null($course->quiz->certificate)) ? 'بعله' : 'خیر'
-                                    }}
-                                </li>
+{{--                                <li class="d-flex align-items-center justify-content-between">--}}
+{{--                                    <span><i class="la la-certificate mr-2 text-color"></i>گواهی</span> {{--}}
+{{--                                    (!is_null($course->quiz) && !is_null($course->quiz->certificate)) ? 'بعله' : 'خیر'--}}
+{{--                                    }}--}}
+{{--                                </li>--}}
                             </ul>
                         </div>
                     </div>
