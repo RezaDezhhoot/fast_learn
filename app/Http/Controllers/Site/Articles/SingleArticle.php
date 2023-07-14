@@ -61,7 +61,7 @@ class SingleArticle extends BaseComponent
             'article' => ['link' => '' , 'label' => $this->article->title],
         ];
         $ids = array_value_recursive('id',$this->categoryRepository->find($this->article->category_id)->toArray());
-        $this->related_posts = $this->articleRepository->whereIn('category_id',$ids,3,true,[['id' , '!=' , $this->article->id]]);
+        $this->related_posts = $this->articleRepository->whereIn('category_id',$ids,5,true,[['id' , '!=' , $this->article->id]]);
         $this->comments = $this->article->comments;
 
         if (auth()->check())
