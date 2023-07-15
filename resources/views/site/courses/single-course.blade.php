@@ -436,7 +436,7 @@
                                 </li>
                                 <li class="d-flex align-items-center justify-content-between">
                                     <span><i class="la la-bolt mr-2 text-color"></i>امتحان</span>
-                                    @if(is_null($course->quiz))
+                                    @if(!is_null($course->quiz))
                                         <a href="{{route('sandbox')}}">بله (شرکت در آزمون آزمایشی)</a>
                                     @else
                                         خیر
