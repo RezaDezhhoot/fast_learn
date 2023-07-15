@@ -26,7 +26,7 @@ Route::middleware('viewer')->group(function () {
     Route::get('/cart',App\Http\Controllers\Site\Carts\Cart::class)->name('cart');
     Route::get('/auth',App\Http\Controllers\Site\Auth\Auth::class)->name('auth');
     Route::get('/teachers',App\Http\Controllers\Site\Teachers\IndexTeacher::class)->name('teachers');
-    Route::get('/teachers/{id}',App\Http\Controllers\Site\Teachers\SingleTeacher::class)->name('teacher');
+    Route::get('/tearchers/{id}',App\Http\Controllers\Site\Teachers\SingleTeacher::class)->name('teacher');
     Route::get('/codes/{code}',App\Http\Controllers\CodeController::class)->name('codes');
     Route::get('/forms/{id}',\App\Http\Controllers\Site\Forms\FormPage::class)->name('form');
     Route::get('/episodes/{course}/{chapter}/{episode}/{title}',\App\Http\Controllers\Site\Episodes\SingleEpisode::class)->name('episode');
