@@ -20,7 +20,7 @@ class Sandbox extends BaseComponent
     use WithPagination;
 
     public mixed $user;
-    public $question = [] , $choose , $quiz;
+    public  $choose , $quiz;
     public array $answers = [] ;
 
     public $question_count;
@@ -35,7 +35,7 @@ class Sandbox extends BaseComponent
         $this->questionRepository = app(QuestionRepositoryInterface::class);
     }
 
-    public function mount($token)
+    public function mount()
     {
         SEOMeta::setTitle($this->settingRepository->getRow('title'));
         $this->choose = [
@@ -52,13 +52,12 @@ class Sandbox extends BaseComponent
                 'دایملر' , 'دایملر' , 'الیشا اوتیس' , 'جورج وستینگهاوس'
             ]
         ];
-        $this->quiz = \App\Models\Quiz::query()->first();
         $this->question_count = SandboxQuestion::query()->count();
     }
 
     public function setTimer()
     {
-        $this->emit('timer',['data' => now()->addMinutes($this->quiz->time)->timestamp() ?? '']);
+        $this->emit('timer',['data' => now()->addMinutes(10)->format('Y-m-d H:i:s') ?? '']);
     }
 
     public function undo($key)
@@ -66,10 +65,14 @@ class Sandbox extends BaseComponent
         unset($this->answers[$key]);
     }
 
+    public function finish()
+    {
+        redirect()->route('home');
+    }
 
     public function render()
     {
         $question = SandboxQuestion::query()->paginate(1);
-        return view('site.client.sandbox',get_defined_vars())->extends('site.layouts.site.site');
+        return view('site.client.sandbox',['question'=>$question])->extends('site.layouts.site.site');
     }
 }

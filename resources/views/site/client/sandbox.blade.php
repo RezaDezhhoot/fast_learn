@@ -29,7 +29,7 @@
                                 @foreach($question as $key => $item)
                                     <small style="color:#fff">سطح سوال : {{ 'ساده' }}</small>
                                     <div class="section__desc" style="color:#fff">
-                                        {!! $item !!}
+                                        {!! $item->text !!}
                                     </div>
                                 @endforeach
                             </div>
@@ -63,7 +63,7 @@
                                     <div class="row m-0 px-1">
                                         @foreach($choose[$item->id] as $key => $choice)
                                             <div class="custom-control custom-checkbox mb-1 p-1 col-6 col-sm-3">
-                                                <input  wire:model="answers.{{$item->id}}" type="radio" id="{{ $key }}" name="{{ $key }}" value="{{ $key }}" class="custom-control-input" />
+                                                <input  wire:model="answers.{{$item->id}}" type="radio" id="{{ $key }}" name="q{{$item->id}}" value="{{ $key }}" class="custom-control-input" />
                                                 <label class="custom-control-label custom--control-label" for="{{ $key }}">
                                                     {{ $choice }}
                                                 </label>
@@ -76,9 +76,9 @@
                                 </div>
                             @endforeach
                         </div>
-                        <div>
+                        <div->
                             {{$question->links('site.includes.paginate-exam')}}
-                        </div>
+                        </div->
                         <!-- end quiz-ans-list -->
                     </div>
                 </div>

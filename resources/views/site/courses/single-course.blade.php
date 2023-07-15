@@ -435,8 +435,12 @@
                                     $course->status_label }}
                                 </li>
                                 <li class="d-flex align-items-center justify-content-between">
-                                    <span><i class="la la-bolt mr-2 text-color"></i>امتحان</span> {{
-                                    !is_null($course->quiz) ? 'بله' : 'خیر' }}
+                                    <span><i class="la la-bolt mr-2 text-color"></i>امتحان</span>
+                                    @if(is_null($course->quiz))
+                                        <a href="{{route('sandbox')}}">بله (شرکت در آزمون آزمایشی)</a>
+                                    @else
+                                        خیر
+                                    @endif
                                 </li>
                                 <li class="d-flex align-items-center justify-content-between">
                                     <span><i class="la la-eye mr-2 text-color"></i>تعداد جلسات</span> {{
