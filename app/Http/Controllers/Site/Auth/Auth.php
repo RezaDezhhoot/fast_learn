@@ -101,20 +101,20 @@ class Auth extends BaseComponent
         $confirm_user = false;
         $user = $this->userRepository->getUser('phone',"$this->phone");
         $user_otp = $user->otp;
-        if ($user->status == UserEnum::CONFIRMED || $this->auth_type == NotificationEnum::NONE_METHOD){
+//        if ($user->status == UserEnum::CONFIRMED || $this->auth_type == NotificationEnum::NONE_METHOD){
             if (Hash::check($this->password, $user->password) ||
                 (!is_null($user->otp) && Hash::check($this->password, $user_otp) && $this->sms === true))
                 $auth = true;
             else {
                 return $this->addError('password','رمزعبور یا شماره وارد شده اشتباه می باشد');
             }
-        } elseif ($user->status == UserEnum::NOT_CONFIRMED || $user->status == UserEnum::WAIT_TO_CONFIRM) {
-            if (!is_null($user->otp) && Hash::check($this->password, $user_otp) && $this->sms === true) {
-                $auth = true;
-                $confirm_user = true;
-            }
-            else return $this->addError('password','کد تایید یا شماره وارد شده اشتباه می باشد');
-        } else return false;
+//        } elseif ($user->status == UserEnum::NOT_CONFIRMED || $user->status == UserEnum::WAIT_TO_CONFIRM) {
+//            if (!is_null($user->otp) && Hash::check($this->password, $user_otp) && $this->sms === true) {
+//                $auth = true;
+//                $confirm_user = true;
+//            }
+//            else return $this->addError('password','کد تایید یا شماره وارد شده اشتباه می باشد');
+//        } else return false;
 
         if ($auth) {
             Authentication::login($user,true);
