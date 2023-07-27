@@ -27,7 +27,7 @@ Route::get('/about-us',App\Http\Controllers\Site\Settings\About::class)->name('a
 Route::get('/fag',App\Http\Controllers\Site\Settings\Fag::class)->name('fag');
 Route::get('/cart',App\Http\Controllers\Site\Carts\Cart::class)->name('cart');
 Route::get('/auth',App\Http\Controllers\Site\Auth\Auth::class)->name('auth');
-Route::get('/sandbox',\App\Http\Controllers\Site\Client\Sandbox::class)->name('sandbox');
+Route::get('/sandbox/{id}',\App\Http\Controllers\Site\Client\Sandbox::class)->name('sandbox');
 // Route::get('/teachers',App\Http\Controllers\Site\Teachers\IndexTeacher::class)->name('teachers');
 // Route::get('/teachers/{id}',App\Http\Controllers\Site\Teachers\SingleTeacher::class)->name('teacher');
 Route::get('/codes/{code}',App\Http\Controllers\CodeController::class)->name('codes');

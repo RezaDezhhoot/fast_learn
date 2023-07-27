@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Site\Client;
 
 use App\Http\Controllers\BaseComponent;
+use App\Models\Question;
 use App\Models\SandboxQuestion;
 use App\Repositories\Interfaces\QuestionRepositoryInterface;
 use App\Repositories\Interfaces\QuizRepositoryInterface;
@@ -23,7 +24,7 @@ class Sandbox extends BaseComponent
     public  $choose , $quiz;
     public array $answers = [] ;
 
-    public $question_count;
+    public $question_count , $quiz_id;
 
     public function __construct($id = null)
     {
@@ -35,24 +36,10 @@ class Sandbox extends BaseComponent
         $this->questionRepository = app(QuestionRepositoryInterface::class);
     }
 
-    public function mount()
+    public function mount($id)
     {
+        $this->quiz_id = $id;
         SEOMeta::setTitle($this->settingRepository->getRow('title'));
-        $this->choose = [
-            '1' => [
-                'اوباما', 'کارتر' , 'هری ترومن' , 'ترامپ'
-            ],
-            '2' => [
-                'نیما یوشیج' , 'سهراب سپهری' , 'فروغ فرخزاد' , 'فریدون مشیری'
-            ],
-            '3' => [
-                'سیب' , 'زیتون' , 'انار' , 'کاج'
-            ],
-            '4' => [
-                'دایملر' , 'دایملر' , 'الیشا اوتیس' , 'جورج وستینگهاوس'
-            ]
-        ];
-        $this->question_count = SandboxQuestion::query()->count();
     }
 
     public function setTimer()
@@ -72,7 +59,15 @@ class Sandbox extends BaseComponent
 
     public function render()
     {
-        $question = SandboxQuestion::query()->paginate(1);
+        $question = \App\Models\Quiz::query()
+            ->has('questions')
+            ->findOrFail($this->quiz_id)->questions()->paginate(1);
+
+        $this->question_count =\App\Models\Quiz::query()
+            ->has('questions')
+            ->findOrFail($this->quiz_id)->questions()->count();
+
+
         return view('site.client.sandbox',['question'=>$question])->extends('site.layouts.site.site');
     }
 }

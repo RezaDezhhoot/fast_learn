@@ -21,7 +21,12 @@
                 <a href="{{ route('courses',['category'=>$item->category->slug]) }}">{{ $item->category->title }}</a>
             </h6>
             <h5 class="card-title"><a href="{{ route('course',$item['slug']) }}">{{ $item['title'] }}</a></h5>
-            @if(!is_null($item->teacher))
+            @if(!is_null($item->quiz))
+            <small><a href="{{route('sandbox',$item->quiz->id)}}">
+                    آزمون آزمایشی
+                </a></small>
+            @endif
+        @if(!is_null($item->teacher))
             {{-- <p class="card-text"><a href="{{ route('teacher',$item->teacher->id) }}">{{ $item->teacher->user->name ?? '' }}</a></p> --}}
             <p class="card-text"><a>{{ $item->teacher->user->name ?? '' }}</a></p>
             @endif

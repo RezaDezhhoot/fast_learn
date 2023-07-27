@@ -61,11 +61,11 @@
                             @foreach($question as $item)
                                 <div class="col-12">
                                     <div class="row m-0 px-1">
-                                        @foreach($choose[$item->id] as $key => $choice)
+                                        @foreach($item->choices as $choice)
                                             <div class="custom-control custom-checkbox mb-1 p-1 col-6 col-sm-3">
-                                                <input  wire:model="answers.{{$item->id}}" type="radio" id="{{ $key }}" name="q{{$item->id}}" value="{{ $key }}" class="custom-control-input" />
-                                                <label class="custom-control-label custom--control-label" for="{{ $key }}">
-                                                    {{ $choice }}
+                                                <input  wire:model="answers.{{$item->id}}" type="radio" id="{{ $choice->id }}" name="{{ $item->id }}" value="{{ $choice->id }}" class="custom-control-input" />
+                                                <label class="custom-control-label custom--control-label" for="{{ $choice->id }}">
+                                                    {{ $choice->title }}
                                                 </label>
                                             </div>
                                         @endforeach
