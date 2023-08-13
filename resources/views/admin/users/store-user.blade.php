@@ -17,9 +17,7 @@
                 <x-admin.forms.input with="6" type="text" id="birthday" label="تاریخ تولد" wire:model.defer="birthday"/>
                 <x-admin.forms.dropdown with="6" id="province" :data="$data['province']" label="استان" wire:model="province"/>
                 <x-admin.forms.dropdown with="6" id="city" :data="$data['city']" label="شهر" wire:model.defer="city"/>
-                @if($mode == self::CREATE_MODE)
-                    <x-admin.forms.input type="password" help="حداقل {{ $password_lgh}} حرف شامل اعداد و حروف" id="password" label="گذرواژه*" wire:model.defer="password"/>
-                @endif
+                <x-admin.forms.input type="password" help="حداقل {{ $password_lgh}} حرف شامل اعداد و حروف" id="password" label="گذرواژه*" wire:model.defer="password"/>
             </div>
             <hr>
             <x-admin.forms.lfm-standalone id="image" label="تصویر " :file="$image" type="image" required="true" wire:model="image"/>

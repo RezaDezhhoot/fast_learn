@@ -124,7 +124,7 @@ class StoreUser extends BaseComponent
             'avatar' => 'تصویر رسمی',
         ];
 
-        if ($this->mode == self::CREATE_MODE)
+        if ($this->mode == self::CREATE_MODE || !empty($this->password))
         {
             $fields['password'] = ['required','min:'.$this->password_lgh,'regex:/^.*(?=.*[a-zA-Z])(?=.*[0-9]).*$/'];
             $messages['password'] = 'گذرواژه';
@@ -138,7 +138,7 @@ class StoreUser extends BaseComponent
         $model->email = $this->email;
         $model->image = $this->image;
         $model->ip = uniqid();
-        if ($this->mode == self::CREATE_MODE)
+        if ($this->mode == self::CREATE_MODE || !empty($this->password))
             $model->password = $this->password;
 
         $user = $this->userRepository->save($model);
