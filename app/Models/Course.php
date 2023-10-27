@@ -24,6 +24,8 @@ use Morilog\Jalali\Jalalian;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Sitemap\Contracts\Sitemapable;
+use Spatie\Sitemap\Tags\Url;
 
 /**
  * @property mixed reduction_value
@@ -37,6 +39,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property mixed $updated_at
  * @property mixed $id
  * @property mixed $level
+ * @property mixed $slug
  * @method static latest(string $string)
  * @method static findOrFail($id)
  * @method static published()
@@ -47,7 +50,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static select(string[] $array)
  * @method static whereHas(string $string, \Closure $param)
  */
-class Course extends Model
+class Course extends Model implements Sitemapable
 {
     use HasFactory , Searchable , Sluggable , SoftDeletes , CascadeSoftDeletes , LogsActivity;
 
@@ -58,6 +61,14 @@ class Course extends Model
     protected array $searchAbleColumns = ['title','slug','short_body'];
 
     public $appends = ['short_code'];
+
+    public function toSitemapTag(): Url | string | array
+    {
+        return Url::create(route('course', $this->slug))
+            ->setLastModificationDate(Carbon::create($this->updated_at))
+            ->setChangeFrequency(Url::CHANGE_FREQUENCY_YEARLY)
+            ->setPriority(0.1);
+    }
 
     public function scopePublished($query)
     {

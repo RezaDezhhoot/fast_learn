@@ -67,6 +67,7 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->as('admin.')->group(f
     Route::get('/settings/about-us', App\Http\Controllers\Admin\Settings\AboutSetting::class)->name('setting.aboutUs');
     Route::get('/settings/contact-us', App\Http\Controllers\Admin\Settings\ContactSetting::class)->name('setting.contactUs');
     Route::get('/settings/fag', App\Http\Controllers\Admin\Settings\FagSetting::class)->name('setting.fag');
+    Route::get('/settings/sitemap', App\Http\Controllers\Admin\Settings\Sitemap::class)->name('setting.sitemap');
     Route::get('/settings/fag/{action}/{id?}', App\Http\Controllers\Admin\Settings\StoreFag::class)->name('setting.fag.create');
     Route::get('/logs', App\Http\Controllers\Admin\Logs\IndexLog::class)->name('log');
     // v2-samples

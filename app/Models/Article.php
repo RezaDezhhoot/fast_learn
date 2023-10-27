@@ -6,6 +6,7 @@ use App\Enums\ArticleEnum;
 use App\Enums\CategoryEnum;
 use App\Enums\CommentEnum;
 use App\Traits\Admin\Searchable;
+use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,6 +18,8 @@ use Illuminate\Support\Str;
 use Morilog\Jalali\Jalalian;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Sitemap\Contracts\Sitemapable;
+use Spatie\Sitemap\Tags\Url;
 
 /**
  * @property mixed created_at
@@ -26,13 +29,21 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static published(bool $active)
  * @method static count()
  */
-class Article extends Model
+class Article extends Model implements Sitemapable
 {
     protected $guarded = ['id'];
 
     use HasFactory , Searchable , Sluggable , LogsActivity;
 
     protected array $searchAbleColumns = ['slug','title','body'];
+
+    public function toSitemapTag(): Url | string | array
+    {
+        return Url::create(route('article', $this->slug))
+            ->setLastModificationDate(Carbon::create($this->updated_at))
+            ->setChangeFrequency(Url::CHANGE_FREQUENCY_YEARLY)
+            ->setPriority(0.1);
+    }
 
     public function sluggable(): array
     {
