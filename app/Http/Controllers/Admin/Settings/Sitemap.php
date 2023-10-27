@@ -18,10 +18,10 @@ class Sitemap extends BaseComponent
     public function store()
     {
         $this->validate([
-            'courses' => ['boolean'],
-            'articles' => ['boolean'],
-            'home' => ['boolean'],
-            'settings' => ['boolean'],
+            'courses' => ['boolean','nullable'],
+            'articles' => ['boolean','nullable'],
+            'home' => ['boolean','nullable'],
+            'settings' => ['boolean','nullable'],
             'pages' => ['nullable','array'],
             'pages.*' => ['required','url','max:150']
         ],[],[
