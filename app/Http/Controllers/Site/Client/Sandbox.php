@@ -96,7 +96,7 @@ class Sandbox extends BaseComponent
     {
         $question = \App\Models\Quiz::query()
             ->has('questions')
-            ->findOrFail($this->quiz_id)->questions()->paginate(1);
+            ->findOrFail($this->quiz_id)->questions()->inRandomOrder((int)(str_replace([':','.'],'','192.168.1.1')/1000))->paginate(1);
 
         $this->question_count =\App\Models\Quiz::query()
             ->has('questions')
