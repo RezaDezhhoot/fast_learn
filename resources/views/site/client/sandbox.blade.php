@@ -127,5 +127,59 @@
                 });
         })
 
+        Livewire.on('successQuiz', function (data) {
+            Swal.fire({
+                title: 'اتمام ازمون!',
+                html: `تبریک! شما در این آزمون نمره قبولی را کسب کرده اید.
+                <br>
+                نمره کسب شده : ${ data.score }
+                <br>
+                حداقل نمره قبولی : ${ data.min_score }
+                <br>
+                نمره کل : ${ data.total_score }
+
+`,
+                icon: 'success',
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'ادامه'
+            }).then((result) => {
+                if (result.value) {
+                    if (result.isConfirmed) {
+                        location.href = '/';
+                    }
+
+                }
+            })
+        })
+
+        Livewire.on('rejectQuiz', function (data) {
+            Swal.fire({
+                title: 'اتمام ازمون!',
+                html: `متاسفیم! شما در این آزمون موفق به کسب نمره قبولی نشدید.
+                <br>
+                نمره کسب شده : ${ data.score }
+                <br>
+                حداقل نمره قبولی : ${ data.min_score }
+                <br>
+                نمره کل : ${ data.total_score }
+`,
+                icon: 'error',
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                showCancelButton: true,
+                confirmButtonText: 'آزمون مجدد',
+                cancelButtonText: 'خروج'
+            }).then((result) => {
+                if (result.value) {
+                    if (result.isConfirmed) {
+                        location.href = window.location.href.split('?')[0];
+                    }
+                }else {
+                    location.href = '/';
+                }
+            })
+        })
+
     </script>
 @endpush
