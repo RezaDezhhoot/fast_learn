@@ -41,6 +41,7 @@
                             <td>عنوان دوره اموزشی</td>
                             <td>سطح دوره اموزشی</td>
                             <td>اموزشگاه یا سازمان</td>
+                            <td>تایم لاین دوره</td>
                         </tr>
                         </thead>
                         <tbody>
@@ -48,6 +49,7 @@
                             <td>{{$course->title}}</td>
                             <td>{{$course->level_label}}</td>
                             <td>{{$course->organ->title ?? ''}}</td>
+                            <td>{{$course->time_line_label}}</td>
                         </tr>
                         </tbody>
                     </table>

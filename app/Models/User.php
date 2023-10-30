@@ -289,4 +289,21 @@ class User extends Authenticatable implements Wallet, Confirmable
     {
         return $this->hasMany(UserPoll::class);
     }
+
+    public function progresses(): HasMany
+    {
+        return $this->hasMany(UserProgress::class);
+    }
+
+    public function hasProgress($id): bool
+    {
+        return $this->progresses()->where('episode_id',$id)->exists();
+    }
+
+    public function setProgress($id , $status)
+    {
+        return $this->progresses()->updateOrCreate(['episode_id' => $id],[
+            'status' => $status
+        ]);
+    }
 }

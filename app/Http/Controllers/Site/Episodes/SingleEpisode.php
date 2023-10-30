@@ -34,6 +34,7 @@ class SingleEpisode extends BaseComponent
 
     public $recaptcha;
 
+    public $timeLineError = false;
 
     public function __construct($id = null)
     {
@@ -51,10 +52,14 @@ class SingleEpisode extends BaseComponent
     {
         $this->user = auth()->user();
         $this->course_data = $this->courseRepository->get('slug',$course,true);
+
         $this->loadData($chapter , $episode);
         if (
             !$this->episode_data->free && $this->course_data->price > 0 && ( (\auth()->check() && !$this->user->hasCourse($this->course_data->id)) || !\auth()->check()) )
             abort(404);
+
+
+        $this->checkProgress($episode);
 
         $title = $this->course_data->title.' | '.$this->episode_data->title;
         SEOMeta::setTitle($title);
@@ -79,15 +84,43 @@ class SingleEpisode extends BaseComponent
         $this->episode_data = $this->chapter_data->episodes->where('id',$episode)->first();
     }
 
+    private function checkProgress($episode)
+    {
+        if (auth()->check() && $this->course_data->time_line) {
+            if  (isset($this->course_data->episodes[0]) && $this->course_data->episodes[0]['id'] == $this->episode_data['id']) {
+                // first episode
+                $this->episode_data->progresses()->where('user_id',\auth()->id())->existsOr(function (){
+                    $this->episode_data->progresses()->create([
+                        'user_id' => \auth()->id(),
+                    ]);
+                });
+            } else if (! auth()->user()->hasProgress($episode) ) {
+                $this->timeLineError = true;
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public function loadEpisode($chapter , $episode)
     {
-        if (is_numeric($chapter)) {
-            $this->chapter_data = $this->course_data->chapters->where('id',$chapter)->first();
-        }
-        $this->episode_data = $this->chapter_data->episodes->where('id',$episode)->first();
+        if ($this->checkProgress($episode)) {
+            if (is_numeric($chapter)) {
+                $this->chapter_data = $this->course_data->chapters->where('id',$chapter)->first();
+            }
+            $this->episode_data = $this->chapter_data->episodes->where('id',$episode)->first();
 
-        if (Auth::check() && $this->episode_data->can_homework)
-            $this->show_homework_form = $this->user->hasCourse($this->course_data->id);
+            if (Auth::check() && $this->episode_data->can_homework)
+                $this->show_homework_form = $this->user->hasCourse($this->course_data->id);
+        } else {
+            $pre_episode = $this->episode_data->previous_episode;
+            $this->emit('timeLineError',[
+                'previous' => route('episode',[
+                    $this->course_data->slug , $this->chapter_data->slug , $pre_episode->id , $pre_episode->title
+                ])
+            ]);
+        }
     }
 
     public function render()

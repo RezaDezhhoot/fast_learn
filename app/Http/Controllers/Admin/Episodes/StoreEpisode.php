@@ -94,7 +94,7 @@ class StoreEpisode extends BaseComponent
             'time' => ['required','date_format:H:i:s','max:255'],
             'allow_show_local_video' => ['required','boolean'],
             'chapter_id' => ['required','exists:chapters,id'],
-            'view' => ['required','integer'],
+            'view' => ['required','integer',Rule::unique('episodes','view')->where('chapter_id',$this->chapter_id)->ignore($episode->id ?? 0)],
             'file_storage' => [Rule::requiredIf(fn() => !empty($this->file)) ,'in:'.implode(',',array_keys(getAvailableStorages())).','.null],
             'video_storage' => [Rule::requiredIf(fn() => !empty($this->local_video)) ,'in:'.implode(',',array_keys(getAvailableStorages())).','.null],
             'homework_storage' => [Rule::requiredIf(fn() => $this->can_homework ==true) ,'in:'.implode(',',array_keys(getAvailableStorages())).','.null],

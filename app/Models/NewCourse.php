@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\CourseEnum;
+use App\Enums\TimeLine;
 use App\Traits\Admin\Searchable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -20,6 +21,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static where(string $string, string $NEW_COURSE_PENDING)
  * @property mixed $status
  * @property mixed $level
+ * @property mixed $time_line
  */
 class NewCourse extends Model
 {
@@ -77,5 +79,12 @@ class NewCourse extends Model
     public function organ(): BelongsTo
     {
         return $this->belongsTo(Organ::class);
+    }
+
+    public function timeLineLabel(): Attribute
+    {
+        return Attribute::get(function (){
+            return TimeLine::TimeLines()[$this->time_line] ?? '-';
+        });
     }
 }

@@ -16,6 +16,7 @@
                                 <td>سطح دوره اموزشی</td>
                                 <td>مدرس</td>
                                 <td>اموزشکاه</td>
+                                <td>تایم لاین دوره</td>
                             </tr>
                             </thead>
                             <tbody>
@@ -24,6 +25,7 @@
                                 <td>{{$course->level_label}}</td>
                                 <td>{{$course->user->name ?? ''}}</td>
                                 <td>{{$course->organ->title ?? ''}}</td>
+                                <td>{{$course->time_line_label}}</td>
                             </tr>
                             </tbody>
                         </table>

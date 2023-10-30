@@ -11,7 +11,8 @@
             <div class="row">
                 <x-teacher.forms.input with="6" type="text" id="title" label="عنوان*" wire:model.defer="title"/>
                 <x-teacher.forms.dropdown with="6" id="level" :data="$data['level']" label="سطح دوره*" wire:model.defer="level"/>
-                <x-teacher.forms.dropdown id="organ_id" :data="$data['organs']" label="اموزشگاه" wire:model.defer="organ_id"/>
+                <x-teacher.forms.dropdown id="organ_id" with="6" :data="$data['organs']" label="اموزشگاه" wire:model.defer="organ_id"/>
+                <x-teacher.forms.dropdown id="time_line" with="6" :data="$data['time_lines']" label="تایم لاین دوره" wire:model.defer="time_line"/>
             </div>
             <x-teacher.forms.basic-text-editor id="descriptions" label="توضیحات کامل" wire:model.defer="descriptions"/>
             <x-teacher.form-section label="فایل ها">
@@ -62,12 +63,14 @@
                             <tr>
                                 <td>عنوان دوره اموزشی</td>
                                 <td>سطح دوره اموزشی</td>
+                                <td>تایم لاین دوره</td>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
                                 <td>{{$course->title}}</td>
                                 <td>{{$course->level_label}}</td>
+                                <td>{{$course->time_line_label}}</td>
                             </tr>
                             </tbody>
                         </table>
@@ -84,7 +87,7 @@
                     @if(!empty($course->files))
                         @foreach($course->files as $item)
                             <strong class="d-block">
-                                <button class="btn btn-sm btn-outline-success" wire:click="download('{{$item}}')">بارگیری فایل</button>
+                                <button class="btn btn-sm btn-outline-success" wire:click="download('{{$item}}')">بارگیری فایل {{ $loop->iteration }}</button>
                             </strong>
                         @endforeach
                     @endif

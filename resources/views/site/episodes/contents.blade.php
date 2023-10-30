@@ -76,7 +76,7 @@
                                                                             بارگیری <i class="la la-download"></i>
                                                                         </a>
                                                                     @endif
-                                                                    @if(!empty($value['file']))
+                                                                    @if(!empty($value['link']))
                                                                         <a  wire:click="set_content('link','{{$value['id']}}')" class="dropdown-item" href="javascript:void(0)">
                                                                             لینک <i class="la la-link"></i>
                                                                         </a>
@@ -114,6 +114,9 @@
     <script>
         Livewire.on('setVideo', data => {
             const player = new Plyr('#player');
+            player.on('ended',(event) => {
+                @this.call('finishTimeLine',true)
+            })
             window.player = player;
             player.source = {
                 type: 'video',
@@ -128,6 +131,23 @@
                 ]
             }
 
+        })
+
+        Livewire.on('nextEpisode', data => {
+            Swal.fire({
+                title: 'تبریک!',
+                text: 'درس با موفقیت به پایان رسید.',
+                icon: 'success',
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'برو درس بعدی',
+            }).then((result) => {
+                if (result.value) {
+                    location.href = data.next;
+                } else {
+                    location.reload();
+                }
+            })
         })
     </script>
 @endpush

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Teacher\Courses;
 use App\Enums\CourseEnum;
 use App\Enums\LastActivitiesEnum;
 use App\Enums\StorageEnum;
+use App\Enums\TimeLine;
 use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\LastActivityRepositoryInterface;
 use App\Repositories\Interfaces\NewCourseRepositoryInterface;
@@ -17,6 +18,8 @@ class StoreCourse extends BaseComponent
 {
     use WithFileUploads , ChatPanel;
     public $title , $descriptions , $level  ,$files = [] , $header , $course , $component = 'teacher',$organ_id ;
+
+    public $time_line;
 
     public function __construct($id = null)
     {
@@ -39,6 +42,7 @@ class StoreCourse extends BaseComponent
             abort(404);
         }
         $this->data['organs'] = \auth()->user()->teacher->organs->pluck('title','id');
+        $this->data['time_lines'] = TimeLine::TimeLines();
     }
 
     public function store()
@@ -47,7 +51,7 @@ class StoreCourse extends BaseComponent
             $this->sendChatText();
         else {
             $this->saveInDataBase($this->newCoursesRepository->getNewObject());
-            $this->reset(['title','descriptions','level','files']);
+            $this->reset(['title','descriptions','level','files','time_line']);
         }
 
     }
@@ -62,17 +66,20 @@ class StoreCourse extends BaseComponent
                 return sizeof($this->files) > 0;
             }), 'array', 'max:45'],
             'files.*' => ['required', 'mimes:jpg,jpeg,png,pdf,zip,rar', 'max:2048'],
-            'organ_id' => ['nullable',Rule::in(\auth()->user()->teacher->organs->pluck('id'))]
+            'organ_id' => ['nullable',Rule::in(\auth()->user()->teacher->organs->pluck('id'))],
+            'time_line' => ['nullable',Rule::in(TimeLine::getValues())]
         ],[],[
             'files' => 'فایل ها',
             'title' => 'عنوان',
             'descriptions' => 'توضیحات',
             'level' => 'سطح دوره',
+            'time_line' => 'تایم لاین دوره'
         ]);
         $mode->title = $this->title;
         $mode->descriptions = $this->descriptions;
         $mode->level = $this->level;
         $mode->organ_id = $this->organ_id;
+        $mode->time_line = $this->time_line;
         $mode->user_id = Auth::id();
         $mode->status = CourseEnum::NEW_COURSE_PENDING;
         $mode->files = $this->uploadBaseFiles();

@@ -140,4 +140,39 @@ class Episode extends Model
     {
         return $this->hasMany(RollCall::class);
     }
+
+    public function progresses(): HasMany
+    {
+        return $this->hasMany(UserProgress::class);
+    }
+
+    public function getPreviousEpisodeAttribute()
+    {
+        return self::query()
+            ->whereHas('chapter',function ($q){
+                return $q->whereBelongsTo($this->chapter->course);
+            })
+            ->latest('id')
+            ->orderByDesc('view')
+            ->where('view','<',$this->view)
+            ->where(function ($q){
+                return $q->whereHas('progresses',function ($q){
+                    return $q->where('status',false);
+                })->orWhereDoesntHave('progresses');
+            })
+            ->where('id','!=',$this->id)
+            ->first();
+    }
+
+    public function getNextEpisodeAttribute()
+    {
+        return self::query()
+            ->whereHas('chapter',function ($q){
+                return $q->whereBelongsTo($this->chapter->course);
+            })
+            ->orderBy('view')
+            ->where('view','>',$this->view)
+            ->where('id','!=',$this->id)
+            ->first();
+    }
 }

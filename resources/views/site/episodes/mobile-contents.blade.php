@@ -67,7 +67,7 @@
                                                                     بارگیری <i class="la la-download"></i>
                                                                 </a>
                                                             @endif
-                                                            @if(!empty($value['file']))
+                                                            @if(!empty($value['link']))
                                                                 <a  wire:click="set_content('link','{{$value['id']}}')" class="dropdown-item" href="javascript:void(0)">
                                                                     لینک <i class="la la-link"></i>
                                                                 </a>

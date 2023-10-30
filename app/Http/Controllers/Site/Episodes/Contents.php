@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Site\Episodes;
 
+use App\Enums\TimeLine;
 use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\CourseRepositoryInterface;
 use Illuminate\Support\Facades\Log;
@@ -35,6 +36,11 @@ class Contents extends BaseComponent
         $this->chapter_data = $chapter;
         $this->view = $view;
         $this->user = auth()->user();
+
+
+        if ($this->course_data->time_line == TimeLine::TEXT) {
+            $this->finishTimeLine();
+        }
     }
 
     public function render()
@@ -59,7 +65,7 @@ class Contents extends BaseComponent
     public function loadEpisode($episode)
     {
         if ($this->view == 'web') {
-            $this->set_content('local_video',$episode);
+//            $this->set_content('local_video',$episode);
             $this->set_content('show_local_video',$episode);
         }
     }
@@ -81,15 +87,21 @@ class Contents extends BaseComponent
             switch ($type){
                 case 'local_video':
                     if ( ( $this->course_data->price == 0 || $user_has_episode ) and $episode->downloadable_local_video ) {
-                        if ($disk = getDisk($episode->video_storage))
+                        if ($disk = getDisk($episode->video_storage)) {
+                            if ($this->course_data->time_line == TimeLine::VIDEO ) {
+                                $this->finishTimeLine(true);
+                            }
                             return $disk->download($episode->local_video);
+                        }
                     }
                     break;
                 case 'show_local_video':
-                    if (!is_null($episode->local_video) and $episode->allow_show_local_video and ($this->course_data->price == 0 || $user_has_episode)):
-                        $this->local_video = route('storage',[$episode->id,'video']);
-                        $this->emit('setVideo',['title' => '1','src' => $this->local_video]);
-                    endif;
+                    if (!is_null($episode->local_video) and $episode->allow_show_local_video and ($this->course_data->price == 0 || $user_has_episode)) {
+                        $this->local_video = route('storage', [$episode->id, 'video']);
+                        $this->emit('setVideo', ['title' => '1', 'src' => $this->local_video]);
+                    } else {
+                        $this->finishTimeLine();
+                    }
                     break;
                 case 'file':
                     if ($disk = getDisk($episode->file_storage))
@@ -106,4 +118,28 @@ class Contents extends BaseComponent
         }
     }
 
+    public function finishTimeLine($with_notify = false)
+    {
+        if (auth()->check() && $this->course_data->time_line ) {
+            $this->episode_data->progresses()->where('user_id',\auth()->id())->update([
+                'status' => true,
+            ]);
+            if ($this->episode_data->next_episode) {
+                $this->episode_data->next_episode->progresses()->where('user_id',\auth()->id())->existsOr(function (){
+                    $this->episode_data->next_episode->progresses()->create([
+                        'user_id' => \auth()->id(),
+                    ]);
+                });
+
+                if ($with_notify) {
+                    $this->emit('nextEpisode',[
+                        'next' => route('episode',[
+                            $this->course_data->slug , $this->chapter_data->slug , $this->episode_data->next_episode->id , $this->episode_data->next_episode->title
+                        ])
+                    ]);
+                }
+            }
+
+        }
+    }
 }

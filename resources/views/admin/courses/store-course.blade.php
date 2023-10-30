@@ -24,6 +24,9 @@
                 <x-admin.forms.dropdown with="6" id="province" :data="$data['province']" label="استان" wire:model="province"/>
                 <x-admin.forms.dropdown with="6" id="city" :data="$data['city']" label="شهر" wire:model.defer="city"/>
                 <x-admin.forms.lfm-standalone with="6" id="time_lapse" label="تایم لپس دوره" :file="$time_lapse" type="image" required="true" wire:model="time_lapse"/>
+
+
+                <x-admin.forms.dropdown with="3" id="time_line" :data="$data['time_line']" label="تایم لاین" wire:model.defer="time_line"/>
             </div>
             <hr>
             <x-admin.forms.select2 id="incomingMethod" :data="$data['incoming']" label="روش محاسبه درامد مدرس" wire:model.defer="incomingMethod"/>
