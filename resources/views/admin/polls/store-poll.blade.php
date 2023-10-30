@@ -17,9 +17,9 @@
                         <x-admin.forms.input type="text" id="{{$key}}title" label=" سوال" wire:model.defer="items.{{$key}}.title"/>
                         <x-admin.form-section label="گزینه ها">
                             <x-admin.button class="btn btn-light-primary font-weight-bolder btn-sm" content="افزودن گزینه" wire:click="addChoice({{$key}})" />
-                            <div class="row">
+                            <div class="row px-3">
                                 @foreach(@$item['items'] as $itemKey => $choices)
-                                    <div class="col-4 col-md-1 align-items-center d-flex ">
+                                    <div class="col-4 col-md-2 align-items-center d-flex ">
                                         <x-admin.forms.input type="text" id="items.{{$key}}.items.{{$itemKey}}.title" label=" عنوان گزینه" wire:model.defer="items.{{$key}}.items.{{$itemKey}}.title"/>
                                         <i class="flaticon2-trash text-danger" wire:click="deleteChoice({{$key}},{{$itemKey}})" ></i>
                                     </div>

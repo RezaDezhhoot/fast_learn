@@ -13,7 +13,7 @@ class FormRepository implements FormRepositoryInterface
     {
         return Form::query()
             ->latest()->when($type,function ($q) use ($type){
-               return $q->where('type',$type);
+               return $q->where('subject',$type);
             })->search($search)->paginate($per_page);
     }
 
