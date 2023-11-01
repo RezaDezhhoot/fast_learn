@@ -13,7 +13,7 @@ class HomeworkRepository implements HomeworkRepositoryInterface
 {
     public function get(array $where = [] , $action = 'first')
     {
-        return $action == 'first' ? Homework::where($where)->first() : Homework::with(['episode','episode.course'])->where($where)->cursor();
+        return $action == 'first' ? Homework::where($where)->first() : Homework::with(['episode','episode.chapter.course'])->where($where)->paginate(10);
     }
 
     public function updateOrCreate(array $key, array $value)

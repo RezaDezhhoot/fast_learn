@@ -39,7 +39,7 @@
                 <x-admin.forms.input with="6" type="number" id="percent" label="درصد مشارکت" wire:model.defer="percent"/>
                 <x-admin.forms.dropdown with="6" id="status" :data="$data['status']" label="وضعیت*" wire:model.defer="status"/>
                 @if($mode == self::CREATE_MODE)
-                    <x-admin.forms.input  type="text" id="user" label="شماره همراه کاربر*" wire:model.defer="user"/>
+                    <x-admin.forms.searchable-dropdown  placeholder="شماره همراه | نام | ایمیل کاربر" id="name" fn="searchUser" :data="$data['users']" label="مدیر*" wire:model.defer="user"/>
                 @endif
                 <x-admin.forms.text-area label="کلمات کلیدی*" help="کلمات را با کاما از هم جدا کنید" wire:model.defer="seo_keywords" id="seo_keywords" />
                 <x-admin.forms.text-area label="توضیحات سئو*" wire:model.defer="seo_description" id="seo_description" />

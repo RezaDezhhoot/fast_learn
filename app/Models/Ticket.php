@@ -73,7 +73,7 @@ class Ticket extends Model
 
     public static function getNew()
     {
-        return Ticket::where('status',TicketEnum::PENDING)->count();
+        return Ticket::whereIn('status',[TicketEnum::PENDING,TicketEnum::USER_ANSWERED])->count();
     }
 
     public function scopeParent($query , $active)
@@ -83,6 +83,6 @@ class Ticket extends Model
 
     public function children(): HasMany
     {
-        return $this->hasMany(Ticket::class,'parent_id','id')->orderBy('id','desc');
+        return $this->hasMany(Ticket::class,'parent_id','id')->orderBy('id');
     }
 }

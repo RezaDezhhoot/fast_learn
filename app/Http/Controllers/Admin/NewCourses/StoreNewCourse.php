@@ -6,6 +6,7 @@ use App\Enums\CourseEnum;
 use App\Enums\StorageEnum;
 use App\Events\NewCourseEvent;
 use App\Http\Controllers\BaseComponent;
+use App\Repositories\Interfaces\NewCourseChatRepositoryInterface;
 use App\Repositories\Interfaces\NewCourseRepositoryInterface;
 use App\Traits\ChatPanel;
 use Illuminate\Support\Facades\Log;
@@ -67,7 +68,35 @@ class StoreNewCourse extends BaseComponent
         NewCourseEvent::dispatch($model);
     }
 
+    public function sendChatText(): void
+    {
+        $this->validate([
+            'chatText' => ['required','string','max:72000'],
+            'file' => ['nullable','array','max:15'],
+            'file.*' => ['required','file','max:20480','mimes:png,jpg,rar,zip,pdf']
+        ],[],[
+            'chatText' => 'متن پیام',
+            'file' => 'فایل ها',
+            'file.*' => 'فایل ها',
+        ]);
+        $chat = app(NewCourseChatRepositoryInterface::class)->create([
+            'message' => $this->chatText,
+            'user_id' => auth()->id(),
+            'new_course_request_id' => $this->course->id,
+            'files' => $this->uploadFiles("new_courses/{$this->course->title}")
+        ]);
 
+        if ($this->component == 'admin') {
+            $status = CourseEnum::NEW_COURSE_ANSWERED;
+        } else {
+            $status = CourseEnum::NEW_COURSE_TEACHER_ANSWERED;
+        }
+        $this->course->status = $status;
+        app(NewCourseRepositoryInterface::class)->save($this->course);
+        $this->course->chats->push($chat);
+        $this->reset(['chatText','file']);
+        $this->emitNotify('پیا با موفقیت ارسال شد');
+    }
 
     public function render()
     {

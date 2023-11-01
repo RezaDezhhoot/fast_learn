@@ -35,7 +35,7 @@ class Dashboard extends Component
         $this->myCourses = $this->user->orderDetails->count();
         $this->courses = $courseRepository->getAll()->count();
         $this->myQuizzes = collect($this->user->transcripts)->where('result',QuizEnum::PENDING)->count();
-        $this->notifications = $this->user->alerts;
+        $this->notifications = $this->user->alerts()->take(10)->get();
     }
 
     public function render()

@@ -16,5 +16,6 @@
                 </p>
             @endforelse
         </div>
+        {{$notifications->links('site.includes.paginate')}}
     </div>
 </div>

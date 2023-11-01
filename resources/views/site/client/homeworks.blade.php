@@ -20,7 +20,7 @@
                     @forelse($homeworks as $item)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $item->episode->course->title ?? '' }}</td>
+                            <td>{{ $item->episode->chapter->course->title ?? '' }}</td>
                             <td>{{ $item->episode_title }}</td>
                             <td>{{ !is_null($item->result) ? 'بله' : 'خیر' }}</td>
                             <td>{{ $item->created_at->diffForHumans() }}</td>
@@ -38,6 +38,7 @@
                 </tbody>
             </table>
         </div>
+        {{$homeworks->links('site.includes.paginate')}}
     </div>
     <div wire:ignore.self class="modal fade modal-container" id="homeworkModal" tabindex="-1" role="dialog" aria-labelledby="homeworkModalTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -93,7 +94,7 @@
                                             <small>
                                                 @for($i=1; $i<=5; $i++)
                                                     @if($i <= $homework->score)
-                                                        <span class="la la-star"></span>
+                                                        <span class="la la-star text-warning"></span>
                                                     @else
                                                         <span class="la la-star-o"></span>
                                                     @endif

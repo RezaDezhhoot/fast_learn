@@ -1,4 +1,4 @@
-@props(['chats','file' => []])
+@props(['chats' , 'message' => 'message' , 'sender' => 'user_id' , 'file_label' => 'files' , 'multiple' => true ,'file' => []])
 <div>
     <div wire:ignore.self class="card card-custom">
         <!--begin::Header-->
@@ -8,7 +8,7 @@
                 <!--begin::Messages-->
                 <div class="messages">
                     @forelse($chats as $item)
-                        @if($item->user_id == auth()->id())
+                        @if($item->{$sender} == auth()->id())
                             <div class="d-flex flex-column mb-5 align-items-start">
                                 <div class="d-flex align-items-center">
                                     <div class="symbol symbol-circle symbol-35 mr-3">
@@ -22,16 +22,25 @@
                                     </div>
                                 </div>
                                 <div class="mt-2 rounded p-5 bg-light-success text-dark-50 font-weight-bold font-size-lg text-left max-w-400px">
-                                    {!! nl2br($item->message)  !!}
+                                    {!! nl2br($item->{$message})  !!}
                                 </div>
                                 <div class="d-flex align-items-center justify-content-end">
-                                    @if(is_array($item->files) && sizeof($item->files) > 0)
-                                        @foreach($item->files as $value)
-                                            <p class="mr-4 py-2 cursor-pointer" wire:click="download('{{$value}}')">
-                                                <small>{{str($value)->limit(10)}}</small>
+                                    @if( !empty($item->{$file_label}) )
+                                        @if(is_array($item->{$file_label}))
+                                            @foreach($item->{$file_label} as $value)
+                                                @if($value)
+                                                    <p class="mr-4 py-2 cursor-pointer" wire:click="download('{{$value}}')">
+                                                        <small>{{str($value)->limit(10)}}</small>
+                                                        <i class="fa fa-download"></i>
+                                                    </p>
+                                                @endif
+                                            @endforeach
+                                        @else
+                                            <p class="mr-4 py-2 cursor-pointer" wire:click="download('{{ $item->{$file_label} }}')">
+                                                <small>{{str($item->{$file_label})->limit(10)}}</small>
                                                 <i class="fa fa-download"></i>
                                             </p>
-                                        @endforeach
+                                        @endif
                                     @endif
                                 </div>
                             </div>
@@ -49,17 +58,24 @@
                                     </div>
                                 </div>
                                 <div class="mt-2 rounded p-5 bg-light-primary text-dark-50 font-weight-bold font-size-lg text-right max-w-400px">
-                                    {!! nl2br($item->message)  !!}
+                                    {!! nl2br($item->{$message})  !!}
                                 </div>
-                                @if(is_array($item->files) && sizeof($item->files) > 0)
-                                    <div class="d-flex align-items-center justify-content-end">
-                                        @foreach($item->files as $value)
-                                            <p class="mr-4">
+                                @if(($item->{$file_label}))
+                                    @if(is_array($item->{$file_label}))
+                                        @foreach($item->{$file_label} as $value)
+                                            @if($value)
+                                            <p class="mr-4 py-2 cursor-pointer" wire:click="download('{{$value}}')">
                                                 <small>{{str($value)->limit(10)}}</small>
-                                                <i class="flaticon-file-2"></i>
+                                                <i class="fa fa-download"></i>
                                             </p>
+                                            @endif
                                         @endforeach
-                                    </div>
+                                    @else
+                                        <p class="mr-4 py-2 cursor-pointer" wire:click="download('{{ $item->{$file_label} }}')">
+                                            <small>{{str($item->{$file_label})->limit(10)}}</small>
+                                            <i class="fa fa-download"></i>
+                                        </p>
+                                    @endif
                                 @endif
                             </div>
                         @endif
@@ -73,6 +89,7 @@
         </div>
         <!--end::Body-->
         <!--begin::Footer-->
+        <x-admin.forms.validation-errors/>
         <div wire:ignore.self class="card-footer align-items-center">
             <!--begin::Compose-->
             <textarea wire:model.defer="chatText" class="form-control border-0 p-0" rows="2" placeholder="پیامی بنویسید"></textarea>
@@ -87,7 +104,7 @@
                          x-on:livewire-upload-finish="isUploading = false"
                          x-on:livewire-upload-error="isUploading = false"
                          x-on:livewire-upload-progress="progress = $event.detail.progress">
-                        <input multiple type="file" class="d-none" id="file" wire:model="file" aria-label="file">
+                        <input {{$multiple ? 'multiple' : ''}} type="file" class="d-none" id="file" wire:model="file" aria-label="file">
                         <div class="mt-2" x-show="isUploading">
 
                             <progress max="100" x-bind:value="progress"></progress>
@@ -95,12 +112,20 @@
                         </div>
                     </div>
                     <div class="d-flex align-items-center justify-content-end">
-                        @foreach($file as $item)
+                        @if(is_array($file))
+                            @foreach($file as $item)
+                                <p class="mr-4">
+                                    <small>{{str($item->temporaryUrl())->limit(30)}}</small>
+                                    <i class="flaticon-file-2"></i>
+                                </p>
+                            @endforeach
+                        @elseif($file)
                             <p class="mr-4">
-                                <small>{{str($item->temporaryUrl())->limit(30)}}</small>
+                                <small>{{str($file->temporaryUrl())->limit(30)}}</small>
                                 <i class="flaticon-file-2"></i>
                             </p>
-                        @endforeach
+                        @endif
+
                     </div>
                 </div>
                 <div>

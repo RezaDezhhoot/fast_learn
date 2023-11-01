@@ -9,9 +9,12 @@ use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Facades\TwitterCard;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Notifications extends Component
 {
+    use WithPagination;
+
     public function mount(SettingRepositoryInterface $settingRepository)
     {
         SEOMeta::setTitle($settingRepository->getRow('title').'-'.'پیام ها ');
@@ -29,7 +32,7 @@ class Notifications extends Component
 
     public function render()
     {
-        $notifications = Auth::user()->alerts;
+        $notifications = Auth::user()->alerts()->paginate(15);
         return view('site.client.notifications',['notifications'=>$notifications])->extends('site.layouts.client.client');
     }
 }

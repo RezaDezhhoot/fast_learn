@@ -3,9 +3,11 @@
     <x-admin.form-control link="{{ route('admin.store.ticket',['create'] ) }}"  title="تیکت ها"/>
     <div class="card card-custom">
         <div class="card-body">
-            <x-admin.forms.dropdown id="status" :data="$data['status']" label="وضعیت" wire:model="status"/>
-            <x-admin.forms.dropdown id="priority" :data="$data['priority']" label="اولویت " wire:model="priority"/>
-            <x-admin.forms.dropdown id="subject" :data="$data['subject']" value="true" label="موضوع" wire:model="subject"/>
+            <div class="row">
+                <x-admin.forms.dropdown id="status" with="4" :data="$data['status']" label="وضعیت" wire:model="status"/>
+                <x-admin.forms.dropdown id="priority" with="4" :data="$data['priority']" label="اولویت " wire:model="priority"/>
+                <x-admin.forms.dropdown id="subject" with="4" :data="$data['subject']" value="true" label="موضوع" wire:model="subject"/>
+            </div>
             @include('admin.layouts.advance-table')
             <div class="row">
                 <div class="col-lg-12 table-responsive table-bordered">

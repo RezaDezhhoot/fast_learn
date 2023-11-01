@@ -26,7 +26,7 @@ interface CommentRepositoryInterface
 
     public function create(array $data);
 
-    public function getUserComments($where = [],$active = true);
+    public function getUserComments($where = [],$active = true , $per_page = 10);
 
     public function findTeacher($id);
 

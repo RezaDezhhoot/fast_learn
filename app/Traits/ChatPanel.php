@@ -10,45 +10,29 @@ use Illuminate\Support\Facades\Log;
 
 trait ChatPanel
 {
-    public $chatText , $file = [] ;
+    public $chatText , $file  ;
 
-    public function sendChatText(): void
+    public function getStorage()
     {
-        $this->validate([
-            'chatText' => ['required','string','max:72000'],
-            'file' => ['nullable','array','max:15'],
-            'file.*' => ['required','file','max:20480','mimes:png,jpg,rar,zip,pdf']
-        ],[],[
-            'chatText' => 'متن پیام',
-            'file' => 'فایل ها',
-            'file.*' => 'فایل ها',
-        ]);
-        $chat = app(NewCourseChatRepositoryInterface::class)->create([
-            'message' => $this->chatText,
-            'user_id' => auth()->id(),
-            'new_course_request_id' => $this->course->id,
-            'files' => $this->uploadFiles()
-        ]);
-
-        if ($this->component == 'admin') {
-            $status = CourseEnum::NEW_COURSE_ANSWERED;
-        } else {
-            $status = CourseEnum::NEW_COURSE_TEACHER_ANSWERED;
-        }
-        $this->course->status = $status;
-        app(NewCourseRepositoryInterface::class)->save($this->course);
-        $this->course->chats->push($chat);
-        $this->reset(['chatText','file']);
-        $this->emitNotify('پیا با موفقیت ارسال شد');
+        return property_exists($this,'customStorage') ? $this->customStorage : StorageEnum::PRIVATE;
     }
 
-    private function uploadFiles()
+
+
+    private function uploadFiles($dir)
     {
-        $file = [];
-        foreach ($this->file as $value) {
-            if (isset($value) && !empty($value))
-                $file[] = getDisk(StorageEnum::PRIVATE)->put('new_courses/'.$this->course->title, $value);
+        if (is_array($this->file)) {
+            $file = [];
+            foreach ($this->file as $value) {
+                if (isset($value) && !empty($value))
+                    $file[] = getDisk($this->getStorage())->put($dir, $value);
+            }
+        } else {
+            $file = '';
+            if (isset($this->file) && !empty($this->file))
+                $file = getDisk($this->getStorage())->put($dir, $this->file);
         }
+
 
         return $file;
     }
@@ -61,10 +45,10 @@ trait ChatPanel
     public function download($file)
     {
         try {
-            return getDisk(StorageEnum::PRIVATE)->download($file);
+            return getDisk($this->getStorage())->download($file);
         } catch (\Exception $e) {
-            $this->emitNotify('خظا در هنگام دانلود فایل','warning');
-            Log::error($e->getMessage());
+            $this->emitNotify('خطا در هنگام دانلود فایل','warning');
+            report($e);
         }
     }
 }

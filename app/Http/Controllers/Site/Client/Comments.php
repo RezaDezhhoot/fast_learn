@@ -9,9 +9,12 @@ use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Facades\TwitterCard;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Comments extends Component
 {
+    use WithPagination;
+
     public function mount(SettingRepositoryInterface $settingRepository)
     {
         SEOMeta::setTitle($settingRepository->getRow('title').'-'.' پرسش    های من');
@@ -29,7 +32,7 @@ class Comments extends Component
 
     public function render(CommentRepositoryInterface $commentRepository)
     {
-        $comments = $commentRepository->getUserComments([['user_id',auth()->id()],['parent_id',null]],false);
+        $comments = $commentRepository->getUserComments([['user_id',auth()->id()],['parent_id',null]],false );
         return view('site.client.comments',['comments'=>$comments])->extends('site.layouts.client.client');
     }
 }
