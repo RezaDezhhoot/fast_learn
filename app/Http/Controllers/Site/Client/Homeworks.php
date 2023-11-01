@@ -11,9 +11,12 @@ use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Facades\TwitterCard;
 use Illuminate\Support\Facades\Auth;
+use Livewire\WithPagination;
 
 class Homeworks extends BaseComponent
 {
+    use WithPagination;
+
     public $show_homework_form = true ,$user , $episode , $homework;
     public  $file_path , $homework_file , $homework_description , $homework_recaptcha;
 

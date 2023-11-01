@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Teacher\Comments;
 use App\Enums\CommentEnum;
 use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\CommentRepositoryInterface;
+use Livewire\WithPagination;
 
 class IndexComment extends BaseComponent
 {
     public $status , $placeholder = 'شماره همراه یا نام کاربر';
+
+    use WithPagination;
 
     protected $queryString = ['status'];
 

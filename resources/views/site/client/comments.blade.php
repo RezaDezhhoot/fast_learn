@@ -15,7 +15,7 @@
                                 <div class="d-flex flex-wrap align-items-center justify-content-between pb-1">
                                     <h5>{{ $item->user->id == auth()->id() ? 'شما' : $item->user->name }}</h5>
                                     <small>
-                                        <a>{{ $item->for_label.' '.($item->commentable_data['title'] ?? '') }}</a>
+                                        <a>{{ $item->for_label.' , '.($item->commentable_data['title'] ?? '') }}</a>
                                     </small>
                                 </div>
                                 <span class="d-block lh-18 pb-2">{{ $item->created_at->diffForHumans() }}</span>
@@ -25,7 +25,7 @@
                             </div>
                         </div>
                         @foreach($item->childrenRecursive as $value)
-                            <div class="media media-card pb-2  p-4 my-1 review-reply">
+                            <div class="media media-card pb-2 shadow-sm p-4 my-1 review-reply">
                                 <div class="media-img mr-4 rounded-full">
                                     <img class="rounded-full lazy" src="{{ asset($value->user->image) }}" data-src="{{ asset($value->user->image) }}" alt="{{ $value->user->name }}" />
                                 </div>
@@ -48,5 +48,6 @@
                 </p>
             @endforelse
         </div>
+        {{$comments->links('site.includes.paginate')}}
     </div>
 </div>

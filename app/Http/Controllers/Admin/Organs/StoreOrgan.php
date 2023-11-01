@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Organs;
 
 use App\Enums\OrganEnum;
 use App\Http\Controllers\BaseComponent;
+use App\Models\User;
 use App\Repositories\Interfaces\OrganRepositoryInterface;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
@@ -61,6 +62,8 @@ class StoreOrgan extends BaseComponent
         } else abort(404);
         $this->data['status'] = OrganEnum::getStatus();
         $this->data['province'] = $this->settingRepository::getProvince();
+
+        $this->data['users'] = [];
     }
 
     public function store()
@@ -83,7 +86,7 @@ class StoreOrgan extends BaseComponent
             'status' => ['required',Rule::in(array_keys(OrganEnum::getStatus()))],
             'seo_keywords' => ['required','string','max:500'],
             'seo_description' => ['required','string','max:1000'],
-            'user' => ['required','exists:users,phone'],
+            'user' => ['required','exists:users,id'],
             'percent' => ['nullable','between:0,100'],
 
             'address' => ['nullable','string','max:250'],
@@ -115,7 +118,7 @@ class StoreOrgan extends BaseComponent
         $model->status = $this->status;
         $model->percent = $this->percent;
         $model->seo_key_words = $this->seo_keywords;
-        $model->user_id = $this->userRepository->findBy([['phone',$this->user]])->id;
+        $model->user_id = $this->user;
         $model->seo_description = $this->seo_description;
 
         try {
@@ -177,5 +180,14 @@ class StoreOrgan extends BaseComponent
         $this->authorizing('delete_organs');
         $this->organRepository->destroy($this->organ->id);
         redirect()->route('admin.organ');
+    }
+
+    public function searchUser()
+    {
+        $this->data['users'] = User::query()
+            ->select([DB::raw("CONCAT(`users`.`name`,'-',`users`.`phone`,'-',`users`.`email`) as title"),'id'])
+            ->search($this->user)
+            ->take(10)
+            ->get()->pluck('title','id')->toArray();
     }
 }

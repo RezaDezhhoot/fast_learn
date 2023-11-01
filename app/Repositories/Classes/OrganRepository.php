@@ -9,7 +9,7 @@ class OrganRepository implements OrganRepositoryInterface
 {
     public function getAllAdmin($status, $user, $search,$new_info, $per_page)
     {
-        return Organ::query()->when($status,function ($q) use ($status) {
+        return Organ::query()->latest()->with('user')->when($status,function ($q) use ($status) {
            return $q->where('status',$status);
         })->when($user,function ($q) use ($user){
             return $q->wherehas('user',function ($q) use ($user) {

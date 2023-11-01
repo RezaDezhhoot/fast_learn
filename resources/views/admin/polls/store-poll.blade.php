@@ -11,24 +11,50 @@
                 <x-admin.forms.input  type="text" id="title" label="عنوان*" wire:model.defer="title"/>
             </div>
             <x-admin.form-section label="سوالات">
-                @foreach($items as $key => $item)
-                    <div class="col-12 m-4 p-2 border rounded">
-                        <x-admin.button class="btn btn-light-danger font-weight-bolder btn-sm" content="حذف سوال" wire:click="deleteItems({{$key}})" />
-                        <x-admin.forms.input type="text" id="{{$key}}title" label=" سوال" wire:model.defer="items.{{$key}}.title"/>
-                        <x-admin.form-section label="گزینه ها">
-                            <x-admin.button class="btn btn-light-primary font-weight-bolder btn-sm" content="افزودن گزینه" wire:click="addChoice({{$key}})" />
-                            <div class="row">
-                                @foreach(@$item['items'] as $itemKey => $choices)
-                                    <div class="col-4 col-md-1 align-items-center d-flex ">
-                                        <x-admin.forms.input type="text" id="items.{{$key}}.items.{{$itemKey}}.title" label=" عنوان گزینه" wire:model.defer="items.{{$key}}.items.{{$itemKey}}.title"/>
-                                        <i class="flaticon2-trash text-danger" wire:click="deleteChoice({{$key}},{{$itemKey}})" ></i>
-                                    </div>
-                                @endforeach
+                <div id="accordion">
+                    @foreach($items as $key => $item)
+                        <div class="card my-2">
+                            <div class="card-header p-0 m-0" id="heading{{$key}}">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapse{{$key}}" aria-expanded="true" aria-controls="collapse{{$key}}">
+                                        سوال {{ $loop->iteration }}
+                                    </button>
+                                </h5>
                             </div>
-                        </x-admin.form-section>
-                    </div>
-                @endforeach
-                    <x-admin.button class="btn btn-light-primary font-weight-bolder btn-sm" content="افزودن سوال" wire:click="addItem()" />
+
+                            <div id="collapse{{$key}}" class="collapse" wire:ignore.self aria-labelledby="heading{{$key}}" data-parent="#accordion">
+                                <div class="card-body">
+                                    <div class="row m-0 p-0">
+                                        <div class="d-flex justify-content-end align-items-end col-11">
+                                            <x-admin.forms.input type="text" id="{{$key}}title" label=" سوال" wire:model.defer="items.{{$key}}.title"/>
+                                            <x-admin.button class="btn btn-light-danger font-weight-bolder btn-sm" content="حذف " wire:click="deleteItems({{$key}})" />
+                                        </div>
+                                        <div class="col-12 p-0 m-0">
+                                            <x-admin.form-section label="گزینه ها">
+                                                <div class="row">
+                                                    <x-admin.button class="btn btn-light-primary font-weight-bolder btn-sm" content="افزودن گزینه" wire:click="addChoice({{$key}})" />
+                                                    <table class="table table-separate">
+                                                        <tr>
+                                                            @foreach(@$item['items'] as $itemKey => $choices)
+                                                                <td>
+                                                                    <div class="d-flex align-items-center">
+                                                                        <i class="flaticon2-trash text-danger cursor-pointer" wire:click="deleteChoice({{$key}},{{$itemKey}})" ></i>
+                                                                        <x-admin.forms.input type="text" id="items.{{$key}}.items.{{$itemKey}}.title" label=" عنوان گزینه" wire:model.defer="items.{{$key}}.items.{{$itemKey}}.title"/>
+                                                                    </div>
+                                                                </td>
+                                                            @endforeach
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </x-admin.form-section>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+                    <x-admin.button class="btn mt-2 btn-light-primary font-weight-bolder btn-sm" content="افزودن سوال" wire:click="addItem()" />
             </x-admin.form-section>
         </div>
     </div>

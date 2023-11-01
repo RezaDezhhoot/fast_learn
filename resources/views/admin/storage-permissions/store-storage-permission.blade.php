@@ -34,7 +34,8 @@
             </x-admin.form-section>
             @endif
             <div class="row">
-                <x-admin.forms.input with="6" type="number" id="name" label="کد کاربری *" wire:model.defer="user"/>
+                <x-admin.forms.searchable-dropdown help="کاربر :  {{ $permission->user->name ?? '' }}"  placeholder="شماره همراه | نام | ایمیل کاربر" with="6" id="name" fn="searchUser" :data="$data['users']" label="کاربر*" wire:model.defer="user"/>
+
                 <x-admin.forms.dropdown with="6" id="storage" :data="$data['storage']" label="دیسک" wire:model.defer="storage"/>
 
             </div>

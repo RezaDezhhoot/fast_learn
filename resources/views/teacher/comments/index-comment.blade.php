@@ -6,7 +6,7 @@
             <div class="row ">
                 <div class="col-12 p-0 m-0">
                     @foreach($data['status'] as $key => $item)
-                        <button class="btn btn-link" wire:click="$set('status','{{$key}}')">{{ $item }}</button>
+                        <button class="btn border btn-link"  wire:click="$set('status','{{$key}}')">{{ $item }}</button>
                     @endforeach
                 </div>
             </div>

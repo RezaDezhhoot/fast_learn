@@ -14,13 +14,13 @@
                 @endif
                 <x-admin.forms.dropdown with="6" id="priority"  :data="$data['priority']" label="اولویت*" wire:model.defer="priority"/>
                 @if($mode == self::CREATE_MODE)
-                    <x-admin.forms.input  type="text" id="user" label="شماره همراه کاربر*" wire:model.defer="user"/>
+                    <x-admin.forms.searchable-dropdown placeholder="شماره همراه | نام | ایمیل کاربر" with="12" id="name" fn="searchUser" :data="$data['users']" label="کاربر*" wire:model.defer="user"/>
                 @endif
             </div>
             <hr>
             <x-admin.forms.full-text-editor id="content" label="متن اصلی*" wire:model.defer="content"/>
             @if($mode == self::CREATE_MODE)
-            <x-admin.forms.lfm-standalone id="file" label="فایل" :file="$file" type="image" required="true" wire:model="file"/>
+                <x-admin.forms.lfm-standalone id="main_file" label="فایل" :file="$main_file" type="image" required="true" wire:model="main_file"/>
             @else
                 @if(!empty($file))
                     <div class="form-group col-12">
@@ -61,35 +61,7 @@
                     </div>
                 </x-admin.form-section>
                 <x-admin.form-section label="تاریخچه گفتگو">
-                    @foreach($child as $key =>  $item)
-                        <div class="col-lg-12 border px-4 py-3 d-flex align-items-center justify-content-between" style="border: 1px gray solid;padding: 5px;border-radius: 5px;margin: 10px">
-                            <div>
-                                <h5 class="text-info">
-                                    {{ $item->sender->name }}  ({{ $item->sender_type == \App\Enums\TicketEnum::ADMIN ? 'مدیریت' : 'کاربر' }}):
-                                </h5>
-                                <p>
-                                    {!! $item->content !!}
-                                </p>
-                                <small class="text-warning">{{ $item->date }}</small>
-                                @if(!empty($item->file))
-                                    <p>
-                                        <label for="">فایل</label>
-                                        @foreach($item->file as $value)
-                                            <a class="btn btn-link" href="{{ asset($value) }}">مشاهده</a>
-                                        @endforeach
-                                    </p>
-                                @endif
-                            </div>
-                            <div>
-                                <button class="btn btn-light-danger font-weight-bolder btn-sm mx-3r" wire:click="delete({{$key}})">حذف</button>
-                            </div>
-                        </div>
-                    @endforeach
-                </x-admin.form-section>
-                <x-admin.form-section label="ارسال پاسخ">
-                    <x-admin.forms.full-text-editor id="answer" label="" wire:model.defer="answer"/>
-                    <x-admin.forms.lfm-standalone id="answerFile" label="فایل" :file="$answerFile" type="image" required="true" wire:model="answerFile"/>
-                    <x-admin.button class="btn btn-light-primary font-weight-bolder btn-sm" content="ثبت" wire:click="newAnswer()" />
+                    <x-chat-panel :chats="$child" :multiple="false" file_label="file" :file="$file" sender="sender_id" message="content" />
                 </x-admin.form-section>
             @endif
         </div>

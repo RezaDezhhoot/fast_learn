@@ -8,6 +8,7 @@ use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
 use App\Repositories\Interfaces\TicketRepositoryInterface;
 use App\Rules\ReCaptchaRule;
+use App\Traits\ChatPanel;
 use Artesaos\SEOTools\Facades\JsonLd;
 use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\SEOMeta;
@@ -17,10 +18,10 @@ use Livewire\WithFileUploads;
 
 class Ticket extends BaseComponent
 {
-    use WithFileUploads;
+    use WithFileUploads , ChatPanel;
     public mixed $user;
     public  $ticket, $recaptcha;
-    public $subject, $header, $user_id, $content, $file = [], $priority, $status, $child = [], $user_name, $answer, $answerFile, $ticketFile = [];
+    public $subject, $header, $customStorage,$user_id, $content, $main_file = [], $priority, $status, $child = [], $user_name, $answer, $answerFile, $ticketFile = [];
 
     public function __construct($id = null)
     {
@@ -28,6 +29,7 @@ class Ticket extends BaseComponent
         $this->ticketRepository = app(TicketRepositoryInterface::class);
         $this->settingRepository = app(SettingRepositoryInterface::class);
         $this->disk = getDisk(storage: StorageEnum::PUBLIC);
+        $this->customStorage = StorageEnum::PUBLIC;
     }
 
     public function mount($action, $id = null)
@@ -63,14 +65,14 @@ class Ticket extends BaseComponent
 
     public function addFile()
     {
-        if (sizeof($this->file) < 5) {
-            $this->file[] = null;
+        if (sizeof($this->main_file) < 5) {
+            $this->main_file[] = null;
         }
     }
 
     public function deleteFile($key)
     {
-        unset($this->file[$key]);
+        unset($this->main_file[$key]);
     }
 
 
@@ -80,7 +82,7 @@ class Ticket extends BaseComponent
             $this->newAnswer();
         elseif ($this->mode == self::CREATE_MODE) {
             $id = $this->saveInDataBase($this->ticketRepository->newTicketObject());
-            $this->reset(['subject', 'content', 'file', 'priority', 'recaptcha']);
+            $this->reset(['subject', 'content', 'main_file', 'priority', 'recaptcha']);
             return redirect()->route('user.ticket', ['edit', $id]);
         }
     }
@@ -92,18 +94,18 @@ class Ticket extends BaseComponent
             [
                 'subject' => ['required', 'string', 'max:250'],
                 'content' => ['required', 'string', 'max:95000'],
-                'file' => [Rule::requiredIf(function(){
+                'main_file' => [Rule::requiredIf(function(){
                     return sizeof($this->file) > 0;
                 }), 'array', 'max:5'],
-                'file.*' => ['required', 'mimes:jpg,jpeg,png,pdf', 'max:2048'],
+                'main_file.*' => ['required', 'mimes:jpg,jpeg,png,pdf', 'max:2048'],
                 'priority' => ['required', 'in:' . implode(',', array_keys(TicketEnum::getPriority()))],
             ],
             [],
             [
                 'subject' => 'موضوع',
                 'content' => 'متن',
-                'file' => 'فایل',
-                'file.*' => 'فایل',
+                'main_file' => 'فایل',
+                'main_file.*' => 'فایل',
                 'priority' => 'اولویت',
             ]
         );
@@ -121,29 +123,25 @@ class Ticket extends BaseComponent
         return $model->id;
     }
 
-    public function newAnswer()
+    public function sendChatText(): void
     {
         $this->validate(
             [
-                'answer' => ['required', 'string', 'max:6500'],
-                'file' => [Rule::requiredIf(function(){
-                    return sizeof($this->file) > 0;
-                }), 'array', 'max:5'],
-                'file.*' => ['required', 'mimes:jpg,jpeg,png,pdf', 'max:2048'],
+                'chatText' => ['required', 'string', 'max:6500'],
+                'file' => ['nullable','file', 'mimes:jpg,jpeg,png,pdf', 'max:2048'],
             ],
             [],
             [
-                'answer' => 'پاسخ',
+                'chatText' => 'پاسخ',
                 'file' => 'فایل',
-                'file.*' => 'فایل',
             ]
         );
         $new = $this->ticketRepository->newTicketObject();
         $new->subject = $this->subject;
         $new->user_id  = $this->ticket->user_id;
         $new->parent_id = $this->ticket->id;
-        $new->content = $this->answer;
-        $new->file =  $this->upload();
+        $new->content = $this->chatText;
+        $new->file =  $this->uploadFiles('tickets');
         $new->sender_id = auth()->id();
         $new->sender_type = TicketEnum::USER;
         $new->priority = $this->ticket->priority;
@@ -152,9 +150,10 @@ class Ticket extends BaseComponent
         $this->ticketRepository->save($this->ticket);
         $this->ticketRepository->save($new);
         $this->child->push($new);
-        $this->emitNotify('اطلاعات با موفقیت ثبت شد');
-        $this->reset(['file', 'answer', 'recaptcha']);
+        $this->emitNotify('پیام با موفقیت ارسال شد');
+        $this->reset(['file', 'chatText', 'recaptcha']);
     }
+
 
     public function uploadFile()
     {
@@ -164,7 +163,7 @@ class Ticket extends BaseComponent
     public function upload(): string
     {
         $file = [];
-        foreach ($this->file as $value) {
+        foreach ($this->main_file as $value) {
             if (isset($value) && !empty($value))
                 $file[] = 'storage/' . $this->disk->put('tickets', $value);
         }

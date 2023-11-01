@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin\StoragePermissions;
 
 use App\Http\Controllers\BaseComponent;
+use App\Models\User;
 use App\Repositories\Interfaces\StoragePermissionRepositoryInterface;
 use App\Repositories\Interfaces\StorageRepositoryInterface;
+use Illuminate\Support\Facades\DB;
 
 class StoreStoragePermission extends BaseComponent
 {
@@ -33,7 +35,7 @@ class StoreStoragePermission extends BaseComponent
         } else {
             $this->header = 'دسترسی جدید';
         }
-
+        $this->data['users'] = [];
         $this->data['storage'] = $this->storageRepository->getAll()->pluck('name','id');
         $this->data['access'] = [
             '0' => 'بسته',
@@ -101,6 +103,16 @@ class StoreStoragePermission extends BaseComponent
     public function deletePath($key)
     {
         unset($this->path[$key]);
+    }
+
+    public function searchUser()
+    {
+        $this->data['users'] = User::query()
+            ->latest()
+            ->select([DB::raw("CONCAT(`users`.`name`,'-',`users`.`phone`,'-',`users`.`email`) as title"),'id'])
+            ->search($this->user)
+            ->take(10)
+            ->get()->pluck('title','id')->toArray();
     }
 
     public function render()

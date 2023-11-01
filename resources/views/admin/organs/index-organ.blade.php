@@ -3,19 +3,15 @@
     <x-admin.form-control link="{{ route('admin.store.organ',['create'] ) }}" title="سازمان ها"/>
     <div class="card card-custom">
         <div class="card-body">
-            <x-admin.forms.dropdown id="status" :data="$data['status']" label="وضعیت " wire:model="status"/>
-            <x-admin.forms.dropdown id="new_info" :data="$data['new_info']" label="درخواست بروزرسانی" wire:model="new_info"/>
-            @include('admin.layouts.advance-table')
-            <div class="row pb-3">
-                <div class="form-group col-md-12 col-12">
-                    <div class="d-flex justify-content-between col-12">
-                        <div style="width: 50%;">
-                            <label for="search">مدیر ارگان :</label>
-                            <input id="search" type="text" class="form-control ml-1" placeholder="مدیر ارگان " wire:model="user">
-                        </div>
-                    </div>
+            <div class="row">
+                <x-admin.forms.dropdown id="status" with="4" :data="$data['status']" label="وضعیت " wire:model="status"/>
+                <x-admin.forms.dropdown id="new_info" with="4" :data="$data['new_info']" label="درخواست بروزرسانی" wire:model="new_info"/>
+                <div class="form-group col-md-4 col-12">
+                    <label for="search">مدیر ارگان :</label>
+                    <input id="search" type="text" class="form-control ml-1" placeholder="مدیر ارگان " wire:model="user">
                 </div>
             </div>
+            @include('admin.layouts.advance-table')
             <div class="row">
                 <div class="col-lg-12 table-responsive">
                     <table class="table table-striped table-bordered" id="kt_datatable">
@@ -25,6 +21,7 @@
                             <th>شماره شناسه</th>
                             <th>نام مستعار</th>
                             <th>عنوان</th>
+                            <th>مدیر ارگان</th>
                             <th>وضعیت</th>
                             <th>مدیر</th>
                             <th>تعداد دوره</th>
@@ -40,6 +37,7 @@
                                 <td>{{ $item->id }}</td>
                                 <td>{{ $item->slug }}</td>
                                 <td>{{ $item->title }}</td>
+                                <td>{{ $item->user->name ?? '' }}</td>
                                 <td>{{ $item->status_label }}</td>
                                 <td>
                                     <ul>

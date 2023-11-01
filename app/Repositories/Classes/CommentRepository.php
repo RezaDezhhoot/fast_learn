@@ -67,7 +67,7 @@ class CommentRepository implements CommentRepositoryInterface
         return Comment::create($data); // TODO: Implement create() method.
     }
 
-    public function getUserComments($where = [],$active = true)
+    public function getUserComments($where = [],$active = true , $per_page = 10)
     {
         return Comment::confirmed($active)
             ->latest()
@@ -76,7 +76,7 @@ class CommentRepository implements CommentRepositoryInterface
                 return $q->where('user_id',Auth::id());
             })
             ->orWhere($where)
-            ->get();
+            ->paginate($per_page);
     }
 
     public function getAllTeacher($search, $status, $pagination, $case = null, $active = true)

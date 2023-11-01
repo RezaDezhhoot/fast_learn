@@ -10266,7 +10266,7 @@ div.datedropper .picker .pick-lg-b li {
 }
 
 .logo-size {
-    max-width: 4rem;
+    /*max-width: 4rem;*/
     transform: scale(0.9);
 }
 

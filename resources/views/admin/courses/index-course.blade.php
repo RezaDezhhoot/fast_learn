@@ -3,9 +3,11 @@
     <x-admin.form-control link="{{ route('admin.store.course',['create'] ) }}"  title="دوره ها"/>
     <div class="card card-custom">
         <div class="card-body">
-            <x-admin.forms.dropdown id="status" :data="$data['status']" label="وضعیت" wire:model="status"/>
-            <x-admin.forms.select2 id="category" :data="$data['category']" label="دسته بندی" wire:model.defer="category"/>
-            <x-admin.forms.dropdown id="type" :data="$data['type']" label="نوع دوره" wire:model="type"/>
+           <div class="row">
+               <x-admin.forms.dropdown with="6" id="status" :data="$data['status']" label="وضعیت" wire:model="status"/>
+               <x-admin.forms.dropdown with="6" id="type" :data="$data['type']" label="نوع دوره" wire:model="type"/>
+               <x-admin.forms.select2 with="4" id="category" :data="$data['category']" label="دسته بندی" wire:model.defer="category"/>
+           </div>
             @include('admin.layouts.advance-table')
             <div class="row">
                 <div class="col-lg-12 table-responsive">

@@ -2,17 +2,26 @@
 
 namespace App\Http\Controllers\Admin\Tickets;
 
+use App\Enums\StorageEnum;
 use App\Enums\TicketEnum;
 use App\Http\Controllers\BaseComponent;
+use App\Models\User;
 use App\Repositories\Interfaces\SendRepositoryInterface;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
 use App\Repositories\Interfaces\TicketRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
+use App\Traits\ChatPanel;
+use Illuminate\Support\Facades\DB;
+use Livewire\WithFileUploads;
 
 class StoreTicket extends BaseComponent
 {
-    public  $ticket;
-    public $subject , $header , $user , $content , $file , $priority , $status , $child = [] , $user_name , $answer , $answerFile;
+    use ChatPanel , WithFileUploads;
+
+    public  $ticket ;
+    public $subject , $header , $user , $content , $main_file , $priority , $status , $child = [] , $user_name , $answer , $answerFile;
+
+    public $customStorage ;
 
     public function __construct($id = null)
     {
@@ -21,6 +30,7 @@ class StoreTicket extends BaseComponent
         $this->settingRepository = app(SettingRepositoryInterface::class);
         $this->userRepository = app(UserRepositoryInterface::class);
         $this->sendRepository = app(SendRepositoryInterface::class);
+        $this->customStorage = StorageEnum::PUBLIC;
     }
 
     public function mount($action , $id = null)
@@ -34,7 +44,7 @@ class StoreTicket extends BaseComponent
             $this->user = $this->userRepository->find($this->ticket->user_id)->phone;
             $this->user_name = $this->ticket->user->user_name;
             $this->content = $this->ticket->content;
-            $this->file = $this->ticket->file;
+            $this->main_file = $this->ticket->file;
             $this->priority = $this->ticket->priority;
             $this->status = $this->ticket->status;
             $this->child = $this->ticket->children;
@@ -42,6 +52,7 @@ class StoreTicket extends BaseComponent
         $this->data['priority'] = TicketEnum::getPriority();
         $this->data['status'] = TicketEnum::getStatus();
         $this->data['subject'] = $this->settingRepository->getRow('subject',[]);
+        $this->data['users'] = [];
     }
 
     public function store()
@@ -51,7 +62,7 @@ class StoreTicket extends BaseComponent
             $this->saveInDataBase($this->ticket);
         elseif($this->mode == self::CREATE_MODE) {
             $this->saveInDataBase($this->ticketRepository->newTicketObject());
-            $this->reset(['subject','user','content','file','priority','status']);
+            $this->reset(['subject','user','content','main_file','priority','status']);
         }
     }
 
@@ -60,22 +71,22 @@ class StoreTicket extends BaseComponent
         $this->validate(
             [
                 'subject' => ['required','string','max:250'],
-                'user' => ['required','exists:users,phone'],
+                'user' => ['required','exists:users,id'],
                 'content' => ['required','string','max:95000'],
-                'file' => ['array','nullable'],
+                'main_file' => ['array','nullable'],
                 'priority' => ['required','in:'.implode(',',array_keys(TicketEnum::getPriority()))],
             ] , [] , [
                 'subject' => 'موضوع',
                 'user' => 'شماره کاربر',
                 'content' => 'متن',
-                'file' => 'فایل',
+                'main_file' => 'فایل',
                 'priority' => 'اولویت',
             ]
         );
         $model->subject = $this->subject;
-        $model->user_id = $this->userRepository->findBy([['phone',$this->user]])->id;
+        $model->user_id = $this->user;
         $model->content = $this->content;
-        $model->file = ($this->mode == self::UPDATE_MODE) ? implode(',',$this->file) : $this->file;
+        $model->file = ($this->mode == self::UPDATE_MODE) ? implode(',',$this->main_file) : $this->main_file;
         $model->parent_id = null;
         $model->sender_id  = auth()->id();
         $model->sender_type  = TicketEnum::ADMIN;
@@ -92,26 +103,23 @@ class StoreTicket extends BaseComponent
         return redirect()->route('admin.ticket');
     }
 
-
-    public function newAnswer()
+    public function sendChatText(): void
     {
         if ($this->mode == self::UPDATE_MODE) {
             $this->authorizing('edit_tickets');
-            $this->validate(
-                [
-                    'answer' => ['required', 'string','max:6500'],
-                    'answerFile' => ['nullable' , 'max:250','string']
-                ] , [] , [
-                    'answer' => 'پاسخ',
-                    'answerFile' => 'فایل'
-                ]
-            );
+            $this->validate([
+                'chatText' => ['required','string','max:72000'],
+                'file' => ['nullable','file','max:20480','mimes:png,jpeg,jpg,rar,zip,pdf']
+            ],[],[
+                'chatText' => 'متن پیام',
+                'file' => 'فایل',
+            ]);
             $new = $this->ticketRepository->newTicketObject();
             $new->subject = $this->subject;
             $new->user_id  = $this->ticket->user_id;
             $new->parent_id = $this->ticket->id;
-            $new->content = $this->answer;
-            $new->file = $this->answerFile;
+            $new->content = $this->chatText;
+            $new->file = $this->uploadFiles('tickets');
             $new->sender_id = auth()->id();
             $new->sender_type = TicketEnum::ADMIN;
             $new->priority = $this->priority;
@@ -120,9 +128,19 @@ class StoreTicket extends BaseComponent
             $this->ticketRepository->save($this->ticket);
             $this->ticketRepository->save($new);
             $this->child->push($new);
-            $this->emitNotify('اطلاعات با موفقیت ثبت شد');
-            $this->reset(['answer','answerFile']);
+            $this->reset(['chatText','file']);
+            $this->emitNotify('پیا با موفقیت ارسال شد');
         }
+    }
+
+
+    public function searchUser()
+    {
+        $this->data['users'] = User::query()
+            ->select([DB::raw("CONCAT(`users`.`name`,'-',`users`.`phone`,'-',`users`.`email`) as title"),'id'])
+            ->search($this->user)
+            ->take(10)
+            ->get()->pluck('title','id')->toArray();
     }
 
 
