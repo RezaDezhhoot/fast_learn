@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Settings;
 
 use App\Http\Controllers\BaseComponent;
+use App\Models\Setting;
 use Illuminate\Support\Facades\Artisan;
 use Spatie\Sitemap\SitemapGenerator;
 
@@ -10,57 +11,60 @@ class Sitemap extends BaseComponent
 {
     public $method , $courses = false , $articles = false , $pages = [] , $images = [] , $home , $settings;
 
+    public $sitemap = [];
+
     public function mount()
     {
         $this->authorizing('show_settings_base');
+        $this->sitemap = Setting::getSingleRow('sitemap',[]);
     }
 
     public function store()
     {
         $this->validate([
-            'courses' => ['boolean','nullable'],
-            'articles' => ['boolean','nullable'],
-            'home' => ['boolean','nullable'],
-            'settings' => ['boolean','nullable'],
-            'pages' => ['nullable','array'],
-            'pages.*' => ['required','url','max:150']
+            'sitemap.courses' => ['boolean','nullable'],
+            'sitemap.articles' => ['boolean','nullable'],
+            'sitemap.home' => ['boolean','nullable'],
+            'sitemap.settings' => ['boolean','nullable'],
+            'sitemap.pages' => ['nullable','array'],
+            'sitemap.pages.*' => ['required','url','max:150']
         ],[],[
-            'images' => 'تصاویر',
-            'pages' => 'صفصخه ها',
-            'articles' => 'مقالات',
-            'home' => 'صفخه اصلی',
-            'settings' => 'سایر صفخات',
-            'courses' => 'دورها',
+            'sitemap.images' => 'تصاویر',
+            'sitemap.pages' => 'صفصخه ها',
+            'sitemap.articles' => 'مقالات',
+            'sitemap.home' => 'صفخه اصلی',
+            'sitemap.settings' => 'سایر صفخات',
+            'sitemap.courses' => 'دورها',
         ]);
 
         $options = [];
-        if ($this->articles) {
+        if (isset($this->sitemap['articles']) && $this->sitemap['articles']) {
             $options['--articles'] = true;
         }
-        if ($this->courses) {
+        if (isset($this->sitemap['courses']) && $this->sitemap['courses']) {
             $options['--courses'] = true;
         }
-        if ($this->home) {
+        if (isset($this->sitemap['home']) && $this->sitemap['home']) {
             $options['--home'] = true;
         }
-        if ($this->settings) {
+        if (isset($this->sitemap['settings']) && $this->sitemap['settings']) {
             $options['--settings'] = true;
         }
-        if (is_array($this->pages) && sizeof($this->pages) > 0) {
-            $options['--custom_pages'] = implode(',',$this->pages);
+        if (isset($this->sitemap['pages']) && is_array($this->sitemap['pages']) && sizeof($this->sitemap['pages']) > 0) {
+            $options['--custom_pages'] = implode(',',$this->sitemap['pages']);
         }
+        Setting::updateOrCreate(['name' => 'sitemap'],['value' => json_encode($this->sitemap)]);
         Artisan::call('sitemap:generate',$options);
-        $this->reset(['pages','method','images','courses','articles','settings','home']);
         $this->emitNotify('فرایند نوشتن نقشه سایت فعال شد');
         Artisan::call('queue:work --stop-when-empty');
     }
 
     public function addRow($type) {
-        $this->{$type}[] = [];
+        $this->sitemap[$type][] = [];
     }
 
     public function deleteRow($type , $key) {
-        unset($this->{$type}[$key]);
+        unset($this->sitemap[$type][$key]);
     }
 
     public function render()

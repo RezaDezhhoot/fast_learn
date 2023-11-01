@@ -11,18 +11,20 @@
                 <x-admin.loader wire:target="store" text="فرایند در حال اجرا" />
             </div>
             <div class="row">
-                <x-admin.forms.checkbox value="1"  id="home" name="home" label="صفحه اصلی" wire:model.defer="home" />
-                <x-admin.forms.checkbox value="1" help="دوره های پیشنویس را شامل نمی شود" id="courses" name="courses" label="شامل دورها" wire:model.defer="courses" />
-                <x-admin.forms.checkbox value="1" help="مفالات پیشنویس را شامل نمی شود" id="articles" name="articles" label="شامل مقالات" wire:model.defer="articles" />
-                <x-admin.forms.checkbox value="1" help="شامل صفحات درباره ما ، ارتباط با ما و ..." id="settings" name="settings" label="سایر صفحات" wire:model.defer="settings" />
+                <x-admin.forms.checkbox value="1"  id="home" name="home" label="صفحه اصلی" wire:model.defer="sitemap.home" />
+                <x-admin.forms.checkbox value="1" help="دوره های پیشنویس را شامل نمی شود" id="courses" name="courses" label="شامل دورها" wire:model.defer="sitemap.courses" />
+                <x-admin.forms.checkbox value="1" help="مفالات پیشنویس را شامل نمی شود" id="articles" name="articles" label="شامل مقالات" wire:model.defer="sitemap.articles" />
+                <x-admin.forms.checkbox value="1" help="شامل صفحات درباره ما ، ارتباط با ما و ..." id="settings" name="settings" label="سایر صفحات" wire:model.defer="sitemap.settings" />
             </div>
-            <x-admin.button class="btn btn-light-primary font-weight-bolder btn-sm" content="افزودن صفخه" wire:click="addRow('pages')" />
-            @foreach($pages as $key => $item)
-                <div class="form-group d-flex align-items-center col-12">
-                    <input class="form-control col-11" id="pages{{ $key }}" type="text" placeholder="ادرس" wire:model.defer="pages.{{$key}}">
-                    <div><button class="btn btn-light-danger font-weight-bolder btn-sm" wire:click="deleteRow('pages',{{ $key }})">حذف</button></div>
-                </div>
-            @endforeach
+            <x-admin.button class="btn btn-light-primary font-weight-bolder btn-sm" content="افزودن صفحه اختصاصی به فایل" wire:click="addRow('pages')" />
+            @isset($sitemap['pages'])
+                @foreach($sitemap['pages'] as $key => $item)
+                    <div class="form-group d-flex align-items-center col-12">
+                        <input class="form-control col-11" id="pages{{ $key }}" type="text" placeholder="ادرس" wire:model.defer="sitemap.pages.{{$key}}">
+                        <div><button class="btn btn-light-danger font-weight-bolder btn-sm" wire:click="deleteRow('pages',{{ $key }})">حذف</button></div>
+                    </div>
+                @endforeach
+            @endif
         </div>
     </div>
 </div>
