@@ -57,10 +57,15 @@ class StoreRole extends BaseComponent
                 'permissionSelected.*' => 'دسترسی ها',
             ]
         );
-        $model->name = $this->name;
-        $model = $this->roleRepository->save($model);
-        $this->roleRepository->syncPermissions($model, $this->permissionSelected);
-        $this->emitNotify('اطلاعات با موفقیت ثبت شد');
+        if (!in_array($this->role->name,['administrator', 'super_admin', 'admin','teacher'])) {
+            $model->name = $this->name;
+            $model = $this->roleRepository->save($model);
+            $this->roleRepository->syncPermissions($model, $this->permissionSelected);
+            $this->emitNotify('اطلاعات با موفقیت ثبت شد');
+        } else {
+            $this->emitNotify('برای نقش های ثابت سایت امکان تغییر نام وجود ندارد!','warning');
+        }
+
     }
 
     public function deleteItem()

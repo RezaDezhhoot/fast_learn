@@ -152,7 +152,7 @@ class Forget extends BaseComponent
             try {
                 DB::beginTransaction();
                 User::query()->where('phone',$this->phone)
-                    ->update(['password' => $this->password]);
+                    ->update(['password' => Hash::make($this->password)]);
                 $token->delete();
                 $this->emitNotify('رمز عبور شما با موفقیت ویرایش شد');
                 $this->redirect(route('auth'));
