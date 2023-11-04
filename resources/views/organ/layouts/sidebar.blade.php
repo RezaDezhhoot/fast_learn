@@ -116,8 +116,8 @@
                                     <h4 class="menu-text">بخش محتوا</h4>
                                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                                 </li>
-                                <x-organ.menu-group icon="fab fa-product-hunt" :active="request()->routeIs(['organ.courses','organ.new.courses','organ.store.courses','organ.episodes','organ.store.episodes','organ.chapters','organ.store.chapters'])" label="دوره های اموزشی" >
-                                    <x-organ.menu-item href="{{route('organ.courses')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['organ.courses','organ.new.courses'])" label="دروه ها  "  />
+                                <x-organ.menu-group icon="fab fa-product-hunt" :active="request()->routeIs(['organ.content','organ.courses','organ.new.courses','organ.store.courses','organ.episodes','organ.store.episodes','organ.chapters','organ.store.chapters'])" label="دوره های اموزشی" >
+                                    <x-organ.menu-item href="{{route('organ.courses')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['organ.courses','organ.content','organ.new.courses'])" label="دروه ها  "  />
                                     <x-organ.menu-item href="{{route('organ.chapters')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['organ.chapters','organ.store.chapters'])" label="فصل ها  "  />
                                     <x-organ.menu-item href="{{route('organ.episodes')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['organ.episodes','organ.store.episodes'])" label="درس ها  " />
                                 </x-organ.menu-group>

@@ -183,8 +183,8 @@
                                     <h4 class="menu-text">بخش محتوا</h4>
                                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                                 </li>
-                                <x-teacher.menu-group icon="fab fa-product-hunt" :active="request()->routeIs(['teacher.courses','teacher.new.courses','teacher.store.courses','teacher.episodes','teacher.store.episodes','teacher.chapters','teacher.store.chapters'])" label="دوره های اموزشی" >
-                                    <x-teacher.menu-item href="{{route('teacher.courses')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['teacher.courses','teacher.new.courses'])" label="دروه ها  " :new="$new_courses" />
+                                <x-teacher.menu-group icon="fab fa-product-hunt" :active="request()->routeIs(['teacher.courses','teacher.content','teacher.new.courses','teacher.store.courses','teacher.episodes','teacher.store.episodes','teacher.chapters','teacher.store.chapters'])" label="دوره های اموزشی" >
+                                    <x-teacher.menu-item href="{{route('teacher.courses')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['teacher.courses','teacher.content','teacher.new.courses'])" label="دروه ها  " :new="$new_courses" />
                                     <x-teacher.menu-item href="{{route('teacher.chapters')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['teacher.chapters','teacher.store.chapters'])" label="فصل ها  "  />
                                     <x-teacher.menu-item href="{{route('teacher.episodes')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs(['teacher.episodes','teacher.store.episodes'])" label="درس ها  " />
                                 </x-teacher.menu-group>

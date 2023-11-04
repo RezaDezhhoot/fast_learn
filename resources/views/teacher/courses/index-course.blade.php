@@ -28,6 +28,7 @@
                             <th>درس ها</th>
                             <th>دسته </th>
                             <th>قیمت </th>
+                            <td>عملیات</td>
                         </tr>
                         </thead>
                         <tbody>
@@ -42,10 +43,13 @@
                                 <td>{{ $item->views }}</td>
                                 <td>{{ $item->episodes_count }}</td>
                                 <td>{{ $item->category->title ?? null }}</td>
-                                <td>{{ number_format($item->price) }} تومان </td>
+                                <td>{{ number_format($item->price) }} تومان
+                                <td>
+                                    <x-teacher.edit-btn href="{{ route('teacher.content',[ $item->id]) }}" />
+                                </td>
                             </tr>
                         @empty
-                            <td class="text-center" colspan="13">
+                            <td class="text-center" colspan="14">
                                 دیتایی جهت نمایش وجود ندارد
                             </td>
                         @endforelse

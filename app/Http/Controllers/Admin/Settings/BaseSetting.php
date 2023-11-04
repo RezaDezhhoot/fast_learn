@@ -39,7 +39,7 @@ class BaseSetting extends BaseComponent
 
     public $users_can_send_teacher_request = false;
 
-    public $organ_form;
+    public $organ_form , $forget;
 
     public function __construct($id = null)
     {
@@ -110,6 +110,7 @@ class BaseSetting extends BaseComponent
         $this->notify_should_be_queueable = $this->settingRepository->getRow('notify_should_be_queueable');
         $this->exam_should_be_queueable = $this->settingRepository->getRow('exam_should_be_queueable');
         $this->organ_form = $this->settingRepository->getRow('organ_form');
+        $this->forget = $this->settingRepository->getRow('forget');
 
         $this->data['forms'] = $this->formReposirtory->all()->pluck('name','id');
     }
@@ -172,7 +173,8 @@ class BaseSetting extends BaseComponent
                 'notify_should_be_queueable' => ['required','boolean'],
                 'exam_should_be_queueable' => ['required','boolean'],
 
-                'organ_form' => ['nullable','exists:forms,id']
+                'organ_form' => ['nullable','exists:forms,id'],
+                'forget' => ['boolean']
             ] , [] ,
             [
                 'name' => 'نام سایت',
@@ -221,7 +223,8 @@ class BaseSetting extends BaseComponent
                 'users_can_send_teacher_request' => 'کاربران می توانند مدرس شوند',
                 'notify_should_be_queueable' => 'زمان ارسال اعلان ها',
                 'exam_should_be_queueable' => 'زمان پردازش ازمون ها',
-                'organ_form' => 'فرم ثبت اموزشگاه'
+                'organ_form' => 'فرم ثبت اموزشگاه',
+                'forget' => 'امکان بازیابی رمز عبور'
             ]
         );
 
@@ -279,6 +282,7 @@ class BaseSetting extends BaseComponent
         $this->settingRepository::updateOrCreate(['name' => 'exam_should_be_queueable'], ['value' => $this->exam_should_be_queueable]);
 
         $this->settingRepository::updateOrCreate(['name' => 'organ_form'], ['value' => $this->organ_form]);
+        $this->settingRepository::updateOrCreate(['name' => 'forget'], ['value' => $this->forget]);
 
         $this->emitNotify('اطلاعات با موفقیت ثبت شد');
     }

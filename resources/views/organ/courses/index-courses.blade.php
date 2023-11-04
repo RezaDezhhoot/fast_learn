@@ -29,6 +29,7 @@
                                 <th>درس ها</th>
                                 <th>دسته </th>
                                 <th>قیمت </th>
+                                <td>عملیات</td>
                             </tr>
                             </thead>
                             <tbody>
@@ -45,6 +46,9 @@
                                     <td>{{ $item->episodes_count }}</td>
                                     <td>{{ $item->category->title ?? null }}</td>
                                     <td>{{ number_format($item->price) }} تومان </td>
+                                    <td>
+                                        <x-organ.edit-btn href="{{ route('organ.content',[ $item->id]) }}" />
+                                    </td>
                                 </tr>
                             @empty
                                 <td class="text-center" colspan="13">

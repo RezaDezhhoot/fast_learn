@@ -24,7 +24,7 @@ class Chapter extends Model
     use HasFactory , SoftDeletes , CascadeSoftDeletes , Sluggable , Searchable , LogsActivity;
 
     public $appends = [
-        'episode_count' , 'episode_title_list' , 'minutes'
+        'episode_count' , 'episode_title_list' , 'minutes' , 'has_transcript'
     ];
 
     protected $cascadeDeletes = ['comments' , 'transcripts'];
@@ -125,5 +125,12 @@ class Chapter extends Model
     public function transcripts(): HasMany
     {
         return $this->hasMany(ChapterTranscript::class);
+    }
+
+    public function hasTranscript(): Attribute
+    {
+        return Attribute::get(function (){
+            return $this->transcripts()->where('status',ChapterEnum::TRANSCRIPT_PENDING)->exists();
+        });
     }
 }

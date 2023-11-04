@@ -14,6 +14,7 @@ class BaseComponent extends Component
 {
     use AuthorizesRequests;
     public const UPDATE_MODE = 'edit' , CREATE_MODE = 'create' , MODE_LOGIN = 'login' , REGISTER_MODE = 'register';
+    public const FORGET_MODE = 'forget' , RESET_MODE = 'reset' , VERIFY_MODE = 'verify';
 
     protected ?Filesystem $disk;
 

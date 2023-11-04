@@ -38,7 +38,7 @@ class Auth extends BaseComponent
     public $recaptcha;
     public $forget_phone;
 
-    public $auth_type;
+    public $auth_type , $forget = false;
 
     public function __construct($id = null)
     {
@@ -70,6 +70,7 @@ class Auth extends BaseComponent
         JsonLd::setDescription($this->settingRepository->getRow('seoDescription'));
         JsonLd::addImage(asset($this->settingRepository->getRow('logo')));
         $this->auth_type = $this->settingRepository->getRow('auth_type') ?? 'none';
+        $this->forget = $this->settingRepository->getRow('forget') ?? false;
     }
 
     public function render()

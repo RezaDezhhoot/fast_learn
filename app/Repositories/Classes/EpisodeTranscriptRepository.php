@@ -101,7 +101,7 @@ class EpisodeTranscriptRepository implements EpisodeTranscriptRepositoryInterfac
         $episode->allow_show_local_video = $episodeTranscript->allow_show_local_video;
         $episode->time = $episodeTranscript->time;
         $episode->view = $episodeTranscript->view;
-        $episode->chapter_id  = $episodeTranscript->chapter_id;
+        $episode->chapter_id  = $episodeTranscript->chapter_id ?? $episodeTranscript->chapterTranscript->chapter_id;
         $episode->free  = $episodeTranscript->free;
         $episode->file_storage  = $episodeTranscript->file_storage;
         $episode->video_storage  = $episodeTranscript->video_storage;

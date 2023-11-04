@@ -215,7 +215,8 @@ class StoreCourse extends BaseComponent
         elseif ($this->mode == self::UPDATE_MODE)
             $this->courseRepository->syncTags($model,$this->tags);
 
-        return $this->emitNotify('اطلاعات با موفقیت ثبت شد');
+        $this->course = $model;
+        $this->emit('storeChapters',['course' => $model]);
     }
 
     public function deleteItem()

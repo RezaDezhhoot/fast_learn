@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\CommentEnum;
+use App\Enums\EpisodeEnum;
 use App\Enums\ReductionEnum;
 use App\Enums\StorageEnum;
 use App\Traits\Admin\Searchable;
@@ -49,7 +50,7 @@ class Episode extends Model
     ];
 
     protected $appends = [
-        'time_label'
+        'time_label' , 'has_transcript'
     ];
 
     public function getActivitylogOptions(): LogOptions
@@ -129,6 +130,15 @@ class Episode extends Model
     public function transcripts(): HasMany
     {
         return $this->hasMany(EpisodeTranscript::class);
+    }
+
+    public function hasTranscript(): Attribute
+    {
+        return Attribute::get(
+            function () {
+                return $this->transcripts()->where('status',EpisodeEnum::PENDING_STATUS)->exists();
+            }
+        );
     }
 
     public function likes(): HasMany
