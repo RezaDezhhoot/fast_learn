@@ -20,6 +20,7 @@
                <x-admin.forms.text-area label="google recaptcha secret key*" id="secret_key" wire:model.defer="secret_key" />
 
                <x-admin.forms.checkbox value="1" id="users_can_send_teacher_request" name="users_can_send_teacher_request" label="کاربران می توانند مدرس شوند" wire:model.defer="users_can_send_teacher_request" />
+               <x-admin.forms.checkbox value="1"  id="forget" name="forget" label="امکان بازیابی رمز عبور" wire:model.defer="forget" />
 
            </div>
             <x-admin.form-section  label="فضا های ذخیره سازی ">

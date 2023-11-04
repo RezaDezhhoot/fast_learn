@@ -27,7 +27,11 @@ class StoreEpisodeTranscript extends BaseComponent
         $this->data['storage'] = getAvailableStorages();
         if ($this->mode == self::UPDATE_MODE) {
             $this->episode = $this->episodeTranscriptRepository->findOrFail($id);
-            $this->header = @$this->episode->chapter->course->title.' - '.@$this->episode->chapter->title. ' - ' .@$this->episode->title;
+            $this->header = ($this->episode->chapter->course->title ?? $this->episode->chapterTranscript->course->title ?? '')
+                .' - '
+                .($this->episode->chapter->title ?? $this->episode->chapterTranscript->chapter->title ?? $this->episode->chapterTranscript->title ?? '').
+                ' - '
+                .@$this->episode->title;
             $this->status =  $this->episode->status;
             $this->message =  $this->episode->message;
             $this->is_confirmed =  $this->episode->is_confirmed;
@@ -45,33 +49,37 @@ class StoreEpisodeTranscript extends BaseComponent
 
     private function saveInDataBase($model)
     {
-        $this->validate([
-            'status' => ['required','in:'.implode(',',array_keys(EpisodeEnum::getStatus()))],
-            'message' => ['required','string','max:100000'],
-            'free' => ['boolean'],
-            'homework_storage' => [Rule::requiredIf(fn() => $this->episode->can_homework) ,'in:'.implode(',',array_keys(getAvailableStorages())).','.null],
-        ],[],[
-            'status' => 'وضعیت',
-            'message' => 'نتیجه نهایی',
-            'free' => 'رایگان',
-            'homework_storage' => 'فضای ذخیره سازی تمرین',
-        ]);
-        $model->status = $this->status;
-        $model->message = $this->message;
-        $message = 'اطلاعات با موفقیت ذخیره شد';
-        $model->free = $this->free;
-        $model->homework_storage = $this->homework_storage;
-        if ($model->isDirty('status') && $this->status == EpisodeEnum::CONFIRMED_STATUS && ! $this->is_confirmed) {
-            $episode = !is_null($this->episode->episode) ? $this->episode->episode : $this->episodeRepository->newEpisodeObject();
-            $this->episodeRepository->save(
-                $this->episodeTranscriptRepository->confirmThisTranscript($model , $episode)
-            );
-            $model->is_confirmed = true;
-            $this->is_confirmed = true;
-            $message = 'رونوشت با موفقیت اعمال شد';
+        if ( ($model->chapterTranscript && $model->chapterTranscript->chapter) || $model->chapter) {
+            $this->validate([
+                'status' => ['required','in:'.implode(',',array_keys(EpisodeEnum::getStatus()))],
+                'message' => ['required','string','max:100000'],
+                'free' => ['boolean'],
+                'homework_storage' => [Rule::requiredIf(fn() => $this->episode->can_homework) ,'in:'.implode(',',array_keys(getAvailableStorages())).','.null],
+            ],[],[
+                'status' => 'وضعیت',
+                'message' => 'نتیجه نهایی',
+                'free' => 'رایگان',
+                'homework_storage' => 'فضای ذخیره سازی تمرین',
+            ]);
+            $model->status = $this->status;
+            $model->message = $this->message;
+            $message = 'اطلاعات با موفقیت ذخیره شد';
+            $model->free = $this->free;
+            $model->homework_storage = $this->homework_storage;
+            if ($model->isDirty('status') && $this->status == EpisodeEnum::CONFIRMED_STATUS && ! $this->is_confirmed) {
+                $episode = !is_null($this->episode->episode) ? $this->episode->episode : $this->episodeRepository->newEpisodeObject();
+                $this->episodeRepository->save(
+                    $this->episodeTranscriptRepository->confirmThisTranscript($model , $episode)
+                );
+                $model->is_confirmed = true;
+                $this->is_confirmed = true;
+                $message = 'رونوشت با موفقیت اعمال شد';
+            }
+            $this->episodeTranscriptRepository->save($model);
+            $this->emitNotify($message);
+        } else {
+            $this->emitNotify('برای این درس فصلی هنوز فصلی ثبت نشده است ، ابتدا فصل را ثبت نمایید','warning');
         }
-        $this->episodeTranscriptRepository->save($model);
-        $this->emitNotify($message);
     }
 
     public function deleteItem()

@@ -58,10 +58,11 @@ class StoreChapterTranscript extends BaseComponent
         $model->message = $this->message;
         $message = 'اطلاعات با موفقیت ذخیره شد';
         if ($model->isDirty('status') && $this->status == ChapterEnum::TRANSCRIPT_ACCEPTED && ! $this->is_confirmed) {
-            $this->chapterRepository->save(
+            $chapter = $this->chapterRepository->save(
                 $this->chapterTranscriptRepository->confirmThisTranscript($model,$this->main_status , $this->main_chapter)
             );
             $model->is_confirmed = true;
+            $model->chapter_id = $chapter->id;
             $this->is_confirmed = true;
             $message = 'رونوشت با موفقیت اعمال شد';
         }

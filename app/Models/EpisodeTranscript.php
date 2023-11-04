@@ -89,4 +89,9 @@ class EpisodeTranscript extends Model
             get: fn () => in_array($this->video_storage , array_flip(getAvailableStorages()) ) ?  getAvailableStorages()[$this->video_storage] : ''
         );
     }
+
+    public function chapterTranscript(): BelongsTo
+    {
+        return $this->belongsTo(ChapterTranscript::class);
+    }
 }

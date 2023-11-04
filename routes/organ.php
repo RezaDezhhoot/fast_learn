@@ -8,6 +8,7 @@ Route::prefix('organs')->name('organ.')->middleware(['auth','organ'])->group(fun
 
     Route::get('/courses', App\Http\Controllers\Organ\Courses\IndexCourses::class)->name('courses');
     Route::get('/courses/new/{action}/{id}', App\Http\Controllers\Organ\Courses\StoreCourses::class)->name('new.courses');
+    Route::get('/content/{id}', App\Http\Controllers\Organ\Courses\EditContent::class)->name('content');
 
     Route::get('/chapters',App\Http\Controllers\Organ\Chapters\IndexChapter::class)->name('chapters');
     Route::get('/chapters/{action?}/{id?}',App\Http\Controllers\Organ\Chapters\StoreChapter::class)->name('store.chapters');

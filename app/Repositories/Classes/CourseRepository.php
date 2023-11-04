@@ -90,7 +90,7 @@ class CourseRepository implements CourseRepositoryInterface
 
     public function find($id): Model|Collection|Builder|array|null
     {
-        return Course::with('episodes')->findOrFail($id);
+        return Course::with(['episodes','chapters','chapters.episodes'])->findOrFail($id);
     }
 
     public function attachTags(Course $course, array $tags)

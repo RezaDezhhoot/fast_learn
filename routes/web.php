@@ -43,7 +43,10 @@ Route::middleware(['auth'])->group(function (){
     Route::get('/verify/{gateway?}',App\Http\Controllers\Site\Carts\Verify::class)->name('verify');
 });
 
-Route::middleware('guest')->get('auth',App\Http\Controllers\Site\Auth\Auth::class)->name('auth');
+Route::middleware('guest')->group(function (){
+    Route::get('auth',App\Http\Controllers\Site\Auth\Auth::class)->name('auth');
+    Route::get('forget',\App\Http\Controllers\Site\Auth\Forget::class)->name('forget');
+});
 
 Route::get('/logout', function (){
     Auth::logout();

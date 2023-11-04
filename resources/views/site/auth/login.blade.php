@@ -28,7 +28,14 @@
                             </div>
                             <!-- end input-box -->
                             <div class="input-box">
-                                <label class="label-text">{{ $passwordLabel }}</label>
+                                <label class="label-text">
+                                    {{ $passwordLabel }}
+                                    @if($forget)
+                                        <small>
+                                            <a class="text-info" href="{{ route('forget') }}">(رمز عبور خود را فراموش کردید؟)</a>
+                                        </small>
+                                    @endif
+                                </label>
                                 <div class="input-group">
                                     <span class="la la-lock input-icon"></span>
                                     <input class="form-control form--control password-field" wire:model.defer="password"  type="password"    placeholder="{{ !$sent ? 'رمز عبور' : 'کد تایید' }} خود را وارد کنید" />
@@ -64,13 +71,13 @@
                             <div class="btn-box">
                                 @if($auth_type != \App\Enums\NotificationEnum::NONE_METHOD)
                                     @if(!$sent)
-                                        <p wire:click="sendVerificationCode" class=" mt-2 cursor-pointers font-12 vazir">ارسال رمز یکبار مصرف</p>
+                                        <small wire:click="sendVerificationCode" class=" mt-2 d-block cursor-pointers font-12 vazir">ارسال رمز یکبار مصرف</small>
                                     @else
                                         <div>
-                                            <p class="px-1 text-info mt-2 font-12 vazir" wire:ignore>
+                                            <small class="px-1 text-info mt-2 font-12 vazir" wire:ignore>
                                                 زمان باقی مانده تا ارسال مجدد:
                                                 <span id="clock"></span>
-                                            </p>
+                                            </small>
                                         </div>
                                     @endif
                                 @endif

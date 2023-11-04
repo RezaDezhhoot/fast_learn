@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('teacher')->name('teacher.')->middleware(['auth','role:teacher','teacher'])->group(function(){
     Route::get('/dashboard', App\Http\Controllers\Teacher\Dashboards\Dashboard::class)->name('dashboard');
     Route::get('/courses', App\Http\Controllers\Teacher\Courses\IndexCourse::class)->name('courses');
+    Route::get('/content/{id}', App\Http\Controllers\Teacher\Courses\EditContent::class)->name('content');
     Route::get('/courses/new/{action?}/{id?}', App\Http\Controllers\Teacher\Courses\StoreCourse::class)->name('new.courses');
     Route::get('/episodes', App\Http\Controllers\Teacher\Episodes\IndexEpisode::class)->name('episodes');
     Route::get('/episodes/{action}/{id?}', App\Http\Controllers\Teacher\Episodes\StoreEpisode::class)->name('store.episodes');

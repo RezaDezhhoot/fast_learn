@@ -52,6 +52,7 @@
                     <x-admin.forms.dropdown with="3" id="time_line" :data="$data['time_line']" label="تایم لاین" wire:model.defer="time_line"/>
                     <x-admin.forms.full-text-editor id="short_body" label="توضیحات کوتاه*" wire:model.defer="short_body"/>
                     <x-admin.forms.full-text-editor id="long_body" label="توضیحات کامل*" wire:model.defer="long_body"/>
+
                     <div class="p-4">
                         <x-admin.form-section label="تگ ها">
                             <div class="row">
@@ -64,6 +65,9 @@
                         </x-admin.form-section>
                     </div>
                 </div>
+                <hr>
+
+                <livewire:admin.courses.content :course="$course" />
             </div>
         </div>
     </div>

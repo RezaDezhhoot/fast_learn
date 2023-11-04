@@ -15,6 +15,7 @@
                             <th>عنوان درس</th>
                             <th>عنوان فصل</th>
                             <th>عنوان دوره</th>
+                            <th>مدرس</th>
                             <th>لینک</th>
                             <th>فایل</th>
                             <th>ویدئو</th>
@@ -24,8 +25,17 @@
                         <tbody>
                         <tr>
                             <td>{{ $episode->title }}</td>
-                            <td>{{ $episode->chapter->title ?? '' }}</td>
-                            <td>{{ $episode->chapter->course->title ?? '' }}</td>
+                            <td>
+                                {{ $episode->chapter->title ?? $episode->chapterTranscript->chapter->title ?? $episode->chapterTranscript->title.' (تایید نشده!) ' ?? '' }}
+                                @if((! $episode->chapter && ! isset($episode->chapterTranscript->chapter)) && $episode->chapterTranscript)
+                                    <br>
+                                    <a target="_blank" href="{{ route('admin.store.chapterTranscript',['edit',$episode->chapterTranscript->id]) }}">هم اکنون تایید نمایید</a>
+                                @endif
+                            </td>
+                            <td>{{ $episode->chapter->course->title ?? $episode->chapterTranscript->course->title ?? '' }}</td>
+                            <td>
+                                {{$episode->chapter->course->teacher->user->name ?? $episode->chapterTranscript->course->teacher->user->name ?? ''}}
+                            </td>
                             <td>
                                 @if(!empty($episode->link))
                                     <a target="_blank" href="{{$episode->link}}">مشاهده</a>
