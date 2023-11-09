@@ -16,8 +16,8 @@
                 <button wire:click="saveChapter('new')" class="btn btn-sm btn-success">دخیره <i class="fa fa-save"></i></button>
             </fieldset>
             <div class="panel-body">
-                <table class="table table-bordered table-striped">
-                    <thead>
+                <table class="table table-bordered ">
+                    <thead class="thead-dark">
                     <tr>
                         <th>#</th>
                         <th>شماره شناسه</th>
@@ -35,7 +35,7 @@
                             <td>{{ $item['title'] }}</td>
                             <td>{{ $course->title ?? '-' }}</td>
                             <td>
-                                @if( !isset($item['has_transcript']) || ! $item['has_transcript'])
+                                @if(( !isset($item['has_transcript']) || ! $item['has_transcript']) || ! $transcript_view)
                                     <button wire:click="openChapter('{{$key}}')" class="btn btn-default btn-xs"><span class="text-primary flaticon2-settings"></span>
                                     </button>
                                 @else
@@ -90,7 +90,7 @@
                                         <button wire:click="saveEpisode('new','{{$key}}')" class="btn btn-sm btn-success">دخیره <i class="fa fa-save"></i></button>
                                     </fieldset>
                                     <table class="table table-bordered">
-                                        <thead>
+                                        <thead class="thead-dark">
                                         <tr class="info">
                                             <th>عنوان درس</th>
                                             <th>امکان ارسال تمرین</th>
@@ -105,7 +105,7 @@
                                                 <td>{{$episode['title']}}</td>
                                                 <td>{{$episode['can_homework'] ? 'بله' : 'خیر'}}</td>
                                                 <td>
-                                                    @if(! isset($episode['has_transcript']) || ! $episode['has_transcript'])
+                                                    @if(! isset($episode['has_transcript']) || ! $episode['has_transcript'] ||  ! $transcript_view)
                                                         <button wire:click="openEpisode('{{$key}}','{{$key2}}')" class="btn btn-default btn-xs"><span class="text-primary flaticon2-settings"></span>
                                                         </button>
                                                     @else
