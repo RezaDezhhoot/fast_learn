@@ -28,7 +28,7 @@
                                     </div>
                                 @endforeach
                                 <div class="custom-control custom-checkbox mb-1 fs-15">
-                                    <input type="radio" class="custom-control-input" wire:model="property"
+                                    <input type="radio" name="property" class="custom-control-input" wire:model="property"
                                            value="" id="all_property"  required="" />
                                     <label class="custom-control-label custom--control-label text-black"
                                            for="all_property"> همه </label>
@@ -41,14 +41,14 @@
                                 <h3 class="fs-18 font-weight-semi-bold pb-3">فیلتر بر اساس هزینه</h3>
                                 @foreach($types as $key => $item)
                                     <div class="custom-control custom-checkbox mb-1 fs-15">
-                                        <input type="radio" class="custom-control-input" wire:model="type"
+                                        <input type="radio" name="type" class="custom-control-input" wire:model="type"
                                                value="{{$key}}" id="type{{$key}}"  required="" />
                                             <label class="custom-control-label custom--control-label text-black" for="type{{$key}}">
                                                 {{$item}} </label>
                                     </div>
                                 @endforeach
                                 <div class="custom-control custom-checkbox mb-1 fs-15">
-                                    <input type="radio" class="custom-control-input" wire:model="type"
+                                    <input type="radio" name="type" class="custom-control-input" wire:model="type"
                                            value="" id="all_types"  required="" />
                                     <label class="custom-control-label custom--control-label text-black"
                                            for="all_types"> همه </label>

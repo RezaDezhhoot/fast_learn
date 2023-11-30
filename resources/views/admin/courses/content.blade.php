@@ -42,10 +42,10 @@
                                     <span class="text-info">در حال بررسی ...</span>
                                 @endif
 
-                                @if(! $transcript_view)
-                                <button onclick="deleteChapter('{{$key}}')" class="btn btn-default btn-xs"><span class="text-danger flaticon2-trash"></span>
-                                </button>
-                                    @endif
+                                @if(! $transcript_view || ! isset($item['id']))
+                                    <button onclick="deleteChapter('{{$key}}')" class="btn btn-default btn-xs"><span class="text-danger flaticon2-trash"></span>
+                                    </button>
+                                @endif
                             </td>
                         </tr>
                         <tr>
@@ -62,7 +62,7 @@
                                             <x-admin.forms.input with="2" type="text" id="new_time{{$key}}" label="زمان *" wire:model.defer="time" />
                                             <x-admin.forms.input with="2" type="number" id="new_view{{$key}}" label="نمایش *" wire:model.defer="view" />
                                             <x-admin.forms.dropdown with="2"  id="new_homework_storage{{$key}}" :data="$data['storage']" label="  فضای ذخیره سازی تمرین"
-                                                                     wire:model.defer="homework_storage" />
+                                                                    wire:model.defer="homework_storage" />
                                             <x-admin.forms.dropdown with="2" id="new_file_storage{{$key}}" :data="$data['storage']"
                                                                     label="  فضای ذخیره سازی فایل" wire:model.defer="file_storage" />
                                             <x-admin.forms.dropdown with="4" id="new_video_storage{{$key}}" :data="$data['storage']"
@@ -100,28 +100,28 @@
 
                                         <tbody>
                                         @isset($item['episodes'])
-                                        @forelse($item['episodes'] as $key2 => $episode)
-                                            <tr>
-                                                <td>{{$episode['title']}}</td>
-                                                <td>{{$episode['can_homework'] ? 'بله' : 'خیر'}}</td>
-                                                <td>
-                                                    @if(! isset($episode['has_transcript']) || ! $episode['has_transcript'] ||  ! $transcript_view)
-                                                        <button wire:click="openEpisode('{{$key}}','{{$key2}}')" class="btn btn-default btn-xs"><span class="text-primary flaticon2-settings"></span>
-                                                        </button>
-                                                    @else
-                                                        <span class="text-info">در حال برسی ...</span>
-                                                    @endif
-                                                    @if(! $transcript_view)
-                                                        <button onclick="deleteEpisode('{{$key}}','{{$key2}}')" class="btn btn-default btn-xs"><span class="text-danger flaticon2-trash"></span>
-                                                        </button>
+                                            @forelse($item['episodes'] as $key2 => $episode)
+                                                <tr>
+                                                    <td>{{$episode['title']}}</td>
+                                                    <td>{{$episode['can_homework'] ? 'بله' : 'خیر'}}</td>
+                                                    <td>
+                                                        @if(! isset($episode['has_transcript']) || ! $episode['has_transcript'] ||  ! $transcript_view)
+                                                            <button wire:click="openEpisode('{{$key}}','{{$key2}}')" class="btn btn-default btn-xs"><span class="text-primary flaticon2-settings"></span>
+                                                            </button>
+                                                        @else
+                                                            <span class="text-info">در حال برسی ...</span>
                                                         @endif
+                                                        @if(! $transcript_view || ! isset($episode['id']))
+                                                            <button onclick="deleteEpisode('{{$key}}','{{$key2}}')" class="btn btn-default btn-xs"><span class="text-danger flaticon2-trash"></span>
+                                                            </button>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            @empty
+                                                <td class="text-center" colspan="11">
+                                                    دیتایی جهت نمایش وجود ندارد
                                                 </td>
-                                            </tr>
-                                        @empty
-                                            <td class="text-center" colspan="11">
-                                                دیتایی جهت نمایش وجود ندارد
-                                            </td>
-                                        @endforelse
+                                            @endforelse
                                         @endif
                                         </tbody>
                                     </table>
@@ -159,7 +159,7 @@
             <x-admin.forms.input with="3" type="text" id="time" label="زمان *" wire:model.defer="time" />
             <x-admin.forms.input with="3" type="number" id="view" label="نمایش *" wire:model.defer="view" />
             <x-admin.forms.dropdown  id="homework_storage" :data="$data['storage']" label="  فضای ذخیره سازی تمرین"
-                                    wire:model.defer="homework_storage" />
+                                     wire:model.defer="homework_storage" />
             <x-admin.forms.checkbox with="4" value="1" id="free" label="رایگان " wire:model.defer="free" />
             <x-admin.forms.checkbox with="4" value="1" id="can_homework" label="امکان بارگذاری تمرین "
                                     wire:model.defer="can_homework" />

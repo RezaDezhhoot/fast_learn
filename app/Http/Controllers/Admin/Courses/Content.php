@@ -62,7 +62,7 @@ class Content extends BaseComponent
 
     public function deleteChapter($key)
     {
-        if (isset($this->chapters[$key]) && ! $this->transcript) {
+        if (isset($this->chapters[$key]) && (! $this->transcript || !isset($this->chapters[$key]['id'])) ) {
             if (isset($this->chapters[$key]['id']) && $id = $this->chapters[$key]['id']) {
                 Chapter::destroy($id);
             }
@@ -151,40 +151,40 @@ class Content extends BaseComponent
         $this->video_storage = $this->emptyToNull($this->video_storage);
         $this->validate(
             [
-            'title' => ['required','string','max:255'],
-            'description' => ['required','string','max:1000000'],
-            'file' => ['nullable','string','max:10000'],
-            'local_video' => ['nullable','max:255'],
-            'api_bucket' => ['nullable','max:35000'],
-            'time' => ['required','date_format:H:i:s','max:255'],
-            'allow_show_local_video' => ['required','boolean'],
-            'view' => ['required','integer'],
-            'file_storage' => [Rule::requiredIf(fn() => !empty($this->file)) ,'in:'.implode(',',array_keys(getAvailableStorages())).','.null],
-            'video_storage' => [Rule::requiredIf(fn() => !empty($this->local_video)) ,'in:'.implode(',',array_keys(getAvailableStorages())).','.null],
-            'homework_storage' => [Rule::requiredIf(fn() => $this->can_homework ==true) ,'in:'.implode(',',array_keys(getAvailableStorages())).','.null],
-            'free' => ['boolean'],
-            'can_homework' => ['boolean'],
-            'downloadable_local_video' => [Rule::requiredIf(fn() => !empty($this->downloadable_local_video)) ,'boolean'],
-            'show_api_video' => [Rule::requiredIf(fn() => !empty($this->api_bucket)) ,'boolean'],
-        ], [],
+                'title' => ['required','string','max:255'],
+                'description' => ['required','string','max:1000000'],
+                'file' => ['nullable','string','max:10000'],
+                'local_video' => ['nullable','max:255'],
+                'api_bucket' => ['nullable','max:35000'],
+                'time' => ['required','date_format:H:i:s','max:255'],
+                'allow_show_local_video' => ['required','boolean'],
+                'view' => ['required','integer'],
+                'file_storage' => [Rule::requiredIf(fn() => !empty($this->file)) ,'in:'.implode(',',array_keys(getAvailableStorages())).','.null],
+                'video_storage' => [Rule::requiredIf(fn() => !empty($this->local_video)) ,'in:'.implode(',',array_keys(getAvailableStorages())).','.null],
+                'homework_storage' => [Rule::requiredIf(fn() => $this->can_homework ==true) ,'in:'.implode(',',array_keys(getAvailableStorages())).','.null],
+                'free' => ['boolean'],
+                'can_homework' => ['boolean'],
+                'downloadable_local_video' => [Rule::requiredIf(fn() => !empty($this->downloadable_local_video)) ,'boolean'],
+                'show_api_video' => [Rule::requiredIf(fn() => !empty($this->api_bucket)) ,'boolean'],
+            ], [],
             [
-            'title' => ' عنوان درس',
-            'description' => 'توضیحات',
-            'file' => 'فایل درس',
-            'link' => 'لینک درس',
-            'local_video' => 'ویدئو درس',
-            'api_bucket' => 'api',
-            'time' => 'زمان درس',
-            'file_storage' => 'فضای ذخیره سازی فایل',
-            'video_storage' => 'فضای ذخیره سازی ویدئو',
-            'homework_storage' => 'فضای ذخیره سازی تمرین',
-            'view' => 'نمایش درس',
-            'allow_show_local_video' => 'اجازه برای نمایش ویدئو',
-            'free' => 'رایگان',
-            'can_homework' => 'فیلد تمرین',
-            'downloadable_local_video' => 'امکان دانلود ویدئو',
-            'show_api_video' => 'نمایش ویدئو ',
-        ]
+                'title' => ' عنوان درس',
+                'description' => 'توضیحات',
+                'file' => 'فایل درس',
+                'link' => 'لینک درس',
+                'local_video' => 'ویدئو درس',
+                'api_bucket' => 'api',
+                'time' => 'زمان درس',
+                'file_storage' => 'فضای ذخیره سازی فایل',
+                'video_storage' => 'فضای ذخیره سازی ویدئو',
+                'homework_storage' => 'فضای ذخیره سازی تمرین',
+                'view' => 'نمایش درس',
+                'allow_show_local_video' => 'اجازه برای نمایش ویدئو',
+                'free' => 'رایگان',
+                'can_homework' => 'فیلد تمرین',
+                'downloadable_local_video' => 'امکان دانلود ویدئو',
+                'show_api_video' => 'نمایش ویدئو ',
+            ]
         );
 
         if ($action == 'new') {
@@ -237,8 +237,8 @@ class Content extends BaseComponent
         if (
             isset($this->chapters[$key]) &&
             isset($this->chapters[$key]['episodes']) &&
-            isset($this->chapters[$key]['episodes'][$key]) &&
-            ! $this->transcript
+            isset($this->chapters[$key]['episodes'][$key2]) &&
+            (! $this->transcript || !isset($this->chapters[$key]['episodes'][$key2]['id']))
         ) {
             if (isset($this->chapters[$key]['episodes'][$key2]['id']) && $id = $this->chapters[$key]['episodes'][$key2]['id']) {
                 Episode::destroy($id);
