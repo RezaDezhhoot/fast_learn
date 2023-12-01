@@ -6,11 +6,10 @@
                 <legend>
                     فصل جدید
                 </legend>
-                <x-admin.forms.validation-errors />
                 <div class="row">
-                    <x-admin.forms.input with="4" type="text" id="new_title" label="عنوان *" wire:model.defer="title" />
-                    <x-admin.forms.dropdown with="4" id="new_status" :data="$data['status']" label="وضعیت*" wire:model.defer="status"/>
-                    <x-admin.forms.input with="4" type="number" id="new_view" label="نمایش *" wire:model.defer="view" />
+                    <x-admin.forms.input with="4" type="text" id="new_title" label="عنوان *" wire:model.defer="item_title" />
+                    <x-admin.forms.dropdown with="4" id="new_status" :data="$data['status']" label="وضعیت*" wire:model.defer="item_status"/>
+                    <x-admin.forms.input with="4" type="number" id="new_view" label="نمایش *" wire:model.defer="item_view" />
                     <x-admin.forms.text-area label="توضیحات" wire:model.defer="description" id="new_description" />
                 </div>
                 <button wire:click="saveChapter('new')" class="btn btn-sm btn-success">دخیره <i class="fa fa-save"></i></button>
@@ -35,17 +34,11 @@
                             <td>{{ $item['title'] }}</td>
                             <td>{{ $course->title ?? '-' }}</td>
                             <td>
-                                @if(( !isset($item['has_transcript']) || ! $item['has_transcript']) || ! $transcript_view)
-                                    <button wire:click="openChapter('{{$key}}')" class="btn btn-default btn-xs"><span class="text-primary flaticon2-settings"></span>
-                                    </button>
-                                @else
-                                    <span class="text-info">در حال بررسی ...</span>
-                                @endif
+                                <button wire:click="openChapter('{{$key}}')" class="btn btn-default btn-xs"><span class="text-primary flaticon2-settings"></span>
+                                </button>
 
-                                @if(! $transcript_view || ! isset($item['id']))
-                                    <button onclick="deleteChapter('{{$key}}')" class="btn btn-default btn-xs"><span class="text-danger flaticon2-trash"></span>
-                                    </button>
-                                @endif
+                                <button onclick="deleteChapter('{{$key}}')" class="btn btn-default btn-xs"><span class="text-danger flaticon2-trash"></span>
+                                </button>
                             </td>
                         </tr>
                         <tr>
@@ -72,8 +65,8 @@
                                             <button wire:click="$set('has_bucket','true')" class="btn btn-sm btn-primary">کد اشتراک گذاری  <i class="fa fa-file-archive"></i></button>
                                         @endif
                                         <div class="row mt-4">
-                                            <x-admin.forms.input with="6" type="text" id="new_title{{$key}}" label="عنوان *" wire:model.defer="title" />
-                                            <x-admin.forms.input with="6" type="number" id="new_view{{$key}}" label="ترتیب نمایش *" wire:model.defer="view" />
+                                            <x-admin.forms.input with="6" type="text" id="new_title{{$key}}" label="عنوان *" wire:model.defer="item_title" />
+                                            <x-admin.forms.input with="6" type="number" id="new_view{{$key}}" label="ترتیب نمایش *" wire:model.defer="item_view" />
 
                                             <x-admin.forms.dropdown hidden="{{ ! $has_file }}" with="6" id="new_file_storage{{$key}}" :data="$data['storage']"
                                                                     label="  فضای ذخیره سازی فایل" wire:model.defer="file_storage" />
@@ -103,7 +96,7 @@
                                             <x-admin.forms.dropdown hidden="{{ ! $has_homework }}" with="19"  id="new_homework_storage{{$key}}" :data="$data['storage']" label="  فضای ذخیره سازی تمرین"
                                                                     wire:model.defer="homework_storage" />
 
-                                            <x-admin.forms.checkbox with="12" value="1" id="new_free{{$key}}" label="رایگان " wire:model.defer="free" />
+                                            <x-admin.forms.checkbox with="2" value="1" id="new_free{{$key}}" label="رایگان " wire:model.defer="free" />
                                             <x-admin.forms.full-text-editor id="new_description{{$key}}" label="توضیحات*" wire:model.defer="description"/>
 
                                         </div>
@@ -125,16 +118,10 @@
                                                     <td>{{$episode['title']}}</td>
                                                     <td>{{$episode['can_homework'] ? 'بله' : 'خیر'}}</td>
                                                     <td>
-                                                        @if(! isset($episode['has_transcript']) || ! $episode['has_transcript'] ||  ! $transcript_view)
-                                                            <button wire:click="openEpisode('{{$key}}','{{$key2}}')" class="btn btn-default btn-xs"><span class="text-primary flaticon2-settings"></span>
-                                                            </button>
-                                                        @else
-                                                            <span class="text-info">در حال برسی ...</span>
-                                                        @endif
-                                                        @if(! $transcript_view || ! isset($episode['id']))
-                                                            <button onclick="deleteEpisode('{{$key}}','{{$key2}}')" class="btn btn-default btn-xs"><span class="text-danger flaticon2-trash"></span>
-                                                            </button>
-                                                        @endif
+                                                        <button wire:click="openEpisode('{{$key}}','{{$key2}}')" class="btn btn-default btn-xs"><span class="text-primary flaticon2-settings"></span>
+                                                        </button>
+                                                        <button onclick="deleteEpisode('{{$key}}','{{$key2}}')" class="btn btn-default btn-xs"><span class="text-danger flaticon2-trash"></span>
+                                                        </button>
                                                     </td>
                                                 </tr>
                                             @empty
@@ -164,9 +151,9 @@
     <x-admin.modal-page id="chapter" title="{{$title}}" wire:click="saveChapter('{{$chapter_key}}')">
         <x-admin.forms.validation-errors />
         <div class="row">
-            <x-admin.forms.input with="4" type="text" id="title" label="عنوان *" wire:model.defer="title" />
-            <x-admin.forms.dropdown with="4" id="status" :data="$data['status']" label="وضعیت*" wire:model.defer="status"/>
-            <x-admin.forms.input with="4" type="number" id="view" label="نمایش *" wire:model.defer="view" />
+            <x-admin.forms.input with="4" type="text" id="title" label="عنوان *" wire:model.defer="item_title" />
+            <x-admin.forms.dropdown with="4" id="status" :data="$data['status']" label="وضعیت*" wire:model.defer="item_status"/>
+            <x-admin.forms.input with="4" type="number" id="view" label="نمایش *" wire:model.defer="item_view" />
             <x-admin.forms.text-area label="توضیحات" wire:model.defer="description" id="description" />
         </div>
     </x-admin.modal-page>
@@ -174,10 +161,10 @@
     <x-admin.modal-page id="episode" title="{{$title}}" wire:click="saveEpisode('{{$epiosde_key}}')">
         <x-admin.forms.validation-errors />
         <div class="row">
-            <x-admin.forms.input with="3" type="text" id="title" label="عنوان *" wire:model.defer="title" />
+            <x-admin.forms.input with="3" type="text" id="title" label="عنوان *" wire:model.defer="item_title" />
             <x-admin.forms.input with="3" type="url" id="link" label="لینک" wire:model.defer="link" />
             <x-admin.forms.input with="3" type="text" id="time" label="زمان *" wire:model.defer="time" />
-            <x-admin.forms.input with="3" type="number" id="view" label="نمایش *" wire:model.defer="view" />
+            <x-admin.forms.input with="3" type="number" id="view" label="نمایش *" wire:model.defer="item_view" />
             <x-admin.forms.dropdown  id="homework_storage" :data="$data['storage']" label="  فضای ذخیره سازی تمرین"
                                      wire:model.defer="homework_storage" />
             <x-admin.forms.checkbox with="4" value="1" id="free" label="رایگان " wire:model.defer="free" />

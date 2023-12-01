@@ -1,5 +1,5 @@
-@props(['id', 'label'])
-<div>
+@props(['id', 'label', 'hidden' => false])
+<div {{ $hidden ? 'hidden' : '' }}>
     <div class="form-group">
         <div wire:ignore>
             @if(!empty($label))

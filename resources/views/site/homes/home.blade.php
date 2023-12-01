@@ -1,4 +1,4 @@
-<div wire:init="loadOthers">
+<div >
     <livewire:site.includes.site.slider />
 
     @if (sizeof($box) > 0)

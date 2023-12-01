@@ -7,31 +7,42 @@
         </div>
         <x-admin.forms.validation-errors/>
     </div>
+    <x-admin.nav-tabs-list>
+        <x-admin.nav-tabs-item active="{{$tab =='course'}}" title="دوره آموزشی" key="tab" value="course" icon="" />
+        <x-admin.nav-tabs-item active="{{$tab=='details'}}" title="فصل و دروس" key="tab" value="details" icon="" />
+    </x-admin.nav-tabs-list>
     <div class="row ">
-        <div class="col-md-8 col-12">
+        <div class="col-12 {{ $tab == 'details' ? 'd-block' : 'd-none' }}">
             <div class="card card-custom gutter-b example example-compact ">
-               <div class="row p-4">
-                   <x-admin.forms.input with="6" disabled type="text" id="slug" label="نام مستعار*" wire:model.defer="slug"/>
-                   <x-admin.forms.input with="6" type="text" id="title" label="عنوان*" wire:model.defer="title"/>
-                   <x-admin.forms.input type="text" id="sub_title" label="عنوان فرعی*" wire:model.defer="sub_title"/>
-                   <x-admin.forms.dropdown with="6" id="type" :data="$data['type']" label="نوع دوره*" wire:model.defer="type"/>
-                   <x-admin.forms.dropdown with="6" id="status" :data="$data['status']" label="وضعیت*" wire:model.defer="status"/>
-
-                   <x-admin.forms.input with="4" type="number" id="const_price" label="قیمت ثابت" wire:model.defer="const_price"/>
-                   <x-admin.forms.input with="4" type="number" min="0" id="reduction_value" label="مقدار تخفیف*" wire:model.defer="reduction_value"/>
-                   <x-admin.forms.dropdown with="4" id="reduction_type" :data="$data['reduction']" label="نوع تخفیف" wire:model.defer="reduction_type"/>
-                   <x-admin.forms.jdate-picker with="6" id="start_at" label="شروع تخفیف" wire:model.defer="start_at"/>
-                   <x-admin.forms.jdate-picker with="6" id="expire_at" label="پایان تخفیف" wire:model.defer="expire_at"/>
-
-                   <x-admin.forms.lfm-standalone with="6" id="image" label="تصویر*" :file="$image" type="image" required="true" wire:model="image"/>
-                   <x-admin.forms.lfm-standalone with="6" id="time_lapse" label="تایم لپس دوره" :file="$time_lapse" type="image" required="true" wire:model="time_lapse"/>
-
-                   <x-admin.forms.text-area label="کلمات کلیدی*" help="کلمات را با کاما از هم جدا کنید" wire:model.defer="seo_keywords" id="seo_keywords" />
-                   <x-admin.forms.text-area label="توضیحات سئو*" wire:model.defer="seo_description" id="seo_description" />
-               </div>
+                <div class="row p-4">
+                    @include('admin.courses.admin-content')
+                </div>
             </div>
         </div>
-        <div class="col-md-4  col-12">
+        <div class="col-md-8 {{ $tab == 'course' ? 'd-block' : 'd-none' }} col-12">
+            <div class="card card-custom gutter-b example example-compact ">
+                <div class="row p-4">
+                    <x-admin.forms.input with="6" disabled type="text" id="slug" label="نام مستعار*" wire:model.defer="slug"/>
+                    <x-admin.forms.input with="6" type="text" id="title" label="عنوان*" wire:model.defer="title"/>
+                    <x-admin.forms.input type="text" id="sub_title" label="عنوان فرعی*" wire:model.defer="sub_title"/>
+                    <x-admin.forms.dropdown with="6" id="type" :data="$data['type']" label="نوع دوره*" wire:model.defer="type"/>
+                    <x-admin.forms.dropdown with="6" id="status" :data="$data['status']" label="وضعیت*" wire:model.defer="status"/>
+
+                    <x-admin.forms.input with="4" type="number" id="const_price" label="قیمت ثابت" wire:model.defer="const_price"/>
+                    <x-admin.forms.input with="4" type="number" min="0" id="reduction_value" label="مقدار تخفیف*" wire:model.defer="reduction_value"/>
+                    <x-admin.forms.dropdown with="4" id="reduction_type" :data="$data['reduction']" label="نوع تخفیف" wire:model.defer="reduction_type"/>
+                    <x-admin.forms.jdate-picker with="6" id="start_at" label="شروع تخفیف" wire:model.defer="start_at"/>
+                    <x-admin.forms.jdate-picker with="6" id="expire_at" label="پایان تخفیف" wire:model.defer="expire_at"/>
+
+                    <x-admin.forms.lfm-standalone with="6" id="image" label="تصویر*" :file="$image" type="image" required="true" wire:model="image"/>
+                    <x-admin.forms.lfm-standalone with="6" id="time_lapse" label="تایم لپس دوره" :file="$time_lapse" type="image" required="true" wire:model="time_lapse"/>
+
+                    <x-admin.forms.text-area label="کلمات کلیدی*" help="کلمات را با کاما از هم جدا کنید" wire:model.defer="seo_keywords" id="seo_keywords" />
+                    <x-admin.forms.text-area label="توضیحات سئو*" wire:model.defer="seo_description" id="seo_description" />
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 {{ $tab == 'course' ? 'd-block' : 'd-none' }} col-12">
             <div class="card card-custom gutter-b example example-compact ">
                 <div class="row p-4">
                     <x-admin.forms.dropdown  id="level" :data="$data['level']" label="سطح دوره*" wire:model.defer="level"/>
@@ -46,7 +57,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-12">
+        <div class="col-12 {{ $tab == 'course' ? 'd-block' : 'd-none' }}">
             <div class="card card-custom gutter-b example example-compact ">
                 <div class="row p-4">
                     <x-admin.forms.full-text-editor id="short_body" label="توضیحات کوتاه*" wire:model.defer="short_body"/>
@@ -64,9 +75,6 @@
                         </x-admin.form-section>
                     </div>
                 </div>
-                <hr>
-
-                <livewire:admin.courses.content :course="$course" />
             </div>
         </div>
     </div>

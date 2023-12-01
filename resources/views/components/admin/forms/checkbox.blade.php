@@ -1,5 +1,5 @@
-@props(['id', 'label' , 'required' => false,'help' => false ,'with' => 12])
-    <div class="form-group col-12 col-md-{{$with}}">
+@props(['id', 'label' , 'required' => false,'help' => false ,'with' => 12, 'hidden' => false])
+    <div class="form-group col-12 col-md-{{$with}}"  {{ $hidden ? 'hidden' : '' }}>
         <label for="{{ $id }}">
             <input type="checkbox" id="{{$id}}" {{ $attributes }}>
             {{ $label }}

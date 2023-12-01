@@ -31,6 +31,11 @@ class Content extends BaseComponent
         $video_storage , $allow_show_local_video = 0   , $can_homework = false , $homework_storage ,
         $show_api_video = false , $downloadable_local_video = false ;
 
+
+    public $has_file = false , $has_video = false , $has_homework = false , $has_link = false , $has_bucket = false;
+
+    public $new_file , $new_local_video;
+
     protected $listeners = ['storeChapters' => 'store'];
 
     public function mount($course = null , $transcript = false)
@@ -153,8 +158,8 @@ class Content extends BaseComponent
             [
                 'title' => ['required','string','max:255'],
                 'description' => ['required','string','max:1000000'],
-                'file' => ['nullable','string','max:10000'],
-                'local_video' => ['nullable','max:255'],
+                'new_file' => ['nullable','string','max:10000'],
+                'new_local_video' => ['nullable','max:255'],
                 'api_bucket' => ['nullable','max:35000'],
                 'time' => ['required','date_format:H:i:s','max:255'],
                 'allow_show_local_video' => ['required','boolean'],
@@ -170,9 +175,9 @@ class Content extends BaseComponent
             [
                 'title' => ' عنوان درس',
                 'description' => 'توضیحات',
-                'file' => 'فایل درس',
+                'new_file' => 'فایل درس',
                 'link' => 'لینک درس',
-                'local_video' => 'ویدئو درس',
+                'new_local_video' => 'ویدئو درس',
                 'api_bucket' => 'api',
                 'time' => 'زمان درس',
                 'file_storage' => 'فضای ذخیره سازی فایل',
@@ -191,9 +196,9 @@ class Content extends BaseComponent
             $this->chapters[$this->chapter_key]['episodes'][] = [
                 'title' => $this->title,
                 'description' => $this->description,
-                'file' => $this->file,
+                'file' => $this->new_file,
                 'link' => $this->link,
-                'local_video' => $this->local_video,
+                'local_video' => $this->new_local_video,
                 'api_bucket' => $this->api_bucket,
                 'time' => $this->time,
                 'file_storage' => $this->file_storage ?? StorageEnum::PRIVATE,
@@ -210,9 +215,9 @@ class Content extends BaseComponent
         } elseif ($action == $this->epiosde_key) {
             $this->chapters[$this->chapter_key]['episodes'][$this->epiosde_key]['title'] = $this->title;
             $this->chapters[$this->chapter_key]['episodes'][$this->epiosde_key]['description'] = $this->description;
-            $this->chapters[$this->chapter_key]['episodes'][$this->epiosde_key]['file'] = $this->file;
+            $this->chapters[$this->chapter_key]['episodes'][$this->epiosde_key]['file'] = $this->new_file;
             $this->chapters[$this->chapter_key]['episodes'][$this->epiosde_key]['link'] = $this->link;
-            $this->chapters[$this->chapter_key]['episodes'][$this->epiosde_key]['local_video'] = $this->local_video;
+            $this->chapters[$this->chapter_key]['episodes'][$this->epiosde_key]['local_video'] = $this->new_local_video;
             $this->chapters[$this->chapter_key]['episodes'][$this->epiosde_key]['api_bucket'] = $this->api_bucket;
             $this->chapters[$this->chapter_key]['episodes'][$this->epiosde_key]['time'] = $this->time;
             $this->chapters[$this->chapter_key]['episodes'][$this->epiosde_key]['file_storage'] = $this->file_storage;
@@ -259,7 +264,8 @@ class Content extends BaseComponent
         $this->reset([
             'file_storage','api_bucket','title','file','link','local_video','time','view',
             'free','allow_show_local_video' , 'homework_storage','chapter_key','epiosde_key',
-            'video_storage'  ,'description' ,'can_homework','downloadable_local_video','show_api_video'
+            'video_storage'  ,'description' ,'can_homework','downloadable_local_video','show_api_video','new_file',
+            'has_file' , 'has_video' ,'has_link' ,'has_homework' ,'has_bucket' , 'new_local_video'
         ]);
     }
 

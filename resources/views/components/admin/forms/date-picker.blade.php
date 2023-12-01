@@ -1,5 +1,5 @@
-@props(['id', 'label', 'help', 'required' => false ,'with' => 12])
-<div class="form-group col-12 col-md-{{$with}}">
+@props(['id', 'label', 'help', 'required' => false ,'with' => 12, 'hidden' => false])
+<div class="form-group col-12 col-md-{{$with}}"  {{ $hidden ? 'hidden' : '' }}>
     <label for="{{$id}}"> {{$label}}{{$required ? '*' : ''}}</label>
      <input id="{{$id}}" {!! $attributes->merge(['class'=> 'form-control p-datepicker']) !!}
     x-data
