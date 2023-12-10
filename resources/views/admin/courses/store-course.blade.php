@@ -11,7 +11,7 @@
         <x-admin.nav-tabs-item active="{{$tab =='course'}}" title="دوره آموزشی" key="tab" value="course" icon="" />
         <x-admin.nav-tabs-item active="{{$tab=='details'}}" title="فصل و دروس" key="tab" value="details" icon="" />
     </x-admin.nav-tabs-list>
-    <div class="row ">
+    <div class="row">
         <div class="col-12 {{ $tab == 'details' ? 'd-block' : 'd-none' }}">
             <div class="card card-custom gutter-b example example-compact ">
                 <div class="row p-4">
@@ -19,7 +19,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-8 {{ $tab == 'course' ? 'd-block' : 'd-none' }} col-12">
+        <div class="col-md-8 mt-2 {{ $tab == 'course' ? 'd-block' : 'd-none' }} col-12">
             <div class="card card-custom gutter-b example example-compact ">
                 <div class="row p-4">
                     <x-admin.forms.input with="6" disabled type="text" id="slug" label="نام مستعار*" wire:model.defer="slug"/>
@@ -42,7 +42,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4 {{ $tab == 'course' ? 'd-block' : 'd-none' }} col-12">
+        <div class="col-md-4 mt-2 {{ $tab == 'course' ? 'd-block' : 'd-none' }} col-12">
             <div class="card card-custom gutter-b example example-compact ">
                 <div class="row p-4">
                     <x-admin.forms.dropdown  id="level" :data="$data['level']" label="سطح دوره*" wire:model.defer="level"/>

@@ -28,8 +28,9 @@
                                 <td>{{ $item->id }}</td>
                                 <td>{{$item->subject}}</td>
                                 <td>
+                                    @if($item->user)
                                     <ul>
-                                        <li> کد کاربر  : {{ $item->user->id }}</a></li>
+                                        <li> کد کاربر  : {{ $item->user->id ?? '-' }}</a></li>
                                         <li> نام کامل : <a title="صفحه جزئیات کاربر"
                                                            href="{{route('admin.store.user',['edit', $item->user->id])}}">{{
                                                 $item->user->name }}</a></li>
@@ -37,6 +38,7 @@
                                         <li>شماره همراه : {{ $item->user->phone }}</li>
                                         <li>ای پی : {{ $item->user->ip }}</li>
                                     </ul>
+                                    @endif
                                 </td>
                                 <td>{{ $item->checked ? 'بررسی شده' : 'جدید' }}</td>
                                 <td>{{ @$item->episode->chapter->course->title ?? '' }}</td>
