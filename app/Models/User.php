@@ -147,14 +147,15 @@ class User extends Authenticatable implements Wallet, Confirmable
     public function orderDetails(): HasManyThrough
     {
         return $this->hasManyThrough(OrderDetail::class,Order::class)
-            ->where('status',OrderEnum::STATUS_COMPLETED)->whereNotNull('course_id')->orderBy('id','desc');
+            ->latest('order_details.created_at')
+            ->where('status',OrderEnum::STATUS_COMPLETED)->whereNotNull('course_id');
     }
 
     public function hasCourse($id)
     {
         return $this->orderDetails()->where('status',OrderEnum::STATUS_COMPLETED)->whereHas('course',function ($q) use ($id){
             return $q->where('id',$id);
-        })->first();
+        })->exists();
     }
 
     public function transcripts(): HasMany

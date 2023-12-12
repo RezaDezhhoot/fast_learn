@@ -1,5 +1,5 @@
 @if ($paginator->hasPages())
-    <div class="text-center py-3">
+    <div class="text-center py-3 overflow-auto">
         <nav aria-label="مثال ناوبری صفحه" class="pagination-box">
             <ul class="pagination justify-content-center">
                 @if (!$paginator->onFirstPage())

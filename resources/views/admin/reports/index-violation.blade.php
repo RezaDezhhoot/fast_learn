@@ -65,7 +65,7 @@
     <script>
         function deleteItem(id) {
             Swal.fire({
-                title: 'حذف گزارش!',
+                title: 'حذف گزارش! ',
                 text: 'آیا از حذف این گزارش اطمینان دارید؟',
                 icon: 'warning',
                 showCancelButton: true,

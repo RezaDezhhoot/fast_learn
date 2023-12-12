@@ -8,7 +8,7 @@
                 </legend>
                 <div class="row">
                     <x-admin.forms.input with="4" type="text" id="new_title" label="عنوان *" wire:model.defer="item_title" />
-                    <x-admin.forms.dropdown with="4" id="new_status" :data="$data['status']" label="وضعیت*" wire:model.defer="item_status"/>
+                    <x-admin.forms.dropdown with="4" id="new_status" :data="$data['chapter_status']" label="وضعیت*" wire:model.defer="item_status"/>
                     <x-admin.forms.input with="4" type="number" id="new_view" label="نمایش *" wire:model.defer="item_view" />
                     <x-admin.forms.text-area label="توضیحات" wire:model.defer="description" id="new_description" />
                 </div>
@@ -152,7 +152,7 @@
         <x-admin.forms.validation-errors />
         <div class="row">
             <x-admin.forms.input with="4" type="text" id="title" label="عنوان *" wire:model.defer="item_title" />
-            <x-admin.forms.dropdown with="4" id="status" :data="$data['status']" label="وضعیت*" wire:model.defer="item_status"/>
+            <x-admin.forms.dropdown with="4" id="status" :data="$data['chapter_status']" label="وضعیت*" wire:model.defer="item_status"/>
             <x-admin.forms.input with="4" type="number" id="view" label="نمایش *" wire:model.defer="item_view" />
             <x-admin.forms.text-area label="توضیحات" wire:model.defer="description" id="description" />
         </div>

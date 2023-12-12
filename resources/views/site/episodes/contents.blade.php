@@ -27,7 +27,7 @@
                                         <li class="course-item-link {{$value['id'] == $episode_data['id'] ? 'active': ''}}" >
                                             <div class="course-item-content-wrap">
                                                 <!-- end custom-control -->
-                                                @if($value['free'] || $course_data->price == 0 || (auth()->check() && auth()->user()->hasCourse($course_data->id) ) )
+                                                @if($value['free'] || $course_data->price == 0 || $hasCourse )
                                                     <div class="course-item-content" wire:click="GoToEpisode({{$item['id']}},{{$value['id']}})">
                                                         <div>
                                                             <h4 class="fs-15">{{ $loop->iteration }}. {{ $value['title'] }}</h4>
@@ -52,7 +52,7 @@
                                                         </div>
                                                     </div>
                                                 @endif
-                                                @if($value['free'] || $course_data->price == 0 || (auth()->check() && auth()->user()->hasCourse($course_data->id) ) )
+                                                @if($value['free'] || $course_data->price == 0 || $hasCourse )
                                                     @if(!empty($value['file']) || !empty($value['link']) || (!empty($value['local_video']) && $value['downloadable_local_video']) )
                                                         <div class="generic-action-wrap episode-refs">
                                                             <div class="dropdown">

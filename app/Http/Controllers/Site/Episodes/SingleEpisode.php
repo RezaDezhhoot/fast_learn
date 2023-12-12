@@ -71,6 +71,8 @@ class SingleEpisode extends BaseComponent
 
         if (Auth::check() && $this->episode_data->can_homework)
             $this->show_homework_form = $this->user->hasCourse($this->course_data->id);
+
+
     }
 
     public function loadData($chapter , $episode)

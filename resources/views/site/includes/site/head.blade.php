@@ -14,7 +14,6 @@
 
     <!-- Favicon -->
     <link rel="icon" sizes="16x16" href="{{asset($logo)}}" />
-
     <!-- inject:css -->
     <link rel="stylesheet" href="{{ asset('site/css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('site/css/line-awesome.css') }}" />

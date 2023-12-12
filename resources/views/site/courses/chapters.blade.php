@@ -42,7 +42,7 @@
                                     <ul class="generic-list-item">
                                         @foreach($item['episode_title_list'] as $episode)
                                             <li>
-                                                @if(($episode['free'] || $course->price == 0 || (auth()->check() && $user->hasCourse($course->id))))
+                                                @if(($episode['free'] || $course->price == 0 || $hasCourse ))
                                                     <a href="{{route('episode',[$course['slug'],$item['slug'],$episode['id'],$episode['title']])}}" class="d-flex align-items-center justify-content-between">
                                                     @else
                                                             <a class="d-flex align-items-center justify-content-between">
@@ -57,11 +57,10 @@
                                                     @if($episode['free'] || $course->price == 0)
                                                         <small class="text-success">رایگان <i class="la la-lock-open">
                                                             </i></small>
-                                                    @elseif(auth()->check() && $user->hasCourse($course->id))
+                                                    @elseif(auth()->check() && $hasCourse)
                                                         <small class="text-success">خریداری شده <i class="la la-lock-open">
                                                             </i></small>
-                                                    @elseif(!auth()->check() || (auth()->check() &&
-                                                    !$user->hasCourse($course->id)))
+                                                    @elseif(!auth()->check() || $hasCourse)
                                                         <div class="text-left">
                                                             <small class="text-danger">نقدی <i class="la la-lock">
                                                                 </i></small>

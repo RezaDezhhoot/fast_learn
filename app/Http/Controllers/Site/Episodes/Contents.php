@@ -22,6 +22,8 @@ class Contents extends BaseComponent
 
     public $view;
 
+    public $hasCourse = false;
+
     public function __construct($id = null)
     {
         parent::__construct($id);
@@ -35,6 +37,10 @@ class Contents extends BaseComponent
         $this->chapter_data = $chapter;
         $this->view = $view;
         $this->user = auth()->user();
+
+        if (\auth()->check()){
+            $this->hasCourse = \auth()->user()->hasCourse($this->course_data->id);
+        }
     }
 
     public function render()
