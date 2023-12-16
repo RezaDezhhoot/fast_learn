@@ -48,7 +48,7 @@ class SendRepository implements SendRepositoryInterface
             'query' => $query,
         ]);
         $data =  json_decode($result->getBody(), true);
-        if ($data[0] != 0){
+        if (gettype($data) == 'array' && $data[0] != 0){
             Log::info($data[1]);
             throw new Exception($data[1]);
         }
