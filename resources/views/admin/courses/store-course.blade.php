@@ -27,11 +27,15 @@
             </div>
             <hr>
 {{--            <x-admin.forms.select2 id="teacher" :data="$data['teacher']" label="مدرس*" wire:model.defer="teacher"/>--}}
+            <x-admin.forms.checkbox value="1" id="sellable" label="قایل خرید" wire:model.defer="sellable" />
             <x-admin.forms.full-text-editor id="short_body" label="توضیحات کوتاه*" wire:model.defer="short_body"/>
             <x-admin.forms.full-text-editor id="long_body" label="توضیحات کامل*" wire:model.defer="long_body"/>
             <x-admin.forms.lfm-standalone id="image" label="تصویر*" :file="$image" type="image" required="true" wire:model="image"/>
             <x-admin.forms.text-area label="کلمات کلیدی*" help="کلمات را با کاما از هم جدا کنید" wire:model.defer="seo_keywords" id="seo_keywords" />
             <x-admin.forms.text-area label="توضیحات سئو*" wire:model.defer="seo_description" id="seo_description" />
+
+
+
             <x-admin.form-section label="سازمان ها">
                 <div class="row">
                     @foreach($data['organs'] as $key => $value)

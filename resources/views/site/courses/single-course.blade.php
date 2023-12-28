@@ -403,8 +403,13 @@
                                     @endif
 
                                     @else
+                                        @if(! $course->sellable)
+                                            <button disabled type="button" class="btn theme-btn w-100 mb-2"><i
+                                                    class="la la-shopping-cart fs-18 mr-1"></i> فروش این دوره به پایان رسیده است</button>
+                                        @else
                                     <button wire:click="addToCart()" type="button" class="btn theme-btn w-100 mb-2"><i
                                             class="la la-shopping-cart fs-18 mr-1"></i> به سبد خرید اضافه کنید</button>
+                                        @endif
                                     @endif
 
                                 </div>

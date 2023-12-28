@@ -103,7 +103,7 @@ class SingleCourse extends BaseComponent
 
     public function addToCart()
     {
-        if ($this->course->price > 0) {
+        if ($this->course->price > 0 && $this->course->sellable) {
             Cart::add($this->course);
             return redirect()->route('cart');
         }
