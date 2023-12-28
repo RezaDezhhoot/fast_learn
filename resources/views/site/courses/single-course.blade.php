@@ -393,25 +393,23 @@
                                     @endif
                                 </div>
                                 <div class="buy-course-btn-box mt-4">
-                                    @if ($course->price == 0)
-                                    @if (auth()->check() && $user->hasCourse($course->id))
-                                    <button disabled type="button" class="btn btn-outline-success w-100 mb-2">شما در این دوره ثبت نام کرده اید</button>
-                                    @else
-                                    <button wire:click="getFreeOrder()" type="button" class="btn theme-btn w-100 mb-2"><i
-                                        class="la la-shopping-cart fs-18 mr-1"></i> ثبت
-                                    نام در این دوره</button>
-                                    @endif
-
-                                    @else
-                                        @if(! $course->sellable)
-                                            <button disabled type="button" class="btn theme-btn w-100 mb-2"><i
-                                                    class="la la-shopping-cart fs-18 mr-1"></i> فروش این دوره به پایان رسیده است</button>
+                                    @if(! $course->sellable)
+                                        @if ($course->price == 0)
+                                            @if (auth()->check() && $user->hasCourse($course->id))
+                                            <button disabled type="button" class="btn btn-outline-success w-100 mb-2">شما در این دوره ثبت نام کرده اید</button>
+                                            @else
+                                            <button wire:click="getFreeOrder()" type="button" class="btn theme-btn w-100 mb-2"><i
+                                                class="la la-shopping-cart fs-18 mr-1"></i> ثبت
+                                            نام در این دوره</button>
+                                            @endif
                                         @else
-                                    <button wire:click="addToCart()" type="button" class="btn theme-btn w-100 mb-2"><i
-                                            class="la la-shopping-cart fs-18 mr-1"></i> به سبد خرید اضافه کنید</button>
+                                            <button wire:click="addToCart()" type="button" class="btn theme-btn w-100 mb-2"><i
+                                                    class="la la-shopping-cart fs-18 mr-1"></i> به سبد خرید اضافه کنید</button>
                                         @endif
+                                    @else
+                                        <button disabled type="button" class="btn theme-btn w-100 mb-2"><i
+                                                class="la la-shopping-cart fs-18 mr-1"></i> فروش این دوره به پایان رسیده است</button>
                                     @endif
-
                                 </div>
                                 <div class="preview-course-incentives">
                                     <h3 class="card-title fs-18 mt-2 pb-2">این دوره شامل</h3>
