@@ -393,7 +393,7 @@
                                     @endif
                                 </div>
                                 <div class="buy-course-btn-box mt-4">
-                                    @if(! $course->sellable)
+                                    @if($course->sellable)
                                         @if ($course->price == 0)
                                             @if (auth()->check() && $user->hasCourse($course->id))
                                             <button disabled type="button" class="btn btn-outline-success w-100 mb-2">شما در این دوره ثبت نام کرده اید</button>
