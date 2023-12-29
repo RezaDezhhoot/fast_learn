@@ -80,6 +80,7 @@ class StoreArticle extends BaseComponent
     public function saveInDateBase($model)
     {
         $fields = [
+            'slug' => ['required','string','unique:articles,slug,'.($this->article->id ?? 0)],
             'title' => ['required','string','max:100'],
             'image' => ['nullable','string','max:250'],
             'body' => ['required','string','max:10000000'],
@@ -92,6 +93,7 @@ class StoreArticle extends BaseComponent
             'driver' => ['nullable',Rule::in(getAvailableStorages())]
         ];
         $messages = [
+            'slug' => 'نام متسعار',
             'title' => 'عنوان',
             'main_image' => 'تصویر',
             'body' => 'محتوا',
@@ -104,6 +106,7 @@ class StoreArticle extends BaseComponent
             'driver' => 'فضای ذخیره سازی'
         ];
         $this->validate($fields,[],$messages);
+        $model->slug = $this->slug;
         $model->title = $this->title;
         $model->image = $this->image ?? '';
         $model->body = $this->body;

@@ -9,7 +9,7 @@
                     @endforeach
                 </ul>
                 <div class="section-heading">
-                    <h2 class="section__title"> {{ $course->title }}</h2>
+                    <h1 class="section__title"> {{ $course->title }}</h1>
                     <p class="section__desc pt-2 lh-30">{{ $course->sub_title }}</p>
                 </div>
                 <!-- end section-heading -->

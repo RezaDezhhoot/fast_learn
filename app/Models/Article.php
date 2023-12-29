@@ -29,18 +29,18 @@ class Article extends Model
 {
     protected $guarded = ['id'];
 
-    use HasFactory , Searchable , Sluggable;
+    use HasFactory , Searchable ;
 
     protected array $searchAbleColumns = ['slug','title','body'];
 
-    public function sluggable(): array
-    {
-        return [
-            'slug' => [
-                'source' => 'title'
-            ]
-        ];
-    }
+//    public function sluggable(): array
+//    {
+//        return [
+//            'slug' => [
+//                'source' => 'title'
+//            ]
+//        ];
+//    }
 
     public function scopeHasCategory($query)
     {
@@ -51,7 +51,7 @@ class Article extends Model
     {
         $this->attributes['image'] = str_replace(env('APP_URL'), '', $value);
     }
-    
+
         public function setFileAttribute($value)
     {
         $this->attributes['file'] = str_replace(env('APP_URL').'/storage', '', $value);

@@ -43,7 +43,7 @@ use Illuminate\Database\Eloquent\Relations\belongsToMany;
  */
 class Course extends Model
 {
-    use HasFactory , Searchable   , Sluggable;
+    use HasFactory , Searchable;
 
     protected $guarded = ['id'];
 
@@ -54,19 +54,19 @@ class Course extends Model
         return $query->where('status','!=',CourseEnum::DRAFT);
     }
 
-    public function sluggable(): array
-    {
-        return [
-            'slug' => [
-                'source' => 'title'
-            ]
-        ];
-    }
+//    public function sluggable(): array
+//    {
+//        return [
+//            'slug' => [
+//                'source' => 'title'
+//            ]
+//        ];
+//    }
 
     protected function typeLabel(): Attribute
     {
         return Attribute::make(
-            get: fn() => in_array($this->type,array_keys(CourseEnum::getTypes())) ? 
+            get: fn() => in_array($this->type,array_keys(CourseEnum::getTypes())) ?
                 CourseEnum::getTypes()[$this->type] : ''
         );
     }

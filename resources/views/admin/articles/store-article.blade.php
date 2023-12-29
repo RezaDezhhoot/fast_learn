@@ -8,7 +8,7 @@
         <x-admin.forms.validation-errors/>
         <div class="card-body">
             <div class="row">
-                <x-admin.forms.input with="6" type="text" disabled id="slug" label="نام مستعار" wire:model.defer="slug"/>
+                <x-admin.forms.input with="6" type="text" id="slug" label="نام مستعار" wire:model.defer="slug"/>
                 <x-admin.forms.dropdown with="6" id="category" :data="$data['category']" label="دسته*" wire:model.defer="category"/>
                 <x-admin.forms.input with="6" type="text" id="title" label="عنوان*" wire:model.defer="title"/>
                 <x-admin.forms.dropdown with="6" id="status" :data="$data['status']" label="وضعیت*" wire:model.defer="status"/>

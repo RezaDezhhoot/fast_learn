@@ -126,6 +126,7 @@ class StoreCourse extends BaseComponent
         $this->start_at = $this->dateConverter($this->start_at,'m') ;
         $this->expire_at = $this->dateConverter($this->expire_at,'m') ;
         $this->validate([
+            'slug' => ['required','string','max:255','unique:courses,slug,'.($this->course->id ?? 0)],
             'title' => ['required','string','max:255'],
             'standard_code' => ['required','string','max:50'],
             'sub_title' => ['required','string','max:255'],
@@ -149,6 +150,7 @@ class StoreCourse extends BaseComponent
             'custom_hours' => ['nullable','string','max:50'],
             'sellable' => ['boolean']
         ],[],[
+            'slug' => 'نام متسعار',
             'title' => 'عنوان',
             'standard_code' => 'استاندارد اموزشی',
             'sub_title' => 'عنوان فرعی',
@@ -172,6 +174,7 @@ class StoreCourse extends BaseComponent
             'custom_hours' => 'زمان آموزشی',
             'sellable' => 'قابل خرید'
         ]);
+        $model->slug = $this->slug;
         $model->title = $this->title;
         $model->sub_title = $this->sub_title;
         $model->short_body = $this->short_body;
