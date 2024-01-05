@@ -175,10 +175,11 @@
                 @can('show_settings')
                     <x-admin.menu-group icon="flaticon2-settings" :active="request()->routeIs(
                     ['admin.setting.base','admin.setting.home','admin.setting.aboutUs','admin.setting.contactUs'
-                       ,'admin.setting.fag','admin.setting.fag.create','admin.setting.sms'])" label="تنظیمات" >
+                       ,'admin.setting.fag','admin.setting.fag.create','admin.setting.sms','admin.setting.sitemap'])" label="تنظیمات" >
                         @can('show_settings_base')
                             <x-admin.menu-item href="{{route('admin.setting.base')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs('admin.setting.base')" label="پایه " />
                         @endcan
+                            <x-admin.menu-item href="{{route('admin.setting.sitemap')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs('admin.setting.sitemap')" label="نفشه سایت" />
                         @can('show_settings_home')
                             <x-admin.menu-item href="{{route('admin.setting.home')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs('admin.setting.home')" label="صفحه اصلی " />
                         @endcan

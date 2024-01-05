@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\DB;
 use Morilog\Jalali\Jalalian;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\belongsToMany;
+use Spatie\Sitemap\Contracts\Sitemapable;
+use Spatie\Sitemap\Tags\Url;
 
 /**
  * @property mixed reduction_value
@@ -41,11 +43,19 @@ use Illuminate\Database\Eloquent\Relations\belongsToMany;
  * @method static count()
  * @method static select(string[] $array)
  */
-class Course extends Model
+class Course extends Model implements Sitemapable
 {
     use HasFactory , Searchable;
 
     protected $guarded = ['id'];
+
+    public function toSitemapTag(): Url | string | array
+    {
+        return Url::create(route('course', $this->slug))
+            ->setLastModificationDate(Carbon::create($this->updated_at))
+            ->setChangeFrequency(Url::CHANGE_FREQUENCY_YEARLY)
+            ->setPriority(0.1);
+    }
 
     protected array $searchAbleColumns = ['title','slug','short_body'];
 
