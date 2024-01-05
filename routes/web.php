@@ -117,7 +117,7 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->group(function (){
     Route::get('/samples',App\Http\Controllers\Admin\Samples\IndexSample::class)->name('admin.sample');
     Route::get('/samples/{action}/{id?}',App\Http\Controllers\Admin\Samples\StoreSample::class)->name('admin.store.sample');
 
-    Route::get('/settings/sitemap', App\Http\Controllers\Admin\Settings\Sitemap::class)->name('setting.sitemap');
+    Route::get('/settings/sitemap', App\Http\Controllers\Admin\Settings\Sitemap::class)->name('admin.setting.sitemap');
 });
 
 Route::middleware('guest')->get('auth',App\Http\Controllers\Site\Auth\Auth::class)->name('auth');
