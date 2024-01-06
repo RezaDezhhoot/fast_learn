@@ -10266,6 +10266,8 @@
 
      .logo-size {
          max-width: 4rem;
+         max-height: 3rem;
+         margin: 0.4rem;
      }
 
      .logo-footer {
