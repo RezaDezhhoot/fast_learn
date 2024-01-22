@@ -1,6 +1,6 @@
 <div>
     <section class="hero-area bg-gray hero-area-4">
-        <div class="hero-slider-item after-none" style="background-image: url({{asset($sliderImage)}});background-size: cover;background-position: center">
+        <div class="hero-slider-item after-none" style="background-image: url({{asset($sliderImage)}});background-size: cover;background-position: center;background-repeat: no-repeat">
             <div class="container">
                 <div class="hero-content text-center">
                     <div class="section-heading">
