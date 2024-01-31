@@ -33,7 +33,7 @@ class SingleTeacher extends Component
         JsonLd::addImage(asset($settingRepository->getRow('logo')));
 
         $this->page_address = [
-            'home' => ['link' => route('home') , 'label' => 'صفحه اصلی'],
+            'home' => ['link' => route('home') , 'label' => 'فکور'],
             'teachers' => ['link' =>  route('teachers')  , 'label' => 'مدرسین'],
             'teacher' => ['link' =>'' , 'label' => $this->teacher->user->name]
         ];

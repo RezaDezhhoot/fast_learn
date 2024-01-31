@@ -55,7 +55,7 @@ class IndexSample extends BaseComponent
 
         $this->categories = $categories->toArray();
         $this->page_address = [
-            'home' => ['link' => route('home') , 'label' => 'صفحه اصلی'],
+            'home' => ['link' => route('home') , 'label' => 'فکور'],
             'courses' => ['link' => '' , 'label' => 'نمونه سوالات']
         ];
     }

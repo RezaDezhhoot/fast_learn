@@ -29,7 +29,7 @@ class IndexTeacher extends BaseComponent
         JsonLd::setDescription($settingRepository->getRow('seoDescription'));
         JsonLd::addImage(asset($settingRepository->getRow('logo')));
         $this->page_address = [
-            'home' => ['link' => route('home') , 'label' => 'صفحه اصلی'],
+            'home' => ['link' => route('home') , 'label' => 'فکور'],
             'teachers' => ['link' => '' , 'label' => 'مدرسین']
         ];
     }

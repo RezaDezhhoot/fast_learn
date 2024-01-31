@@ -39,7 +39,7 @@ class SingleSample extends BaseComponent
         JsonLd::setDescription($this->sample->seo_description);
         JsonLd::addImage(asset($this->settingRepository->getRow('logo')));
         $this->page_address = [
-            'home' => ['link' => route('home') , 'label' => 'صفحه اصلی'],
+            'home' => ['link' => route('home') , 'label' => 'فکور'],
             'samples' => ['link' => route('samples') , 'label' => 'نمونه سوالات'],
             'sample' => ['link' => '' , 'label' => $this->sample->title],
         ];

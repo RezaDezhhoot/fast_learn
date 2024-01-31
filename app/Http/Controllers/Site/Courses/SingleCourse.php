@@ -81,7 +81,7 @@ class SingleCourse extends BaseComponent
     {
 
         $this->page_address = [
-            'home' => ['link' => route('home') , 'label' => 'صفحه اصلی'],
+            'home' => ['link' => route('home') , 'label' => 'فکور'],
             'courses' => ['link' => route('courses') , 'label' => 'دوره های اموزشی'],
             'category' => ['link' => route('courses',['category' => $this->course->category->slug]) ,'label' => $this->course->category->title],
             'course' => ['link' => '' , 'label' => $this->course->title],

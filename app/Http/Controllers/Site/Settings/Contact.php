@@ -46,7 +46,7 @@ class Contact extends BaseComponent
         $this->youtube = $settingRepository->getRow('youtube');
         $this->telegram = $settingRepository->getRow('telegram');
         $this->page_address = [
-            'home' => ['link' => route('home') , 'label' => 'صفحه اصلی'],
+            'home' => ['link' => route('home') , 'label' => 'فکور'],
             'contact' => ['link' => '' , 'label' => 'ارتباط با ما']
         ];
 

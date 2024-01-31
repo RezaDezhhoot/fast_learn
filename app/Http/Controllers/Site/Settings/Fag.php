@@ -27,7 +27,7 @@ class Fag extends BaseComponent
         JsonLd::addImage(asset($settingRepository->getRow('logo')));
         $this->fag = $settingRepository->getFagList();
         $this->page_address = [
-            'home' => ['link' => route('home') , 'label' => 'صفحه اصلی'],
+            'home' => ['link' => route('home') , 'label' => 'فکور'],
             'fag' => ['link' => '' , 'label' => 'سوالات متداول']
         ];
     }

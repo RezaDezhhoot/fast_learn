@@ -52,7 +52,7 @@ class Verify extends BaseComponent
             ];
         }
         $this->page_address = [
-            'home' => ['link' => route('home') , 'label' => 'صفحه اصلی'],
+            'home' => ['link' => route('home') , 'label' => 'فکور'],
             'checkout' => ['link' => '' , 'label' => 'جزییات پرداخت']
         ];
 

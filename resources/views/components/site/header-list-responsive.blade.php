@@ -6,7 +6,7 @@
 
     <ul class="generic-list-item off-canvas-menu-list pt-2 pb-2 border-bottom border-bottom-gray">
         <li>
-            <a href="{{ route('home') }}">صفحه اصلی</a>
+            <a href="{{ route('home') }}">فکور</a>
         </li>
         <li>
             <a href="{{ route('courses') }}">دوره های آموزشی</a>

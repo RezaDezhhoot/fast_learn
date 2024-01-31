@@ -55,7 +55,7 @@ class SingleArticle extends BaseComponent
         JsonLd::setDescription($this->article->seo_description);
         JsonLd::addImage(asset($this->settingRepository->getRow('logo')));
         $this->page_address = [
-            'home' => ['link' => route('home') , 'label' => 'صفحه اصلی'],
+            'home' => ['link' => route('home') , 'label' => 'فکور'],
             'articles' => ['link' => route('articles',$type) , 'label' => 'مقالات'],
             'category' => ['link' => route('articles',[$type,'category' => $this->article->category_id] ) ,'label' => $this->article->category->title],
             'article' => ['link' => '' , 'label' => $this->article->title],

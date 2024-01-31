@@ -17,7 +17,7 @@ use Livewire\WithPagination;
 class IndexArticle extends BaseComponent
 {
     use WithPagination;
-    
+
     public array $categories = [];
     public ?string $q = null , $category = null , $type;
     protected $queryString = ['q','category'];
@@ -57,7 +57,7 @@ class IndexArticle extends BaseComponent
 
         $this->categories = $categories->toArray();
         $this->page_address = [
-            'home' => ['link' => route('home') , 'label' => 'صفحه اصلی'],
+            'home' => ['link' => route('home') , 'label' => 'فکور'],
             'articles' => ['link' => '' , 'label' => ArticleEnum::getType()[$type]]
         ];
         $this->type = $type;

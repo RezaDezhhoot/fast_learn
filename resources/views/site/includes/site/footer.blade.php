@@ -24,7 +24,7 @@
                     <h3 class="fs-20 font-weight-semi-bold pb-2">صفحات</h3>
                     <div class="divider border-bottom-0"><span></span></div>
                     <ul class="generic-list-item">
-                        <li><a href="{{route('home')}}">صفحه اصلی</a></li>
+                        <li><a href="{{route('home')}}">فکور</a></li>
                         {{-- <li><a href="{{ route('articles') }}">مقالات</a></li> --}}
                         <li><a href="{{route('user.dashboard')}}">ناحیه کاربری</a></li>
                         <li><a href="{{route('cart')}}">سبد خرید </a></li>

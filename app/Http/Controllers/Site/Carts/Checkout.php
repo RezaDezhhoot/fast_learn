@@ -60,7 +60,7 @@ class Checkout extends BaseComponent
         OpenGraph::setUrl(url()->current());
         OpenGraph::setTitle('تکمیل خرید');
         $this->page_address = [
-            'home' => ['link' => route('home') , 'label' => 'صفحه اصلی'],
+            'home' => ['link' => route('home') , 'label' => 'فکور'],
             'cart' => ['link' => '' , 'label' => 'تکمیل خرید'],
         ];
 
@@ -249,7 +249,7 @@ class Checkout extends BaseComponent
                         $this->voucherCode = null;
                         return;
                 }
-              
+
                 $organs = explode(',', $meta->where('name', 'organization_ids')->first()->value);
 
                 if (!in_array(auth()->user()->details->organization_id,$organs)){
@@ -258,7 +258,7 @@ class Checkout extends BaseComponent
                         $this->voucherCode = null;
                         return;
                 }
-                
+
             }
         }
 

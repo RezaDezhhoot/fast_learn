@@ -27,7 +27,7 @@ class About extends BaseComponent
         JsonLd::addImage(asset($settingRepository->getRow('logo')));
         $this->about = $settingRepository->getRow('aboutUs');
         $this->page_address = [
-            'home' => ['link' => route('home') , 'label' => 'صفحه اصلی'],
+            'home' => ['link' => route('home') , 'label' => 'فکور'],
             'about' => ['link' => '' , 'label' => 'درباره ما']
         ];
     }

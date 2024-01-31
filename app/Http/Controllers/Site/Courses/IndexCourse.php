@@ -59,7 +59,7 @@ class IndexCourse extends BaseComponent
             CourseEnum::FINISHED => 'تکمیل شده' ,
         ];
         $this->page_address = [
-            'home' => ['link' => route('home') , 'label' => 'صفحه اصلی'],
+            'home' => ['link' => route('home') , 'label' => 'فکور'],
             'courses' => ['link' => '' , 'label' => 'دوره های اموزشی']
         ];
 
