@@ -52,6 +52,7 @@ class HomeSetting extends BaseComponent
             '3' => '25%',
             '4' => '33.33%',
             '6' => '50%',
+            '12' => '100%',
         ];
         $this->content = collect($this->settingRepository->getRow('homeContent',[]));
         $this->box = collect($this->settingRepository->getRow('homeBox',[]));
@@ -109,7 +110,7 @@ class HomeSetting extends BaseComponent
         $this->contentCase[] = '';
     }
 
-    
+
     public function storeContent()
     {
         $this->authorizing('edit_settings_fag');
@@ -159,9 +160,9 @@ class HomeSetting extends BaseComponent
         $this->authorizing('edit_settings_fag');
         $fields = [
             'box_title' => ['required', 'string'],
-            'box_link' => ['required', 'url'],
+            'box_link' => ['nullable', 'url'],
             'box_image' => ['required','string' ,'max:1400'],
-            'box_description' => ['required','string','max:255'],
+            'box_description' => ['required','string'],
             'box_width' => ['required', 'numeric','in:'.implode(',',array_keys($this->data['boxWidth']))]
         ];
         $messages = [

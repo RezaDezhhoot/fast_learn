@@ -67,7 +67,7 @@ class ArticleRepository  implements ArticleRepositoryInterface
 
     public function getAllSite($search = null, $type = null, $category = null)
     {
-        return Article::published(true)->with('category')->when($type,function ($q) use ($type) {
+        return Article::published(true)->latest()->with('category')->when($type,function ($q) use ($type) {
             return $q->where('type',$type);
         })->when($category,function ($q) use ($category){
             $categoryRepository = app(CategoryRepositoryInterface::class);
