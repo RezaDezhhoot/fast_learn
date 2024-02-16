@@ -122,11 +122,11 @@ class SettingRepository implements SettingRepositoryInterface
     public static function models()
     {
         return [
-            'categories' => new Category(),
-            'courses' => new Course(),
-            'articles' => new Article(),
-            'teachers' => new Teacher(),
-            'organizations' => new Organization()
+            'categories' => Category::query()->latest(),
+            'courses' => Course::query()->latest(),
+            'articles' => Article::query()->latest(),
+            'teachers' => Teacher::query()->latest(),
+            'organizations' => Organization::query()->latest()
         ];
     }
 }
