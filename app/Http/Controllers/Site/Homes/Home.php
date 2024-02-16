@@ -47,8 +47,7 @@ class Home extends BaseComponent
             {
                 $model = $settingRepository::models()[$value['category']];
                 $send[$i] = $value;
-                $send[$i]['content'] = $model::findMany($value['contentCase']);
-
+                $send[$i]['content'] = $model::latest()->whereIn('id',$value['contentCase']);
             } else
                 $send[$i] = $value;
             $i++;

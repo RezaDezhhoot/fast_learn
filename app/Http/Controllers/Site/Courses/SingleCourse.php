@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Site\Courses;
 
 use App\Enums\CommentEnum;
+use App\Enums\CourseEnum;
 use App\Enums\OrderEnum;
 use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
@@ -60,7 +61,10 @@ class SingleCourse extends BaseComponent
      */
     public function mount($slug)
     {
-        $this->course = $this->courseRepository->get('slug',$slug,true);
+        $this->course = $this->courseRepository->get('slug',$slug,false);
+        if ($this->course->status == CourseEnum::DRAFT) {
+            abort(301);
+        }
         SEOMeta::setTitle($this->course->title);
         SEOMeta::setDescription($this->course->seo_description);
         SEOMeta::addKeyword($this->course->seo_keywords);

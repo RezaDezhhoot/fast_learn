@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Site\Articles;
 
+use App\Enums\ArticleEnum;
 use App\Enums\CommentEnum;
 use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\ArticleRepositoryInterface;
@@ -42,7 +43,12 @@ class SingleArticle extends BaseComponent
      */
     public function mount($type,$slug)
     {
-        $this->article = $this->articleRepository->get([['slug',$slug]],true);
+        $this->article = $this->articleRepository->get([['slug',$slug]],false);
+
+        if ($this->article->status != ArticleEnum::PUBLISHED) {
+            abort(301);
+        }
+
         SEOMeta::setTitle($this->article->title);
         SEOMeta::setDescription($this->article->seo_description);
         SEOMeta::addKeyword($this->article->seo_keywords);

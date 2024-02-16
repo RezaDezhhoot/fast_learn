@@ -2,6 +2,13 @@
 <html lang="fa">
 <livewire:site.includes.site.head/>
 <body>
+@push('head')
+    <meta name="robots" content="noindex" />
+    <meta name="googlebot" content="noindex" />
+    <meta name="googlebot-news" content="noindex" />
+    <meta name="slurp" content="noindex" />
+    <meta name="msnbot" content="noindex" />
+@endpush
 {{--<div class="preloader">--}}
 {{--    <div class="loader">--}}
 {{--        <svg class="spinner" viewBox="0 0 50 50">--}}
