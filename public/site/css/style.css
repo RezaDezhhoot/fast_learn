@@ -10308,3 +10308,15 @@
          z-index: 101;
          font-weight: bolder;
      }
+
+     .bg-slider{
+         background-size: cover;
+         background-position: center;
+         background-repeat: no-repeat;
+     }
+
+     @media only screen and (min-width: 600px) {
+         .bg-slider{
+             background-image: url('');
+         }
+     }
