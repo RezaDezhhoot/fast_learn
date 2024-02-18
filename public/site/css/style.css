@@ -10315,8 +10315,8 @@
          background-repeat: no-repeat;
      }
 
-     @media only screen and (min-width: 600px) {
+     @media only screen and (max-width: 600px) {
          .bg-slider{
-             background-image: url('');
+             background-image: url("/site/images/IMG_20240209_162355_999.jpg") !important;
          }
      }

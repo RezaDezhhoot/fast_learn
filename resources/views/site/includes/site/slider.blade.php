@@ -7,12 +7,6 @@
                         {!! $slider !!}
                     </div>
                     <!-- end section-heading -->
-                    <form mwire:submit.prevent="search" method="get"  class="w-50 pt-4 mx-auto">
-                        <div class="form-group mb-0">
-                            <input  wire:model.defer="q" class="form-control form--control pl-3 shadow-sm border-0" type="text" name="search" placeholder="جستوجو">
-                            <span  wire:click="search"class="la la-search search-icon"></span>
-                        </div>
-                    </form>
                 </div>
                 <!-- end hero-content -->
             </div>
