@@ -34,6 +34,7 @@ use Spatie\Sitemap\Tags\Url;
  * @property mixed $updated_at
  * @property mixed $id
  * @property mixed $level
+ * @property mixed $created_at
  * @method static latest(string $string)
  * @method static findOrFail($id)
  * @method static published()
@@ -229,6 +230,11 @@ class Course extends Model implements Sitemapable
     public function getUpdatedDateAttribute(): string
     {
         return Jalalian::forge($this->updated_at)->format('%A, %d %B %Y');
+    }
+
+    public function getDateAttribute(): string
+    {
+        return Jalalian::forge($this->created_at)->format('%A, %d %B %Y');
     }
 
     public function getScoreAttribute(): int

@@ -5,7 +5,7 @@
             <img class="card-img-top" src="{{ asset($item['image']) }}" alt="{{ $item['title'] }}">
         </a>
         <div class="course-badge-labels">
-            <div class="course-badge">{{ $item->updated_date }}</div>
+            <div class="course-badge">{{ $item->date }}</div>
         </div>
     </div><!-- end card-image -->
     <div class="card-body">

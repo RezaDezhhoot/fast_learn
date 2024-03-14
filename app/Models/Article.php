@@ -93,6 +93,11 @@ class Article extends Model implements Sitemapable
         return Jalalian::forge($this->updated_at)->format('%A, %d %B %Y');
     }
 
+    public function getDateAttribute(): string
+    {
+        return Jalalian::forge($this->created_at)->format('%A, %d %B %Y');
+    }
+
     public function tags(): MorphToMany
     {
         return $this->morphToMany(Tag::class, 'taggable');
