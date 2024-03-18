@@ -43,6 +43,14 @@ class SingleArticle extends BaseComponent
      */
     public function mount($type,$slug)
     {
+        if ($slug == 'how-to-become-programmer') {
+            return redirect('https://www.fakoorins.ir/article/articles/why-should-learn-programming',301);
+        }
+
+        if ($slug == 'wordpress-design-web-site|-fakoorins') {
+            return redirect('https://www.fakoorins.ir/courses/%D8%B7%D8%B1%D8%A7%D8%AD%DB%8C-%D8%B3%D8%A7%DB%8C%D8%AA-%D8%A8%D8%A7-wordpress-0-%D8%AA%D8%A7-100',301);
+        }
+
         $this->article = $this->articleRepository->get([['slug',$slug]],false);
 
         if ($this->article->status != ArticleEnum::PUBLISHED) {

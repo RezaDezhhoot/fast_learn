@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Articles;
 use App\Enums\ArticleEnum;
 use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\ArticleRepositoryInterface;
+use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
 
 class IndexArticle extends BaseComponent
@@ -39,5 +40,11 @@ class IndexArticle extends BaseComponent
         $article = $this->articleRepository->findArticle($id,false);
         $this->articleRepository->deleteComments($article);
         $this->articleRepository->delete($article);
+    }
+
+    public function userAuth($id)
+    {
+        Auth::loginUsingId($id);
+        return redirect()->route('user.dashboard');
     }
 }

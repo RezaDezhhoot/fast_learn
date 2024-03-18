@@ -6,6 +6,7 @@ use App\Enums\UserEnum;
 use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\RoleRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
+use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
 
 class IndexUser extends BaseComponent
@@ -38,5 +39,11 @@ class IndexUser extends BaseComponent
             $this->userRepository->save($user);
             $this->emitNotify('اطلاعات با موفقیت ثبت شد');
         }
+    }
+
+    public function openPanel($id)
+    {
+        Auth::loginUsingId($id);
+        return redirect()->route('user.dashboard');
     }
 }

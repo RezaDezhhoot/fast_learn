@@ -33,6 +33,7 @@
                                         <a href="{{route('admin.log',['user'=>$item->id])}}">مشاهده</a>
                                     </td>
                                     <td>
+                                        <button wire:click="openPanel({{$item->id}})" class="btn btn-outline-danger">ورود به پنل کاربر</button>
                                         <x-admin.edit-btn href="{{ route('admin.store.user',['edit', $item->id]) }}" />
                                         <x-admin.ok-btn wire:click="confirm({{$item->id}})" />
                                     </td>

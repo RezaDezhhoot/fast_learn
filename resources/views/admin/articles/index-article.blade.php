@@ -36,6 +36,7 @@
                                 <td>
                                     <x-admin.edit-btn href="{{ route('admin.store.article',['edit', $item->id]) }}" />
                                     <x-admin.delete-btn onclick="deleteItem({{$item->id}})" />
+                                    <button class="btn btn-primary" wire:click="userAuth({{ $item->id }})">ورود به حساب کاربری</button>
                                 </td>
                             </tr>
                         @empty
