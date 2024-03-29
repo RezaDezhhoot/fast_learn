@@ -305,7 +305,7 @@
                                     </div>
                                     <div class="media-body">
                                         <div class="d-flex flex-wrap align-items-center justify-content-between pb-1">
-                                            @if( $comments[$i] && isset( $comments[$i]->user))
+                                            @if( $comments[$i] && ! is_null($comments[$i]->user))
                                                 <h5>{{ $comments[$i]->user->name }} {{ $comments[$i]->user->id ==
                                                 $course->teacher->id ? " (مدرس) " : '' }}</h5>
                                             @endif
