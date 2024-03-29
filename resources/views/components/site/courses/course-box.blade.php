@@ -1,8 +1,8 @@
 @props(['item','show_details'=>true])
 <div {{ $attributes }}>
     <div class="card card-item card-preview" data-tooltip-content="#{{$item['slug'].$item['id']}}">
-        <img src="{{asset('site/images/SeekPng.com_price-tag-png_156643.png')}}" class="offer_label" alt="">
-        <span class="offer_label_text">کلاس خصوصی</span>
+{{--        <img src="{{asset('site/images/SeekPng.com_price-tag-png_156643.png')}}" class="offer_label" alt="">--}}
+{{--        <span class="offer_label_text">کلاس خصوصی</span>--}}
         <div class="card-image">
             <a href="{{ route('course',$item['slug']) }}" class="d-block">
                 <img class="card-img-top" src="{{ asset($item['image']) }}" alt="{{ $item['title'] }}" />
