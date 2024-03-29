@@ -305,7 +305,7 @@
                                     </div>
                                     <div class="media-body">
                                         <div class="d-flex flex-wrap align-items-center justify-content-between pb-1">
-                                            @if( $comments[$i] && ! is_null($comments[$i]->user))
+                                            @if( $comments[$i] && ! is_null($comments[$i]->user) && ! is_null($course->teacher))
                                                 <h5>{{ $comments[$i]->user->name }} {{ $comments[$i]->user->id ==
                                                 $course->teacher->id ? " (مدرس) " : '' }}</h5>
                                             @endif
@@ -331,7 +331,7 @@
                                 </div>
                                 <div class="media-body">
                                     <div class="d-flex flex-wrap align-items-center justify-content-between pb-1">
-                                        <h5>{{ $value->user->name }} {{ $value->user->id == $course->teacher->id ? "
+                                        <h5>{{ $value->user->name }} {{ $value->user->id == ( $course->teacher->id ?? 0) ? "
                                             (مدرس) " : '' }}</h5>
                                     </div>
                                     <span class="d-block lh-18 py-2">{{ $value->created_at->diffForHumans() }}</span>
