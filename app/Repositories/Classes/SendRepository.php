@@ -10,6 +10,7 @@ use App\Repositories\Interfaces\SettingRepositoryInterface;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 
 class SendRepository implements SendRepositoryInterface
@@ -74,16 +75,17 @@ class SendRepository implements SendRepositoryInterface
     {
         try {
             $client = new Client();
-            $query = ['apikey' => $this->apiKey,
-                'pid' => $this->pattern,
-                'fnum' => $this->lineNumber,
-                'tnum' => $phone,
-                'p1' => $this->pattern_var,
-                'v1' => $code];
-            $result = $client->get('http://ippanel.com:8080/',
-                [
-                    'query' => $query,
-                ]);
+            $query = Arr::query([
+                'username' => $this->username,
+                'password' => $this->password,
+                'from' => $this->lineNumber,
+                'to' => $phone,
+                'pattern_code' => $this->pattern,
+                'input_data' => json_encode([
+                    $this->pattern_var => $code
+                ]),
+            ]);
+            $result = $client->post("https://ippanel.com/patterns/pattern"."?$query");
             $data =  json_decode($result->getBody(), true);
             if ($data['code'] != 0) {
                 Log::info($data['message']);
