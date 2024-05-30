@@ -84,14 +84,20 @@ class Episode extends Model
         return $this->belongsTo(Chapter::class);
     }
 
-    public function setFileAttribute($value)
+    public function setFileStorageAttribute($value)
     {
-        $this->attributes['file'] = ltrim( $value,env('APP_URL').'/storage');
+        $storageUrl = config('filesystems.disks.'.getAvailableStorages()[$value])['url'] ?? null;
+        if ($storageUrl) {
+            $this->attributes['file'] = ltrim($value,$storageUrl);
+        }
     }
 
-    public function setLocalVideoAttribute($value)
+    public function setVideoStorageAttribute($value)
     {
-        $this->attributes['local_video'] = ltrim( $value,env('APP_URL').'/storage');
+        $storageUrl = config('filesystems.disks.'.getAvailableStorages()[$value])['url'] ?? null ;
+        if ($storageUrl) {
+            $this->attributes['local_video'] = ltrim($value,$storageUrl);
+        }
     }
 
     public function homeworks(): HasMany

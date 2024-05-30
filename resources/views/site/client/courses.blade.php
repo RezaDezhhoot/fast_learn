@@ -6,29 +6,32 @@
         </div>
         <div class="dashboard-cards mb-5">
             @forelse($courses as $item)
-                <div class="card card-item card-item-list-layout mb-2">
-                <!-- end card-image -->
-                <div class="card-body d-flex align-items-center">
-                    <p class="card-text px-2">کد سفارش : <a>{{ $item->tracking_code }}</a></p>
-                    <h5 class="card-title"><a href="{{ route('course',['slug'=>$item->course->slug]) }}">{{ $item->course->title }}</a></h5>
+                @if($item->course)
+                    <div class="card card-item card-item-list-layout mb-2">
+                        <!-- end card-image -->
+                        <div class="card-body d-flex align-items-center">
+                            <p class="card-text px-2">کد سفارش : <a>{{ $item->tracking_code }}</a></p>
+                            <h5 class="card-title"><a href="{{ route('course',['slug'=>$item->course->slug]) }}">{{ $item->course->title }}</a></h5>
 
-                    <p class="card-text px-2"><a>{{ $item->course->type_label }}</a></p>
-                    <!-- end rating-wrap -->
-                    <div class="d-flex justify-content-between align-items-center px-4">
-                        <div class="card-action-wrap pl-3">
-                            <a href="{{ route('course',['slug'=>$item->course->slug]) }}" class="icon-element icon-element-sm shadow-sm cursor-pointer ml-1 text-success" data-toggle="tooltip" data-placement="top" data-title="مشاهده">
-                                <i class="la la-eye"></i>
-                            </a>
-                            @if($item->course->form)
-                                <a href="{{ route('user.rating',['id'=>$item->course->id]) }}" class="icon-element icon-element-sm shadow-sm cursor-pointer ml-1 text-success" data-toggle="tooltip" data-placement="top" data-title="نظر ستجی">
-                                    <i class="la la-star"></i>
-                                </a>
-                            @endif
+                            <p class="card-text px-2"><a>{{ $item->course->type_label }}</a></p>
+                            <!-- end rating-wrap -->
+                            <div class="d-flex justify-content-between align-items-center px-4">
+                                <div class="card-action-wrap pl-3">
+                                    <a href="{{ route('course',['slug'=>$item->course->slug]) }}" class="icon-element icon-element-sm shadow-sm cursor-pointer ml-1 text-success" data-toggle="tooltip" data-placement="top" data-title="مشاهده">
+                                        <i class="la la-eye"></i>
+                                    </a>
+                                    @if($item->course->form)
+                                        <a href="{{ route('user.rating',['id'=>$item->course->id]) }}" class="icon-element icon-element-sm shadow-sm cursor-pointer ml-1 text-success" data-toggle="tooltip" data-placement="top" data-title="نظر ستجی">
+                                            <i class="la la-star"></i>
+                                        </a>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
+                        <!-- end card-body -->
                     </div>
-                </div>
-                <!-- end card-body -->
-            </div>
+                @endif
+
             @empty
                 <div class="custom-box-shadow d-flex align-items-center justify-content-center alert alert-info">
                     <p>
