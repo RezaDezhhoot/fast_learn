@@ -28,7 +28,7 @@
         </li>
     </ul>
     @auth()
-        <h2 class="off-canvas-menu-heading text-right pt-4">پنل کاربری</h2>
+        <strong class="off-canvas-menu-heading text-right pt-4">پنل کاربری</strong>
         <ul class="generic-list-item off-canvas-menu-list pt-2 pb-2 border-bottom border-bottom-gray">
             @role('admin')
             <li>

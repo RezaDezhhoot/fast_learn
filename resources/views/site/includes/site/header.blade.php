@@ -82,7 +82,7 @@
             <i class="la la-times"></i>
         </div>
         <!-- end off-canvas-menu-close -->
-        <h4 class="off-canvas-menu-heading pt-20px">دسته بندی ها</h4>
+        <p class="off-canvas-menu-heading pt-20px">دسته بندی ها</p>
         <ul class="generic-list-item off-canvas-menu-list pt-5">
             <x-site.header-categories :categories="$categories" />
         </ul>

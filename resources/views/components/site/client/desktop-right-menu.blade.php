@@ -15,7 +15,7 @@
                 <img class="rounded-full img-fluid h-100" src="{{asset(auth()->user()->image)}}" alt="" />
             </a>
             <div class="ml-2">
-                <h4><a class="text-black">{{ auth()->user()->name }}</a></h4>
+                <strong><a class="text-black">{{ auth()->user()->name }}</a></strong>
                 <span class="d-block fs-14 lh-20">{{ auth()->user()->email }}</span>
             </div>
         </li>
