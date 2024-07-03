@@ -25,15 +25,27 @@ class SendRepository implements SendRepositoryInterface
 
     private $SettingRepository;
 
+    public $smsPanel;
+
+    public $kavenegar_api_key , $kavenegar_sender , $kavenegar_template;
+
     public function __construct()
     {
         $this->SettingRepository = app(SettingRepositoryInterface::class);
-        $this->apiKey = $this->SettingRepository->getRow('faraz_apiKey');
-        $this->username = $this->SettingRepository->getRow('faraz_username');
-        $this->password = $this->SettingRepository->getRow('faraz_password');
-        $this->lineNumber = $this->SettingRepository->getRow('faraz_line');
-        $this->pattern = $this->SettingRepository->getRow('faraz_pattern');
-        $this->pattern_var = $this->SettingRepository->getRow('faraz_var');
+        $this->smsPanel = $this->SettingRepository->getRow('sms_panel');
+        if ($this->smsPanel == NotificationEnum::KAVEH_NEGAR_SMS_PANEL) {
+            $this->kavenegar_api_key = $this->SettingRepository->getRow('kavenegar_api_key');
+            $this->kavenegar_sender = $this->SettingRepository->getRow('kavenegar_sender');
+            $this->kavenegar_template = $this->SettingRepository->getRow('kavenegar_template');
+        } else {
+            $this->apiKey = $this->SettingRepository->getRow('faraz_apiKey');
+            $this->username = $this->SettingRepository->getRow('faraz_username');
+            $this->password = $this->SettingRepository->getRow('faraz_password');
+            $this->lineNumber = $this->SettingRepository->getRow('faraz_line');
+            $this->pattern = $this->SettingRepository->getRow('faraz_pattern');
+            $this->pattern_var = $this->SettingRepository->getRow('faraz_var');
+        }
+
     }
 
     /**
@@ -41,6 +53,15 @@ class SendRepository implements SendRepositoryInterface
      * @throws GuzzleException
      */
     public function sendSMS($message, $number)
+    {
+        if ($this->smsPanel == NotificationEnum::KAVEH_NEGAR_SMS_PANEL) {
+            $this->sendSMSKavehNegar($message , $number);
+        } else {
+            $this->sendSMSFarazSMS($message , $number);
+        }
+    }
+
+    private function sendSMSFarazSMS($message, $number)
     {
         $client = new Client();
         $query = ['from' => $this->lineNumber, 'to' => $number, 'msg' => $message,
@@ -55,6 +76,16 @@ class SendRepository implements SendRepositoryInterface
         }
     }
 
+    private function sendSMSKavehNegar($message, $number)
+    {
+        $client = new Client();
+        $query = ['sender' => $this->kavenegar_sender, 'receptor' => $number, 'message' => $message];
+
+        $result = $client->get('https://api.kavenegar.com/v1/'.$this->kavenegar_api_key.'/sms/send.json', [
+            'query' => $query,
+        ]);
+    }
+
     public function sendNOTIFICATION($text, $id, $subject, $model_id)
     {
         return app(NotificationRepositoryInterface::class)->create([
@@ -67,10 +98,19 @@ class SendRepository implements SendRepositoryInterface
         ]);
     }
 
+    public function sendCode($code, $phone)
+    {
+        if ($this->smsPanel == NotificationEnum::KAVEH_NEGAR_SMS_PANEL) {
+            $this->sendCodeKavehNegar($code , $phone);
+        } else {
+            $this->sendCodeFarazSMS($code , $phone);
+        }
+    }
+
     /**
      * @throws Exception
      */
-    public function sendCode($code, $phone)
+    public function sendCodeFarazSMS($code, $phone)
     {
         try {
             $client = new Client();
@@ -94,6 +134,18 @@ class SendRepository implements SendRepositoryInterface
         } catch (GuzzleException|Exception  $e) {
             return "ERROR";
         }
+    }
+
+    public function sendCodeKavehNegar($code, $phone)
+    {
+        $url = 'https://api.kavenegar.com/v1/'.$this->kavenegar_api_key.'/verify/lookup.json';
+
+        $client = new Client();
+        $query = ['template' => $this->kavenegar_template, 'receptor' => $phone, 'token' => $code];
+
+        $result = $client->get($url, [
+            'query' => $query,
+        ]);
     }
 
     public function sendEmail(MailableContract $mailable, $email)

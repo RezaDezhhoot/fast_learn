@@ -46,4 +46,14 @@ final class NotificationEnum extends Enum
     }
 
     const EMAIL_METHOD = 'email_method' , SMS_METHOD = 'sms_method' , BOTH_METHODS = 'both_methods' , NONE_METHOD = 'none_method';
+
+    const FARAZ_SMS_PANEL = 'faraz' , KAVEH_NEGAR_SMS_PANEL = 'kaveh_negar';
+
+    public static function getSMSPanels()
+    {
+        return [
+            self::FARAZ_SMS_PANEL => 'فراز اس ام اس',
+            self::KAVEH_NEGAR_SMS_PANEL => 'کاوه نگار'
+        ];
+    }
 }

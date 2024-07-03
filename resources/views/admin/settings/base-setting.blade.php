@@ -97,25 +97,38 @@
                     </div>
                 </div>
             </x-admin.form-section>
-            <x-admin.form-section  label="مشخصات پنل پیامکی <a href='https://farazsms.com/'>فراز اس ام اس (پکیج اقتصادی)</a>">
-                <div class="border p-3">
-                    <div class="row">
-                        <x-admin.forms.input with="6" type="text" id="faraz_username" placeholder="نام کاربری" label="نام کاربری" wire:model.defer="faraz_username"/>
-                        <x-admin.forms.input with="6" type="text" id="faraz_password" placeholder="گذرواژه" label="گذرواژه" wire:model.defer="faraz_password"/>
-                        <x-admin.forms.input with="6" type="text" id="faraz_apiKey" placeholder="شناسه api" label="شناسه api" wire:model.defer="faraz_apiKey"/>
-                        <x-admin.forms.input with="6" type="text" id="faraz_line" placeholder="شماره خط" label="شماره خط" wire:model.defer="faraz_line"/>
-                    </div>
-                    <x-admin.form-section  label="سرویس OTP">
-                        <div class="border p-3">
-                            <div class="row">
-                                <x-admin.forms.input with="6" type="text" id="faraz_pattern" placeholder="نام پترن" label="نام پترن" wire:model.defer="faraz_pattern"/>
-                                <x-admin.forms.input with="6" type="text" id="faraz_var" placeholder="متغیر پترن" label="متغیر پترن" wire:model.defer="faraz_var"/>
-                            </div>
-                        </div>
-                    </x-admin.form-section>
-                </div>
-            </x-admin.form-section>
+            <x-admin.forms.dropdown id="sms_panel" :data="$data['sms_panels']" label="انتخاب پنل پیامکی" wire:model="sms_panel"/>
 
+            @if($sms_panel == \App\Enums\NotificationEnum::FARAZ_SMS_PANEL)
+                <x-admin.form-section  label="مشخصات پنل پیامکی <a href='https://farazsms.com/'>فراز اس ام اس (پکیج اقتصادی)</a>">
+                    <div class="border p-3">
+                        <div class="row">
+                            <x-admin.forms.input with="6" type="text" id="faraz_username" placeholder="نام کاربری" label="نام کاربری" wire:model.defer="faraz_username"/>
+                            <x-admin.forms.input with="6" type="text" id="faraz_password" placeholder="گذرواژه" label="گذرواژه" wire:model.defer="faraz_password"/>
+                            <x-admin.forms.input with="6" type="text" id="faraz_apiKey" placeholder="شناسه api" label="شناسه api" wire:model.defer="faraz_apiKey"/>
+                            <x-admin.forms.input with="6" type="text" id="faraz_line" placeholder="شماره خط" label="شماره خط" wire:model.defer="faraz_line"/>
+                        </div>
+                        <x-admin.form-section  label="سرویس OTP">
+                            <div class="border p-3">
+                                <div class="row">
+                                    <x-admin.forms.input with="6" type="text" id="faraz_pattern" placeholder="نام پترن" label="نام پترن" wire:model.defer="faraz_pattern"/>
+                                    <x-admin.forms.input with="6" type="text" id="faraz_var" placeholder="متغیر پترن" label="متغیر پترن" wire:model.defer="faraz_var"/>
+                                </div>
+                            </div>
+                        </x-admin.form-section>
+                    </div>
+                </x-admin.form-section>
+            @elseif($sms_panel == \App\Enums\NotificationEnum::KAVEH_NEGAR_SMS_PANEL)
+                <x-admin.form-section  label="مشخصات پنل پیامکی کاوه نگار">
+                    <div class="border p-3">
+                        <div class="row">
+                            <x-admin.forms.input with="6" type="text" id="kavenegar_api_key"  label="API KEY" wire:model.defer="kavenegar_api_key"/>
+                            <x-admin.forms.input with="6" type="text" id="kavenegar_sender" label="شماره خط(sender)" wire:model.defer="kavenegar_sender"/>
+                            <x-admin.forms.input  type="text" id="kavenegar_template" label="template" wire:model.defer="kavenegar_template"/>
+                        </div>
+                    </div>
+                </x-admin.form-section>
+            @endif
             <x-admin.form-section  label="مشخصات حساب ایمیل">
                 <div class="border p-3">
                     <div class="row">

@@ -41,6 +41,10 @@ class BaseSetting extends BaseComponent
 
     public $organ_form , $forget;
 
+    public $sms_panel ;
+
+    public $kavenegar_api_key , $kavenegar_sender , $kavenegar_template;
+
     public function __construct($id = null)
     {
         parent::__construct($id);
@@ -65,6 +69,7 @@ class BaseSetting extends BaseComponent
         $this->email_host = $this->settingRepository->getRow('email_host') ?? '';
         $this->email_username = $this->settingRepository->getRow('email_username') ?? '';
         $this->email_password = $this->settingRepository->getRow('email_password') ?? '';
+        $this->sms_panel = $this->settingRepository->getRow('sms_panel') ?? '';
 
         $this->faraz_apiKey = $this->settingRepository->getRow('faraz_apiKey') ?? '';
         $this->faraz_password = $this->settingRepository->getRow('faraz_password') ?? '';
@@ -110,9 +115,14 @@ class BaseSetting extends BaseComponent
         $this->notify_should_be_queueable = $this->settingRepository->getRow('notify_should_be_queueable');
         $this->exam_should_be_queueable = $this->settingRepository->getRow('exam_should_be_queueable');
         $this->organ_form = $this->settingRepository->getRow('organ_form');
-        $this->forget = $this->settingRepository->getRow('forget');
+        $this->forget = (bool)$this->settingRepository->getRow('forget');
+
+        $this->kavenegar_api_key = $this->settingRepository->getRow('kavenegar_api_key');
+        $this->kavenegar_sender = $this->settingRepository->getRow('kavenegar_sender');
+        $this->kavenegar_template = $this->settingRepository->getRow('kavenegar_template');
 
         $this->data['forms'] = $this->formReposirtory->all()->pluck('name','id');
+        $this->data['sms_panels'] = NotificationEnum::getSMSPanels();
     }
 
     public function render()
@@ -152,12 +162,16 @@ class BaseSetting extends BaseComponent
                 'public_storage_file_types' => ['nullable','string','max:4000'],
                 'public_max_file_size' => ['nullable','integer','min:1024'],
 
-                'faraz_apiKey' => [Rule::requiredIf(fn() => $this->auth_type == NotificationEnum::SMS_METHOD || $this->send_type == NotificationEnum::SMS_METHOD),'string','max:1000'],
-                'faraz_password' => [Rule::requiredIf(fn() => $this->auth_type == NotificationEnum::SMS_METHOD || $this->send_type == NotificationEnum::SMS_METHOD),'string','max:1000'],
-                'faraz_username' => [Rule::requiredIf(fn() => $this->auth_type == NotificationEnum::SMS_METHOD || $this->send_type == NotificationEnum::SMS_METHOD),'string','max:1000'],
-                'faraz_line' => [Rule::requiredIf(fn() => $this->auth_type == NotificationEnum::SMS_METHOD || $this->send_type == NotificationEnum::SMS_METHOD),'string','max:1000'],
-                'faraz_pattern' => [Rule::requiredIf(fn() => $this->auth_type == NotificationEnum::SMS_METHOD),'string','max:1000'],
-                'faraz_var' => [Rule::requiredIf(fn() => $this->auth_type == NotificationEnum::SMS_METHOD),'string','max:1000'],
+                'faraz_apiKey' => ['nullable','string','max:1000'],
+                'faraz_password' => ['nullable','string','max:1000'],
+                'faraz_username' => ['nullable','string','max:1000'],
+                'faraz_line' => ['nullable','string','max:1000'],
+                'faraz_pattern' => ['nullable','string','max:1000'],
+                'faraz_var' => ['nullable','string','max:1000'],
+
+                'kavenegar_api_key' => ['nullable','string','max:1000'],
+                'kavenegar_sender' => ['nullable','string','max:1000'],
+                'kavenegar_template' => ['nullable','string','max:1000'],
 
                 'email_host' => [Rule::requiredIf(fn() => $this->auth_type == NotificationEnum::EMAIL_METHOD || $this->send_type == NotificationEnum::EMAIL_METHOD),'string','max:1000'],
                 'email_username' => [Rule::requiredIf(fn() => $this->auth_type == NotificationEnum::EMAIL_METHOD || $this->send_type == NotificationEnum::EMAIL_METHOD),'string','max:1000'],
@@ -174,7 +188,8 @@ class BaseSetting extends BaseComponent
                 'exam_should_be_queueable' => ['required','boolean'],
 
                 'organ_form' => ['nullable','exists:forms,id'],
-                'forget' => ['boolean']
+                'forget' => ['boolean'],
+                'sms_panel' => ['nullable','string',Rule::in(array_keys($this->data['sms_panels']))]
             ] , [] ,
             [
                 'name' => 'نام سایت',
@@ -224,12 +239,21 @@ class BaseSetting extends BaseComponent
                 'notify_should_be_queueable' => 'زمان ارسال اعلان ها',
                 'exam_should_be_queueable' => 'زمان پردازش ازمون ها',
                 'organ_form' => 'فرم ثبت اموزشگاه',
-                'forget' => 'امکان بازیابی رمز عبور'
+                'forget' => 'امکان بازیابی رمز عبور',
+                'sms_panel' => 'پنل پیامکی',
+
+                'kavenegar_api_key' => 'kavenegar API KEY',
+                'kavenegar_sender' => "kavenegar sender line",
+                'kavenegar_template' => "kavenegar template"
             ]
         );
 
         $this->settingRepository::updateOrCreate(['name' => 'site_key'], ['value' => $this->site_key]);
         $this->settingRepository::updateOrCreate(['name' => 'secret_key'], ['value' => $this->secret_key]);
+
+        $this->settingRepository::updateOrCreate(['name' => 'kavenegar_api_key'], ['value' => $this->kavenegar_api_key]);
+        $this->settingRepository::updateOrCreate(['name' => 'kavenegar_sender'], ['value' => $this->kavenegar_sender]);
+        $this->settingRepository::updateOrCreate(['name' => 'kavenegar_template'], ['value' => $this->kavenegar_template]);
 
         $this->settingRepository::updateOrCreate(['name' => 'private_storage_file_types'], ['value' => $this->private_storage_file_types]);
         $this->settingRepository::updateOrCreate(['name' => 'private_max_file_size'], ['value' => $this->private_max_file_size]);
@@ -283,6 +307,7 @@ class BaseSetting extends BaseComponent
 
         $this->settingRepository::updateOrCreate(['name' => 'organ_form'], ['value' => $this->organ_form]);
         $this->settingRepository::updateOrCreate(['name' => 'forget'], ['value' => $this->forget]);
+        $this->settingRepository::updateOrCreate(['name' => 'sms_panel'], ['value' => $this->sms_panel]);
 
         $this->emitNotify('اطلاعات با موفقیت ثبت شد');
     }
