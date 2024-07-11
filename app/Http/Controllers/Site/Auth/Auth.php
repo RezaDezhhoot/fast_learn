@@ -151,13 +151,13 @@ class Auth extends BaseComponent
     {
         $userRepository =  $this->userRepository;
         if ($this->sent && $this->checkTimer())
-            return $this->addError($property,'رمز یکبار مصرف قبلا برای شما ارسال شده است.');
+            return $this->addError("password",'رمز یکبار مصرف قبلا برای شما ارسال شده است.');
 
         if (rateLimiter(value:$this->{$property}."_{$action}_code",max_tries: 5))
         {
             $this->resetInputs();
             return
-                $this->addError("$property", 'زیادی تلاش کردید. لطفا پس از مدتی دوباره تلاش کنید.');
+                $this->addError("password", 'زیادی تلاش کردید. لطفا پس از مدتی دوباره تلاش کنید.');
         }
 
         $this->validate([
@@ -165,7 +165,6 @@ class Auth extends BaseComponent
         ],[],[
             "$property" => 'شماره همراه ',
         ]);
-
         $rand = $this->generateCode();
         $user = $userRepository->getUser('phone',$this->{$property});
         app(OtpRepositoryInterface::class)->save($user,$rand);
@@ -176,6 +175,7 @@ class Auth extends BaseComponent
 
     private function sendOTP($property,$user,$code , $action)
     {
+
         $this->resetErrorBag();
         $sendRepository =  $this->sendRepository;
         $ok = false;
@@ -190,7 +190,7 @@ class Auth extends BaseComponent
             $ok = true;
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            $this->addError("$property",'خطا در هنگام ارسال رمز');
+            $this->addError("password",'خطا در هنگام ارسال رمز');
         }
 
         if ($ok) {
@@ -209,7 +209,7 @@ class Auth extends BaseComponent
         $this->validate([
             'name' => ['required','string','max:250'],
             'phone' => ['required','string','size:11','unique:users,phone'],
-            'recaptcha' => ['required', new ReCaptchaRule],
+//            'recaptcha' => ['required', new ReCaptchaRule],
         ],[],[
             'name' => 'نام کامل',
             'phone' => 'شماره همراه',
