@@ -25,7 +25,7 @@
                 <!-- end modal-header -->
                 <div class="modal-body">
                     <div class="plyr wire:ignore plyr--video plyr--html5 plyr--fullscreen-enabled">
-                        <video id="player" class="player"  crossorigin controls >
+                        <video id="player" crossorigin="anonymous" class="player"  controls >
                         </video>
                     </div>
                     <!-- end copy-to-clipboard -->
