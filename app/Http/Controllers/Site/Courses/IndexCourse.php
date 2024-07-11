@@ -18,9 +18,11 @@ use Livewire\WithPagination;
 class IndexCourse extends BaseComponent
 {
     use WithPagination;
-    protected $queryString = ['q','category','type','orderBy','teacher','property'];
+    protected $queryString = ['q','category','type','orderBy','teacher','property','level_type'];
     public ?string $q = null , $category = null  , $orderBy = null , $province = null , $city = null , $type = null , $property = null , $teacher =null;
     public array $categories = [] , $types = [] , $orders = [] ;
+
+    public $level_type = CourseEnum::LEVEL_TYPE_GENERAL;
 
     public function __construct()
     {
@@ -74,7 +76,7 @@ class IndexCourse extends BaseComponent
     {
         $courses = $courseRepository->getAllSite(
             $this->q ,$this->orderBy ,$this->type ,
-            $this->category, $this->teacher,$this->property , $this->province , $this->city
+            $this->category, $this->teacher,$this->property , $this->province , $this->city , $this->level_type
         );
         return view('site.courses.index-course',['courses' => $courses])->extends('site.layouts.site.site');
     }

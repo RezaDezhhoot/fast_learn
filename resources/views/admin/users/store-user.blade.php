@@ -16,13 +16,24 @@
                 <x-admin.forms.input with="6" type="text" id="father_name" label="نام پدر" wire:model.defer="father_name"/>
                 <x-admin.forms.input with="6" type="text" id="birthday" label="تاریخ تولد" wire:model.defer="birthday"/>
                 <x-admin.forms.dropdown with="6" id="province" :data="$data['province']" label="استان" wire:model="province"/>
-                <x-admin.forms.dropdown with="6" id="city" :data="$data['city']" label="شهر" wire:model.defer="city"/>
+                <x-admin.forms.dropdown with="4" id="city" :data="$data['city']" label="شهر" wire:model.defer="city"/>
+
+                <x-admin.forms.dropdown with="4" id="grade" :data="$data['grade']" label="مقطع تحصیلی" wire:model.defer="grade"/>
+                <x-admin.forms.input with="4" type="text" id="study_area" label="منطقه تحصیلی" wire:model.defer="study_area"/>
+
                 @if($mode == self::CREATE_MODE)
                     <x-admin.forms.input type="password" help="حداقل {{ $password_lgh}} حرف شامل اعداد و حروف" id="password" label="گذرواژه*" wire:model.defer="password"/>
                 @endif
             </div>
             <hr>
             <x-admin.forms.lfm-standalone id="image" label="تصویر " :file="$image" type="image" required="true" wire:model="image"/>
+            <hr>
+            @if($mode == self::UPDATE_MODE && $user->identification_code)
+                <h4>معرف</h4>
+                <p>
+                    <a target="_blank" href="{{ route('admin.store.user',['edit',$user->identification_code]) }}">{{ $user->identification->name }}</a>
+                </p>
+            @endif
             <hr>
             <x-admin.form-section label="نقش">
                 <div class="row">

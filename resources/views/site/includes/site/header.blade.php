@@ -3,7 +3,7 @@
         <div class="container">
             <div class="main-menu-content p-0">
                 <div class="row align-items-center">
-                    <div class="col-lg-2">
+                    <div class="col-lg-1">
                         <div class="logo-box">
                             <a href="{{route('home')}}" class="logo "><img class="logo-size" src="{{asset($logo)}}" alt="لوگو" /></a>
                             <div class="user-btn-action">

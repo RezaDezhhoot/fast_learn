@@ -14,7 +14,7 @@
         @role('teacher')
             <x-site.client.sidebar-link title="پنل مدرس" link="{{ route('teacher.dashboard') }}" icon="la la-chalkboard-teacher pr-2" :active="request()->routeIs('teacher.dashboard')" />
         @endif
-        @if (auth()->user()->organs)
+        @if (auth()->user()->organs  && sizeof(auth()->user()->organs) > 0)
             <x-site.client.sidebar-link link="{{route('organ.dashboard')}}" icon="la la-building" :active="request()->routeIs('organ.dashboard')" title="پنل اموزشگاه" />
         @endif
         <x-site.client.sidebar-link title=" پروفایل من" link="{{ route('user.profile') }}" icon="la la-user pr-2" :active="request()->routeIs('user.profile')" />

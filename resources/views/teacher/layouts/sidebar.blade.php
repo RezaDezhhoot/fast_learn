@@ -162,7 +162,7 @@
                                 @role('admin')
                                     <x-teacher.menu-item href="{{route('admin.dashboard')}}" icon="flaticon2-user" :active="request()->routeIs('admin.dashboard')" label="مدیریت" />
                                 @endif
-                                @if (auth()->user()->organs)
+                                @if (auth()->user()->organs  && sizeof(auth()->user()->organs) > 0)
                                     <x-teacher.menu-item href="{{route('organ.dashboard')}}" icon="fas fa-building" :active="request()->routeIs('organ.dashboard')" label="پنل اموزشگاه" />
                                 @endif
                                 <x-teacher.menu-item href="{{route('user.dashboard')}}" icon="flaticon2-user" :active="request()->routeIs('user.dashboard')" label="پنل کاربری" />

@@ -37,6 +37,8 @@ class StoreCourse extends BaseComponent
 
     public  $time_lapse , $organ_id , $poll_id  , $time_line;
 
+    public $level_type;
+
     public $tab = 'course';
 
     protected $queryString = ['tab'];
@@ -108,6 +110,7 @@ class StoreCourse extends BaseComponent
             $this->time_lapse = $this->course->time_lapse;
             $this->organ_id = $this->course->organ_id;
             $this->poll_id = $this->course->poll_id;
+            $this->level_type = $this->course->level_type;
 
             $this->chapters = $this->course->chapters->toArray();
         } elseif ($this->mode == self::CREATE_MODE) {
@@ -136,6 +139,7 @@ class StoreCourse extends BaseComponent
 
         $this->data['storage'] = getAvailableStorages();
         $this->data['chapter_status'] = ChapterEnum::getStatus();
+        $this->data['level_type'] = CourseEnum::getLevelType();
     }
 
     public function render()
@@ -159,7 +163,7 @@ class StoreCourse extends BaseComponent
             $this->saveInDataBase($this->courseRepository->newCourseObject());
             $this->reset(['slug','sub_title','title','short_body','long_body','image','category','quiz','teacher',
                 'status','level','type','reduction_type','const_price','reduction_value','start_at','expire_at',
-                'tags','seo_keywords','seo_description','incomingMethod','province','city','time_lapse','organ_id','poll_id']);
+                'tags','seo_keywords','seo_description','incomingMethod','province','city','time_lapse','organ_id','poll_id','level_type']);
         }
     }
 
@@ -194,6 +198,7 @@ class StoreCourse extends BaseComponent
             'time_lapse' => ['nullable','string','max:14000'],
             'organ_id' => ['nullable',Rule::in(array_keys($this->data['organs']))],
             'poll_id' => ['nullable',Rule::in(array_keys($this->data['forms']))],
+            'level_type' => ['nullable',Rule::in(array_keys(CourseEnum::getLevelType()))]
         ],[],[
             'title' => 'عنوان',
             'sub_title' => 'عنوان فرعی',
@@ -219,6 +224,7 @@ class StoreCourse extends BaseComponent
             'time_lapse' => 'تایم لپس دوره',
             'organ_id' => 'سازمان یا اموزشگاه',
             'poll_id' => 'فرم نظر سنجی',
+            'level_type' => 'نوع سطح دوره'
         ]);
         $model->title = $this->title;
         $model->sub_title = $this->sub_title;
@@ -243,6 +249,7 @@ class StoreCourse extends BaseComponent
         $model->time_lapse = $this->time_lapse;
         $model->organ_id = $this->organ_id;
         $model->poll_id = $this->poll_id;
+        $model->level_type = $this->level_type;
         $model->incoming_method_id = emptyToNull($this->incomingMethod);
         $model = $this->courseRepository->save($model);
         $this->tags = array_filter($this->tags);
@@ -261,10 +268,6 @@ class StoreCourse extends BaseComponent
         $this->courseRepository->delete($this->course);
         return redirect()->route('admin.course');
     }
-
-
-
-
 
     public function openChapter($key)
     {

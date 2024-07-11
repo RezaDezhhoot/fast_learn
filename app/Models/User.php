@@ -290,4 +290,9 @@ class User extends Authenticatable implements Wallet, Confirmable
     {
         return $this->hasMany(UserPoll::class);
     }
+
+    public function identification()
+    {
+        return $this->belongsTo(User::class,'identification_code');
+    }
 }

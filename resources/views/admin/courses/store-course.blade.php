@@ -25,8 +25,9 @@
                     <x-admin.forms.input with="6" disabled type="text" id="slug" label="نام مستعار*" wire:model.defer="slug"/>
                     <x-admin.forms.input with="6" type="text" id="title" label="عنوان*" wire:model.defer="title"/>
                     <x-admin.forms.input type="text" id="sub_title" label="عنوان فرعی*" wire:model.defer="sub_title"/>
-                    <x-admin.forms.dropdown with="6" id="type" :data="$data['type']" label="نوع دوره*" wire:model.defer="type"/>
-                    <x-admin.forms.dropdown with="6" id="status" :data="$data['status']" label="وضعیت*" wire:model.defer="status"/>
+                    <x-admin.forms.dropdown with="4" id="type" :data="$data['type']" label="نوع دوره*" wire:model.defer="type"/>
+                    <x-admin.forms.dropdown with="4" id="status" :data="$data['status']" label="وضعیت*" wire:model.defer="status"/>
+                    <x-admin.forms.dropdown with="4" id="level_type" :data="$data['level_type']" label="نوع سطح دوره" wire:model.defer="level_type"/>
 
                     <x-admin.forms.input with="4" type="number" id="const_price" label="قیمت ثابت" wire:model.defer="const_price"/>
                     <x-admin.forms.input with="4" type="number" min="0" id="reduction_value" label="مقدار تخفیف*" wire:model.defer="reduction_value"/>

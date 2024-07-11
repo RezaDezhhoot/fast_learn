@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Users;
 
+use App\Enums\Grades;
 use App\Enums\NotificationEnum;
 use App\Enums\UserEnum;
 use App\Http\Controllers\BaseComponent;
@@ -16,12 +17,15 @@ use App\Rules\ValidNationCode;
 use Bavix\Wallet\Exceptions\BalanceIsEmpty;
 use Bavix\Wallet\Exceptions\InsufficientFunds;
 use Carbon\Carbon;
+use Illuminate\Validation\Rule;
 
 class StoreUser extends BaseComponent
 {
     public $user  ,$name, $header , $userRole = [] , $password  , $code_id   , $avatar , $image;
     public $phone , $province , $city  , $status , $email , $actionWallet , $editWallet , $sendMessage , $subjectMessage,
         $statusMessage , $result , $walletMessage   , $userWallet , $father_name , $birthday , $password_lgh ;
+
+    public $grade , $identification_code , $study_area;
 
     public function __construct($id = null)
     {
@@ -52,6 +56,9 @@ class StoreUser extends BaseComponent
             $this->code_id = $this->user->details->code_id ?? null;
             $this->avatar = $this->user->details->avatar ?? null;
             $this->father_name = $this->user->details->father_name ?? null;
+            $this->grade = $this->user->details->grade ?? null;
+            $this->study_area = $this->user->details->study_area ?? null;
+            $this->identification_code = $this->user->identification_code ?? null;
             $this->birthday = $this->user->details->birthday ?? null;
             $this->userRole = $this->user->roles()->pluck('name','id')->toArray();
             $this->userWallet = $this->userRepository->walletTransactions($this->user);
@@ -59,7 +66,7 @@ class StoreUser extends BaseComponent
         } elseif ($this->mode == self::CREATE_MODE)
             $this->header = 'کاربر جدید';
         else abort(404);
-
+        $this->data['grade'] = Grades::getItems();
         $this->data['status'] = UserEnum::getStatus();
         $this->data['role'] = $this->roleRepository->whereNotIn('name', ['administrator']);
         $this->data['action'] = [
@@ -81,6 +88,7 @@ class StoreUser extends BaseComponent
             $this->reset([
                 'name','phone','status','email','image',
                 'province','city','code_id','father_name','birthday','avatar','password',
+                'grade','identification_code','study_area'
             ]);
         }
     }
@@ -109,6 +117,10 @@ class StoreUser extends BaseComponent
             'father_name' => ['nullable','string','max:250'],
             'birthday' => ['nullable','string','max:255'],
             'avatar' => ['nullable','string','max:255'],
+
+            'grade' => ['nullable',Rule::in(Grades::getValues())],
+            'identification_code' => ['nullable','exists:users,id'],
+            'study_area' => ['nullable','string','max:100']
         ];
         $messages = [
             'name' => 'نام ',
@@ -122,6 +134,10 @@ class StoreUser extends BaseComponent
             'father_name' => 'نام پدر',
             'birthday' => 'بیوگرافی',
             'avatar' => 'تصویر رسمی',
+
+            'grade' => 'مقطع تحصیلی',
+            'identification_code' => 'کد معرف',
+            'study_area' => 'منطقه تحصیلی',
         ];
 
         if ($this->mode == self::CREATE_MODE)
@@ -136,6 +152,7 @@ class StoreUser extends BaseComponent
         $model->phone = $this->phone;
         $model->status = $this->status;
         $model->email = $this->email;
+        $model->identification_code = $this->identification_code;
         $model->image = $this->image;
         $model->ip = uniqid();
         if ($this->mode == self::CREATE_MODE)
@@ -150,8 +167,11 @@ class StoreUser extends BaseComponent
             'city' => $this->city,
             'code_id' => $this->code_id,
             'father_name' => $this->father_name,
-            'birthday' => $this->birthday,
             'avatar' => $this->avatar,
+
+            'birthday' => $this->birthday,
+            'grade' => $this->grade,
+            'study_area' => $this->study_area,
         ]);
         if ((auth()->user()->hasRole('super_admin') && !$model->hasRole('administrator')) || auth()->user()->hasRole('administrator'))
         {

@@ -75,4 +75,13 @@ final class CourseEnum extends Enum
         ];
     }
 
+    const LEVEL_TYPE_GENERAL = 'general' , LEVEL_TYPE_PROFESSIONAL = 'professional';
+
+    public static function getLevelType()
+    {
+        return [
+            self::LEVEL_TYPE_GENERAL => 'عمومی',
+            self::LEVEL_TYPE_PROFESSIONAL => 'تخصصی',
+        ];
+    }
 }

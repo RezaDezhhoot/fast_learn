@@ -31,7 +31,7 @@
                     <a href="{{route('teacher.dashboard')}}"> <i class="la la-chalkboard-teacher"></i> پنل مدرس </a>
                 </li>
                 @endif
-                @if(isset(auth()->user()->organs))
+                @if(isset(auth()->user()->organs)  && sizeof(auth()->user()->organs) > 0)
                     <li>
                         <a href="{{route('organ.dashboard')}}"> <i class="la la-building"></i> پنل اموزشگاه </a>
                     </li>

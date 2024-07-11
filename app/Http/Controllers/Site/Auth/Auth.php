@@ -26,13 +26,16 @@ use Illuminate\Support\Facades\Auth as Authentication;
 use App\Mail\AuthenticationMail as AuthMailer;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\MessageBag;
+use Illuminate\Support\Str;
 
 
 class Auth extends BaseComponent
 {
     protected $queryString = ['action'];
     public $phone , $password  , $name  , $action = self::MODE_LOGIN , $email;
+
     public $logo , $authImage , $passwordLabel = 'رمز عبور';
+
     public bool $sms = false , $sent = false;
 
     public $recaptcha;
@@ -105,7 +108,7 @@ class Auth extends BaseComponent
 
         if ($user->status == UserEnum::CONFIRMED || $this->auth_type == NotificationEnum::NONE_METHOD){
             if (Hash::check($this->password, $user->password) ||
-                (!is_null($user->otp) && Hash::check($this->password, $user_otp) && $this->sms === true))
+                (!is_null($user->otp) && Hash::check($this->password, $user_otp) ))
                 $auth = true;
             else {
                 return $this->addError('password','رمزعبور یا شماره وارد شده اشتباه می باشد');
@@ -177,17 +180,14 @@ class Auth extends BaseComponent
         $sendRepository =  $this->sendRepository;
         $ok = false;
         try {
-            if ($this->auth_type == NotificationEnum::SMS_METHOD){
-                $sendRepository->sendCode($code,$this->phone);
-                $this->passwordLabel = 'رمز ارسال شده را وارد نماید';
-                $ok = true;
-            } elseif ($this->auth_type == NotificationEnum::EMAIL_METHOD) {
+            if ($this->auth_type == NotificationEnum::EMAIL_METHOD) {
                 $sendRepository->sendEmail(new AuthMailer($user,$code),$user->email);
                 $this->passwordLabel = 'رمز ایمیل شده را وارد نماید';
-                $ok = true;
             } else {
-                return false;
+                $sendRepository->sendCode($code,$this->phone);
+                $this->passwordLabel = 'رمز ارسال شده را وارد نماید';
             }
+            $ok = true;
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             $this->addError("$property",'خطا در هنگام ارسال رمز');
@@ -199,6 +199,8 @@ class Auth extends BaseComponent
             $this->sms = true;
             $this->sent = true;
         }
+
+        return $ok;
     }
 
     public function signUp()
@@ -206,23 +208,18 @@ class Auth extends BaseComponent
         $this->sent = false;
         $this->validate([
             'name' => ['required','string','max:250'],
-            'email' => ['required','string','email','unique:users,email','max:250'],
             'phone' => ['required','string','size:11','unique:users,phone'],
-            'password' => ['required','min:'.($this->settingRepository->getRow('password_length') ?? 8),'regex:/^.*(?=.*[a-zA-Z])(?=.*[0-9]).*$/'],
             'recaptcha' => ['required', new ReCaptchaRule],
         ],[],[
             'name' => 'نام کامل',
-            'email' => 'ایمیل',
             'phone' => 'شماره همراه',
-            'password' => 'رمز عبور',
             'recaptcha' => 'فیلد امنیتی'
         ]);
         $user = $this->userRepository->create([
             'name' => $this->name,
-            'email' => $this->email,
             'phone' => $this->phone,
-            'password' => $this->password,
-            'status' => UserEnum::CONFIRMED,
+            'password' => Str::ulid(),
+            'status' => UserEnum::NOT_CONFIRMED,
             'ip' => request()->ip(),
         ]);
         $registerGift = $this->settingRepository->getRow('registerGift');
@@ -236,12 +233,13 @@ class Auth extends BaseComponent
         } catch (\Exception $e) {
             Log::error($e->getMessage());
         }
-        redirect()->route('auth');
+        $this->mode = self::VERIFY_MODE;
+//        redirect()->route('auth');
     }
 
     public function generateCode(): int
     {
-        return mt_rand(12345,999998);
+        return app()->environment('local') ? 1111 : mt_rand(12345,999998);
     }
 
     public function canSendAgain()

@@ -35,7 +35,7 @@ class CourseRepository implements CourseRepositoryInterface
         })->search($search)->paginate($per_page);
     }
 
-    public function getAllSite($search = null, $orderBy = null, $type = null, $category = null , $teacher = null, $property = null ,  $province = null , $city = null)
+    public function getAllSite($search = null, $orderBy = null, $type = null, $category = null , $teacher = null, $property = null ,  $province = null , $city = null , $level_type = null)
     {
         return Course::published()->latest()->when($type, function($q) use ($type) {
             return match ($type) {
@@ -43,6 +43,8 @@ class CourseRepository implements CourseRepositoryInterface
                 'cash' => $q->where('const_price','>',0),
                 default => $q,
             };
+        })->when($level_type , function ($q) use ($level_type) {
+            $q->where('level_type' , $level_type);
         })->when($orderBy , function ($q) use ($orderBy) {
             return match ($orderBy) {
                 'latest' => $q->latest('id'),
