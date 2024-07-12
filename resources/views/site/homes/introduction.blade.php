@@ -1,7 +1,7 @@
 <div>
     <livewire:site.includes.site.slider />
     <div class="container">
-        <div class="row mt-50px ">
+        <div dir="ltr" class="row  mt-50px ">
             <div class="col-3 d-flex align-items-center justify-content-center p-4">
                 <div class=" w-100 d-flex align-items-center justify-content-center">
                     <div class="text-center">
