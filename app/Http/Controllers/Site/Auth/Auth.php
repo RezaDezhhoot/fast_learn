@@ -137,7 +137,7 @@ class Auth extends BaseComponent
 
             return Authentication::user()->hasRole('admin') ?
                 redirect()->intended(route('admin.dashboard')) :
-                redirect()->intended(route('user.dashboard'));
+                redirect()->intended($this->mode == self::VERIFY_MODE ? route('introduction') : route('user.dashboard'));
         }
         return $this->addError('password','گذواژه یا شماره همراه اشتباه می باشد.');
     }
@@ -209,7 +209,7 @@ class Auth extends BaseComponent
         $this->validate([
             'name' => ['required','string','max:250'],
             'phone' => ['required','string','size:11','unique:users,phone'],
-//            'recaptcha' => ['required', new ReCaptchaRule],
+            'recaptcha' => ['required', new ReCaptchaRule],
         ],[],[
             'name' => 'نام کامل',
             'phone' => 'شماره همراه',

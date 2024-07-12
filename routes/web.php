@@ -20,6 +20,7 @@ Route::middleware(['auth'])->group(function (){
     Route::get('/verify/{gateway?}',App\Http\Controllers\Site\Carts\Verify::class)->name('verify');
     Route::get('/storage/{episode}/{type}', App\Http\Controllers\StorageController::class)->name('storage');
     Route::get('/',App\Http\Controllers\Site\Homes\Home::class)->name('home');
+    Route::get('/introduction',App\Http\Controllers\Site\Homes\Introduction::class)->name('introduction');
     Route::get('/courses',App\Http\Controllers\Site\Courses\IndexCourse::class)->name('courses');
     Route::get('/courses/{slug?}',App\Http\Controllers\Site\Courses\SingleCourse::class)->name('course');
     Route::get('/articles',App\Http\Controllers\Site\Articles\IndexArticle::class)->name('articles');
