@@ -7,7 +7,7 @@ use App\Http\Controllers\BaseComponent;
 
 class Footer extends BaseComponent
 {
-    public  $title , $footerText , $address , $email , $autographs , $tel , $search , $copyRight , $users_can_send_teacher_request;
+    public  $title , $footerText , $address , $email , $autographs = [] , $tel , $search , $copyRight , $users_can_send_teacher_request;
 
     public $links = [];
 

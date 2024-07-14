@@ -41,11 +41,13 @@
                     <h3 class="fs-20 font-weight-semi-bold pb-2">نماد های اعتماد</h3>
                     <div class="divider border-bottom-0"><span></span></div>
                     <div class="text-right ">
-                        @foreach($autographs as $item)
-                            <div class="d-inline-block autograph">
-                                {!! $item !!}
-                            </div>
-                        @endforeach
+                        @if($autographs)
+                            @foreach($autographs as $item)
+                                <div class="d-inline-block autograph">
+                                    {!! $item !!}
+                                </div>
+                            @endforeach
+                        @endif
                     </div>
                 </div>
                 <!-- end footer-item -->
