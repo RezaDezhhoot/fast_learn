@@ -23,10 +23,6 @@ class Setting extends Model
         return Setting::where('name', $name)->first()->value ?? $default;
     }
 
-    public function setValueAttribute($value)
-    {
-        $this->attributes['value'] = str_replace(env('APP_URL') . '/', '', $value);
-    }
 
     public function getValueAttribute($value)
     {
