@@ -61,7 +61,7 @@ class BaseSetting extends BaseComponent
         $this->site_key = $this->settingRepository->getRow('site_key');
         $this->secret_key = $this->settingRepository->getRow('secret_key');
 
-        $this->autographs = $this->settingRepository->getRow('autographs',[]);
+        $this->autographs = $this->settingRepository->getRow('autographs',[]) ?? [];
 
         $this->auth_type = $this->settingRepository->getRow('auth_type');
         $this->send_type = $this->settingRepository->getRow('send_type');
