@@ -147,12 +147,15 @@
             <x-admin.form-section  label="نماد های اعتماد">
                 <div class="border p-3">
                     <x-admin.button class="btn btn-light-primary font-weight-bolder btn-sm" content="افزودن نماد" wire:click="addAutograph()" />
-                    @foreach($autographs as $key => $item)
-                        <div class="form-group d-flex align-items-center col-12">
-                            <input class="form-control col-11" id="{{ $key }}autographs" type="text" placeholder="کد" wire:model.defer="autographs.{{$key}}">
-                            <div><button class="btn btn-light-danger font-weight-bolder btn-sm" wire:click="deleteAutograph({{ $key }})">حذف</button></div>
-                        </div>
-                    @endforeach
+                    @if(is_array($autographs))
+                        @foreach($autographs as $key => $item)
+                            <div class="form-group d-flex align-items-center col-12">
+                                <input class="form-control col-11" id="{{ $key }}autographs" type="text" placeholder="کد" wire:model.defer="autographs.{{$key}}">
+                                <div><button class="btn btn-light-danger font-weight-bolder btn-sm" wire:click="deleteAutograph({{ $key }})">حذف</button></div>
+                            </div>
+                        @endforeach
+                    @endif
+
                 </div>
 
             </x-admin.form-section>
