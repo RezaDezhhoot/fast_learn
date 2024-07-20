@@ -17,6 +17,52 @@
         </div>
         <!-- end breadcrumb-content -->
         <div class="section-block mb-3"></div>
+        <div class="row">
+            <div class="row col-9 mx-auto">
+                <div class="col-12 col-md-6 responsive-column-half">
+                    <div class="card card-item dashboard-info-card">
+                        <div class="card-body">
+                            <div class="pl-4">
+                                <p class="card-text fs-18">دوره های عمومی</p>
+                                <h5 class="card-title pt-2 fs-26">
+                                    @if(sizeof($gCourses) > 0)
+                                        @foreach($gCourses as $item)
+                                            <x-site.courses.course-box show_details="{{false}}" :item="$item" />
+                                        @endforeach
+                                    @else
+                                        <div class="text-center mb-3">
+                                            <img class="mx-auto no-date d-block mt-5" src="{{ asset('site/svg/no-data.svg') }}" alt="">
+                                            <h5 class="mt-3">ما هیچ دوره ای برای شما پیدا نکردیم!</h5>
+                                        </div>
+                                    @endif
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 responsive-column-half">
+                    <div class="card card-item dashboard-info-card">
+                        <div class="card-body">
+                            <div class="pl-4">
+                                <p class="card-text fs-18">دوره های اختصاصی</p>
+                                <h5 class="card-title pt-2 fs-26">
+                                    @if(sizeof($pCourses) > 0)
+                                        @foreach($pCourses as $item)
+                                            <x-site.courses.course-box show_details="{{false}}" :item="$item" />
+                                        @endforeach
+                                    @else
+                                        <div class="text-center mb-3">
+                                            <img class="mx-auto no-date d-block mt-5" src="{{ asset('site/svg/no-data.svg') }}" alt="">
+                                            <h5 class="mt-3">ما هیچ دوره ای برای شما پیدا نکردیم!</h5>
+                                        </div>
+                                    @endif
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="dashboard-heading mb-3">
             <h3 class="fs-22 font-weight-semi-bold">داشبورد</h3>
         </div>

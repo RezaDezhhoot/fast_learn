@@ -76,13 +76,8 @@ class IndexCourse extends BaseComponent
     {
         $courses = $courseRepository->getAllSite(
             $this->q ,$this->orderBy ,$this->type ,
-            $this->category, $this->teacher,$this->property , $this->province , $this->city , CourseEnum::LEVEL_TYPE_GENERAL
+            $this->category, $this->teacher,$this->property , $this->province , $this->city
         );
-
-        $pCourses = $courseRepository->getAllSite(
-            $this->q ,$this->orderBy ,$this->type ,
-            $this->category, $this->teacher,$this->property , $this->province , $this->city , CourseEnum::LEVEL_TYPE_PROFESSIONAL
-        );
-        return view('site.courses.index-course',['courses' => $courses,'pCourses' => $pCourses])->extends('site.layouts.site.site');
+        return view('site.courses.index-course',['courses' => $courses])->extends('site.layouts.site.site');
     }
 }

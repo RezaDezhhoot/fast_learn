@@ -35,9 +35,9 @@ class CourseRepository implements CourseRepositoryInterface
         })->search($search)->paginate($per_page);
     }
 
-    public function getAllSite($search = null, $orderBy = null, $type = null, $category = null , $teacher = null, $property = null ,  $province = null , $city = null , $level_type = null)
+    public function getAllSite($search = null, $orderBy = null, $type = null, $category = null , $teacher = null, $property = null ,  $province = null , $city = null , $level_type = null , $paginate = true)
     {
-        return Course::published()->latest()->when($type, function($q) use ($type) {
+        $items =  Course::published()->latest()->when($type, function($q) use ($type) {
             return match ($type) {
                 'free' => $q->where('const_price',0),
                 'cash' => $q->where('const_price','>',0),
@@ -76,7 +76,12 @@ class CourseRepository implements CourseRepositoryInterface
             return $q->when($city , function ($q) use ($city) {
                 return $q->where('city',$city);
             })->where('province',$province);
-        })->hasCategory()->get();
+        })->hasCategory();
+
+        if ($paginate)
+            return $items->paginate(9);
+
+        return $items->get();
     }
 
     public function save(Course $course): Course

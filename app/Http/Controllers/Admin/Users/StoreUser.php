@@ -25,7 +25,7 @@ class StoreUser extends BaseComponent
     public $phone , $province , $city  , $status , $email , $actionWallet , $editWallet , $sendMessage , $subjectMessage,
         $statusMessage , $result , $walletMessage   , $userWallet , $father_name , $birthday , $password_lgh ;
 
-    public $grade , $identification_code , $study_area;
+    public $grade , $identification_code , $study_area , $school;
 
     public function __construct($id = null)
     {
@@ -60,6 +60,7 @@ class StoreUser extends BaseComponent
             $this->study_area = $this->user->details->study_area ?? null;
             $this->identification_code = $this->user->identification_code ?? null;
             $this->birthday = $this->user->details->birthday ?? null;
+            $this->school = $this->user->details->school ?? null;
             $this->userRole = $this->user->roles()->pluck('name','id')->toArray();
             $this->userWallet = $this->userRepository->walletTransactions($this->user);
             $this->result = $this->user->alerts;
@@ -120,7 +121,8 @@ class StoreUser extends BaseComponent
 
             'grade' => ['nullable',Rule::in(Grades::getValues())],
             'identification_code' => ['nullable','exists:users,id'],
-            'study_area' => ['nullable','string','max:100']
+            'study_area' => ['nullable','string','max:100'],
+            'school' => ['nullable','string','max:100']
         ];
         $messages = [
             'name' => 'نام ',
@@ -138,6 +140,7 @@ class StoreUser extends BaseComponent
             'grade' => 'مقطع تحصیلی',
             'identification_code' => 'کد معرف',
             'study_area' => 'منطقه تحصیلی',
+            'school' => 'مدرسه',
         ];
 
         if ($this->mode == self::CREATE_MODE)
@@ -172,6 +175,7 @@ class StoreUser extends BaseComponent
             'birthday' => $this->birthday,
             'grade' => $this->grade,
             'study_area' => $this->study_area,
+            'school' => $this->school,
         ]);
         if ((auth()->user()->hasRole('super_admin') && !$model->hasRole('administrator')) || auth()->user()->hasRole('administrator'))
         {

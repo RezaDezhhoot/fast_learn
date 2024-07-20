@@ -29,7 +29,7 @@
                             <!-- end input-box -->
                             <div class="input-box">
                                 <label class="label-text">
-                                    {{ $passwordLabel }}
+                                    کد تایید
                                     @if($forget)
                                         <small>
                                             <a class="text-info" href="{{ route('forget') }}">(رمز عبور خود را فراموش کردید؟)</a>
@@ -38,7 +38,7 @@
                                 </label>
                                 <div class="input-group">
                                     <span class="la la-lock input-icon"></span>
-                                    <input class="form-control form--control password-field" wire:model.defer="password"  type="password"    placeholder="{{ !$sent ? 'رمز عبور' : 'کد تایید' }} خود را وارد کنید" />
+                                    <input class="form-control form--control password-field" wire:model.defer="password"  type="password"  placeholder="کد تایید خود را وارد کنید" />
                                     <div class="input-group-append" wire:ignore>
                                         <button class="btn theme-btn theme-btn-transparent toggle-password" type="button" wire:ignore>
                                             <svg class="eye-on" xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24" width="22px" fill="#7f8897">

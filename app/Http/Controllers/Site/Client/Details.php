@@ -21,6 +21,8 @@ class Details extends BaseComponent
     public $code_id  , $father_name , $birthday , $province , $city , $grade , $identification_code , $study_area;
 
 
+    public $school;
+
     public function __construct($id = null)
     {
         parent::__construct($id);
@@ -60,7 +62,10 @@ class Details extends BaseComponent
             'birthday' => ['required'],
             'grade' => ['required',Rule::in(Grades::getValues())],
             'identification_code' => ['nullable',Rule::exists('users','id')->whereNot('id',auth()->id())],
-            'study_area' => ['required','string','max:100']
+            'study_area' => ['required','string','max:100'],
+            'school' => [
+                in_array($this->grade,[Grades::STUDENT , Grades::COLLEGIAN]) ? 'required' : 'nullable' ,'string','max:150'
+            ]
         ];
         $messages = [
             'code_id' => 'کد ملی',
@@ -68,6 +73,7 @@ class Details extends BaseComponent
             'grade' => 'مقطع تحصیلی',
             'identification_code' => 'کد معرف',
             'study_area' => 'منطقه تحصیلی',
+            'school' => $this->grade ==  Grades::COLLEGIAN ? 'نام دانشگاه' : "نام مدرسه"
         ];
         $this->validate($fields,[],$messages);
         $this->userDetailRepository->updateOrCreate(['user_id' => auth()->id()],[
@@ -75,6 +81,7 @@ class Details extends BaseComponent
             'birthday' => $this->birthday,
             'grade' => $this->grade,
             'study_area' => $this->study_area,
+            'school' => $this->school
         ]);
         $user = auth()->user();
         $user->identification_code = $this->identification_code;

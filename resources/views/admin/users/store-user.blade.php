@@ -16,10 +16,10 @@
                 <x-admin.forms.input with="6" type="text" id="father_name" label="نام پدر" wire:model.defer="father_name"/>
                 <x-admin.forms.input with="6" type="text" id="birthday" label="تاریخ تولد" wire:model.defer="birthday"/>
                 <x-admin.forms.dropdown with="6" id="province" :data="$data['province']" label="استان" wire:model="province"/>
-                <x-admin.forms.dropdown with="4" id="city" :data="$data['city']" label="شهر" wire:model.defer="city"/>
-
-                <x-admin.forms.dropdown with="4" id="grade" :data="$data['grade']" label="مقطع تحصیلی" wire:model.defer="grade"/>
-                <x-admin.forms.input with="4" type="text" id="study_area" label="منطقه تحصیلی" wire:model.defer="study_area"/>
+                <x-admin.forms.dropdown with="3" id="city" :data="$data['city']" label="شهر" wire:model.defer="city"/>
+                <x-admin.forms.dropdown with="3" id="grade" :data="$data['grade']" label="مقطع تحصیلی" wire:model.defer="grade"/>
+                <x-admin.forms.input with="3" type="text" id="study_area" label="منطقه تحصیلی" wire:model.defer="study_area"/>
+                <x-admin.forms.input with="3" type="text" id="school" label="مدرسه" wire:model.defer="school"/>
 
                 @if($mode == self::CREATE_MODE)
                     <x-admin.forms.input type="password" help="حداقل {{ $password_lgh}} حرف شامل اعداد و حروف" id="password" label="گذرواژه*" wire:model.defer="password"/>

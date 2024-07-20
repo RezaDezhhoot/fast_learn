@@ -64,8 +64,22 @@
                             @enderror
                         </div>
                     </div>
+                    @if($grade == \App\Enums\Grades::COLLEGIAN || $grade == \App\Enums\Grades::STUDENT)
+                        <div class="input-box col-lg-12">
+                            <label class="label-text">{{ $grade == \App\Enums\Grades::COLLEGIAN ? 'نام دانشگاه' : "نام مدرسه" }} *</label>
+                            <div class="form-group">
+                                <input class="form-control form--control" type="text" name="school"
+                                       wire:model.defer="school"/>
+                                <span class="la la-id-card input-icon"></span>
+                                @error('school')
+                                <small class="text-danger">{{$message}}</small>
+                                @enderror
+                            </div>
+                        </div>
+                    @endif
+
                     <div class="input-box col-lg-12">
-                        <label class="label-text">{{ $grade == \App\Enums\Grades::COLLEGIAN ? 'نام دانشگاه' : ( $grade == \App\Enums\Grades::STUDENT ? 'نام مدرسه' : 'منطقه تحصیلی') }} *</label>
+                        <label class="label-text">منطقه تحصیلی*</label>
                         <div class="form-group">
                             <input class="form-control form--control" type="text" name="study_area"
                                    wire:model.defer="study_area"/>
