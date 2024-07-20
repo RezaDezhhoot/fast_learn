@@ -32,7 +32,7 @@ class Checkout extends BaseComponent
 {
     public $address , $user , $phone , $name , $gateway , $gateways = [] ;
     public $description ;
-    public $useWallet = false;
+    public $useWallet = true;
     private $walletAmount = 0;
     public $useVoucher = false;
     public $voucherCode;
@@ -64,7 +64,7 @@ class Checkout extends BaseComponent
             'home' => ['link' => route('home') , 'label' => 'صفحه اصلی'],
             'cart' => ['link' => '' , 'label' => 'تکمیل خرید'],
         ];
-
+        $this->updatedUseWallet();
         $gateways = $this->settingRepository->getRow('gateway',[]);
         foreach ($gateways as $key => $gateway)
         {
@@ -313,6 +313,9 @@ class Checkout extends BaseComponent
             $orderId = $this->store();
             return (gettype($orderId) == 'integer' && $orderId > 0) ?
                 redirect(route('verify', ['tracking' => $orderId + $this->orderRepository::CHANGE_ID()])) : '';
+        } else {
+            $this->addError('gateway','موجودی ناکافی');
+            return false;
         }
 
         $this->validate([

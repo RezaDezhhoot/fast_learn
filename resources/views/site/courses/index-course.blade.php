@@ -165,24 +165,50 @@
                     <!-- end sidebar -->
                 </div>
                 <!-- end col-lg-4 -->
-                <div class="col-lg-9">
-                    @if(sizeof($courses) > 0)
-                    <div class="row">
-                        @foreach($courses as $item)
-                        <div class="col-lg-4 responsive-column-half">
-                            <x-site.courses.course-box show_details="{{false}}" :item="$item" />
-                        </div>
-                        @endforeach
-                    </div>
-                    <!-- end row -->
-                    @else
-                    <div class="text-center mb-3">
-                        <img class="mx-auto no-date d-block mt-5" src="{{ asset('site/svg/no-data.svg') }}" alt="">
-                        <h5 class="mt-3">ما هیچ دوره ای برای شما پیدا نکردیم!</h5>
-                    </div>
-                    @endif
-                    {{$courses->links('site.includes.paginate')}}
-                </div>
+               <div class="row col-9">
+                   <div class="col-lg-6">
+                       <h4>دوره های عمومی</h4>
+                       <hr>
+                       @if(sizeof($courses) > 0)
+                           <div class="row">
+                               @foreach($courses as $item)
+                                   <div class="col-12 responsive-column-half">
+                                       <x-site.courses.course-box show_details="{{false}}" :item="$item" />
+                                   </div>
+                               @endforeach
+                           </div>
+                           <!-- end row -->
+                       @else
+                           <div class="text-center mb-3">
+                               <img class="mx-auto no-date d-block mt-5" src="{{ asset('site/svg/no-data.svg') }}" alt="">
+                               <h5 class="mt-3">ما هیچ دوره ای برای شما پیدا نکردیم!</h5>
+                           </div>
+                       @endif
+
+                       {{--                    {{$courses->links('site.includes.paginate')}}--}}
+                   </div>
+                   <div class="col-lg-6">
+                       <h4>دوره های تخصصی</h4>
+                       <hr>
+                       @if(sizeof($pCourses) > 0)
+                           <div class="row">
+                               @foreach($pCourses as $item)
+                                   <div class="col-12 responsive-column-half">
+                                       <x-site.courses.course-box show_details="{{false}}" :item="$item" />
+                                   </div>
+                               @endforeach
+                           </div>
+                           <!-- end row -->
+                       @else
+                           <div class="text-center mb-3">
+                               <img class="mx-auto no-date d-block mt-5" src="{{ asset('site/svg/no-data.svg') }}" alt="">
+                               <h5 class="mt-3">ما هیچ دوره ای برای شما پیدا نکردیم!</h5>
+                           </div>
+                       @endif
+
+                       {{--                    {{$courses->links('site.includes.paginate')}}--}}
+                   </div>
+               </div>
                 <!-- end col-lg-8 -->
             </div>
             <!-- end row -->

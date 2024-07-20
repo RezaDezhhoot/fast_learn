@@ -76,7 +76,7 @@ class CourseRepository implements CourseRepositoryInterface
             return $q->when($city , function ($q) use ($city) {
                 return $q->where('city',$city);
             })->where('province',$province);
-        })->hasCategory()->paginate(9);
+        })->hasCategory()->get();
     }
 
     public function save(Course $course): Course

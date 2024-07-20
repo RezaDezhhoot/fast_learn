@@ -16,12 +16,16 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('client')->middleware(['auth'])->group(function (){
     Route::get('/details',App\Http\Controllers\Site\Client\Details::class)->name('user.details');
 
+    Route::get('/subscription/{gateway}',App\Http\Controllers\Site\Client\Subscription::class)->name('user.subscription');
+
     Route::middleware(['auth','has_details'])->group(function (){
         Route::get('/intro-video',App\Http\Controllers\Site\Client\IntroVideo::class)->name('user.intro_video');
 
        Route::middleware('intro_video')->group(function (){
            Route::get('/dashboard',App\Http\Controllers\Site\Client\Dashboard::class)->name('user.dashboard');
            Route::get('/courses',App\Http\Controllers\Site\Client\Courses::class)->name('user.courses');
+
+
            Route::get('/notifications',App\Http\Controllers\Site\Client\Notifications::class)->name('user.notifications');
            Route::get('/comments',App\Http\Controllers\Site\Client\Comments::class)->name('user.comments');
            Route::get('/tickets',App\Http\Controllers\Site\Client\Tickets::class)->name('user.tickets');

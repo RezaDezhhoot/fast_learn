@@ -49,6 +49,11 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->as('admin.')->group(f
     Route::get('/reductions/{action}/{id?}',App\Http\Controllers\Admin\Reductions\StoreReduction::class)->name('store.reduction');
     Route::get('/roles',App\Http\Controllers\Admin\Roles\IndexRole::class)->name('role');
     Route::get('/roles/{action}/{id?}',App\Http\Controllers\Admin\Roles\StoreRole::class)->name('store.role');
+
+
+    Route::get('/subscriptions',App\Http\Controllers\Admin\Subscription\IndexSubscription::class)->name('subscription');
+    Route::get('/subscriptions/{action}/{id?}',App\Http\Controllers\Admin\Subscription\StoreSubscription::class)->name('store.subscription');
+
     Route::get('/tags',App\Http\Controllers\Admin\Tags\IndexTag::class)->name('tag');
     Route::get('/tags/{action}/{id?}',App\Http\Controllers\Admin\Tags\StoreTag::class)->name('store.tag');
     Route::get('/teachers',App\Http\Controllers\Admin\Teachers\IndexTeacher::class)->name('teacher');

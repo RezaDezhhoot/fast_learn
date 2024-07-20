@@ -23,6 +23,7 @@ Route::middleware(['auth'])->group(function (){
     Route::get('/armana',App\Http\Controllers\Site\Homes\Home::class)->name('home');
 
     Route::get('/',App\Http\Controllers\Site\Homes\Introduction::class)->name('introduction');
+    Route::get('/subscriptions',App\Http\Controllers\Site\Subscription\IndexSubscription::class)->name('subscriptions');
 
     Route::get('/courses',App\Http\Controllers\Site\Courses\IndexCourse::class)->name('courses');
     Route::get('/courses/{slug?}',App\Http\Controllers\Site\Courses\SingleCourse::class)->name('course');

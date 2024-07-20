@@ -22,7 +22,7 @@ class IndexCourse extends BaseComponent
     public ?string $q = null , $category = null  , $orderBy = null , $province = null , $city = null , $type = null , $property = null , $teacher =null;
     public array $categories = [] , $types = [] , $orders = [] ;
 
-    public $level_type = CourseEnum::LEVEL_TYPE_GENERAL;
+    public $level_type ;
 
     public function __construct()
     {
@@ -76,8 +76,13 @@ class IndexCourse extends BaseComponent
     {
         $courses = $courseRepository->getAllSite(
             $this->q ,$this->orderBy ,$this->type ,
-            $this->category, $this->teacher,$this->property , $this->province , $this->city , $this->level_type
+            $this->category, $this->teacher,$this->property , $this->province , $this->city , CourseEnum::LEVEL_TYPE_GENERAL
         );
-        return view('site.courses.index-course',['courses' => $courses])->extends('site.layouts.site.site');
+
+        $pCourses = $courseRepository->getAllSite(
+            $this->q ,$this->orderBy ,$this->type ,
+            $this->category, $this->teacher,$this->property , $this->province , $this->city , CourseEnum::LEVEL_TYPE_PROFESSIONAL
+        );
+        return view('site.courses.index-course',['courses' => $courses,'pCourses' => $pCourses])->extends('site.layouts.site.site');
     }
 }

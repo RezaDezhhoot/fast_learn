@@ -161,9 +161,11 @@
                 @endcan
                 <li class="menu-section ">
                     <h4 class="menu-text">بخش مالی</h4>
-                    <i class="menu-icon ki ki-bold-more-hor icon-md  "></i>
+                    <i class="menu-icon ki ki-bold-more-hor icon-md   "></i>
                 </li>
                 @can('show_orders')
+                    <x-admin.menu-item href="{{route('admin.subscription')}}" icon="fas fa-gem"  :active="request()->routeIs(['admin.subscription','admin.store.subscription'])" label="اشتراک ها" />
+
                     <x-admin.menu-item href="{{route('admin.order')}}" icon="flaticon2-box"  :active="request()->routeIs(['admin.order','admin.store.order','admin.create.order'])" label="سفارش ها" />
                 @endcan
                 @can('show_payments')
