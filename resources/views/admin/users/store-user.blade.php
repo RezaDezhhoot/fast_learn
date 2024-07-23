@@ -33,7 +33,23 @@
                 <p>
                     <a target="_blank" href="{{ route('admin.store.user',['edit',$user->identification_code]) }}">{{ $user->identification->name }}</a>
                 </p>
+
+                <ul class="tree">
+                    <li>
+                        <details open>
+                            <summary><a target="_blank" href="{{ route('admin.store.user',['edit',$user->identification_code]) }}">{{ $user->identification->name }}</a></summary>
+                            <hr>
+
+                            @if($user->identification?->identification)
+                                @include('admin.users.tree' , ['identification' => $user->identification->identification])
+                            @endif
+                        </details>
+                    </li>
+                </ul>
             @endif
+
+
+
             <hr>
             <x-admin.form-section label="نقش">
                 <div class="row">

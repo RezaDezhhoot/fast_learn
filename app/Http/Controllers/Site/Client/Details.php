@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Site\Client;
 
 use App\Enums\Grades;
 use App\Http\Controllers\BaseComponent;
+use App\Models\User;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
 use App\Repositories\Interfaces\UserDetailRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
@@ -84,7 +85,7 @@ class Details extends BaseComponent
             'school' => $this->school
         ]);
         $user = auth()->user();
-        $user->identification_code = $this->identification_code;
+        $user->identification_code = $this->identification_code ? $this->identification_code - User::USER_DEFAULT_IMAGE : null;
         $this->userRepository->save($user);
         $this->emitNotify('اطلاعات با موفقیت ثبت شد');
         redirect()->intended(route('user.dashboard'));

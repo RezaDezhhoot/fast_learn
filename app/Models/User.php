@@ -9,6 +9,7 @@ use App\Traits\Admin\Searchable;
 use Bavix\Wallet\Interfaces\Confirmable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
@@ -50,6 +51,8 @@ class User extends Authenticatable implements Wallet, Confirmable
     protected array $searchAbleColumns = ['email','phone','name'];
 
     const USER_DEFAULT_IMAGE = 'site/images/icons8-user-30.png';
+
+    const INVITE_CODE =  556425;
 
 
     protected $table = 'users';
@@ -291,8 +294,19 @@ class User extends Authenticatable implements Wallet, Confirmable
         return $this->hasMany(UserPoll::class);
     }
 
-    public function identification()
+    public function identification(): BelongsTo
     {
         return $this->belongsTo(User::class,'identification_code');
     }
+
+    public function getInviteCodeAttribute()
+    {
+        return $this->id + self::INVITE_CODE;
+    }
+
+    public function identifications(): BelongsTo
+    {
+        return $this->identification()->with('identifications');
+    }
+
 }

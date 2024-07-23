@@ -9,6 +9,7 @@
                 <div class="media-body">
                     <h2 class="section__title fs-30">سلام، {{ auth()->user()->name }}</h2>
                     <!-- end rating-wrap -->
+                    <p>کد دعوت شما  : {{ auth()->user()->invite_code }}</p>
                 </div>
                 <!-- end media-body -->
             </div>
