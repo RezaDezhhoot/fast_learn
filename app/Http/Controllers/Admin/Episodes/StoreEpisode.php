@@ -91,8 +91,9 @@ class StoreEpisode extends BaseComponent
         if ($this->mode == self::UPDATE_MODE)
             $this->saveInDataBase($this->episode);
         elseif ($this->mode == self::CREATE_MODE){
-            $this->saveInDataBase($this->episodeRepository->newEpisodeObject());
+            $item =  $this->saveInDataBase($this->episodeRepository->newEpisodeObject());
             $this->resetEpisodeInputs();
+            redirect()->route('admin.store.episodeTranscript',['edit', $item->id]);
         }
     }
 
@@ -158,7 +159,9 @@ class StoreEpisode extends BaseComponent
         $episode->downloadable_local_video = $this->downloadable_local_video;
         $episode = $this->episodeRepository->save($episode);
 
-        return $this->emitNotify('اطلاعات با موفقیت ثبت شد');
+         $this->emitNotify('اطلاعات با موفقیت ثبت شد');
+
+         return $episode;
     }
 
     public function render()
