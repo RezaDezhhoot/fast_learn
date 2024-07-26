@@ -24,6 +24,16 @@
                 scrollTop: $("#commentForm").offset().top
             }, 1000);
         });
+        Livewire.on('showModal', function (data) {
+            const id = '#' + data;
+            $(id).modal('show');
+        })
+
+        Livewire.on('hideModal', function (data) {
+            const id = '#' + data;
+            $(id).modal('hide');
+
+        })
         Livewire.on('notify', data => {
             Swal.fire({
                 position: 'top-end',

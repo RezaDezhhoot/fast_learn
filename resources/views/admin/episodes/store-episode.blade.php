@@ -32,8 +32,7 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <x-admin.forms.dropdown id="file_storage" :data="$data['storage']"
-                                        label="  فضای ذخیره سازی فایل" wire:model.defer="file_storage" />
+                                    <x-admin.forms.dropdown id="file_storage" :data="$data['storage']" label="  فضای ذخیره سازی فایل" wire:model.defer="file_storage" />
                                 </td>
                                 <td>
                                     <x-admin.forms.lfm-standalone id="file" label="فایل" :file="$file" type="image"
@@ -48,8 +47,7 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <x-admin.forms.dropdown id="video_storage" :data="$data['storage']"
-                                        label=" فضای ذخیره سازی ویدئو" wire:model.defer="video_storage" />
+                                    <x-admin.forms.dropdown id="video_storage" :data="$data['storage']" label=" فضای ذخیره سازی ویدئو" wire:model.defer="video_storage" />
                                 </td>
                                 <td>
                                     <x-admin.forms.lfm-standalone id="local_video" label="ویدئو" :file="$local_video"
@@ -72,6 +70,40 @@
                         </tbody>
                     </table>
                 </x-admin.form-section>
+                @if(!is_null($episode))
+                    <x-admin.form-section class="col-12" label="آزمون ها">
+                        <div class="table-responsive">
+                            <button wire:click="opeQuiz()" class="btn mb-2 btn-sm btn-success">افزودن آزمون جدید</button>
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>عنوان</th>
+                                    <th>نوع</th>
+                                    <th>عملیات</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @forelse($quizzes as $item)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $item->title }}</td>
+                                        <td>{{ $item->type_label }}</td>
+                                        <td>
+                                            <x-admin.edit-btn wire:click="opeQuiz('{{$item->id}}')" />
+                                            <x-admin.delete-btn onclick="deleteQuiz({{$item->id}})" />
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <td class="text-center" colspan="11">
+                                        دیتایی جهت نمایش وجود ندارد
+                                    </td>
+                                @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                    </x-admin.form-section>
+                @endif
                 @if(!is_null($episode))
                 <x-admin.form-section class="col-12" label="تمرین ها">
                     <div class="table-responsive">
@@ -163,6 +195,86 @@
             </x-admin.form-section>
         </div>
     </x-admin.modal-page>
+
+    <x-admin.modal-page id="quiz" title="آزمون" wire:click="storeQuiz">
+        <div class="row">
+            <x-admin.forms.input with="3" type="text" id="quiz_title" label="نام ازمون*" wire:model.defer="quiz_title"/>
+            <x-admin.forms.input with="3" type="number" id="quiz_timer" label="زمان ازمون*" help="برحسب ثانیه" wire:model.defer="quiz_timer"/>
+            <x-admin.forms.dropdown with="3" id="quiz_type" :data="$data['quiz_type']" label="نوع آزمون*" wire:model.defer="quiz_type"/>
+            <x-admin.forms.input  step="2" class="without_ampm" with="3" type="text" id="quiz_at" label="زمان آزمون" help="00:30:15" wire:model.defer="quiz_at"/>
+        </div>
+        <hr>
+        <x-admin.form-section label="سوالات انتخابی">
+            <table class="table table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>عنوان</th>
+                    <th>نمره</th>
+                    <th>منبع</th>
+                    <th>دسته</th>
+                    <th>سطح</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach($selected_questions_list as $key => $value)
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{$value->name}}</td>
+                        <td>{{$value->score}}</td>
+                        <td>{{$value->source}}</td>
+                        <td>{{$value->category->title}}</td>
+                        <td>{{$value->difficulty_label}}</td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+            <div class="col-12">
+                <p>
+                    بارم : {{ $total_score }}
+                </p>
+            </div>
+        </x-admin.form-section>
+        <hr>
+        <x-admin.form-section label="سوالات ">
+            <div class="border p-3">
+                <x-admin.forms.dropdown id="category" :data="$data['question_categories']" label="دسته سوالات*" wire:model="category"/>
+                <div class="col-12">
+                    <p>
+                        بارم : {{ $total_score }}
+                    </p>
+                </div>
+                <table class="table table-striped table-bordered">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>انتخاب</th>
+                        <th>عنوان</th>
+                        <th>نمره</th>
+                        <th>منبع</th>
+                        <th>دسته</th>
+                        <th>سطح</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($questions as $key => $value)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>
+                                <x-admin.forms.checkbox value="{{$value->id}}" id="{{$key}}ture" label="انتخاب" wire:model="selected_questions.{{$value->id}}" />
+                            </td>
+                            <td>{{$value->name}}</td>
+                            <td>{{$value->score}}</td>
+                            <td>{{$value->source}}</td>
+                            <td>{{$value->category->title}}</td>
+                            <td>{{$value->difficulty_label}}</td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </x-admin.form-section>
+    </x-admin.modal-page>
 </div>
 @push('scripts')
 <script>
@@ -211,5 +323,22 @@
                 }
             })
         }
+
+    function deleteQuiz(id) {
+        Swal.fire({
+            title: 'حذف آزمون!',
+            text: 'آیا از حذف این آزمون اطمینان دارید؟',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'خیر',
+            confirmButtonText: 'بله'
+        }).then((result) => {
+            if (result.value) {
+            @this.call('deleteQuiz', id)
+            }
+        })
+    }
 </script>
 @endpush

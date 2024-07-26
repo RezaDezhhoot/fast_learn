@@ -88,16 +88,19 @@ class Episode extends Model
     {
         $storageUrl = config('filesystems.disks.'.getAvailableStorages()[$value])['url'] ?? null;
         if ($storageUrl) {
-            $this->attributes['file'] = ltrim($value,$storageUrl);
+            $this->attributes['file'] = str_replace($storageUrl ,'',$this->attributes['file']);
         }
+
+        $this->attributes['file_storage'] = $value;
     }
 
     public function setVideoStorageAttribute($value)
     {
         $storageUrl = config('filesystems.disks.'.getAvailableStorages()[$value])['url'] ?? null ;
         if ($storageUrl) {
-            $this->attributes['local_video'] = ltrim($value,$storageUrl);
+            $this->attributes['local_video'] = str_replace($storageUrl ,'',$this->attributes['local_video']);
         }
+        $this->attributes['video_storage'] = $value;
     }
 
     public function homeworks(): HasMany
@@ -155,5 +158,10 @@ class Episode extends Model
     public function rollCalls(): HasMany
     {
         return $this->hasMany(RollCall::class);
+    }
+
+    public function quizzes()
+    {
+        return $this->hasMany(EpisodeQuiz::class);
     }
 }

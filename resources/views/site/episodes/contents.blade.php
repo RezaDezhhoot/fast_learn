@@ -110,24 +110,3 @@
         <!-- end course-dashboard-side-content -->
     </div>
 </div>
-@push('scripts')
-    <script>
-        Livewire.on('setVideo', data => {
-            const player = new Plyr('#player');
-            window.player = player;
-            player.source = {
-                type: 'video',
-                title: data.title,
-                download: true,
-                sources: [
-                    {
-                        src: data.src,
-                        type: 'video/mp4',
-                        size: 720,
-                    }
-                ]
-            }
-
-        })
-    </script>
-@endpush

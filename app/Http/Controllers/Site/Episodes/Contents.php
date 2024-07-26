@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Site\Episodes;
 
+use App\Enums\EpisodeQuizType;
 use App\Http\Controllers\BaseComponent;
 use App\Repositories\Interfaces\CourseRepositoryInterface;
 use Illuminate\Support\Facades\Log;
@@ -23,6 +24,10 @@ class Contents extends BaseComponent
     public $view;
 
     public $hasCourse = false;
+
+    public $quiz;
+
+    public $quizStarted = false;
 
     public function __construct($id = null)
     {
@@ -111,5 +116,4 @@ class Contents extends BaseComponent
             Log::error($e->getMessage());
         }
     }
-
 }

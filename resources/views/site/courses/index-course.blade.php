@@ -171,7 +171,7 @@
                    @if(sizeof($courses) > 0)
                        <div class="row">
                            @foreach($courses as $item)
-                               <div class="col-12 responsive-column-half">
+                               <div class="col-12 col-md-6 responsive-column-half">
                                    <x-site.courses.course-box show_details="{{false}}" :item="$item" />
                                </div>
                            @endforeach

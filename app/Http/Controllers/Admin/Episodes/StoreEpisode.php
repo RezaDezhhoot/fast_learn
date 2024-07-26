@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers\Admin\Episodes;
 
+use App\Enums\CategoryEnum;
+use App\Enums\EpisodeQuizType;
 use App\Enums\StorageEnum;
 use App\Http\Controllers\BaseComponent;
+use App\Models\EpisodeQuiz;
+use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\Interfaces\ChapterRepositoryInterface;
 use App\Repositories\Interfaces\CourseRepositoryInterface;
 use App\Repositories\Interfaces\EpisodeRepositoryInterface;
 use App\Repositories\Interfaces\HomeworkRepositoryInterface;
+use App\Repositories\Interfaces\QuestionRepositoryInterface;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
@@ -24,6 +29,13 @@ class StoreEpisode extends BaseComponent
 
     public $homework , $h_file , $h_description , $h_result , $h_storage , $h_score;
 
+    // quiz
+
+    public $quiz , $quiz_title , $quiz_type , $quiz_at , $quiz_timer;
+
+    public $selected_questions , $category , $questions = [] , $selected_questions_id = [] , $total_score = 0 ,
+        $selected_questions_list = [];
+
     public function __construct($id = null)
     {
         parent::__construct($id);
@@ -32,6 +44,7 @@ class StoreEpisode extends BaseComponent
         $this->settingRepository = app(SettingRepositoryInterface::class);
         $this->episodeRepository = app(EpisodeRepositoryInterface::class);
         $this->homeworkRepository = app(HomeworkRepositoryInterface::class);
+        $this->categoryRepository = app(CategoryRepositoryInterface::class);
     }
 
     public function mount($action , $id = null)
@@ -67,6 +80,9 @@ class StoreEpisode extends BaseComponent
         } elseif ($this->mode == self::CREATE_MODE) {
             $this->header = 'درس جدید';
         } else abort(404);
+
+        $this->data['question_categories'] = $this->categoryRepository->getAll(CategoryEnum::QUESTION)->pluck('title','id');
+        $this->data['quiz_type'] = EpisodeQuizType::getTypes();
     }
 
     public function store()
@@ -131,24 +147,29 @@ class StoreEpisode extends BaseComponent
         $episode->time = $this->time;
         $episode->chapter_id = $this->chapter_id;
         $episode->free =$this->free;
-        $episode->file_storage = $this->file_storage ?? StorageEnum::PRIVATE;
-        $episode->homework_storage = $this->homework_storage ?? StorageEnum::PRIVATE;
-        $episode->video_storage = $this->video_storage ?? StorageEnum::PRIVATE;
+        $episode->file_storage = $this->file_storage ;
+        $episode->homework_storage = $this->homework_storage;
+        $episode->video_storage = $this->video_storage ;
         $episode->allow_show_local_video = $this->allow_show_local_video;
+
         $episode->description = $this->description;
         $episode->can_homework = $this->can_homework;
         $episode->show_api_video = $this->show_api_video;
         $episode->downloadable_local_video = $this->downloadable_local_video;
-        $this->episodeRepository->save($episode);
+        $episode = $this->episodeRepository->save($episode);
+
         return $this->emitNotify('اطلاعات با موفقیت ثبت شد');
     }
 
     public function render()
     {
-        $homeworks = [];
-        if(!is_null($this->episode) && $this->mode == self::UPDATE_MODE)
+        $homeworks = [] ;
+        $quizzes = [];
+        if(!is_null($this->episode) && $this->mode == self::UPDATE_MODE) {
             $homeworks = $this->homeworkRepository->getAllAdmin([['episode_id',$this->episode->id]],$this->per_page);
-        return view('admin.episodes.store-episode',['homeworks'=>$homeworks])
+            $quizzes = $this->episode->quizzes()->get();
+        }
+        return view('admin.episodes.store-episode',['homeworks'=>$homeworks , 'quizzes' => $quizzes])
             ->extends('admin.layouts.admin');
     }
 
@@ -242,4 +263,80 @@ class StoreEpisode extends BaseComponent
                 return $disk->download($this->h_file);
         }
     }
+
+
+    public function updatedSelectedQuestions()
+    {
+        $QuestionRepository = app(QuestionRepositoryInterface::class);
+        $total_score = 0;
+
+        $this->selected_questions_id = array_filter($this->selected_questions);
+
+        $this->selected_questions_list = $QuestionRepository->findMany($this->selected_questions_id);
+
+        foreach ($this->questions as $item){
+            if (in_array($item->id,$this->selected_questions_id))
+                $total_score = $total_score + $item->score;
+        }
+
+        $this->total_score = $total_score;
+    }
+    public function updatedCategory()
+    {
+        $questions = [];
+        if (!empty($this->category))
+            $questions =  app(CategoryRepositoryInterface::class)->find($this->category)->questions;
+
+        $this->questions = $questions;
+    }
+
+    public function resetQuiz()
+    {
+        $this->reset(['quiz','quiz_title','quiz_type','quiz_at','selected_questions','quiz_timer','total_score','category','selected_questions_list']);
+    }
+    public function opeQuiz($id = null): void
+    {
+        $this->resetQuiz();
+        if ($id) {
+            $this->quiz = EpisodeQuiz::query()->find($id);
+            $this->quiz_title = $this->quiz->title;
+            $this->quiz_at = $this->quiz->at;
+            $this->quiz_type = $this->quiz->type;
+            $this->quiz_timer = $this->quiz->timer;
+            $this->selected_questions = $this->quiz->questions->pluck('id','id')->toArray();
+            $this->updatedSelectedQuestions();
+            $this->total_score = $this->quiz->total_score;
+        }
+        $this->emitShowModal('quiz');
+    }
+
+    public function storeQuiz(): void
+    {
+        $this->validate([
+            'quiz_title' => ['required','string','max:50'],
+            'quiz_timer' => ['required','integer','min:1'],
+            'quiz_type' => ['required','string',Rule::in(array_keys($this->data['quiz_type']))],
+            'quiz_at' => [$this->quiz_type == EpisodeQuizType::END ? "nullable" : 'required' ,'date_format:H:i:s'],
+            'selected_questions' => ['array','min:1'],
+        ]);
+
+        $quiz = $this->quiz ?? new EpisodeQuiz();
+        $quiz->fill([
+            'title' => $this->quiz_title,
+            'type' => $this->quiz_type,
+            'at' => $this->quiz_at,
+            'timer' => $this->quiz_timer,
+            'episode_id' => $this->episode->id
+        ])->save();
+
+        $quiz->questions()->sync(array_filter($this->selected_questions_id));
+        $this->emitNotify('اطلاعات با موفقیت ثبت شد');
+        $this->emitHideModal('quiz');
+    }
+
+    public function deleteQuiz($id): void
+    {
+        EpisodeQuiz::destroy($id);
+    }
+
 }

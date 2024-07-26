@@ -55,7 +55,6 @@
                 </div>
             </x-admin.form-section>
             <hr>
-
             <x-admin.form-section label="سوالات ">
                 <div class="border p-3">
                     <x-admin.forms.dropdown id="category" :data="$data['question_categories']" label="دسته سوالات*" wire:model="category"/>
