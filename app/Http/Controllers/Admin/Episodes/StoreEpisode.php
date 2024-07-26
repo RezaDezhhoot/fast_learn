@@ -92,8 +92,7 @@ class StoreEpisode extends BaseComponent
             $this->saveInDataBase($this->episode);
         elseif ($this->mode == self::CREATE_MODE){
             $item =  $this->saveInDataBase($this->episodeRepository->newEpisodeObject());
-            $this->resetEpisodeInputs();
-            redirect()->route('admin.store.episodeTranscript',['edit', $item->id]);
+            redirect()->route('admin.store.episode',['edit', $item->id]);
         }
     }
 
