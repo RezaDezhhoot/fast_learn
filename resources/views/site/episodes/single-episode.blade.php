@@ -157,7 +157,7 @@
                 <div class="modal-body">
                     @if($quiz && $quizStarted)
                         <ul>
-                            @foreach($quiz->questions as $key => $item)
+                            @foreach($quiz->questions()->inRandomOrder(mt_rand(1,10))->get() as $key => $item)
                                 <li>
                                     @if($key > 0)
                                         <hr>
