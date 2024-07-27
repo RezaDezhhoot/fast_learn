@@ -23,8 +23,8 @@ class StoreEpisode extends BaseComponent
     use WithPagination;
 
     public  $header , $storage , $episode;
-    public $title , $link , $time = '00:00:00' , $view = 0, $free = 0 , $api_bucket , $file_storage , $file ,$local_video ,
-        $video_storage , $allow_show_local_video = 0 , $course_id , $description , $can_homework = false , $homework_storage ,
+    public $title , $link , $time = '00:00:00' , $view = 0, $free = 0 , $api_bucket , $file_storage = '0' , $file ,$local_video ,
+        $video_storage = '0', $allow_show_local_video = true , $course_id , $description , $can_homework = false , $homework_storage = '0' ,
         $show_api_video = false , $downloadable_local_video = false , $chapter_id;
 
     public $homework , $h_file , $h_description , $h_result , $h_storage , $h_score;
@@ -111,8 +111,8 @@ class StoreEpisode extends BaseComponent
             'allow_show_local_video' => ['required','boolean'],
             'chapter_id' => ['required','exists:chapters,id'],
             'view' => ['required','integer'],
-            'file_storage' => [Rule::requiredIf(fn() => !empty($this->file)) ,'in:'.implode(',',array_keys(getAvailableStorages())).','.null],
-            'video_storage' => [Rule::requiredIf(fn() => !empty($this->local_video)) ,'in:'.implode(',',array_keys(getAvailableStorages())).','.null],
+            'file_storage' => ['required' ,'in:'.implode(',',array_keys(getAvailableStorages())).','.null],
+            'video_storage' => ['required','in:'.implode(',',array_keys(getAvailableStorages())).','.null],
             'homework_storage' => [Rule::requiredIf(fn() => $this->can_homework ==true) ,'in:'.implode(',',array_keys(getAvailableStorages())).','.null],
             'free' => ['boolean'],
             'can_homework' => ['boolean'],
