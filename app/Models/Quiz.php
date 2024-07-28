@@ -54,6 +54,11 @@ class Quiz extends Model
         return $this->belongsToMany(Question::class,'quizzes_has_questions');
     }
 
+    public function courses()
+    {
+        return $this->hasMany(Course::class);
+    }
+
     public function questionCount():Attribute
     {
         return Attribute::make(

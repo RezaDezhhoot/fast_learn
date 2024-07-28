@@ -262,7 +262,6 @@
         let requiredQuizAtTime = JSON.parse('@json($requiredQuizAtTime)');
         let optionalQuizAtTime = JSON.parse('@json($optionalQuizAtTime)');
 
-        console.log(optionalQuizAtTime)
 
         Livewire.on('updateRequiredQuiz', function (data) {
             requiredQuizAtTime = data;
@@ -270,6 +269,7 @@
         Livewire.on('updateOptionalQuiz', function (data) {
             optionalQuizAtTime = data;
         })
+
 
         Livewire.on('setVideo', data => {
             const player = new Plyr('#player');
@@ -291,11 +291,15 @@
             });
 
             player.on('timeupdate', (data) => {
-                requiredQuizAtTime.forEach((item) => {
+                requiredQuizAtTime.forEach((item , Key) => {
                     if (Math.floor(player.currentTime) >= item.at && ! item.done) {
-                        player.pause();
                         player.rewind(item.at);
-                        @this.call('requiredQuiz' , item.id)
+                        player.pause();
+                        @this.call('requiredQuiz' , {
+                            id: item.id,
+                            lastPoint: requiredQuizAtTime[Key - 1]?.at ?? 0
+                        });
+                        throw "exit"
                     }
                 })
                 optionalQuizAtTime.forEach((item) => {
@@ -303,11 +307,18 @@
                     if (Math.round(player.currentTime) === item.at && ! item.done) {
                         player.pause();
                         player.forward(0.51);
-                        @this.call('requiredQuiz' , item.id)
+                        @this.call('requiredQuiz' , {
+                            id: item.id
+                        })
                     }
                 })
             });
+
+            Livewire.on('backToLastPoint', function (data) {
+                player.rewind(data.at);
+            })
         })
+
 
         Livewire.on('timer', function (data) {
             $('#clock').countdown(data.data)

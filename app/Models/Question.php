@@ -37,6 +37,12 @@ class Question extends Model
         return $this->belongsToMany(Quiz::class,'quizzes_has_questions');
     }
 
+    public function episodeQuizzes(): BelongsToMany
+    {
+        return $this->belongsToMany(EpisodeQuiz::class,'episode_quiz_questions');
+    }
+
+
     public function choices(): HasMany
     {
         return $this->hasMany(Choice::class,'question_id');
@@ -65,4 +71,8 @@ class Question extends Model
         );
     }
 
+    public function answers(): HasMany
+    {
+        return $this->hasMany(UserAnswer::class);
+    }
 }

@@ -69,6 +69,7 @@
                 </li>
                 @can('show_questions')
                     <x-admin.menu-item href="{{route('admin.question')}}" icon="far fa-question-circle" :active="request()->routeIs(['admin.question','admin.store.question'])" label="سوالات " />
+                    <x-admin.menu-item href="{{route('admin.episode-quizzes')}}" icon="far fa-question-circle" :active="request()->routeIs(['admin.episode-quizzes'])" label="گزارش سوالات پاسخ داده شده " />
                 @endcan
                 @can('show_quizzes')
                     <x-admin.menu-item href="{{route('admin.quiz')}}" icon="fas fa-pen-alt" :active="request()->routeIs(['admin.quiz','admin.store.quiz'])" label="ازمون ها " />

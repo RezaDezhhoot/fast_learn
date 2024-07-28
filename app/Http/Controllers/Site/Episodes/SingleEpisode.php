@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Site\Episodes;
 use App\Enums\EpisodeQuizType;
 use App\Enums\QuizEnum;
 use App\Http\Controllers\BaseComponent;
+use App\Models\Choice;
 use App\Models\Question;
+use App\Models\UserAnswer;
 use App\Models\UserEpisodeQuizResult;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\Interfaces\CourseRepositoryInterface;
@@ -46,6 +48,8 @@ class SingleEpisode extends BaseComponent
     public $quizStarted = false;
 
     public $result;
+
+    public $lastPoint;
 
 
     public $optionalQuizAtTime = [] , $requiredQuizAtTime = [];
@@ -116,7 +120,7 @@ class SingleEpisode extends BaseComponent
 
     public function resetQuiz(): void
     {
-        $this->reset(['quiz','quizStarted','answers']);
+        $this->reset(['quiz','quizStarted','answers','lastPoint']);
     }
 
     public function checkFinalQuiz()
@@ -126,6 +130,7 @@ class SingleEpisode extends BaseComponent
         if ($this->quiz) {
             if (
                 UserEpisodeQuizResult::query()->where('episode_quiz_id' , $this->quiz->id)
+                    ->where('user_id',\auth()->id())
                     ->where('passed','!=',null)->exists()
             ) {
                 return;
@@ -139,16 +144,17 @@ class SingleEpisode extends BaseComponent
         if ($this->quiz && ! $this->quizStarted) {
             if (
                 UserEpisodeQuizResult::query()->where('episode_quiz_id' , $this->quiz->id)
+                    ->where('user_id',\auth()->id())
                 ->where('passed','!=',null)->whereHas('quiz' , function ($q){
                     $q->whereIn('type',[EpisodeQuizType::END]);
                 })->exists()
             ) {
                 return;
             }
-            $this->result = UserEpisodeQuizResult::query()->updateOrCreate([
+            $this->result = UserEpisodeQuizResult::query()->create([
                 'user_id' => \auth()->id(),
                 'episode_quiz_id' => $this->quiz->id,
-            ] , []);
+            ] );
             $this->quizStarted = true;
             $this->timer = now()->addSeconds($this->quiz->timer)->format("Y-m-d H:i:s");
             $this->emit('timer',['data' => $this->timer ?? '']);
@@ -169,23 +175,48 @@ class SingleEpisode extends BaseComponent
                 ) {
                     $score += $question->score;
                     $answers[$question->id]['status'] = true;
+                    UserAnswer::query()->create([
+                        'user_id' => \auth()->id(),
+                        'choice_id' => $this->answers[$question->id],
+                        'choice_value' => Choice::query()->find($this->answers[$question->id])?->id,
+                        'true_choice_value' => $question->true_choice->title,
+                        'score_received' => $question->score,
+                        'question_score' => $question->score,
+                        'question_text' => $question->text,
+                        'question_id' => $question->id,
+                        'status' => true
+                    ]);
                 } else {
                     $answers[$question->id]['status'] = false;
+
+                    UserAnswer::query()->create([
+                        'user_id' => \auth()->id(),
+                        'choice_id' => $this->answers[$question->id] ?? null,
+                        'true_choice_value' => $question->true_choice->title,
+                        'score_received' => $question->score,
+                        'question_score' => $question->score,
+                        'question_text' => $question->text,
+                        'question_id' => $question->id,
+                        'status' => false
+                    ]);
                 }
             }
-            UserEpisodeQuizResult::query()->where('user_id',\auth()->id())->where('episode_quiz_id',$this->quiz->id)
-                ->where('passed',null)->whereHas('quiz' , function ($q){
-                    $q->whereIn('type',[EpisodeQuizType::END]);
-                })->orWhereHas('quiz' , function ($q){
-                    $q->whereIn('type',[EpisodeQuizType::REQUIRED_TIME]);
-                } )
+            UserEpisodeQuizResult::query()->where('user_id',\auth()->id())->where('id',$this->result->id)
+                ->where('passed',null)
                 ->update([
-                'score' => (int)$score,
-                'answers' => $answers,
-                'passed' => $this->quiz->total_score == $score
+                    'score' => (int)$score,
+                    'answers' => $answers,
+                    'passed' => $this->quiz->total_score == $score
             ]);
             $this->updateRequiredQuiz();
             $this->result->refresh();
+
+            if ($this->quiz->type == EpisodeQuizType::REQUIRED_TIME && ! $this->result->passed && $this->lastPoint) {
+                $this->emit('backToLastPoint', [
+                    'at' => $this->lastPoint
+                ]);
+            }
+
             $this->resetQuiz();
             $this->emitHideModal('quiz');
             $this->emitNotify('آزمون شما با موفقیت ثبت شد');
@@ -208,18 +239,25 @@ class SingleEpisode extends BaseComponent
                 'at' => Carbon::createFromTimestamp(Carbon::make($item->at)->timestamp)->secondsSinceMidnight(),
                 'done' => UserEpisodeQuizResult::query()->where('user_id',\auth()->id())->where('passed',true)->where('episode_quiz_id',$item->id)->exists()
             ];
-        });
+        })->sortBy('at');
+
         $this->emit('updateRequiredQuiz' , $this->requiredQuizAtTime);
         $this->emit('updateOptionalQuiz' , $this->optionalQuizAtTime);
     }
 
-    public function requiredQuiz($id)
+    public function requiredQuiz($data): void
     {
         $this->resetQuiz();
-        $this->quiz = $this->episode_data->quizzes()->find($id);
-        if ($this->quiz && UserEpisodeQuizResult::query()->where('user_id',\auth()->id())->where('passed',true)->where('episode_quiz_id' , $id)->doesntExist()) {
+        $this->quiz = $this->episode_data->quizzes()->find($data['id']);
+
+        if ($this->quiz && UserEpisodeQuizResult::query()->where('user_id',\auth()->id())->where('passed',true)->where('episode_quiz_id' , $data['id'])->doesntExist()) {
+            if (! empty($data['lastPoint'])) {
+                $this->lastPoint = $data['lastPoint'];
+            }
+
             $this->emitShowModal('quiz');
         }
+
     }
 
     private function checkTimer(): bool
