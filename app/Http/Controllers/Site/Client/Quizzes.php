@@ -17,15 +17,15 @@ class Quizzes extends Component
     public function mount(SettingRepositoryInterface $settingRepository)
     {
         $this->user = auth()->user();
-        SEOMeta::setTitle($settingRepository->getRow('title').' ازمون های من ');
+        SEOMeta::setTitle($settingRepository->getRow('title').' ازمون های پایان دوره ');
         SEOMeta::setDescription($settingRepository->getRow('seoDescription'));
         SEOMeta::addKeyword($settingRepository->getRow('seoKeyword',[]));
         OpenGraph::setUrl(url()->current());
-        OpenGraph::setTitle($settingRepository->getRow('title').' ازمون های من ');
+        OpenGraph::setTitle($settingRepository->getRow('title').' ازمون های پایان دوره ');
         OpenGraph::setDescription($settingRepository->getRow('seoDescription'));
-        TwitterCard::setTitle($settingRepository->getRow('title').' ازمون های من ');
+        TwitterCard::setTitle($settingRepository->getRow('title').' ازمون های پایان دوره ');
         TwitterCard::setDescription($settingRepository->getRow('seoDescription'));
-        JsonLd::setTitle($settingRepository->getRow('title').' ازمون های من ');
+        JsonLd::setTitle($settingRepository->getRow('title').' ازمون های پایان دوره ');
         JsonLd::setDescription($settingRepository->getRow('seoDescription'));
         JsonLd::addImage(asset($settingRepository->getRow('logo')));
         $this->userDetails = !empty($this->user->details);

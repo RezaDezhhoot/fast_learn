@@ -30,4 +30,9 @@ class UserAnswer extends Model
                 QuestionEnum::getType()[$this->type] : QuestionEnum::getType()[QuestionEnum::TEST]
         );
     }
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
 }

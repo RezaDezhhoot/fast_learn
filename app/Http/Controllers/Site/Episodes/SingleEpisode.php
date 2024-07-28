@@ -178,6 +178,7 @@ class SingleEpisode extends BaseComponent
                     UserAnswer::query()->create([
                         'user_id' => \auth()->id(),
                         'choice_id' => $this->answers[$question->id],
+                        'course_id' => $this->course_data->id,
                         'choice_value' => Choice::query()->find($this->answers[$question->id])?->id,
                         'true_choice_value' => $question->true_choice->title,
                         'score_received' => $question->score,
@@ -192,6 +193,7 @@ class SingleEpisode extends BaseComponent
                     UserAnswer::query()->create([
                         'user_id' => \auth()->id(),
                         'choice_id' => $this->answers[$question->id] ?? null,
+                        'course_id' => $this->course_data->id,
                         'true_choice_value' => $question->true_choice->title,
                         'score_received' => $question->score,
                         'question_score' => $question->score,

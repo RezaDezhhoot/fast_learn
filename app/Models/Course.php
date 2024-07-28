@@ -312,4 +312,9 @@ class Course extends Model implements Sitemapable
     {
         return $this->hasMany(CourseRating::class);
     }
+
+    public function UserAnswers()
+    {
+        return $this->hasMany(UserAnswer::class);
+    }
 }

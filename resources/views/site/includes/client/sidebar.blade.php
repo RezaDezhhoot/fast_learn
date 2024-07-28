@@ -19,7 +19,8 @@
         @endif
         <x-site.client.sidebar-link title=" پروفایل من" link="{{ route('user.profile') }}" icon="la la-user pr-2" :active="request()->routeIs('user.profile')" />
         <x-site.client.sidebar-link title=" دوره های من" link="{{ route('user.courses') }}" icon="la la-file pr-2" :active="request()->routeIs('user.courses')" />
-        <x-site.client.sidebar-link title=" ازموان های من" link="{{ route('user.quizzes') }}" icon="la la-pen pr-2" :active="request()->routeIs(['user.quizzes','user.quiz','user.exam'])" />
+        <x-site.client.sidebar-link title=" گزارش پیشرفت" link="{{ route('user.episode-quiz') }}" icon="la la-chart-bar pr-2" :active="request()->routeIs(['user.episode-quiz'])" />
+        <x-site.client.sidebar-link title=" ازموان های پایان دوره" link="{{ route('user.quizzes') }}" icon="la la-pen pr-2" :active="request()->routeIs(['user.quizzes','user.quiz','user.exam'])" />
         <x-site.client.sidebar-link title=" گواهینامه ها" link="{{ route('user.certificates') }}" icon="la la-certificate pr-2" :active="request()->routeIs(['user.certificates','user.certificate'])" />
         <x-site.client.sidebar-link title="نمونه سوالات من" link="{{ route('user.sample') }}" icon="la la-question pr-2" :active="request()->routeIs(['user.sample'])" />
         <x-site.client.sidebar-link title=" پرسش های من" link="{{ route('user.comments') }}" icon="la la-comment pr-2" :active="request()->routeIs('user.comments')" />

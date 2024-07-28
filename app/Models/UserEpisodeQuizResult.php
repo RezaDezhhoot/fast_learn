@@ -16,6 +16,11 @@ class UserEpisodeQuizResult extends Model
         $this->attributes['answers'] = json_encode($value);
     }
 
+    public function getAnswersAttribute($value)
+    {
+        return json_decode($value , true);
+    }
+
     public function quiz()
     {
         return $this->belongsTo(EpisodeQuiz::class,'episode_quiz_id');

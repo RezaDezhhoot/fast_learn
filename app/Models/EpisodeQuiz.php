@@ -34,4 +34,9 @@ class EpisodeQuiz extends Model
     {
         return $this->questions->sum('score');
     }
+
+    public function results()
+    {
+        return $this->hasMany(UserEpisodeQuizResult::class);
+    }
 }

@@ -24,6 +24,7 @@ Route::prefix('client')->middleware(['auth'])->group(function (){
        Route::middleware('intro_video')->group(function (){
            Route::get('/dashboard',App\Http\Controllers\Site\Client\Dashboard::class)->name('user.dashboard');
            Route::get('/courses',App\Http\Controllers\Site\Client\Courses::class)->name('user.courses');
+           Route::get('/report-quizzes',App\Http\Controllers\Site\Client\EpisodeQuizzes::class)->name('user.episode-quiz');
 
 
            Route::get('/notifications',App\Http\Controllers\Site\Client\Notifications::class)->name('user.notifications');

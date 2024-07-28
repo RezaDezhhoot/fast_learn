@@ -15,6 +15,8 @@ return new class extends Migration
     {
         Schema::table('user_answers', function (Blueprint $table) {
             $table->foreignId('transcript_id')->nullable()->change();
+            $table->foreignId('course_id')->nullable()->index();
+            $table->foreignId('user_id')->nullable()->index();
             $table->boolean('status')->default(false);
         });
     }
@@ -27,7 +29,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('user_answers', function (Blueprint $table) {
-            $table->dropColumn('status');
+            $table->dropColumn(['status','course_id','user_id']);
         });
     }
 };
