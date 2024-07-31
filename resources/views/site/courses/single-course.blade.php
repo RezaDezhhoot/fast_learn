@@ -200,7 +200,7 @@
                                         <p class="before-price mx-1"> {{ number_format($course->base_price) }} </p>
                                         @if($course->price > 0)
                                         <span class="fs-35 font-weight-semi-bold text-black">{{
-                                            number_format($course->price) }} تومان</span>
+                                            number_format($course->price) }} <i class="la  la-coins" style="color: gold"></i></span>
                                         @else
                                         <span class="fs-35 font-weight-semi-bold text-black">رایگان</span>
                                         @endif
@@ -214,7 +214,7 @@
                                     <span class="fs-35 font-weight-semi-bold text-black">رایگان</span>
                                     @else
                                     <span class="fs-35 font-weight-semi-bold text-black">{{
-                                        number_format($course->price) }} تومان</span>
+                                        number_format($course->price) }} <i class="la  la-coins" style="color: gold"></i></span>
                                     @endif
                                 </div>
                                 <div class="buy-course-btn-box mt-4">

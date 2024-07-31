@@ -11,34 +11,21 @@
                             <ul class="generic-list-item generic-list-item-flash fs-15">
                                 <li class="d-flex align-items-center justify-content-between font-weight-semi-bold">
                                     <span class="text-black">قیمت اصلی: </span>
-                                    <span>{{number_format(App\Http\Controllers\Cart\Facades\Cart::total())}}  تومان</span>
+                                    <span>{{number_format(App\Http\Controllers\Cart\Facades\Cart::total())}}  <i class="la  la-coins" style="color: gold"></i></span>
                                 </li>
                                 <li class="d-flex align-items-center justify-content-between font-weight-semi-bold">
                                     <span class="text-black">کد تخفیف : </span>
-                                    <span>{{ number_format($voucherAmountShow) }} تومان</span>
+                                    <span>{{ number_format($voucherAmountShow) }} <i class="la  la-coins" style="color: gold"></i></span>
                                 </li>
                                 <li class="d-flex align-items-center justify-content-between font-weight-semi-bold">
                                     <span class="text-black">کیف پول : </span>
-                                    <span>{{ number_format($walletAmountShow) }} تومان</span>
+                                    <span>{{ number_format($walletAmountShow) }} <i class="la  la-coins" style="color: gold"></i></span>
                                 </li>
                                 <li class="d-flex align-items-center justify-content-between font-weight-bold">
                                     <span class="text-black">مجموع: </span>
-                                    <span>{{number_format(App\Http\Controllers\Cart\Facades\Cart::total($walletAmountShow,$voucherAmountShow,0))}} تومان</span>
+                                    <span>{{number_format(App\Http\Controllers\Cart\Facades\Cart::total($walletAmountShow,$voucherAmountShow,0))}} <i class="la  la-coins" style="color: gold"></i></span>
                                 </li>
                             </ul>
-                            <div class="btn-box border-top border-top-gray pt-3">
-                                <div class="form-group text-right">
-                                    <label>
-                                        <input wire:model="useWallet" name="check_method" type="checkbox">    استفاده از کیف پول
-                                    </label>
-                                    @error('payment')
-                                        <p class="text-danger">
-                                            {{ $message }}
-                                        </p>
-                                    @enderror
-                                </div>
-
-                            </div>
                             <div class="btn-box border-top border-top-gray pt-3">
                                 <div class="card-body">
 {{--                                    <h3 class="card-title fs-22 pb-3">روش پرداخت را انتخاب کنید</h3>--}}
@@ -83,7 +70,7 @@
                                     </a>
                                     <div class="media-body">
                                         <h5 class="fs-15 pb-2"> <a class="text-black font-weight-semi-bold">{{ $item->title }}</a></h5>
-                                        <p class="text-black font-weight-semi-bold lh-18">{{ number_format($item->price) }} تومان</p>
+                                        <p class="text-black font-weight-semi-bold lh-18">{{ number_format($item->price) }} <i class="la  la-coins" style="color: gold"></i></p>
                                     </div>
                                 </div>
                                 @endforeach

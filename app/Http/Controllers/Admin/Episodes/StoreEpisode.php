@@ -31,7 +31,7 @@ class StoreEpisode extends BaseComponent
 
     // quiz
 
-    public $quiz , $quiz_title , $quiz_type , $quiz_at , $quiz_timer;
+    public $quiz , $quiz_title , $quiz_type , $quiz_at , $quiz_timer , $coins = 0 , $questions_count = 1;
 
     public $selected_questions , $category , $questions = [] , $selected_questions_id = [] , $total_score = 0 ,
         $selected_questions_list = [];
@@ -294,7 +294,7 @@ class StoreEpisode extends BaseComponent
 
     public function resetQuiz()
     {
-        $this->reset(['quiz','quiz_title','quiz_type','quiz_at','selected_questions','quiz_timer','total_score','category','selected_questions_list']);
+        $this->reset(['quiz','quiz_title','coins','questions_count','quiz_type','quiz_at','selected_questions','quiz_timer','total_score','category','selected_questions_list']);
     }
     public function opeQuiz($id = null): void
     {
@@ -305,6 +305,8 @@ class StoreEpisode extends BaseComponent
             $this->quiz_at = $this->quiz->at;
             $this->quiz_type = $this->quiz->type;
             $this->quiz_timer = $this->quiz->timer;
+            $this->questions_count = $this->quiz->questions_count;
+            $this->coins = $this->quiz->coins;
             $this->selected_questions = $this->quiz->questions->pluck('id','id')->toArray();
             $this->updatedSelectedQuestions();
             $this->total_score = $this->quiz->total_score;
@@ -317,6 +319,8 @@ class StoreEpisode extends BaseComponent
         $this->validate([
             'quiz_title' => ['required','string','max:50'],
             'quiz_timer' => ['required','integer','min:1'],
+            'coins' => ['required','integer','min:0'],
+            'questions_count' => ['required','integer','min:1'],
             'quiz_type' => ['required','string',Rule::in(array_keys($this->data['quiz_type']))],
             'quiz_at' => [$this->quiz_type == EpisodeQuizType::END ? "nullable" : 'required' ,'date_format:H:i:s'],
             'selected_questions' => ['array','min:1'],
@@ -328,7 +332,9 @@ class StoreEpisode extends BaseComponent
             'type' => $this->quiz_type,
             'at' => $this->quiz_at,
             'timer' => $this->quiz_timer,
-            'episode_id' => $this->episode->id
+            'episode_id' => $this->episode->id,
+            'coins' => $this->coins,
+            'questions_count' => $this->questions_count,
         ])->save();
 
         $quiz->questions()->sync(array_filter($this->selected_questions_id));

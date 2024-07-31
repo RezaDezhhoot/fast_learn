@@ -20,9 +20,9 @@
                                     <a href="{{ route('course',$item->course->slug) }}">{{ $item->course->title }}</a>
                                 </td>
                                 <td>
-                                    {{ number_format($item->price) }} تومان
+                                    {{ number_format($item->price) }} <i class="la  la-coins" style="color: gold"></i>
                                 </td>
-                                <td>{{ number_format($item->total_price) }}تومان</td>
+                                <td>{{ number_format($item->total_price) }}<i class="la  la-coins" style="color: gold"></i></td>
                                 <td>{{ $item->status_label }}</td>
                             </tr>
                         @endforeach

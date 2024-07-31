@@ -14,14 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::prefix('client')->middleware(['auth'])->group(function (){
-    Route::get('/details',App\Http\Controllers\Site\Client\Details::class)->name('user.details');
+    Route::get('/intro-video',App\Http\Controllers\Site\Client\IntroVideo::class)->name('user.intro_video');
 
     Route::get('/subscription/{gateway}',App\Http\Controllers\Site\Client\Subscription::class)->name('user.subscription');
+    Route::middleware(['auth','intro_video'])->group(function (){
+        Route::get('/details',App\Http\Controllers\Site\Client\Details::class)->name('user.details');
 
-    Route::middleware(['auth','has_details'])->group(function (){
-        Route::get('/intro-video',App\Http\Controllers\Site\Client\IntroVideo::class)->name('user.intro_video');
 
-       Route::middleware('intro_video')->group(function (){
+       Route::middleware('has_details')->group(function (){
            Route::get('/dashboard',App\Http\Controllers\Site\Client\Dashboard::class)->name('user.dashboard');
            Route::get('/courses',App\Http\Controllers\Site\Client\Courses::class)->name('user.courses');
            Route::get('/report-quizzes',App\Http\Controllers\Site\Client\EpisodeQuizzes::class)->name('user.episode-quiz');

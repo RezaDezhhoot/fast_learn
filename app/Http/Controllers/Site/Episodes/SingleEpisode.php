@@ -52,6 +52,8 @@ class SingleEpisode extends BaseComponent
     public $lastPoint;
 
 
+    public $questions = [];
+
     public $optionalQuizAtTime = [] , $requiredQuizAtTime = [];
     public function __construct($id = null)
     {
@@ -120,7 +122,7 @@ class SingleEpisode extends BaseComponent
 
     public function resetQuiz(): void
     {
-        $this->reset(['quiz','quizStarted','answers','lastPoint']);
+        $this->reset(['quiz','quizStarted','answers','lastPoint','questions']);
     }
 
     public function checkFinalQuiz()
@@ -155,6 +157,7 @@ class SingleEpisode extends BaseComponent
                 'user_id' => \auth()->id(),
                 'episode_quiz_id' => $this->quiz->id,
             ] );
+            $this->questions = $this->quiz->questions()->take($this->quiz->questions_count ?? 1)->inRandomOrder(mt_rand(1,10))->get();
             $this->quizStarted = true;
             $this->timer = now()->addSeconds($this->quiz->timer)->format("Y-m-d H:i:s");
             $this->emit('timer',['data' => $this->timer ?? '']);
@@ -169,46 +172,57 @@ class SingleEpisode extends BaseComponent
             $answers = [];
 
             foreach ($questions as $question) {
-                $answers[$question->id] = $question;
                 if (
-                    $question->true_choice->id == ($this->answers[$question->id] ?? 0)
+                    in_array($question->id , collect($this->questions)->pluck('id')->toArray())
                 ) {
-                    $score += $question->score;
-                    $answers[$question->id]['status'] = true;
-                    UserAnswer::query()->create([
-                        'user_id' => \auth()->id(),
-                        'choice_id' => $this->answers[$question->id],
-                        'course_id' => $this->course_data->id,
-                        'choice_value' => Choice::query()->find($this->answers[$question->id])?->id,
-                        'true_choice_value' => $question->true_choice->title,
-                        'score_received' => $question->score,
-                        'question_score' => $question->score,
-                        'question_text' => $question->text,
-                        'question_id' => $question->id,
-                        'status' => true
-                    ]);
-                } else {
-                    $answers[$question->id]['status'] = false;
+                    $answers[$question->id] = $question;
+                    if (
+                        $question->true_choice->id == ($this->answers[$question->id] ?? 0)
+                    ) {
+                        $score += $question->score;
+                        $answers[$question->id]['status'] = true;
+                        UserAnswer::query()->create([
+                            'user_id' => \auth()->id(),
+                            'choice_id' => $this->answers[$question->id],
+                            'course_id' => $this->course_data->id,
+                            'choice_value' => Choice::query()->find($this->answers[$question->id])?->id,
+                            'true_choice_value' => $question->true_choice->title,
+                            'score_received' => $question->score,
+                            'question_score' => $question->score,
+                            'question_text' => $question->text,
+                            'question_id' => $question->id,
+                            'status' => true
+                        ]);
+                    } else {
+                        $answers[$question->id]['status'] = false;
 
-                    UserAnswer::query()->create([
-                        'user_id' => \auth()->id(),
-                        'choice_id' => $this->answers[$question->id] ?? null,
-                        'course_id' => $this->course_data->id,
-                        'true_choice_value' => $question->true_choice->title,
-                        'score_received' => $question->score,
-                        'question_score' => $question->score,
-                        'question_text' => $question->text,
-                        'question_id' => $question->id,
-                        'status' => false
-                    ]);
+                        UserAnswer::query()->create([
+                            'user_id' => \auth()->id(),
+                            'choice_id' => $this->answers[$question->id] ?? null,
+                            'course_id' => $this->course_data->id,
+                            'true_choice_value' => $question->true_choice->title,
+                            'score_received' => $question->score,
+                            'question_score' => $question->score,
+                            'question_text' => $question->text,
+                            'question_id' => $question->id,
+                            'status' => false
+                        ]);
+                    }
                 }
             }
+            $total = collect($this->questions)->sum('score');
+
+            if ($total == $score && $this->quiz->coins > 0) {
+                auth()->user()->deposit($this->quiz->coins, ['description' => 'جایزه آزمون', 'from_admin'=> true]);
+            }
+
             UserEpisodeQuizResult::query()->where('user_id',\auth()->id())->where('id',$this->result->id)
                 ->where('passed',null)
                 ->update([
                     'score' => (int)$score,
                     'answers' => $answers,
-                    'passed' => $this->quiz->total_score == $score
+                    'passed' => $total == $score,
+                    'total_score' => $total
             ]);
             $this->updateRequiredQuiz();
             $this->result->refresh();

@@ -30,12 +30,12 @@
                             </td>
                             <td>
                                 <ul class="generic-list-item font-weight-semi-bold">
-                                    <li class="text-black lh-18">{{ number_format($item->basePrice) }} تومان</li>
+                                    <li class="text-black lh-18">{{ number_format($item->basePrice) }}  <i class="la  la-coins" style="color: gold"></i></li>
                                 </ul>
                             </td>
                             <td>
                                 <ul class="generic-list-item font-weight-semi-bold">
-                                    <li class="text-black lh-18">{{ number_format($item->total()) }} تومان</li>
+                                    <li class="text-black lh-18">{{ number_format($item->total()) }} <i class="la  la-coins" style="color: gold"></i></li>
                                 </ul>
                             </td>
                             <td>
@@ -66,12 +66,12 @@
                     <ul class="generic-list-item pb-4">
                         <li class="d-flex align-items-center justify-content-between font-weight-semi-bold">
                             <span class="text-black">جمع فرعی: </span>
-                            <span>{{number_format(App\Http\Controllers\Cart\Facades\Cart::price())}} تومان </span>
+                            <span>{{number_format(App\Http\Controllers\Cart\Facades\Cart::price())}} <i class="la  la-coins" style="color: gold"></i> </span>
                         </li>
                         <li class="d-flex align-items-center justify-content-between font-weight-semi-bold">
                             <span class="text-black">مجموع: </span>
                             <span>{{number_format(App\Http\Controllers\Cart\Facades\Cart::price() -
-                                App\Http\Controllers\Cart\Facades\Cart::discount())}} تومان </span>
+                                App\Http\Controllers\Cart\Facades\Cart::discount())}} <i class="la  la-coins" style="color: gold"></i> </span>
                         </li>
                     </ul>
                     <a href="{{ route('checkout') }}" class="btn theme-btn w-100">پرداخت <i

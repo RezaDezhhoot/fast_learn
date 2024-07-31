@@ -201,7 +201,12 @@
             <x-admin.forms.input with="3" type="text" id="quiz_title" label="نام ازمون*" wire:model.defer="quiz_title"/>
             <x-admin.forms.input with="3" type="number" id="quiz_timer" label="زمان ازمون*" help="برحسب ثانیه" wire:model.defer="quiz_timer"/>
             <x-admin.forms.dropdown with="3" id="quiz_type" :data="$data['quiz_type']" label="نوع آزمون*" wire:model.defer="quiz_type"/>
-            <x-admin.forms.input  step="2" class="without_ampm" with="3" type="text" id="quiz_at" label="زمان آزمون" help="00:30:15" wire:model.defer="quiz_at"/>
+            <x-admin.forms.input  step="2" class="without_ampm" with="3" type="text" id="quiz_at" label="در زمان " help="00:30:15" wire:model.defer="quiz_at"/>
+
+            <x-admin.forms.input with="6" type="number" id="coins" label="تعداد سکه*" help="برحسب ثانیه" wire:model.defer="coins"/>
+            <x-admin.forms.input with="6" type="number" id="questions_count" label="تعداد سوال*" help="برحسب ثانیه" wire:model.defer="questions_count"/>
+
+
         </div>
         <hr>
         <x-admin.form-section label="سوالات انتخابی">

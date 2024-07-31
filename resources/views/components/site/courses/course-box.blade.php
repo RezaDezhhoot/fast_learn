@@ -39,8 +39,8 @@
             <!-- end rating-wrap -->
             <div class="d-flex justify-content-between align-items-center">
                 @if($item['has_reduction'] && $item['base_price'] > 0)
-                <p class="card-price text-black font-weight-bold">{{ number_format($item['price']) }} تومان
-                    <span class="before-price font-weight-medium">{{ number_format($item['base_price']) }} تومان</span>
+                <p class="card-price text-black font-weight-bold">{{ number_format($item['price']) }} </i>
+                    <span class="before-price font-weight-medium">{{ number_format($item['base_price']) }} <i class="la  la-coins" style="color: gold"></i></span>
                 </p>
                 @elseif($item['base_price'] == 0 || $item['price'] == 0)
                 <p class="card-price text-black font-weight-bold">
@@ -48,7 +48,7 @@
                 </p>
                 @else
                 <p class="card-price text-black font-weight-bold">
-                    {{ number_format($item['price']) }} تومان
+                    {{ number_format($item['price']) }} <i class="la  la-coins" style="color: gold"></i>
                 </p>
                 @endif
             </div>

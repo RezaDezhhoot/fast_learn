@@ -37,7 +37,8 @@ class StoreEpisode extends BaseComponent
         $video_storage , $allow_show_local_video = 0 , $course_id , $description , $can_homework = false , $homework_storage ,
         $show_api_video = false , $downloadable_local_video = false , $chapter_id;
 
-    public $homework , $h_file , $h_description , $h_result , $h_storage , $h_score;
+    public $homework , $h_file , $h_description , $h_result , $h_storage , $h_score ;
+
 
     public function mount($action , $id = null)
     {

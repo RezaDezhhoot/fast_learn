@@ -13,7 +13,7 @@
         </div>
     </div>
     <div class="modal fade modal-container" id="shareModal" tabindex="-1" role="dialog" aria-labelledby="shareModalTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-dialog-centered" style="    width: 100% !important;max-width: 100%;" role="document">
             <div class="modal-content">
                 <div class="modal-header border-bottom-gray">
                     <h5 class="modal-title fs-19 font-weight-semi-bold" id="shareModalTitle">ویدئو معرفی
@@ -25,7 +25,7 @@
                 <!-- end modal-header -->
                 <div class="modal-body">
                     <div class="plyr wire:ignore plyr--video plyr--html5 plyr--fullscreen-enabled">
-                        <video id="player" class="player"  controls >
+                        <video id="introVideo" class="player"  controls >
                         </video>
                     </div>
                     <!-- end copy-to-clipboard -->
@@ -41,7 +41,8 @@
     <script>
         Livewire.on('setVideo', data => {
             $('#shareModal').modal('show');
-            const player = new Plyr('#player');
+            const player = new Plyr('#introVideo','');
+
             window.player = player;
             player.source = {
                 type: 'video',
