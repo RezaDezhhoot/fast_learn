@@ -19,6 +19,7 @@
         @endif
         <x-site.client.sidebar-link title="آموزشگاه" link="{{ route('user.school') }}" icon="la la-school pr-2" :active="request()->routeIs('user.school')" />
         <x-site.client.sidebar-link title="گارکاه" link="{{ route('user.workshop') }}" icon="la la-tools pr-2" :active="request()->routeIs('user.workshop')" />
+        <x-site.client.sidebar-link title="آپگرید ربات" link="{{ route('user.upgrade-bot') }}" icon="la la-toolbox pr-2" :active="request()->routeIs('user.upgrade-bot')" />
         <x-site.client.sidebar-link title=" پروفایل من" link="{{ route('user.profile') }}" icon="la la-user pr-2" :active="request()->routeIs('user.profile')" />
         <x-site.client.sidebar-link title=" دوره های من" link="{{ route('user.courses') }}" icon="la la-file pr-2" :active="request()->routeIs('user.courses')" />
         <x-site.client.sidebar-link title=" گزارش پیشرفت" link="{{ route('user.episode-quiz') }}" icon="la la-chart-bar pr-2" :active="request()->routeIs(['user.episode-quiz'])" />

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('user_bot_plans', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('bot_plan-id')->constrained('bot_plans')->cascadeOnDelete();
+            $table->foreignId('bot_plan_id')->constrained('bot_plans')->cascadeOnDelete();
             $table->foreignId('user_id')->index();
             $table->timestamps();
         });

@@ -309,4 +309,8 @@ class User extends Authenticatable implements Wallet, Confirmable
         return $this->identification()->with('identifications');
     }
 
+    public function botPlans()
+    {
+        return $this->belongsToMany(BotPlan::class,'user_bot_plans');
+    }
 }

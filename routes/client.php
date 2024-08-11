@@ -31,6 +31,7 @@ Route::prefix('client')->middleware(['auth'])->group(function (){
 
            Route::get('/school',App\Http\Controllers\Site\Client\School::class)->name('user.school');
            Route::get('/workshop',App\Http\Controllers\Site\Client\Workshop::class)->name('user.workshop');
+           Route::get('/upgrade-bot',App\Http\Controllers\Site\Client\UpgradeBot::class)->name('user.upgrade-bot');
 
            Route::get('/comments',App\Http\Controllers\Site\Client\Comments::class)->name('user.comments');
            Route::get('/tickets',App\Http\Controllers\Site\Client\Tickets::class)->name('user.tickets');
