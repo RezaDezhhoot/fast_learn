@@ -2,6 +2,8 @@
 
 namespace App\Console;
 
+use App\Console\Commands\SchoolDailyDeposit;
+use App\Console\Commands\WorkshopDailyDeposit;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Illuminate\Support\Facades\Artisan;
@@ -12,6 +14,8 @@ class Kernel extends ConsoleKernel
         Commands\SetPermissionsAndRoles::class,
         Commands\SetJobsCommand::class,
         Commands\MergeSampleQuestion::class,
+        SchoolDailyDeposit::class,
+        WorkshopDailyDeposit::class,
     ];
     /**
      * Define the application's command schedule.
@@ -30,6 +34,8 @@ class Kernel extends ConsoleKernel
             # Attempts to perform jobs
             Artisan::call('queue:work --stop-when-empty');
         })->weekdays();
+        $schedule->command("bot:school")->dailyAt("00:00");
+        $schedule->command("bot:workshop")->dailyAt("00:00");
     }
 
     /**

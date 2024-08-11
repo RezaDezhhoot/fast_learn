@@ -71,6 +71,7 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->as('admin.')->group(f
     Route::get('/settings/base', App\Http\Controllers\Admin\Settings\BaseSetting::class)->name('setting.base');
     Route::get('/settings/home', App\Http\Controllers\Admin\Settings\HomeSetting::class)->name('setting.home');
     Route::get('/settings/sms', App\Http\Controllers\Admin\Settings\SmsSetting::class)->name('setting.sms');
+    Route::get('/settings/bot', App\Http\Controllers\Admin\Settings\Bot::class)->name('setting.bot');
     Route::get('/settings/about-us', App\Http\Controllers\Admin\Settings\AboutSetting::class)->name('setting.aboutUs');
     Route::get('/settings/contact-us', App\Http\Controllers\Admin\Settings\ContactSetting::class)->name('setting.contactUs');
     Route::get('/settings/fag', App\Http\Controllers\Admin\Settings\FagSetting::class)->name('setting.fag');

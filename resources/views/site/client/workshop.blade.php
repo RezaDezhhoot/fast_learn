@@ -1,0 +1,67 @@
+<html>
+<head>
+    @livewireStyles
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    {!! SEOMeta::generate() !!}
+    {!! OpenGraph::generate() !!}
+    {!! Twitter::generate() !!}
+    {!! JsonLd::generate() !!}
+    <!-- Google fonts -->
+    {{--    <script src="https://cdn.plyr.io/3.6.12/plyr.js"></script>--}}
+    {{--    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.12/plyr.css" />--}}
+    <link rel="stylesheet" href="{{asset('site/library/plyr/plyr.css?v=1.0.1')}}">
+
+    <!-- Favicon -->
+    <link rel="icon" sizes="16x16" href="{{asset($logo)}}" />
+    <!-- inject:css -->
+    <link rel="stylesheet" href="{{ asset('site/css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('site/css/line-awesome.css') }}" />
+    <link rel="stylesheet" href="{{ asset('site/css/owl.carousel.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('site/css/owl.theme.default.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('site/css/bootstrap-select.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('site/css/fancybox.css') }}" />
+    <link rel="stylesheet" href="{{ asset('site/css/tooltipster.bundle.css') }}" />
+    <link rel="stylesheet" href="{{ asset('site/css/animated-headline.css') }}" />
+    <link rel="stylesheet" href="{{ asset('site/css/style.css') }}" />
+    <link rel="stylesheet" href="{{ asset('admin/css/jdate/persianDatepicker-default.css') }}" />
+    <link rel="stylesheet" href="{{asset('site/css/plyr.css')}}" />
+    <!-- end inject -->
+    <script src="{{asset('site/js/alpine.min.js')}}" defer></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {{--    <script src="{{asset('site/js/sweetalert2.js')}}" defer></script>--}}
+    <link rel="stylesheet" href="{{asset('site/css/jquery-te-1.4.0.css')}}" />
+
+</head>
+<body>
+<div class="w-100 h-100 d-flex position-relative align-items-center align-content-center justify-content-center" style="
+    background-image: url('{{ asset('site/character-robot-png.png') }}');
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+">
+    <div class="text-center align-items-center justify-content-center align-content-center" style="
+    ">
+        @if($workshop)
+            <strong class="alert alert-info">
+                درامد روزانه کارگاه: {{ number_format($workshop->amount) }} <i class="la la-coins"></i>
+            </strong>
+        @endif
+        <br>
+        <br>
+        <button wire:click="start" {{ $hasStarted ? "disabled" : "" }} class="btn btn-primary" >
+            {{ ! $hasStarted ? "شروع آموزشگاه" : "گارگاه شما فعال می باشد" }}
+        </button>
+
+        <a href="{{ route('user.dashboard') }}">
+            <button class="btn btn-danger">
+                بازگشت
+            </button>
+        </a>
+    </div>
+</div>
+</body>
+@livewireScripts
+
+</html>

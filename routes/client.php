@@ -28,6 +28,10 @@ Route::prefix('client')->middleware(['auth'])->group(function (){
 
 
            Route::get('/notifications',App\Http\Controllers\Site\Client\Notifications::class)->name('user.notifications');
+
+           Route::get('/school',App\Http\Controllers\Site\Client\School::class)->name('user.school');
+           Route::get('/workshop',App\Http\Controllers\Site\Client\Workshop::class)->name('user.workshop');
+
            Route::get('/comments',App\Http\Controllers\Site\Client\Comments::class)->name('user.comments');
            Route::get('/tickets',App\Http\Controllers\Site\Client\Tickets::class)->name('user.tickets');
            Route::get('/tickets/{action}/{id?}',App\Http\Controllers\Site\Client\Ticket::class)->name('user.ticket');

@@ -244,6 +244,7 @@
                         @endcan
                         @can('show_settings_home')
                             <x-admin.menu-item href="{{route('admin.setting.home')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs('admin.setting.home')" label="صفحه اصلی " />
+                            <x-admin.menu-item href="{{route('admin.setting.bot')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs('admin.setting.bot')" label="ربات " />
                         @endcan
                             <x-admin.menu-item href="{{route('admin.setting.sitemap')}}" icon="menu-bullet menu-bullet-dot" :active="request()->routeIs('admin.setting.sitemap')" label="نفشه سایت" />
                         @can('show_settings_sms')

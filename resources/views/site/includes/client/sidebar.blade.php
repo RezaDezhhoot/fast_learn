@@ -3,8 +3,8 @@
         <i class="la la-times"></i>
     </div>
     <!-- end off-canvas-menu-close -->
-    <div class="logo-box px-4">
-        <a href="{{ route('home') }}" class="logo "><img class="logo-size" src="{{ asset($logo) }}" alt="لوگو" /></a>
+    <div class="logo-box px-4 ">
+        <a href="{{ route('home') }}" class="logo  "><img class="logo-size" src="{{ asset($logo) }}" alt="لوگو" /></a>
     </div>
     <ul class="generic-list-item off-canvas-menu-list off--canvas-menu-list  pt-35px">
         <x-site.client.sidebar-link title="داشبورد" link="{{ route('user.dashboard') }}" icon="la la-dashboard pr-2" :active="request()->routeIs('user.dashboard')" />
@@ -17,6 +17,8 @@
         @if (auth()->user()->organs  && sizeof(auth()->user()->organs) > 0)
             <x-site.client.sidebar-link link="{{route('organ.dashboard')}}" icon="la la-building" :active="request()->routeIs('organ.dashboard')" title="پنل اموزشگاه" />
         @endif
+        <x-site.client.sidebar-link title="آموزشگاه" link="{{ route('user.school') }}" icon="la la-school pr-2" :active="request()->routeIs('user.school')" />
+        <x-site.client.sidebar-link title="گارکاه" link="{{ route('user.workshop') }}" icon="la la-tools pr-2" :active="request()->routeIs('user.workshop')" />
         <x-site.client.sidebar-link title=" پروفایل من" link="{{ route('user.profile') }}" icon="la la-user pr-2" :active="request()->routeIs('user.profile')" />
         <x-site.client.sidebar-link title=" دوره های من" link="{{ route('user.courses') }}" icon="la la-file pr-2" :active="request()->routeIs('user.courses')" />
         <x-site.client.sidebar-link title=" گزارش پیشرفت" link="{{ route('user.episode-quiz') }}" icon="la la-chart-bar pr-2" :active="request()->routeIs(['user.episode-quiz'])" />
