@@ -198,7 +198,7 @@
                 <x-admin.menu-item href="{{route('log-viewer::dashboard')}}" icon="flaticon-book" :active="request()->routeIs(['telescope'])" label=" گزارش های سیستم logger" />
                 <x-admin.menu-item href="{{route('telescope')}}" icon="flaticon-search" :active="request()->routeIs(['telescope'])" label=" گزارش های سیستم telescope" />
                 @endif
-                <li class="menu-section">
+                <li class="menu-section ">
                     <h4 class="menu-text">بخش ارگان ها</h4>
                     <i class="menu-icon ki ki-bold-more-hor icon-md "></i>
                 </li>
@@ -236,6 +236,9 @@
                     </x-admin.menu-group>
                 @endif
                 @can('show_settings')
+                    <x-admin.menu-item href="{{route('admin.bot-plan')}}" icon="fas fa-robot" :active="request()->routeIs(['admin.bot-plan','admin.store.bot-plan'])" label="پلن های ربات" />
+
+
                     <x-admin.menu-group icon="flaticon2-settings" :active="request()->routeIs(
                     ['admin.setting.base','admin.setting.home','admin.setting.aboutUs','admin.setting.contactUs'
                        ,'admin.setting.fag','admin.setting.fag.create','admin.setting.sms','admin.setting.apply','admin.setting.sitemap'])" label="تنظیمات" >
