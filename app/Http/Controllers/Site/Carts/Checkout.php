@@ -292,7 +292,7 @@ class Checkout extends BaseComponent
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function payment(): bool|Redirector|string|Application|RedirectResponse|MessageBag
+    public function payment()
     {
         $this->calculatePrice();
         $this->checkVoucherCode();

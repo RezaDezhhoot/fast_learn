@@ -104,6 +104,31 @@
                         <!-- end collapse -->
                     </div>
                 @endforeach
+                @if($course_data->quiz)
+                        <div class="card">
+                            <div class="card-header" id="headingTwo">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse-quiz" aria-expanded="false" aria-controls="collapseTwo">
+                                    <i class="la la-angle-down"></i>
+                                    <i class="la la-angle-up"></i>
+                                    <span class="fs-15">آزمون پایان  </span>
+                                    <span class="course-duration"></span>
+                                </button>
+                            </div>
+
+                            <!-- end card-header -->
+                            <div id="collapse-quiz" class="collapse" aria-labelledby="heading-quiz" data-parent="#accordionCourseExample">
+                                <div class="card-body p-0">
+                                    <ul class="curriculum-sidebar-list">
+                                        <li class="course-item-link">
+                                            <a href="{{route('user.quizzes',['course' => $course_data->id])}}">شزوع آزمون نهایی</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- end card-body -->
+                            </div>
+                            <!-- end collapse -->
+                        </div>
+                @endif
             </div>
             <!-- end accordion-->
         </div>

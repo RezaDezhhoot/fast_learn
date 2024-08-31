@@ -10270,6 +10270,12 @@ div.datedropper .picker .pick-lg-b li {
     transform: scale(0.9);
 }
 
+
+.logo-intro-size {
+    max-width: 7em;
+    /*transform: scale(0.9);*/
+}
+
 .logo-footer {
     max-width: 3rem;
 }

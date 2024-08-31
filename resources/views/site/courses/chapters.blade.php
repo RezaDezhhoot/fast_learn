@@ -75,6 +75,42 @@
                     <!-- end collapse -->
                 </div>
             @endforeach
+            @if($course->quiz)
+                    <div class="card" wire:ignore>
+                        <div class="card-header">
+                            <button
+                                class="btn btn-link d-flex align-items-center justify-content-between"
+                                data-toggle="collapse" data-target="#collapse-quiz"
+                                aria-expanded="false"
+                                aria-controls="collapse-quiz">
+                                <i class="la la-plus"></i>
+                                <i class="la la-minus"></i>
+                                <p>
+                                    آزمون پایانی
+                                </p>
+
+                            </button>
+                        </div>
+                        <!-- end card-header -->
+
+
+                        <div id="collapse-quiz" class="collapse"
+                             aria-labelledby="heading-quiz" data-parent="#accordion">
+                            <div class="card-body pt-2">
+                                <ul class="generic-list-item">
+                                    @foreach($item['episode_title_list'] as $episode)
+                                        <li>
+                                            <a href="{{route('user.quizzes',['course' => $course->id])}}" class="d-flex align-items-center justify-content-between">
+                                                شرکت در آزمون نهایی
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- end collapse -->
+                    </div>
+            @endif
         @else
             <p class="alert alert-info" wire:loading.remove >
                 هنوز هیچ درسی منتشر نشده است.

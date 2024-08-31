@@ -34,7 +34,7 @@
                                         }}</span>
                                 </div>
                             </div>
-                            @include('site.courses.chapters')
+                            @include('site.courses.chapter-timelines')
                             <!-- end curriculum-content -->
                         </div>
                         <!-- end course-overview-card -->
@@ -277,7 +277,7 @@
                                 </li>
                                 <li class="d-flex align-items-center justify-content-between">
                                     <span><i class="la la-certificate mr-2 text-color"></i>گواهی</span> {{
-                                    (!is_null($course->quiz) && !is_null($course->quiz->certificate)) ? 'بعله' : 'خیر'
+                                    (!is_null($course->quiz) && !is_null($course->quiz->certificate)) ? 'بله' : 'خیر'
                                     }}
                                 </li>
                                 @if(isset($course->organ))

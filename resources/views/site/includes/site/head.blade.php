@@ -16,6 +16,10 @@
     <link rel="icon" sizes="16x16" href="{{asset($logo)}}" />
     <!-- inject:css -->
     <link rel="stylesheet" href="{{ asset('site/css/bootstrap.min.css') }}" />
+
+    <link rel="stylesheet" href="{{ asset('site/css/timeline.css') }}" />
+    <link rel="stylesheet" href="{{ asset('site/css/grid.css') }}" />
+
     <link rel="stylesheet" href="{{ asset('site/css/line-awesome.css') }}" />
     <link rel="stylesheet" href="{{ asset('site/css/owl.carousel.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('site/css/owl.theme.default.min.css') }}" />
