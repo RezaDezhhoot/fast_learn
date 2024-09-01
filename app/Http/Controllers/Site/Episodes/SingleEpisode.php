@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Site\Episodes;
 
+use App\Enums\CourseEnum;
 use App\Enums\EpisodeQuizType;
 use App\Enums\QuizEnum;
 use App\Http\Controllers\BaseComponent;
@@ -9,6 +10,7 @@ use App\Models\Choice;
 use App\Models\Question;
 use App\Models\UserAnswer;
 use App\Models\UserEpisodeQuizResult;
+use App\Models\UserTicket;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\Interfaces\CourseRepositoryInterface;
 use App\Repositories\Interfaces\EpisodeRepositoryInterface;
@@ -54,6 +56,7 @@ class SingleEpisode extends BaseComponent
 
     public $questions = [];
 
+
     public $optionalQuizAtTime = [] , $requiredQuizAtTime = [];
     public function __construct($id = null)
     {
@@ -72,9 +75,26 @@ class SingleEpisode extends BaseComponent
         $this->user = auth()->user();
         $this->course_data = $this->courseRepository->get('slug',$course,true);
         $this->loadData($chapter , $episode);
+
         if (
-            !$this->episode_data->free && $this->course_data->price > 0 && ( (\auth()->check() && !$this->user->hasCourse($this->course_data->id)) || !\auth()->check()) )
-            abort(404);
+            !$this->episode_data->free && $this->course_data->price > 0 &&
+            ( (\auth()->check() && !$this->user->hasCourse($this->course_data->id)) || !\auth()->check())
+        ) {
+            if ($this->course_data->level_type == CourseEnum::LEVEL_TYPE_PROFESSIONAL) {
+                if (
+                    UserTicket::query()->where('user_id',$this->user)->whereNull('used_by')->count() >= 2 &&
+                    ! UserTicket::query()->where('user_id',$this->user)->where('used_by',$this->episode_data->id)->exists()
+                ) {
+                    UserTicket::query()->where('user_id',$this->user)->limit(2)->update([
+                        'used_by' => $this->episode_data->id
+                    ]);
+                } elseif (! UserTicket::query()->where('user_id',$this->user)->where('used_by',$this->episode_data->id)->exists()) {
+                    abort(404);
+                }
+            } else {
+                abort(404);
+            }
+        }
 
         $title = $this->course_data->title.' | '.$this->episode_data->title;
         SEOMeta::setTitle($title);
@@ -138,6 +158,14 @@ class SingleEpisode extends BaseComponent
                 return;
             }
             $this->emitShowModal('quiz');
+        }
+
+        if ($this->course_data->level_type == CourseEnum::LEVEL_TYPE_GENERAL && ! UserTicket::query()->where('user_id',\auth()->id())->where('episode_id',$this->episode_data->id)->exists()) {
+            UserTicket::query()->create([
+                'user_id' => \auth()->id(),
+                'episode_id' => $this->episode_data->id
+            ]);
+            $this->emitNotify('0.5 بلیط از تماشای این قسمت به ');
         }
     }
 
@@ -263,16 +291,19 @@ class SingleEpisode extends BaseComponent
 
     public function requiredQuiz($data): void
     {
-        $this->resetQuiz();
-        $this->quiz = $this->episode_data->quizzes()->find($data['id']);
+        if (! $this->quiz) {
+            $this->resetQuiz();
+            $this->quiz = $this->episode_data->quizzes()->find($data['id']);
 
-        if ($this->quiz && UserEpisodeQuizResult::query()->where('user_id',\auth()->id())->where('passed',true)->where('episode_quiz_id' , $data['id'])->doesntExist()) {
-            if (! empty($data['lastPoint'])) {
-                $this->lastPoint = $data['lastPoint'];
+            if ($this->quiz && UserEpisodeQuizResult::query()->where('user_id',\auth()->id())->where('passed',true)->where('episode_quiz_id' , $data['id'])->doesntExist()) {
+                if (! empty($data['lastPoint'])) {
+                    $this->lastPoint = $data['lastPoint'];
+                }
+
+                $this->emitShowModal('quiz');
             }
-
-            $this->emitShowModal('quiz');
         }
+
 
     }
 

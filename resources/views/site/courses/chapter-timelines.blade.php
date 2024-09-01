@@ -7,7 +7,8 @@
                         @if(sizeof($item['episode_title_list']) > 0)
                             @foreach($item['episode_title_list'] as $episode)
                                 <p class="event-date">
-                                    @if(($episode['free'] || $course->price == 0 || $hasCourse ))
+                                    @if(($episode['free'] || $course->price == 0 || $hasCourse ) ||
+(auth()->check() && (  \App\Models\UserTicket::where('user_id',auth()->id())->whereNull('used_by')->count() >= 2 || \App\Models\UserTicket::where('user_id',auth()->id())->where('used_by',$episode['id'])->exists() )))
                                         <a href="{{route('episode',[$course['slug'],$item['slug'],$episode['id'],$episode['title']])}}" class="d-flex text-white align-items-center justify-content-between">
                                             {{ $item['title'] }} (<span class="fs-15  text-white font-weight-medium">{{ $item['episode_count'] }} درس</span>)
                                         </a>

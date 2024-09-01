@@ -60,8 +60,17 @@ class Quizzes extends Component
                         'title' => $course->title,
                     ])
                 ]);
-
                 redirect()->route('user.quiz',$transcript->id);
+            } else {
+                $transcript = Transcript::query()->where([
+                    ['user_id','=',$course->quiz->id],
+                    ['quiz_id','=',auth()->id()],
+                    ['course_id','=',$course->id],
+                    ['result','=',QuizEnum::PENDING],
+                ])->first();
+                if ($transcript) {
+                    redirect()->route('user.quiz',$transcript->id);
+                }
             }
         }
 

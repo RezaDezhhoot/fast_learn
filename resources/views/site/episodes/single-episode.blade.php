@@ -310,6 +310,7 @@
                         @this.call('requiredQuiz' , {
                             id: item.id
                         })
+                        throw "exit"
                     }
                 })
             });

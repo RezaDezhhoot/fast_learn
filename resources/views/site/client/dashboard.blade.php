@@ -10,6 +10,7 @@
                     <h2 class="section__title fs-30">سلام، {{ auth()->user()->name }}</h2>
                     <!-- end rating-wrap -->
                     <p>کد دعوت شما  : {{ auth()->user()->invite_code }}</p>
+                    <p>بلیط های دوره تخصصی  : {{ \App\Models\UserTicket::query()->where('user_id',auth()->id())->whereNull('used_by')->count() / 2 }}</p>
                 </div>
                 <!-- end media-body -->
             </div>
